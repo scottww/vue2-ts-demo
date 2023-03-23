@@ -1,5 +1,7 @@
 # vue2-ts-demo
 
+环境： node 16.11.0
+
 ## Project setup
 ```
 yarn install
