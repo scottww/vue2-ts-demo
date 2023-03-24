@@ -11,6 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "allowJs": true,
     "types": [
       "webpack-env"
     ],
@@ -35,5 +36,8 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  // "rules":{
+  //   "@typescript-eslint/explicit-module-boundary-types":"off"
+  // }
 }

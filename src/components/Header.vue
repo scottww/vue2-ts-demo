@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="logo">
-      <img src="../assets/my-logo.png" alt="logo">
+      <img src="../assets/my-logo.png" alt="logo" />
     </div>
     <div></div>
   </div>
@@ -26,7 +26,7 @@ export default {
   align-items: center;
   /* padding: 8px; */
 }
-.logo img{
+.logo img {
   height: 80%;
 }
 </style>

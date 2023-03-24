@@ -40,7 +40,7 @@ export default {
   /* left: 0; */
   background-color: #fff;
   /* #e5e6eb */
-  border-right: 1px solid #e5e6eb; 
+  border-right: 1px solid #e5e6eb;
   transition: width 0.3s ease;
 }
 
@@ -56,7 +56,7 @@ export default {
   overflow-y: auto;
 }
 
-.main-container{
+.main-container {
   height: 100%;
   margin: 20px;
   background-color: #f8f8f8;

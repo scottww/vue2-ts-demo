@@ -9,11 +9,11 @@
 <script>
 export default {
   name: "SideBar",
-  props:{
-    isOpen:{
+  props: {
+    isOpen: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {

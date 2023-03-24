@@ -1,17 +1,17 @@
 <template>
   <div class="dashboard">
-    <Header />
+    <HeaderLayout />
     <LeftRightLayout />
   </div>
 </template>
 
-<script lang="ts">
-import Header from "@/components/Header.vue";
-import LeftRightLayout from "@/components/LeftRightLayout.vue";
+<script>
+import HeaderLayout from "@/components/Header.vue";
+import LeftRightLayout from "@/components/LeftRightLayout";
 export default {
   name: "Dashboard",
   components: {
-    Header,
+    HeaderLayout,
     LeftRightLayout,
   },
 };

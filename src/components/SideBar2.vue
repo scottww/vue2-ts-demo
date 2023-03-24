@@ -5,8 +5,6 @@
       <i>{{ toggleText }}</i>
     </div>
     <div class="sidebar-content" v-if="isOpen2">
-      <!-- 侧边栏内容 -->
-      <!-- <slot></slot> -->
       <ul>
         <li v-for="item in items" :key="item.id">{{ item.text }}</li>
       </ul>
