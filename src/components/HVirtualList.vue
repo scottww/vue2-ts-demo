@@ -1,17 +1,19 @@
 <template>
-  <div class="virtual-scroll-list" ref="listRef">
-    <div class="list" :style="{ height: `${listHeight}px` }">
-      <div
-        :style="`transform: translateY(${translateY}px)`"
-        class="itemContainer"
-      >
+  <div>
+    <div class="virtual-scroll-list" ref="listRef" :style="containerH">
+      <div class="list" :style="{ height: `${listHeight}px` }">
         <div
-          v-for="(i, index) in displayData"
-          :key="index"
-          class="item"
-          :style="{ height: `${itemHeight}px` }"
+          :style="`transform: translateY(${translateY}px)`"
+          class="itemContainer"
         >
-          {{ i }}
+          <div
+            v-for="(i, index) in displayData"
+            :key="index"
+            class="item"
+            :style="{ height: `${itemHeight}px` }"
+          >
+            {{ i }}
+          </div>
         </div>
       </div>
     </div>
@@ -26,7 +28,8 @@ export default {
   data() {
     return {
       dataList: [],
-      itemHeight: 150, //每行数据所占高度
+      itemHeight: 30, //每行数据所占高度
+      containerHeight: 300, //容器高
       scrollTop: 0,
     };
   },
@@ -34,18 +37,24 @@ export default {
     listHeight({ dataList, itemHeight }) {
       return dataList.length * itemHeight;
     },
+    containerH({ containerHeight }) {
+      return {
+        "--height": `${containerHeight}px`,
+      };
+    },
     // +1准备多一个数据，防止滚动留白
-    itemCount({ dataList, itemHeight }) {
-      return Math.ceil(dataList.length / itemHeight) + 1;
+    itemCount({ containerHeight, itemHeight }) {
+      return Math.ceil(containerHeight / itemHeight) + 1;
     },
     start({ scrollTop, itemHeight }) {
       return Math.floor(scrollTop / itemHeight);
     },
     end({ start, itemCount }) {
+      debugger;
       return start + itemCount;
     },
     displayData({ dataList, start, end }) {
-      return dataList.slice(start.value, end.value);
+      return dataList.slice(start, end);
     },
     translateY({ start, itemHeight }) {
       return start * itemHeight;
@@ -53,7 +62,7 @@ export default {
   },
   mounted() {
     this.dataList = Array.from({ length: 500 }, (v, k) => `内容${k}`);
-    this.itemHeight = 150;
+    this.itemHeight = 30;
     const listRef = this.$refs.listRef;
     listRef.addEventListener("scroll", this.onScroll);
   },
@@ -78,7 +87,7 @@ export default {
   border: 2px solid orange;
   width: 500px;
   overflow-y: auto;
-  max-height: 500px;
+  max-height: var(--height);
 }
 
 .item {
