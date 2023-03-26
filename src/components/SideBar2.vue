@@ -6,7 +6,9 @@
     </div>
     <div class="sidebar-content" v-if="isOpen2">
       <ul>
-        <li v-for="item in items" :key="item.id">{{ item.text }}</li>
+        <li v-for="item in items" :key="item.id" @click="toPath(item.path)">
+          {{ item.text }}
+        </li>
       </ul>
     </div>
   </div>
@@ -19,9 +21,10 @@ export default {
     return {
       isOpen2: true,
       items: [
-        { id: 1, text: "读取文件" },
-        { id: 2, text: "表格" },
-        { id: 3, text: "函数式组件" },
+        { id: 1, text: "虚拟列表", path: "/virtualList" },
+        { id: 2, text: "读取文件", path: "/realFile" },
+        { id: 3, text: "表格", path: "/table" },
+        { id: 4, text: "函数式组件", path: "/functional" },
       ],
     };
   },
@@ -34,6 +37,9 @@ export default {
     toggleSidebar() {
       this.isOpen2 = !this.isOpen2;
       this.$emit("on-change", this.isOpen2);
+    },
+    toPath(path) {
+      this.$router.push(path);
     },
   },
 };

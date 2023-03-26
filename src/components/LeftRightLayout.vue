@@ -4,7 +4,9 @@
       <SideBar @on-change="onChange" />
     </div>
     <div class="main">
-      <div class="main-container">Main content</div>
+      <div class="main-container">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
