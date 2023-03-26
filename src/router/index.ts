@@ -11,6 +11,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Dashboard,
+    redirect: '/virtualList',
     children: [
       {
         path: "/virtualList",
