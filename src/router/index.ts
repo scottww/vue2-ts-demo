@@ -11,7 +11,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Dashboard,
-    redirect: '/virtualList',
+    redirect: "/virtualList",
     children: [
       {
         path: "/virtualList",
@@ -22,6 +22,22 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "VirtualList" */ "../views/VirtualList.vue"
+          ),
+      },
+      {
+        path: "/loadReadFile",
+        name: "LoadReadFile",
+        component: () =>
+          import(
+            /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
+          ),
+      },
+      {
+        path: "/table",
+        name: "Table",
+        component: () =>
+          import(
+            /* webpackChunkName: "Table" */ "../views/tableRender/index.vue"
           ),
       },
     ],
