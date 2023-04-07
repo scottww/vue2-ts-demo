@@ -1,30 +1,29 @@
 <template>
   <div class="load-read-file-container">
-    <div class="select-file">
-      <button @click="btnClick">选择文件</button>
-      <input
-        type="file"
-        @change="loadTextFile"
-        id="input"
-        style="display: none"
-      />
+    <button @click="loadFile">加载文件</button>
+    <!-- <div>
+      {{ fileContent }}
+    </div> -->
+    <!-- <pre v-html="fileContent"></pre> -->
+    <div>
+        <VueJsonPretty :data="fileContent"></VueJsonPretty>
     </div>
-    <code>
-      {{ result }}
-    </code>
+    
   </div>
 </template>
 
 <script>
-import { TableRender } from "./table-render.js";
-// const fs = require("fs");
-// const path = require("path");
+import VueJsonPretty from "vue-json-pretty";
+import "vue-json-pretty/lib/styles.css";
 export default {
   name: "ReadFileContainer",
-  components: { TableRender },
+  components: {
+    VueJsonPretty
+  },
   data() {
     return {
-      result: ""
+      fileContent: "",
+      jsonData: { foo: "bar", baz: [1, 2, 3] }
     };
   },
   mounted() {},
@@ -33,27 +32,24 @@ export default {
       const json = eval("(" + str + ")");
       return json;
     },
-    btnClick() {
-      document.getElementById("input").click();
-    },
-    loadTextFile(e) {
-      const file = e.target.files[0];
-      let name = file.name.split(".").splice(-1).toString();
-      if (name !== "txt") {
-        this.$message.success("文件类型错误,请重新选择文件");
-        return;
-      }
-      const reader = new FileReader();
-      if (typeof FileReader === "undefined") {
-        alert("您的浏览器不支持FileReader接口");
-      }
-      reader.onload = (e) =>
-        this.$emit("load", this.handleResult(e.target.result));
-      reader.readAsText(file, "utf-8");
-    },
-    handleResult(item) {
-      this.result = this.strToJson(item);
-      console.log(item);
+    loadFile() {
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "text/plain";
+
+      fileInput.onchange = (event) => {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.fileContent = { ...this.strToJson(reader.result) };
+          console.log(this.fileContent);
+        };
+
+        reader.readAsText(file);
+      };
+
+      fileInput.click();
     }
   }
 };
@@ -61,5 +57,6 @@ export default {
 
 <style scoped>
 .load-read-file-container {
+      text-align: left;
 }
 </style>
