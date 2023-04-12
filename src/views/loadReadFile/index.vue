@@ -6,9 +6,8 @@
     </div> -->
     <!-- <pre v-html="fileContent"></pre> -->
     <div>
-        <VueJsonPretty :data="fileContent"></VueJsonPretty>
+      <VueJsonPretty :data="fileContent"></VueJsonPretty>
     </div>
-    
   </div>
 </template>
 
@@ -57,6 +56,6 @@ export default {
 
 <style scoped>
 .load-read-file-container {
-      text-align: left;
+  text-align: left;
 }
 </style>

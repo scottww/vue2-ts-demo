@@ -22,7 +22,16 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "VirtualList" */ "../views/VirtualList.vue"
-          ),
+          )
+      },
+      {
+        path: "/components",
+        name: "Components",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue")
       },
       {
         path: "/loadReadFile",
@@ -30,7 +39,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
-          ),
+          )
       },
       {
         path: "/table",
@@ -38,9 +47,9 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "Table" */ "../views/tableRender/index.vue"
-          ),
-      },
-    ],
+          )
+      }
+    ]
   },
   {
     path: "/about",
@@ -49,21 +58,21 @@ const routes: Array<RouteConfig> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
     path: "/404",
     name: "404",
-    component: () => import("../views/404.vue"),
+    component: () => import("../views/404.vue")
   },
   {
     path: "/:pathMatch(.*)",
-    redirect: "/404",
-  },
+    redirect: "/404"
+  }
 ];
 
 const router = new VueRouter({
-  routes,
+  routes
 });
 
 const originalPush = VueRouter.prototype.push;

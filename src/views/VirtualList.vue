@@ -8,7 +8,7 @@
 import HVirtualList from "@/components/HVirtualList.vue";
 export default {
   name: "VirtualList",
-  components: { HVirtualList },
+  components: { HVirtualList }
 };
 </script>
 <style scoped>

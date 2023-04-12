@@ -12,7 +12,7 @@ export default {
   name: "Dashboard",
   components: {
     HeaderLayout,
-    LeftRightLayout,
+    LeftRightLayout
   }
 };
 </script>

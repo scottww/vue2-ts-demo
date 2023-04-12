@@ -12,23 +12,23 @@ export default {
   props: {
     isOpen: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       items: [
         { id: 1, text: "读取文件" },
         { id: 2, text: "表格" },
-        { id: 3, text: "函数式组件" },
-      ],
+        { id: 3, text: "函数式组件" }
+      ]
     };
   },
   methods: {
     toggleSidebar() {
       this.isActive = !this.isActive;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

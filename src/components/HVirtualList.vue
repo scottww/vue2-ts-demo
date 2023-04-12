@@ -30,7 +30,7 @@ export default {
       dataList: [],
       itemHeight: 30, //每行数据所占高度
       containerHeight: 300, //容器高
-      scrollTop: 0,
+      scrollTop: 0
     };
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
     },
     containerH({ containerHeight }) {
       return {
-        "--height": `${containerHeight}px`,
+        "--height": `${containerHeight}px`
       };
     },
     // +1准备多一个数据，防止滚动留白
@@ -58,7 +58,7 @@ export default {
     },
     translateY({ start, itemHeight }) {
       return start * itemHeight;
-    },
+    }
   },
   mounted() {
     this.dataList = Array.from({ length: 500 }, (v, k) => `内容${k}`);
@@ -69,12 +69,12 @@ export default {
   methods: {
     onScroll(e) {
       this.scrollTop = e.target.scrollTop;
-    },
+    }
   },
   beforeDestroy() {
     const listRef = this.$refs.listRef;
     listRef.removeEventListener("scroll", this.onScroll);
-  },
+  }
 };
 </script>
 

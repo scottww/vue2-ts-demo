@@ -6,8 +6,8 @@ export const TableRender = {
   props: {
     tables: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   render(h, ctx) {
     console.log("render", ctx);
@@ -24,7 +24,7 @@ export const TableRender = {
           "div",
           {
             attrs: {
-              id: `anchor-${element.key}`,
+              id: `anchor-${element.key}`
             },
             style: {
               width: "fit-content",
@@ -34,20 +34,20 @@ export const TableRender = {
               // borderTop: "1px dashed #333",
               // borderBottom: "1px dashed #333"
               border: "1px solid gray",
-              borderLeft: "4px solid #0099ff",
-            },
+              borderLeft: "4px solid #0099ff"
+            }
             // class:"borderImage"
           },
           element.label
-        ),
+        )
       ];
       const ths = headerFields.map((_header) => {
         return h(
           "th",
           {
             style: {
-              borderTop: "1px dashed #333",
-            },
+              borderTop: "1px dashed #333"
+            }
           },
           _header.label
         );
@@ -57,8 +57,8 @@ export const TableRender = {
           "th",
           {
             style: {
-              borderBottom: "1px dashed #333",
-            },
+              borderBottom: "1px dashed #333"
+            }
           },
           _header.unit
         );
@@ -71,31 +71,31 @@ export const TableRender = {
               {
                 style: {
                   // padding: "0 10px"
-                },
+                }
               },
               _data[_key]
             );
-          }),
+          })
         ]);
       });
       const tableContent = h(
         "table",
         {
           style: {
-            borderCollapse: "collapse",
+            borderCollapse: "collapse"
             // marginBottom: "20px"
           },
           attrs: {
             // border: 1
           },
-          class: "table-content",
+          class: "table-content"
         },
         [h("tr", [...ths]), h("tr", [...units]), h("tbody", [...tds])]
       );
       return h(
         "div",
         {
-          class: "table-container",
+          class: "table-container"
         },
         [tName, tableContent]
       );
@@ -104,10 +104,10 @@ export const TableRender = {
       "div",
       {
         style: {
-          padding: "10px",
-        },
+          padding: "10px"
+        }
       },
       [...tables]
     );
-  },
+  }
 };

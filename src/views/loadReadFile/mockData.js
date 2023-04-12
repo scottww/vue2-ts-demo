@@ -6,35 +6,35 @@ export const mockData = [
       {
         key: "name",
         label: "姓名",
-        unit: "--",
+        unit: "--"
       },
       {
         key: "sex",
         label: "性别",
-        unit: "--",
+        unit: "--"
       },
       {
         key: "age",
         label: "年龄",
-        unit: "岁",
+        unit: "岁"
       },
       {
         key: "height",
         label: "身高",
-        unit: "cm",
+        unit: "cm"
       },
       {
         key: "weight",
         label: "体重",
-        unit: "kg",
-      },
+        unit: "kg"
+      }
     ],
     tableData: [
       { name: "张三", sex: "男", age: "17", height: "173", weight: "66" },
       { name: "李四", sex: "男", age: "17", height: "175", weight: "77" },
       { name: "王二", sex: "男", age: "17", height: "180", weight: "80" },
-      { name: "七七", sex: "女", age: "17", height: "170", weight: "55" },
-    ],
+      { name: "七七", sex: "女", age: "17", height: "170", weight: "55" }
+    ]
   },
   {
     key: "class",
@@ -43,34 +43,34 @@ export const mockData = [
       {
         key: "name",
         label: "姓名",
-        unit: "--",
+        unit: "--"
       },
       {
         key: "sex",
         label: "性别",
-        unit: "--",
+        unit: "--"
       },
       {
         key: "age",
         label: "年龄",
-        unit: "岁",
+        unit: "岁"
       },
       {
         key: "height",
         label: "身高",
-        unit: "cm",
+        unit: "cm"
       },
       {
         key: "weight",
         label: "体重",
-        unit: "kg",
-      },
+        unit: "kg"
+      }
     ],
     tableData: [
       { name: "张三", sex: "男", age: "17", height: "173", weight: "66" },
       { name: "李四", sex: "男", age: "17", height: "175", weight: "77" },
       { name: "王二", sex: "男", age: "17", height: "180", weight: "80" },
-      { name: "七七", sex: "女", age: "17", height: "170", weight: "55" },
-    ],
-  },
+      { name: "七七", sex: "女", age: "17", height: "170", weight: "55" }
+    ]
+  }
 ];

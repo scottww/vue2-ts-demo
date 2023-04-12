@@ -24,14 +24,14 @@ export default {
         { id: 1, text: "虚拟列表", path: "/virtualList" },
         { id: 2, text: "读取文件", path: "/loadReadFile" },
         { id: 3, text: "表格", path: "/table" },
-        { id: 4, text: "函数式组件", path: "/functional" },
-      ],
+        { id: 4, text: "函数式组件", path: "/functional" }
+      ]
     };
   },
   computed: {
     toggleText({ isOpen2 }) {
       return isOpen2 ? "<" : ">";
-    },
+    }
   },
   methods: {
     toggleSidebar() {
@@ -41,8 +41,8 @@ export default {
     toPath(path) {
       console.log("togo", path);
       this.$router.push(path);
-    },
-  },
+    }
+  }
 };
 </script>
 

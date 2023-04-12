@@ -15,18 +15,18 @@
 import SideBar from "@/components/SideBar2.vue";
 export default {
   components: {
-    SideBar,
+    SideBar
   },
   data() {
     return {
-      isOpen: true,
+      isOpen: true
     };
   },
   methods: {
     onChange(v) {
       this.isOpen = v;
-    },
-  },
+    }
+  }
 };
 </script>
 

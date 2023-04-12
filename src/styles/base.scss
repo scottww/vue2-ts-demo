@@ -1,0 +1,21 @@
+:root {
+  --theme-color: #198cff;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+
+html,
+body {
+  height: 100%;
+  // font-size: var(--small-font-size);
+  overflow: hidden;
+  color: var(--main-text-color);
+}
+
+li {
+  list-style: none;
+}
