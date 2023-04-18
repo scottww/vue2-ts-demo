@@ -21,10 +21,11 @@ export default {
     return {
       isOpen2: true,
       items: [
+        { id: 0, text: "快速向导", path: "/guide" },
         { id: 1, text: "虚拟列表", path: "/virtualList" },
         { id: 2, text: "读取文件", path: "/loadReadFile" },
         { id: 3, text: "表格", path: "/table" },
-        { id: 4, text: "函数式组件", path: "/functional" }
+        { id: 4, text: "组件", path: "/components" }
       ]
     };
   },
