@@ -15,10 +15,11 @@ export default {
     return {
       items: [
         // { id: 0, text: "快速向导", path: "/guide" },
-        { id: 1, text: "虚拟列表", path: "/virtualList" },
-        { id: 2, text: "读取文件", path: "/loadReadFile" },
-        { id: 3, text: "表格", path: "/table" },
-        { id: 4, text: "组件", path: "/components" }
+        { id: 1, text: "骨架屏", path: "/skeleton" },
+        { id: 2, text: "虚拟列表", path: "/virtualList" },
+        { id: 3, text: "读取文件", path: "/loadReadFile" },
+        { id: 4, text: "表格", path: "/table" },
+        { id: 5, text: "组件", path: "/components" }
       ]
     };
   },

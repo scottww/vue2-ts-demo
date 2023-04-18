@@ -25,6 +25,14 @@ const routes: Array<RouteConfig> = [
           )
       },
       {
+        path: "/skeleton",
+        name: "Skeleton",
+        component: () =>
+          import(
+            /* webpackChunkName: "Skeleton" */ "../views/skeleton/index.vue"
+          )
+      },
+      {
         path: "/virtualList",
         name: "VirtualList",
         // route level code-splitting
