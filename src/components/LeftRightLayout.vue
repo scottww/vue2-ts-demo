@@ -59,6 +59,9 @@ export default {
 }
 
 .main-container {
+  /* BFC */
+  overflow: hidden;
+  padding: 20px;
   height: 100%;
   margin: 20px;
   background-color: #f8f8f8;

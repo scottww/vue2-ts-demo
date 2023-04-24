@@ -20,9 +20,7 @@ const routes: Array<RouteConfig> = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(
-            /* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue"
-          )
+          import(/* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue")
       },
       {
         path: "/skeleton",
@@ -51,6 +49,12 @@ const routes: Array<RouteConfig> = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue")
+      },
+      {
+        path: "/chart",
+        name: "Chart",
+        component: () =>
+          import(/* webpackChunkName: "Table" */ "../views/chart/index.vue")
       },
       {
         path: "/loadReadFile",
