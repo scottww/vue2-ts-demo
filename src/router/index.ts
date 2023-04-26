@@ -51,18 +51,18 @@ const routes: Array<RouteConfig> = [
           import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue")
       },
       {
+        path: "/classComponents",
+        name: "ClassComponents",
+        component: () =>
+          import(
+            /* webpackChunkName: "ClassComponents" */ "../views/classComponents/index.vue"
+          )
+      },
+      {
         path: "/chart",
         name: "Chart",
         component: () =>
           import(/* webpackChunkName: "Table" */ "../views/chart/index.vue")
-      },
-      {
-        path: "/loadReadFile",
-        name: "LoadReadFile",
-        component: () =>
-          import(
-            /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
-          )
       },
       {
         path: "/table",
@@ -70,6 +70,22 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "Table" */ "../views/tableRender/index.vue"
+          )
+      },
+      {
+        path: "/decorator",
+        name: "Decorator",
+        component: () =>
+          import(
+            /* webpackChunkName: "Decorator" */ "../views/decorator/index.vue"
+          )
+      },
+      {
+        path: "/loadReadFile",
+        name: "LoadReadFile",
+        component: () =>
+          import(
+            /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
           )
       }
     ]

@@ -24,9 +24,11 @@ export default {
         { id: 0, text: "快速向导", path: "/guide" },
         { id: 1, text: "图表", path: "/chart" },
         { id: 2, text: "组件", path: "/components" },
-        { id: 3, text: "虚拟列表", path: "/virtualList" },
-        { id: 4, text: "表格", path: "/table" },
-        { id: 5, text: "读取文件", path: "/loadReadFile" },
+        { id: 3, text: "类组件", path: "/classComponents" },
+        { id: 4, text: "虚拟列表", path: "/virtualList" },
+        { id: 5, text: "装饰器", path: "/decorator" },
+        { id: 6, text: "表格", path: "/table" },
+        { id: 7, text: "读取文件", path: "/loadReadFile" }
       ]
     };
   },

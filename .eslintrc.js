@@ -11,7 +11,10 @@ module.exports = {
     "@vue/prettier/@typescript-eslint"
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: 2020,
+    ecmaFeatures: {
+      legacyDecorators: true
+    }
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
@@ -21,6 +24,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "off",
     // "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-unused-vars": "off"
   }
 };

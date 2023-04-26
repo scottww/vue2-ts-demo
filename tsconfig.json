@@ -12,6 +12,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "allowJs": true,
+    "experimentalDecorators": true,
     "types": [
       "webpack-env"
     ],
@@ -33,7 +34,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/utils/docorator/index.js"  ],
   "exclude": [
     "node_modules"
   ],

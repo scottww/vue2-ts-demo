@@ -134,7 +134,7 @@ export const CHART_LIST = [
             { value: 22, name: "NodeJs" },
             { value: 20, name: "Typescript" },
             { value: 8, name: "React" },
-            { value: 10, name: "AngularJs" },
+            { value: 10, name: "AngularJs" }
           ],
           emphasis: {
             itemStyle: {
@@ -148,17 +148,17 @@ export const CHART_LIST = [
     }
   },
   {
-    name: '面积图',
+    name: "面积图",
     option: {
       title: {
-        text: 'Area Chart'
+        text: "Area Chart"
       },
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
         axisPointer: {
-          type: 'cross',
+          type: "cross",
           label: {
-            backgroundColor: '#6a7985'
+            backgroundColor: "#6a7985"
           }
         },
         textStyle: {
@@ -166,7 +166,7 @@ export const CHART_LIST = [
         }
       },
       legend: {
-        data: ['Email', 'Ads', 'Search Engine']
+        data: ["Email", "Ads", "Search Engine"]
       },
       toolbox: {
         feature: {
@@ -174,31 +174,31 @@ export const CHART_LIST = [
         }
       },
       grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
         containLabel: true
       },
       xAxis: [
         {
-          type: 'category',
+          type: "category",
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         }
       ],
       yAxis: [
         {
-          type: 'value'
+          type: "value"
         }
       ],
       series: [
         {
-          name: 'Email',
-          type: 'line',
-          stack: 'Total',
+          name: "Email",
+          type: "line",
+          stack: "Total",
           areaStyle: {},
           emphasis: {
-            focus: 'series'
+            focus: "series"
           },
           data: [220, 332, 501, 634, 690, 730, 810]
         },
@@ -214,12 +214,12 @@ export const CHART_LIST = [
         // },
         {
           // name: 'Video Ads',
-          name: 'Ads',
-          type: 'line',
-          stack: 'Total',
+          name: "Ads",
+          type: "line",
+          stack: "Total",
           areaStyle: {},
           emphasis: {
-            focus: 'series'
+            focus: "series"
           },
           data: [450, 532, 701, 854, 890, 730, 1010]
         },
@@ -234,16 +234,16 @@ export const CHART_LIST = [
         //   data: [320, 332, 301, 334, 390, 330, 320]
         // },
         {
-          name: 'Search Engine',
-          type: 'line',
-          stack: 'Total',
+          name: "Search Engine",
+          type: "line",
+          stack: "Total",
           label: {
             show: true,
-            position: 'top'
+            position: "top"
           },
           areaStyle: {},
           emphasis: {
-            focus: 'series'
+            focus: "series"
           },
           data: [1120, 932, 901, 934, 1190, 1330, 1220]
         }
