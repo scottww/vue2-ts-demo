@@ -28,7 +28,8 @@ export default {
         { id: 4, text: "虚拟列表", path: "/virtualList" },
         { id: 5, text: "装饰器", path: "/decorator" },
         { id: 6, text: "表格", path: "/table" },
-        { id: 7, text: "读取文件", path: "/loadReadFile" }
+        { id: 7, text: "读取文件", path: "/loadReadFile" },
+        { id: 8, text: "常用网站", path: "/widge" },
       ]
     };
   },
@@ -52,6 +53,7 @@ export default {
 
 <style>
 .sidebar-container {
+  text-align: center;
   position: relative;
   width: 200px;
   /* width: 100%; */

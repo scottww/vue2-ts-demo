@@ -3,7 +3,7 @@
     <div class="sidebar" :class="{ isHide: !isOpen }">
       <SideBar @on-change="onChange" />
     </div>
-    <div class="main">
+    <div class="main" ref="main">
       <div class="main-container">
         <router-view />
       </div>
@@ -25,6 +25,15 @@ export default {
   methods: {
     onChange(v) {
       this.isOpen = v;
+    }
+  },
+  watch: {
+    $route: function (to, from) {
+      this.$refs.main.scrollTo({
+        top: 0,
+        left: 0,
+        // behavior: 'smooth' //平滑过渡
+      });
     }
   }
 };

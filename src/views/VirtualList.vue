@@ -13,5 +13,6 @@ export default {
 </script>
 <style scoped>
 .virtual-list-container {
+  text-align: center;
 }
 </style>

@@ -13,31 +13,21 @@
     "baseUrl": ".",
     "allowJs": true,
     "experimentalDecorators": true,
-    "types": [
-      "webpack-env"
-    ],
+    "types": ["webpack-env"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
-, "src/utils/docorator/index.js"  ],
-  "exclude": [
-    "node_modules"
+    "tests/**/*.tsx",
+    "src/utils/decorator/index.js"
   ],
+  "exclude": ["node_modules"]
   // "rules":{
   //   "@typescript-eslint/explicit-module-boundary-types":"off"
   // }

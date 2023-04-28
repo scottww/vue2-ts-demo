@@ -87,6 +87,12 @@ const routes: Array<RouteConfig> = [
           import(
             /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
           )
+      },
+      {
+        path: "/widge",
+        name: "Widge",
+        component: () =>
+          import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue")
       }
     ]
   },
