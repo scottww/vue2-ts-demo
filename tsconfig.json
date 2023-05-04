@@ -27,7 +27,7 @@
     "tests/**/*.tsx",
     "src/utils/decorator/index.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build", "public"]
   // "rules":{
   //   "@typescript-eslint/explicit-module-boundary-types":"off"
   // }

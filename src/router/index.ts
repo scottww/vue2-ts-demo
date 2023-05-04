@@ -93,6 +93,12 @@ const routes: Array<RouteConfig> = [
         name: "Widge",
         component: () =>
           import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue")
+      },
+      {
+        path: "/input",
+        name: "Input",
+        component: () =>
+          import(/* webpackChunkName: "Input" */ "../views/input/index.vue")
       }
     ]
   },
