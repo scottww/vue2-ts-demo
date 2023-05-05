@@ -4,6 +4,10 @@
       <SideBar @on-change="onChange" />
     </div>
     <div class="main" ref="main">
+      <div class="breadcrumb-container">
+        <h-breadcrumb />
+      </div>
+
       <div class="main-container">
         <router-view />
       </div>
@@ -13,9 +17,11 @@
 
 <script>
 import SideBar from "@/components/SideBar2.vue";
+import HBreadcrumb from "@/components/h-ui/breadcrumb";
 export default {
   components: {
-    SideBar
+    SideBar,
+    HBreadcrumb
   },
   data() {
     return {
@@ -31,7 +37,7 @@ export default {
     $route: function (to, from) {
       this.$refs.main.scrollTo({
         top: 0,
-        left: 0,
+        left: 0
         // behavior: 'smooth' //平滑过渡
       });
     }
@@ -65,6 +71,10 @@ export default {
   background-color: #fff;
   /* border: 1px solid #888; */
   overflow-y: auto;
+}
+
+.main > .breadcrumb-container{
+  margin: 20px;
 }
 
 .main-container {

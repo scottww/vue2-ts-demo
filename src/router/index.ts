@@ -12,6 +12,9 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     component: Dashboard,
     redirect: "/guide",
+    meta: {
+      title: "首页"
+    },
     children: [
       {
         path: "/guide",
@@ -20,7 +23,12 @@ const routes: Array<RouteConfig> = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(/* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue")
+          import(
+            /* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue"
+          ),
+        meta: {
+          title: "快速向导"
+        }
       },
       {
         path: "/skeleton",
@@ -28,7 +36,10 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "Skeleton" */ "../views/skeleton/index.vue"
-          )
+          ),
+        meta: {
+          title: "骨架屏"
+        }
       },
       {
         path: "/virtualList",
@@ -39,7 +50,10 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "VirtualList" */ "../views/VirtualList.vue"
-          )
+          ),
+        meta: {
+          title: "虚拟列表"
+        }
       },
       {
         path: "/components",
@@ -48,7 +62,10 @@ const routes: Array<RouteConfig> = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue")
+          import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue"),
+        meta: {
+          title: "组件"
+        }
       },
       {
         path: "/classComponents",
@@ -56,13 +73,19 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "ClassComponents" */ "../views/classComponents/index.vue"
-          )
+          ),
+        meta: {
+          title: "类组件"
+        }
       },
       {
         path: "/chart",
         name: "Chart",
         component: () =>
-          import(/* webpackChunkName: "Table" */ "../views/chart/index.vue")
+          import(/* webpackChunkName: "Chart" */ "../views/chart/index.vue"),
+        meta: {
+          title: "图表"
+        }
       },
       {
         path: "/table",
@@ -70,7 +93,10 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "Table" */ "../views/tableRender/index.vue"
-          )
+          ),
+        meta: {
+          title: "表格"
+        }
       },
       {
         path: "/decorator",
@@ -78,7 +104,10 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "Decorator" */ "../views/decorator/index.vue"
-          )
+          ),
+        meta: {
+          title: "装饰器"
+        }
       },
       {
         path: "/loadReadFile",
@@ -86,19 +115,28 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(
             /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
-          )
+          ),
+        meta: {
+          title: "读取文件"
+        }
       },
       {
         path: "/widge",
         name: "Widge",
         component: () =>
-          import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue")
+          import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue"),
+        meta: {
+          title: "常用网站"
+        }
       },
       {
         path: "/input",
         name: "Input",
         component: () =>
-          import(/* webpackChunkName: "Input" */ "../views/input/index.vue")
+          import(/* webpackChunkName: "Input" */ "../views/input/index.vue"),
+        meta: {
+          title: "组件input"
+        }
       }
     ]
   },
@@ -109,7 +147,10 @@ const routes: Array<RouteConfig> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    meta: {
+      title: "关于"
+    }
   },
   {
     path: "/404",
