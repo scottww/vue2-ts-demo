@@ -2,8 +2,9 @@ import Vue from "vue";
 
 import HWidge from "./widge";
 import HInput from "./input";
+import HBreadcrumb from "./breadcrumb";
 
-const components = [HWidge, HInput];
+const components = [HWidge, HInput, HBreadcrumb];
 
 const install = function (vue: typeof Vue, opts = {}) {
   components.forEach((component) => {
@@ -15,4 +16,4 @@ const HUI = { install };
 
 export default HUI;
 
-export { HWidge, HInput };
+export { HWidge, HInput, HBreadcrumb };
