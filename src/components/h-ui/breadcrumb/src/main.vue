@@ -58,6 +58,7 @@ $other-color: #000;
     position: relative;
 
     color: $other-color;
+    font-size: 14px;
   }
 
   .h-breadcrumb__item:not(:last-child)::after {

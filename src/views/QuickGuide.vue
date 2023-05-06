@@ -1,7 +1,12 @@
 <template>
   <div class="quick-guide">
     <ul>
-      <li v-for="item in items" :key="item.id" @click="toPath(item.path)">
+      <li
+        v-for="(item, index) in items"
+        :key="item.id"
+        @click="toPath(item.path)"
+        :style="{ '--bgColor': getBgColor(index) }"
+      >
         {{ item.text }}
       </li>
     </ul>
@@ -20,10 +25,58 @@ export default {
         { id: 3, text: "读取文件", path: "/loadReadFile" },
         { id: 4, text: "表格", path: "/table" },
         { id: 5, text: "组件", path: "/components" }
-      ]
+      ],
+      // colors: ["#6bc3e6", "#3399ff", "#ffa500", "#79402d", "#ffd700"],
+      // selectedColor: "",
+      // usedColors: [],
+      randomColors: []
     };
   },
+  mounted() {
+    //生成随机颜色数组
+    this.generatorColors();
+  },
   methods: {
+    generatorColors() {
+      const colors = ["#6bc3e6", "#3399ff", "#ffa500", "#79402d", "#ffd700"];
+      const genColors = [];
+      for (let i = 0; i < this.items.length; i++) {
+        let bgColor = this.getRandomColor(colors);
+        genColors.push(bgColor);
+      }
+      this.randomColors = genColors;
+    },
+    getBgColor(index) {
+      let defaultColor = "#6bc3e6"; //默认色
+      if (index > this.randomColors.length) {
+        console.log("All colors have been used, use default color!");
+        return defaultColor;
+      }
+      return this.randomColors[index];
+    },
+    // infinite loop
+    // getBgColor() {
+    //   const unusedColors = this.colors.filter(
+    //     (color) => !this.usedColors.includes(color)
+    //   );
+    //   if (unusedColors.length === 0) {
+    //     this.usedColors = [];
+    //     this.selectedColor = "";
+    //     console.log("All colors have been used, start over!");
+    //     return "#6bc3e6";
+    //   }
+    //   const randomIndex = Math.floor(Math.random() * unusedColors.length);
+    //   const selectedColor = unusedColors[randomIndex];
+    //   this.usedColors.push(selectedColor);
+
+    //   return selectedColor;
+    // },
+    getRandomColor(colors) {
+      const colorIndex = Math.floor(Math.random() * colors.length);
+      const color = colors[colorIndex];
+      colors.splice(colorIndex, 1);
+      return color;
+    },
     toPath(path) {
       this.$router.push(path);
     }
@@ -48,7 +101,7 @@ export default {
   }
   ul li {
     list-style: none;
-    background: #6bc3e6;
+    background: var(--bgColor); //#6bc3e6;
     border-right: 1px solid #fff;
     color: #fff;
   }
