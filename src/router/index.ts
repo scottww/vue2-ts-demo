@@ -137,6 +137,24 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "组件input"
         }
+      },
+      {
+        path: "/color",
+        name: "Color",
+        component: () =>
+          import(/* webpackChunkName: "Color" */ "../views/color/index.vue"),
+        meta: {
+          title: "颜色卡"
+        }
+      },
+      {
+        path: "/color2",
+        name: "Color",
+        component: () =>
+          import(/* webpackChunkName: "Color" */ "../views/color/index2.vue"),
+        meta: {
+          title: "颜色卡2"
+        }
       }
     ]
   },

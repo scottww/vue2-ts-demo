@@ -70,10 +70,11 @@ export default {
   flex: 1;
   background-color: #fff;
   /* border: 1px solid #888; */
+  height: calc(100% - 20px);
   overflow-y: auto;
 }
 
-.main > .breadcrumb-container{
+.main > .breadcrumb-container {
   margin: 20px;
 }
 
@@ -81,7 +82,7 @@ export default {
   /* BFC */
   overflow: hidden;
   padding: 20px;
-  height: 100%;
+  height: calc(100% - 20px);
   margin: 20px;
   background-color: #f8f8f8;
   border-radius: 4px;
