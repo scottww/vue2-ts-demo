@@ -22,7 +22,7 @@ import Component from "vue-class-component";
   props: {
     data: {
       type: Array,
-      default: []
+      default: () => []
     },
     // 共24格，每行占多少格
     span: {
@@ -42,16 +42,24 @@ export default class HInput extends Vue {
 .h-grid {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
   &__container {
     display: grid;
     grid-template-columns: repeat(var(--span), 1fr); /* 每行四列，宽度平分 */
     grid-gap: 10px; /* 列之间的间距 */
   }
   &__item {
-    border: 1px solid black;
+    height: 60px;
+    line-height: 40px;
     padding: 10px;
+    // border: 1px solid black;
     box-sizing: border-box;
     background-color: var(--bgcolor);
+  }
+  &:after,
+  &:before {
+    content: "";
+    display: table;
   }
 }
 </style>

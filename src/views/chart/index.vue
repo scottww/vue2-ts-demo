@@ -33,22 +33,37 @@ export default {
       dataList: CHART_LIST
     };
   },
-  created() {},
-  computed: {},
   mounted() {
     this.init();
+    window.addEventListener("resize", this.handleResize);
   },
   methods: {
-    async init() {
-      await this.$nextTick();
+    init() {
+      //refactor
+      this.$nextTick(() => {
+        this.dataList.forEach((item, index) => {
+          const current = `chart${index + 1}`;
+          let myChart = echarts.init(this.$refs[current][0]);
+          myChart.setOption(item.option);
+          // myChart.resize();
+        });
+      });
+    },
+    handleResize() {
+      // 调用每个图表的 resize 方法
       this.dataList.forEach((item, index) => {
         const current = `chart${index + 1}`;
-        let myChart = echarts.init(this.$refs[current][0]);
-        myChart.setOption(item.option);
+        let myChart = echarts.getInstanceByDom(this.$refs[current][0]);
+        if (!myChart) {
+          echarts.init(this.$refs.chart);
+        }
+        myChart.resize();
       });
     }
   },
-  watch: {}
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
+  }
 };
 </script>
 <style lang="scss" scoped>

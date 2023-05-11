@@ -26,7 +26,7 @@ export default {
         { id: 4, text: "表格", path: "/table" },
         { id: 5, text: "组件", path: "/components" }
       ],
-      // colors: ["#6bc3e6", "#3399ff", "#ffa500", "#79402d", "#ffd700"],
+      // colors: ["#6bc3e6", "#019fde", "#ff8345", "#ff5675", "#f8bd0b"]
       // selectedColor: "",
       // usedColors: [],
       randomColors: []
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     generatorColors() {
-      const colors = ["#6bc3e6", "#3399ff", "#ffa500", "#79402d", "#ffd700"];
+      const colors = ["#6bc3e6", "#019fde", "#ff8345", "#ff5675", "#f8bd0b"];
       const genColors = [];
       for (let i = 0; i < this.items.length; i++) {
         let bgColor = this.getRandomColor(colors);

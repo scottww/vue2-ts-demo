@@ -85,7 +85,7 @@ export const COLORS = [
     desc: "#f8bd0b"
   },
   {
-    name: "灰色 #d1d2d4",
+    name: "灰色",
     desc: "#d1d2d4"
   }
 ];

@@ -149,7 +149,7 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: "/color2",
-        name: "Color",
+        name: "Color2",
         component: () =>
           import(/* webpackChunkName: "Color" */ "../views/color/index2.vue"),
         meta: {
