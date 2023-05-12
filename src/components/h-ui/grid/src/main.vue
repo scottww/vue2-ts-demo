@@ -6,9 +6,7 @@
         v-for="(item, index) in data"
         :key="`item-${index}`"
         :style="{ '--bgcolor': item.desc }"
-      >
-        {{ item.name }} {{ item.desc }}
-      </div>
+      >{{ item.name }}{{ item.desc }}</div>
     </div>
   </div>
 </template>
@@ -50,8 +48,8 @@ export default class HInput extends Vue {
   }
   &__item {
     height: 60px;
-    line-height: 40px;
-    padding: 10px;
+    line-height: 44px;
+    padding: 8px;
     // border: 1px solid black;
     box-sizing: border-box;
     background-color: var(--bgcolor);

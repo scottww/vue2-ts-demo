@@ -30,6 +30,8 @@ export default {
         { id: 6, text: "表格", path: "/table" },
         { id: 7, text: "读取文件", path: "/loadReadFile" },
         { id: 8, text: "常用网站", path: "/widge" },
+        { id: 9, text: "指示器", path: "/indicators" },
+        { id: 10, text: "走马灯", path: "/carousel" }
       ]
     };
   },

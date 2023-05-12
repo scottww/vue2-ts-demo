@@ -7,7 +7,7 @@
     <div class="color-demo__section">
       <!-- 动态组件写法 -->
       <!-- <component :is="'HGrid'" :data="colors" /> -->
-      <h-grid :data="colors" span="2" />
+      <h-grid :data="colors" span="4" />
     </div>
   </div>
 </template>

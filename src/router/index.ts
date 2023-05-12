@@ -155,6 +155,24 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "颜色卡2"
         }
+      },
+      {
+        path: "/indicators",
+        name: "Indicators",
+        component: () =>
+          import(/* webpackChunkName: "Indicators" */ "../views/indicators/index.vue"),
+        meta: {
+          title: "指示器"
+        }
+      },
+      {
+        path: "/carousel",
+        name: "Carousel",
+        component: () =>
+          import(/* webpackChunkName: "Carousel" */ "../views/carousel/index.vue"),
+        meta: {
+          title: "走马灯"
+        }
       }
     ]
   },
