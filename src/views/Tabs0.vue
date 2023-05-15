@@ -37,7 +37,6 @@ export default {
   computed: {
     tabActive({ tabs, tab }) {
       if (!tabs) return;
-      debugger;
       const item = tabs.find((i) => i.value === tab);
       return item ? item : tabs[0];
     }

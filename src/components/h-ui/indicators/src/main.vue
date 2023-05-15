@@ -1,12 +1,11 @@
 <template>
   <div class="h-indicators">
-    <div class="h-indicators__item">
-      <div class="h-indicators__item-inner"></div>
-    </div>
-    <div class="h-indicators__item">
-      <div class="h-indicators__item-inner"></div>
-    </div>
-    <div class="h-indicators__item">
+    <div
+      class="h-indicators__item"
+      v-for="(item, index) in data"
+      :key="index"
+      :style="{ '--h': height + 'px' }"
+    >
       <div class="h-indicators__item-inner"></div>
     </div>
   </div>
@@ -23,9 +22,14 @@ import Component from "vue-class-component";
       type: Array,
       default: () => []
     },
+    // 每个进度条时间
     delay: {
       type: [String, Number],
-      default: "标题"
+      default: 3000
+    },
+    height: {
+      type: [String, Number],
+      default: 8
     }
   }
 })
@@ -34,7 +38,6 @@ export default class HIndicators extends Vue {
   activeIndex = 0;
 
   mounted() {
-    console.log(111111);
     const indicatorList = document.getElementsByClassName("h-indicators__item");
     this.indicatorList = indicatorList;
     setInterval(() => {
@@ -74,7 +77,7 @@ $main-color: #6bc3e6;
 }
 .h-indicators__item {
   width: 40px;
-  height: 10px;
+  height: var(--h);
   background: #d8d8d8;
   border-radius: 9999px;
   margin-right: 10px;
@@ -86,7 +89,7 @@ $main-color: #6bc3e6;
 .active > .h-indicators__item-inner {
   border-radius: 9999px;
   background-color: $main-color;
-  height: 10px;
+  height: var(--h);
   animation: move 3s ease-out;
   -moz-animation: move 3s ease-out;
   -webkit-animation: move 3s ease-out;

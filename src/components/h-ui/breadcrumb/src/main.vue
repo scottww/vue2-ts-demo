@@ -30,11 +30,9 @@ export default class HBreadcrumb extends Vue {
   }
 
   isHome(route) {
-    debugger;
     return route.name === "Home";
   }
   getBreadcrumb() {
-    debugger;
     let matched = this.$route.matched;
     //如果不是首页
     if (!this.isHome(matched[0])) {

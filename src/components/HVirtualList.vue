@@ -50,7 +50,6 @@ export default {
       return Math.floor(scrollTop / itemHeight);
     },
     end({ start, itemCount }) {
-      debugger;
       return start + itemCount;
     },
     displayData({ dataList, start, end }) {

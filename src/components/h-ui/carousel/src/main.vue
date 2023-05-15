@@ -26,7 +26,7 @@ export default class HCarousel extends Vue {
     type: Array,
     default: []
   })
-  public data!: Array<string>;
+  public data!: Array<number> | Array<string>;
   @Prop({
     type: Boolean,
     default: false
@@ -34,7 +34,7 @@ export default class HCarousel extends Vue {
   readonly autoplay!: string;
   public speed!: string;
   private currentIndex = 0;
-  private images: Array<number> = [1, 2, 3, 4, 5];
+  private images: Array<number> | Array<string> = this.data;
   private timer = 0;
 
   mounted() {
