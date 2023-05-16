@@ -36,11 +36,12 @@ import Component from "vue-class-component";
 export default class HIndicators extends Vue {
   indicatorList = [];
   activeIndex = 0;
+  timer = null; //定时器
 
   mounted() {
     const indicatorList = document.getElementsByClassName("h-indicators__item");
     this.indicatorList = indicatorList;
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.addClass(this.activeIndex);
     }, 3000); //3秒
     this.addClass(0); //首次加载页执行一次
@@ -60,6 +61,10 @@ export default class HIndicators extends Vue {
       }
     }
     activeIndex === len - 1 ? (this.activeIndex = 0) : this.activeIndex++;
+  }
+  beforeDestroy() {
+    //清除定时器
+    if (this.timer) clearInterval(this.timer);
   }
 }
 </script>

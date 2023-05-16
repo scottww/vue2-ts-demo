@@ -1,6 +1,6 @@
 <template>
   <div class="indicators-demo">
-    <h-indicators />
+    <h-indicators :data="[1, 2, 3]" delay="1000" height="3" />
   </div>
 </template>
 
