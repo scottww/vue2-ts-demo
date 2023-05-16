@@ -53,7 +53,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .sidebar-container {
   text-align: center;
   position: relative;

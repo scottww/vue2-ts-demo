@@ -160,7 +160,9 @@ const routes: Array<RouteConfig> = [
         path: "/indicators",
         name: "Indicators",
         component: () =>
-          import(/* webpackChunkName: "Indicators" */ "../views/indicators/index.vue"),
+          import(
+            /* webpackChunkName: "Indicators" */ "../views/indicators/index.vue"
+          ),
         meta: {
           title: "指示器"
         }
@@ -169,9 +171,20 @@ const routes: Array<RouteConfig> = [
         path: "/carousel",
         name: "Carousel",
         component: () =>
-          import(/* webpackChunkName: "Carousel" */ "../views/carousel/index.vue"),
+          import(
+            /* webpackChunkName: "Carousel" */ "../views/carousel/index.vue"
+          ),
         meta: {
           title: "走马灯"
+        }
+      },
+      {
+        path: "/categorys",
+        name: "Categorys",
+        component: () =>
+          import(/* webpackChunkName: "Categorys" */ "../views/categorys/index.vue"),
+        meta: {
+          title: "分类菜单"
         }
       }
     ]
