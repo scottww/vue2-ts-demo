@@ -186,6 +186,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "分类菜单"
         }
+      },
+      {
+        path: "/flexBox",
+        name: "FlexBox",
+        component: () =>
+          import(/* webpackChunkName: "FlexBox" */ "../views/flexBox/index.vue"),
+        meta: {
+          title: "伸缩盒"
+        }
       }
     ]
   },
