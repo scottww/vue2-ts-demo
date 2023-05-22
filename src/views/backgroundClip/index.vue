@@ -18,6 +18,8 @@ export default {
 @font-face {
   font-family: fa-Coustard; //自定义字体名称
   src: url(../../assets/coustard/Coustard-Black.ttf);
+  //IE
+  // src: url(../../assets/coustard/Coustard-Black.otf);
   // src: url(../../assets/coustard/Coustard-Regular.ttf);
 }
 .background-clip {
@@ -27,7 +29,7 @@ export default {
   // justify-content: center;
   font-size: 1.2vmin;
   h1 {
-    font-size: 20em;
+    font-size: 10em;
     // max-width: 19ch; //1ch等于一个0的宽度，与高度无关
     background-image: url("../../assets/eula.png");
     background-size: contain;
