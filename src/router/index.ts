@@ -195,6 +195,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "伸缩盒"
         }
+      },
+      {
+        path: "/backgroundClip",
+        name: "BackgroundClip",
+        component: () =>
+          import(/* webpackChunkName: "BackgroundClip" */ "../views/backgroundClip/index.vue"),
+        meta: {
+          title: "BackgroundClip"
+        }
       }
     ]
   },
