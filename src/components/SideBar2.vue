@@ -33,7 +33,8 @@ export default {
         { id: 9, text: "指示器", path: "/indicators" },
         { id: 10, text: "走马灯", path: "/carousel" },
         { id: 11, text: "分类菜单", path: "/categorys" },
-        { id: 12, text: "BackgroundClip", path: "/backgroundClip" }
+        { id: 12, text: "BackgroundClip", path: "/backgroundClip" },
+        { id: 13, text: "Radio", path: "/radio" }
       ]
     };
   },

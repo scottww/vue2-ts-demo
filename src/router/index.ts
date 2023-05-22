@@ -204,6 +204,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "BackgroundClip"
         }
+      },
+      {
+        path: "/radio",
+        name: "Radio",
+        component: () =>
+          import(/* webpackChunkName: "Radio" */ "../views/radio/index.vue"),
+        meta: {
+          title: "Radio"
+        }
       }
     ]
   },
