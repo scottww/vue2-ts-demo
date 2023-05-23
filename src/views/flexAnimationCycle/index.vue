@@ -22,21 +22,25 @@ export default {
     return {
       aniName: ["", "aniOne", "aniTwo", "aniThree"],
       aniIndex: 0,
+      timer: null
     };
   },
   mounted() {
-    this.aniLeftRun();
+    this.animationStart();
   },
   methods: {
-    aniLeftRun() {
-      const left = this.$refs.left;
-      setInterval(() => {
+    animationStart() {
+      this.timer = setInterval(() => {
         this.aniIndex++;
         if (this.aniIndex === 4) {
           this.aniIndex = 0;
         }
+        console.log('animation run', this.timer);
       }, 3000);
     }
+  },
+  beforeDestroy(){
+    clearInterval(this.timer);
   }
 };
 </script>
