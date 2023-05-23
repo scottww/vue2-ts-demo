@@ -34,7 +34,8 @@ export default {
         { id: 10, text: "走马灯", path: "/carousel" },
         { id: 11, text: "分类菜单", path: "/categorys" },
         { id: 12, text: "BackgroundClip", path: "/backgroundClip" },
-        { id: 13, text: "Radio", path: "/radio" }
+        { id: 13, text: "Radio", path: "/radio" },
+        { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" }
       ]
     };
   },

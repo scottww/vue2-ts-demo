@@ -213,6 +213,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Radio"
         }
+      },
+      {
+        path: "/flexAnimationCycle",
+        name: "FlexAnimationCycle",
+        component: () =>
+          import(/* webpackChunkName: "FlexAnimationCycle" */ "../views/flexAnimationCycle/index.vue"),
+        meta: {
+          title: "FlexAnimationCycle"
+        }
       }
     ]
   },
