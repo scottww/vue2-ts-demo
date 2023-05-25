@@ -222,6 +222,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "FlexAnimationCycle"
         }
+      },
+      {
+        path: "/title",
+        name: "Title",
+        component: () =>
+          import(/* webpackChunkName: "Title" */ "../views/title/index.vue"),
+        meta: {
+          title: "Title"
+        }
       }
     ]
   },

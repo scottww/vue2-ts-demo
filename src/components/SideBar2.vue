@@ -35,7 +35,8 @@ export default {
         { id: 11, text: "分类菜单", path: "/categorys" },
         { id: 12, text: "BackgroundClip", path: "/backgroundClip" },
         { id: 13, text: "Radio", path: "/radio" },
-        { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" }
+        { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" },
+        { id: 15, text: "Title", path: "/title" }
       ]
     };
   },
