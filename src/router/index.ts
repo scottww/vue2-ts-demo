@@ -231,6 +231,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Title"
         }
+      },
+      {
+        path: "/avatar",
+        name: "Avatar",
+        component: () =>
+          import(/* webpackChunkName: "Avatar" */ "../views/avatar/index.vue"),
+        meta: {
+          title: "Avatar"
+        }
       }
     ]
   },

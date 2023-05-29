@@ -9,8 +9,9 @@ import HCardCarousel from "./cardCarousel";
 import HCarousel from './carousel';
 import HCategorys from './categorys';
 import HRadio from './radio';
+import HAvatar from './avatar';
 
-const components = [HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio];
+const components = [HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio, HAvatar];
 
 const install = function (vue: typeof Vue, opts = {}) {
   components.forEach((component) => {
@@ -22,4 +23,4 @@ const HUI = { install };
 
 export default HUI;
 
-export { HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio };
+export { HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio, HAvatar };

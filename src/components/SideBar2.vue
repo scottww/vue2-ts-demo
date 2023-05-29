@@ -36,7 +36,8 @@ export default {
         { id: 12, text: "BackgroundClip", path: "/backgroundClip" },
         { id: 13, text: "Radio", path: "/radio" },
         { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" },
-        { id: 15, text: "Title", path: "/title" }
+        { id: 15, text: "Title", path: "/title" },
+        { id: 16, text: "Avatar", path: "/avatar" }
       ]
     };
   },
