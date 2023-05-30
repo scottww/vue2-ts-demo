@@ -15,7 +15,7 @@ import HInput from "@/components/h-ui/input";
   name: "HInputDemo",
   components: { HInput }
 })
-export default class HWidgeDemo extends Vue {
+export default class HInputDemo extends Vue {
   message = "";
 }
 </script>

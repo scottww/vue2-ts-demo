@@ -29,7 +29,7 @@ import Component from "vue-class-component";
     }
   }
 })
-export default class HInput extends Vue {
+export default class HGrid extends Vue {
   get colNum() {
     return 24 / Number(this.span);
   }

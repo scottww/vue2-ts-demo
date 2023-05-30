@@ -7,10 +7,7 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Component from "vue-class-component";
-
-@Component({
+export default {
   name: "HAvatar",
   props: {
     size: {
@@ -29,36 +26,59 @@ import Component from "vue-class-component";
         return ["circle", "square"].includes(val);
       }
     }
-  }
-})
-export default class HAvatar extends Vue {
-  get avatarClass() {
-    const { size, shape } = this;
-    let classList = ["h-avatar"];
+  },
+  computed: {
+    avatarClass() {
+      const { size, shape } = this;
+      let classList = ["h-avatar"];
 
-    if (size && typeof size === "string") {
-      classList.push(`h-avatar--${size}`);
+      if (size && typeof size === "string") {
+        classList.push(`h-avatar--${size}`);
+      }
+
+      if (shape) {
+        classList.push(`h-avatar--${shape}`);
+      }
+
+      return classList.join(" ");
+    },
+    sizeStyle() {
+      const { size } = this;
+      const sizeStyle1 =
+        typeof size === "number"
+          ? {
+              height: `${size}px`,
+              width: `${size}px`,
+              lineHeight: `${size}px`
+            }
+          : {};
+      return sizeStyle1;
     }
-
-    if (shape) {
-      classList.push(`h-avatar--${shape}`);
-    }
-
-    return classList.join(" ");
   }
-  get sizeStyle() {
-    const { size } = this;
-    const sizeStyle1 =
-      typeof size === "number"
-        ? {
-            height: `${size}px`,
-            width: `${size}px`,
-            lineHeight: `${size}px`
-          }
-        : {};
-    return sizeStyle1;
-  }
-}
+  // methods: {
+  // renderAvatar() {
+  //   return this.$slots.default;
+  // }
+  // }
+  // render() {
+  //   const { avatarClass, size } = this;
+
+  //   const sizeStyle =
+  //     typeof size === "number"
+  //       ? {
+  //           height: `${size}px`,
+  //           width: `${size}px`,
+  //           lineHeight: `${size}px`
+  //         }
+  //       : {};
+
+  //   return (
+  //     <span class={avatarClass} style={sizeStyle}>
+  //       {this.renderAvatar()}
+  //     </span>
+  //   );
+  // }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,10 @@
 <template>
   <div class="avatar-demo">
     <div v-for="(size, index) in sizeList" :key="`c-${index}`">
-      <h-avatar :size="size" :shape="'circle'">{{ index + 1 }}</h-avatar>
+      <h-avatar :size="size" shape="circle">{{ index + 1 }}</h-avatar>
     </div>
     <div v-for="(size, index) in sizeList" :key="`s-${index}`">
-      <h-avatar :size="size" :shape="'square'">{{ index + 1 }}</h-avatar>
+      <h-avatar :size="size" shape="square">{{ index + 1 }}</h-avatar>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   components: { HAvatar },
   data() {
     return {
-      sizeList: [50, "large", "medium", "small"]
+      sizeList: ["large", "medium", "small"]
     };
   }
 };
