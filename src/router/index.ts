@@ -240,6 +240,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Avatar"
         }
+      },
+      {
+        path: "/form",
+        name: "Form",
+        component: () =>
+          import(/* webpackChunkName: "Form" */ "../views/form/index.vue"),
+        meta: {
+          title: "Form"
+        }
       }
     ]
   },

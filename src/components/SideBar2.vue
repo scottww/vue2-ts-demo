@@ -37,7 +37,8 @@ export default {
         { id: 13, text: "Radio", path: "/radio" },
         { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" },
         { id: 15, text: "Title", path: "/title" },
-        { id: 16, text: "Avatar", path: "/avatar" }
+        { id: 16, text: "Avatar", path: "/avatar" },
+        { id: 17, text: "Form", path: "/form" }
       ]
     };
   },
