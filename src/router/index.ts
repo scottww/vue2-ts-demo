@@ -249,6 +249,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Form"
         }
+      },
+      {
+        path: "/aInput",
+        name: "AInput",
+        component: () =>
+          import(/* webpackChunkName: "AInput" */ "../views/aInput/index.vue"),
+        meta: {
+          title: "AInput"
+        }
       }
     ]
   },
