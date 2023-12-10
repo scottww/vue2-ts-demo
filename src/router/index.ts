@@ -182,7 +182,9 @@ const routes: Array<RouteConfig> = [
         path: "/categorys",
         name: "Categorys",
         component: () =>
-          import(/* webpackChunkName: "Categorys" */ "../views/categorys/index.vue"),
+          import(
+            /* webpackChunkName: "Categorys" */ "../views/categorys/index.vue"
+          ),
         meta: {
           title: "分类菜单"
         }
@@ -191,7 +193,9 @@ const routes: Array<RouteConfig> = [
         path: "/flexBox",
         name: "FlexBox",
         component: () =>
-          import(/* webpackChunkName: "FlexBox" */ "../views/flexBox/index.vue"),
+          import(
+            /* webpackChunkName: "FlexBox" */ "../views/flexBox/index.vue"
+          ),
         meta: {
           title: "伸缩盒"
         }
@@ -200,7 +204,9 @@ const routes: Array<RouteConfig> = [
         path: "/backgroundClip",
         name: "BackgroundClip",
         component: () =>
-          import(/* webpackChunkName: "BackgroundClip" */ "../views/backgroundClip/index.vue"),
+          import(
+            /* webpackChunkName: "BackgroundClip" */ "../views/backgroundClip/index.vue"
+          ),
         meta: {
           title: "BackgroundClip"
         }
@@ -218,7 +224,9 @@ const routes: Array<RouteConfig> = [
         path: "/flexAnimationCycle",
         name: "FlexAnimationCycle",
         component: () =>
-          import(/* webpackChunkName: "FlexAnimationCycle" */ "../views/flexAnimationCycle/index.vue"),
+          import(
+            /* webpackChunkName: "FlexAnimationCycle" */ "../views/flexAnimationCycle/index.vue"
+          ),
         meta: {
           title: "FlexAnimationCycle"
         }
@@ -257,6 +265,15 @@ const routes: Array<RouteConfig> = [
           import(/* webpackChunkName: "AInput" */ "../views/aInput/index.vue"),
         meta: {
           title: "AInput"
+        }
+      },
+      {
+        path: "/aButton",
+        name: "AButton",
+        component: () =>
+          import(/* webpackChunkName: "AButton" */ "../views/aButton/index.vue"),
+        meta: {
+          title: "AButton"
         }
       }
     ]

@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <input
-      class="a-input"
-      :class="[
-        inputSize ? 'a-input-' + size : '',
-        {
-          'a-input-disabled': inputDisabled
-        }
-      ]"
-      :value="value"
-      :disabled="inputDisabled"
-      @input="$emit('input', $event.target.value)"
-      @focus="handleFocus"
-      @blur="handleBlur"
-      :placeholder="placeholder"
-    />
-  </div>
+  <!-- <div> -->
+  <input
+    class="a-input"
+    :class="[
+      inputSize ? 'a-input-' + size : '',
+      {
+        'a-input-disabled': inputDisabled
+      }
+    ]"
+    :value="value"
+    :disabled="inputDisabled"
+    @input="$emit('input', $event.target.value)"
+    @focus="handleFocus"
+    @blur="handleBlur"
+    :placeholder="placeholder"
+  />
+  <!-- </div> -->
 </template>
 
 <script>
@@ -28,15 +28,16 @@ export default {
   // },
   props: {
     value: [String, Number],
-    size: {
-      type: String,
-      default: ""
-    },
+    maxLength: Number,
+    // size: {
+    //   type: String,
+    //   default: ""
+    // },
     disabled: {
       type: Boolean,
       default: false
     },
-    placeholder: String
+    placeholder: [String, Number]
   },
   data() {
     return {};
@@ -67,14 +68,22 @@ export default {
 <style scoped>
 .a-input {
   box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: "tnum";
+  position: relative;
+  display: inline-block;
+  width: 100%;
   height: 32px;
   padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
-  line-height: 1.5715;
+  line-height: 1.5;
   background-color: #fff;
   background-image: none;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  border-radius: 4px;
   transition: all 0.3s;
 }
 
