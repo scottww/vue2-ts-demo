@@ -275,6 +275,42 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "AButton"
         }
+      },
+      {
+        path: "/aTabs",
+        name: "ATabs",
+        component: () =>
+          import(/* webpackChunkName: "ATabs" */ "../views/aTabs/index.vue"),
+        meta: {
+          title: "ATabs"
+        }
+      },
+      {
+        path: "/aTextArea",
+        name: "ATextArea",
+        component: () =>
+          import(/* webpackChunkName: "ATextArea" */ "../views/aTextArea/index.vue"),
+        meta: {
+          title: "ATextArea"
+        }
+      },
+      {
+        path: "/aInputNumber",
+        name: "AInputNumber",
+        component: () =>
+          import(/* webpackChunkName: "AInputNumber" */ "../views/aInputNumber/index.vue"),
+        meta: {
+          title: "AInputNumber"
+        }
+      },
+      {
+        path: "/aPagination",
+        name: "APagination",
+        component: () =>
+          import(/* webpackChunkName: "APagination" */ "../views/aPagination/index.vue"),
+        meta: {
+          title: "APagination"
+        }
       }
     ]
   },

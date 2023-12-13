@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$attrs, this.$listeners);
+    console.log(this, this.$attrs, this.$listeners);
   },
   methods: {
     handleFocus() {
