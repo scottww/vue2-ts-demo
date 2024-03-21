@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["ShowMsg"],{"7e2a":function(o,t,e){"use strict";e.r(t);var s=function(){var o=this,t=o._self._c;return t("div",{staticClass:"raw-demo"},[t("button",{on:{click:o.showDlg}},[o._v("Click")])])},n=[],a={name:"RawDemo",data(){return{}},mounted(){this.$loading.show("加载中..."),setTimeout(()=>{this.$loading.hide()},2e3)},methods:{showDlg(){},cb(o){console.log("点击了确定按钮"),o()}}},i=a,l=e("2877"),c=Object(l["a"])(i,s,n,!1,null,"d3df017a",null);t["default"]=c.exports}}]);
+//# sourceMappingURL=ShowMsg.d1ed4a43.js.map
