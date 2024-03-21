@@ -25,6 +25,9 @@ import "./styles";
 import antDesignVue from 'ant-design-vue';
 Vue.use(antDesignVue);
 
+import LoadingPlugin from '@/plugins/loading.js';
+Vue.use(LoadingPlugin);
+
 
 Vue.config.productionTip = false;
 

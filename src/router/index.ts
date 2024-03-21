@@ -311,6 +311,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "APagination"
         }
+      },
+      {
+        path: "/showMsg",
+        name: "ShowMsg",
+        component: () =>
+          import(/* webpackChunkName: "ShowMsg" */ "../views/raw/index.vue"),
+        meta: {
+          title: "ShowMsg"
+        }
       }
     ]
   },
