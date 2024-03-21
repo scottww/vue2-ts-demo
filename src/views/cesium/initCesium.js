@@ -3,6 +3,13 @@ import { TOKEN } from "./define";
 const Cesium = window.Cesium;
 let viewer = null;
 
+function updateResolutionScale(viewer) {
+    //判断是否支持图像渲染像素化处理
+    if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
+      viewer.resolutionScale = window.devicePixelRatio;
+    }
+}
+
 async function initCesium(container) {
   Cesium.Ion.defaultAccessToken = TOKEN;
   try {
@@ -46,12 +53,5 @@ async function initCesium(container) {
   viewer.cesiumWidget.creditContainer.style.display = "none";
   viewer.scene.skyBox.show = false;
 }
-
-export function updateResolutionScale(viewer) {
-    //判断是否支持图像渲染像素化处理
-    if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
-      viewer.resolutionScale = window.devicePixelRatio;
-    }
-  }
 
 export { Cesium, viewer, initCesium };

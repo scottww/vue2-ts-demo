@@ -22,8 +22,8 @@ export default {
         // { id: 0, text: "快速向导", path: "/guide" },
         { id: 1, text: "骨架屏", path: "/skeleton" },
         { id: 2, text: "虚拟列表", path: "/virtualList" },
-        { id: 3, text: "读取文件", path: "/loadReadFile" },
-        { id: 4, text: "表格", path: "/table" },
+        { id: 3, text: "三维可视化", path: "/cesium" },
+        { id: 4, text: "分类菜单", path: "/categorys" },
         { id: 5, text: "组件", path: "/components" }
       ],
       // colors: ["#6bc3e6", "#019fde", "#ff8345", "#ff5675", "#f8bd0b"]
