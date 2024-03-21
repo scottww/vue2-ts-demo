@@ -38,7 +38,8 @@ export default {
         { id: 14, text: "FlexAnimationCycle", path: "/flexAnimationCycle" },
         { id: 15, text: "Title", path: "/title" },
         { id: 16, text: "Avatar", path: "/avatar" },
-        { id: 17, text: "Form", path: "/form" }
+        { id: 17, text: "Form", path: "/form" },
+        { id: 18, text: "三维可视化", path: "/cesium" }
       ]
     };
   },
@@ -69,6 +70,7 @@ export default {
   height: 100%;
   left: 0;
   background-color: #fff;
+  /* background-color: #7ac4e1; */
   transition: left 0.3s ease;
 }
 
@@ -110,11 +112,13 @@ ul {
 
 li {
   padding: 10px;
-  border-bottom: 1px solid #e5e6eb;
+  /* border-bottom: 1px solid #e5e6eb; */
 }
 li:hover {
   cursor: pointer;
-  background-color: #d5d5d5;
+  /* background-color: #d5d5d5; */
+  background-color: #7ac4e1;
+  color: #fff;
 }
 
 li:last-child {

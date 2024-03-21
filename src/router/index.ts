@@ -320,6 +320,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "ShowMsg"
         }
+      },
+      {
+        path: "/cesium",
+        name: "Cesium",
+        component: () =>
+          import(/* webpackChunkName: "ShowMsg" */ "../views/cesium/index.vue"),
+        meta: {
+          title: "Cesium"
+        }
       }
     ]
   },

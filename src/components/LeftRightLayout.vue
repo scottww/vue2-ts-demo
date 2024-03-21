@@ -68,7 +68,7 @@ export default {
 
 .main {
   flex: 1;
-  background-color: #fff;
+  background-color: #f8f8f8;
   /* border: 1px solid #888; */
   height: calc(100% - 20px);
   overflow-y: auto;
@@ -84,7 +84,7 @@ export default {
   padding: 20px;
   height: calc(100% - 20px);
   margin: 20px;
-  background-color: #f8f8f8;
+  background-color: #fff;
   border-radius: 4px;
 }
 </style>
