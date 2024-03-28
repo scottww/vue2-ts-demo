@@ -25,6 +25,7 @@ module.exports = {
     // "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": 0,
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-this-alias": "off" //去掉this在非箭头函数中的报错
   }
 };
