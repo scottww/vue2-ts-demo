@@ -14,34 +14,16 @@ export default {
   },
   mounted() {
     initCesium("cesiumContainer");
-    let zjJSON = Cesium.GeoJsonDataSource.load("/data/zj.json");
-    viewer.dataSources.add(zjJSON);
-
-    var mapOptions = {
-      scene: {
-        center: {
-          lng: 120.2,
-          lat: 24.5,
-          alt: 937783,
-          heading: 355,
-          pitch: -63,
-          roll: 0.0022007032132071057
-        }
-      }
-    };
-    viewer.camera.flyTo({
-      orientation: {
-        // roll: Cesium.Math.toRadians(mapOptions.scene.center.roll),
-        heading: Cesium.Math.toRadians(mapOptions.scene.center.heading),
-        pitch: Cesium.Math.toRadians(mapOptions.scene.center.pitch)
-      },
-      destination: Cesium.Cartesian3.fromDegrees(
-        mapOptions.scene.center.lng,
-        mapOptions.scene.center.lat,
-        mapOptions.scene.center.alt
-      ),
-      duration: 0
+    let promise = Cesium.GeoJsonDataSource.load("/data/zj.json");
+    promise.then((dataSource) => {
+      viewer.dataSources.add(dataSource);
+      console.log("zj ...", dataSource, dataSource.entities.values);
+      viewer.flyTo(dataSource.entities.values);
+      this.addLabel(dataSource, viewer);
+      
     });
+
+    
 
     //获取json名称
     // let selectname = "";
@@ -89,7 +71,31 @@ export default {
       handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   },
-  methods: {}
+  methods: {
+    addLabel(dataSource, viewer){
+      let names = [];
+      dataSource.entities.values.forEach((i) => {
+        const name = i.name;
+        if(names.includes(name)) return;
+        names.push(name);
+        console.log(i.properties.centroid.getValue());
+        const [lng, lat] = i.properties.centroid.getValue();
+        const labelEntity = new Cesium.Entity({
+          position: Cesium.Cartesian3.fromDegrees(lng, lat),
+          name: `label-${name}`,
+          label: {
+            text: name,
+            scale: 0.8, //放大倍数
+            fillColor: Cesium.Color.AQUA, //文字颜色
+            horizontalOrigin: Cesium.HorizontalOrigin.LEFT, //对齐方式
+            verticalOrigin: Cesium.VerticalOrigin.CENTER, //水平位置
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //相对于地形的位置
+          }
+        });
+        viewer.entities.add(labelEntity);
+      });
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
