@@ -54,7 +54,7 @@
         </div>
         <div class="bottom">
           <div class="imageBlock">
-            <img src="@/assets/slider/1.png" alt="png" />
+            <img :src="bgPath" alt="png" />
           </div>
         </div>
       </div>
@@ -76,6 +76,17 @@
 
 <script>
 // import { Slider, Button } from 'element-ui';
+import bg0 from "@/assets/slider/0.png";
+import bg1 from "@/assets/slider/1.png";
+import bg2 from "@/assets/slider/2.png";
+import bg3 from "@/assets/slider/3.png";
+import bg4 from "@/assets/slider/4.png";
+import bg5 from "@/assets/slider/5.png";
+import bg6 from "@/assets/slider/6.png";
+import bg7 from "@/assets/slider/7.png";
+import bg8 from "@/assets/slider/8.png";
+import bg9 from "@/assets/slider/9.png";
+import bg10 from "@/assets/slider/10.png";
 
 export default {
   // components: {
@@ -142,7 +153,19 @@ export default {
         {
           value: "05-21 18:00"
         }
-      ]
+      ],
+      bg0: bg0,
+      bg1: bg1,
+      bg2: bg2,
+      bg3: bg3,
+      bg4: bg4,
+      bg5: bg5,
+      bg6: bg6,
+      bg7: bg7,
+      bg8: bg8,
+      bg9: bg9,
+      bg10: bg10,
+      bgPath: bg0
     };
   },
   computed: {
@@ -166,6 +189,10 @@ export default {
       if (this.playing) {
         this.playSegment(this.currentSegment);
       }
+      console.log(
+        "handleSliderChange ...currentSegment...",
+        this.currentSegment
+      );
     },
     playSegment(segment) {
       // 在每个时间段结束后自动播放下一个时间段
@@ -221,6 +248,25 @@ export default {
     // 初始化时播放第一个时间段
     if (this.playing) {
       this.playSegment(this.currentSegment);
+    }
+  },
+  watch: {
+    currentSegment(newV, oldV) {
+      const bgMap = {
+        0: this.bg0,
+        1: this.bg1,
+        2: this.bg2,
+        3: this.bg3,
+        4: this.bg4,
+        5: this.bg5,
+        6: this.bg6,
+        7: this.bg7,
+        8: this.bg8,
+        9: this.bg9,
+        10: this.bg10,
+      };
+      console.log("watch currentSegment...", newV, oldV);
+      this.bgPath = bgMap[newV] ? bgMap[newV] : this.bg1;
     }
   }
 };
