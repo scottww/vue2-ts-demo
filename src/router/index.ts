@@ -329,6 +329,15 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Cesium"
         }
+      },
+      {
+        path: "/slider",
+        name: "Slider",
+        component: () =>
+          import(/* webpackChunkName: "Slider" */ "../views/slider/index.vue"),
+        meta: {
+          title: "Slider"
+        }
       }
     ]
   },

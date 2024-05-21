@@ -12,6 +12,7 @@
     "ant-design-vue": "^1.7.2",
     "core-js": "^3.6.5",
     "echarts": "^5.4.2",
+    "element-ui": "^2.15.14",
     "fs-extra": "^11.1.1",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
