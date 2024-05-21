@@ -176,6 +176,7 @@ export default {
           if (this.playing) {
             this.playSegment(segment + 1);
           }
+          this.currentSegment = segment + 1;
         }
       }, 500); // (this.totalTime / this.numDivisions) * 1000根据时间段长度计算延迟时间
     },
