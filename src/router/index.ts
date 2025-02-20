@@ -338,7 +338,16 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Slider"
         }
-      }
+      },
+      {
+        path: "/mapToolBar",
+        name: "mapToolBar",
+        component: () =>
+          import(/* webpackChunkName: "MapToolbar" */ "../views/mapToolBar/index.vue"),
+        meta: {
+          title: "mapToolBar"
+        }
+      },
     ]
   },
   {

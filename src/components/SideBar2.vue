@@ -39,7 +39,8 @@ export default {
         { id: 15, text: "Title", path: "/title" },
         { id: 16, text: "Avatar", path: "/avatar" },
         { id: 17, text: "Form", path: "/form" },
-        { id: 18, text: "三维可视化", path: "/cesium" }
+        { id: 18, text: "三维可视化", path: "/cesium" },
+        { id: 19, text: "地图工具栏", path: "/mapToolbar" }
       ]
     };
   },

@@ -10,8 +10,9 @@ import HCarousel from './carousel';
 import HCategorys from './categorys';
 import HRadio from './radio';
 import HAvatar from './avatar';
+import HMapToolbar from './mapToolbar';
 
-const components = [HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio, HAvatar];
+const components = [HWidge, HInput, HBreadcrumb, HGrid, HIndicators, HCardCarousel, HCarousel, HCategorys, HRadio, HAvatar, HMapToolbar];
 
 const install = function (vue: typeof Vue, opts = {}) {
   components.forEach((component) => {
