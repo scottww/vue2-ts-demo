@@ -69,15 +69,25 @@ export default {
 <style lang="scss" scoped>
 .chart-wrapper {
   display: flex;
-  justify-content: space-evenly;
+  // justify-content: space-evenly;
+  // justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  gap: 10px;
+  // .chart {
+  //   margin-bottom: 10px;
+  //   width: calc(50% - 10px);
+  // }
+  // .chart:nth-child(2n + 1) {
+  //   margin-right: 10px;
+  // }
+
+  --chart-per-row: 3; // 默认每行 3 个，可以在 JS 里动态修改这个值
+
   .chart {
-    margin-bottom: 10px;
-    width: calc(50% - 10px);
+    width: calc(100% / var(--chart-per-row) - 10px);
+    max-width: calc(100% / var(--chart-per-row) - 10px); // 计算每个 .chart 的宽度
   }
-  .chart:nth-child(2n + 1) {
-    margin-right: 10px;
-  }
+
 }
 </style>

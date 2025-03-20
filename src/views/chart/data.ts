@@ -119,14 +119,22 @@ export const CHART_LIST = [
       //   trigger: "item"
       // },
       legend: {
-        orient: "vertical",
-        left: "left"
+        // orient: "vertical",
+        // left: "left",
+        type: 'scroll',
+        orient: 'vertical',
+        left: 10,
+        top: 20,
+        bottom: 20,
+      },
+      grid: {
+        left: '20%'
       },
       series: [
         {
           name: "Access From",
           type: "pie",
-          radius: "55%",
+          radius: "50%",
           data: [
             { value: 58, name: "Vue" },
             { value: 35, name: "Css" },
@@ -134,7 +142,14 @@ export const CHART_LIST = [
             { value: 22, name: "NodeJs" },
             { value: 20, name: "Typescript" },
             { value: 8, name: "React" },
-            { value: 10, name: "AngularJs" }
+            { value: 10, name: "AngularJs" },
+            // { value: 58, name: "Vue1" },
+            // { value: 35, name: "Css2" },
+            // { value: 32, name: "Javascript3" },
+            // { value: 22, name: "NodeJs4" },
+            // { value: 20, name: "Typescript5" },
+            // { value: 8, name: "React6" },
+            // { value: 10, name: "AngularJs7" }
           ],
           emphasis: {
             itemStyle: {
@@ -166,7 +181,8 @@ export const CHART_LIST = [
         }
       },
       legend: {
-        data: ["Email", "Ads", "Search Engine"]
+        data: ["Email", "Ads", "Search Engine"],
+        top: '10%'
       },
       toolbox: {
         feature: {
@@ -248,6 +264,144 @@ export const CHART_LIST = [
           data: [1120, 932, 901, 934, 1190, 1330, 1220]
         }
       ]
+    }
+  },
+  {
+    name: '力引导布局',
+    option: {
+      // 提示框的配置
+      tooltip: {
+        // 显示节点的 des 属性值
+        formatter: function (x:any) {
+          return x.data.des;
+        },
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          mark: {
+            show: true,
+          },
+          // 还原，将图表恢复到初始状态
+          restore: {
+            title: "还原",
+            onclick: () => {
+              // ...点击执行相应的代码
+              console.log("还原");
+            },
+            show: true,
+          },
+          saveAsImage: {
+            show: true,
+          },
+        },
+      },
+      series: [
+        {
+          type: "graph", // 关系图
+          layout: "force", // 力引导布局
+          symbolSize: 50, // 节点的大小为 50
+          roam: true, // 是否开启鼠标缩放和平移漫游。设置为 true 表示都开启，'scale' 只开启缩放或 'move' 只开启平移
+          edgeSymbol: ["circle", "arrow"], // 边的两端符号，一个圆圈和一个箭头，用于表示关系的方向
+          edgeSymbolSize: [2, 10], // 边两端符号的大小，第一个值是出发地圆圈的大小，第二个值是箭头的大小
+          edgeLabel: {
+            normal: {
+              textStyle: {
+                fontSize: 15, // 边标签的字体大小为 15
+              },
+              show: true, // 显示边标签
+              formatter: function (x:any) {
+                return x.data.name; // 边标签的内容为边数据中的 name 属性值
+              },
+            },
+          },
+          force: {
+            repulsion: 2000, // 节点之间的斥力系数，值越大节点之间的距离越远
+            edgeLength: [10, 50], // 边的长度范围，可根据需求调整这个范围以改变关系的显示长度
+          },
+          draggable: true, // 节点是否可拖拽，方便用户进行交互调整
+          lineStyle: {
+            normal: {
+              width: 2, // 边的宽度为 2
+              color: "#4b565b", // 边的颜色为深灰色
+            },
+          },
+          label: {
+            normal: {
+              show: true, // 显示节点标签
+              textStyle: {}, // 可以在这里进一步设置节点标签的样式，如字体大小、颜色等
+            },
+          },
+          // 节点部分，包含节点和边的信息
+          data: [
+            {
+              name: "至",
+              des: "",
+              category: 0,
+              symbolSize: 50,
+              itemStyle: {
+                color: "#efc2c8",
+              },
+            },
+            {
+              name: "白",
+              des: "",
+              category: 0,
+              symbolSize: 50,
+              itemStyle: {
+                color: "#efc2c8",
+              },
+            },
+            {
+              name: "孙",
+              des: "",
+              category: 0,
+              symbolSize: 50,
+              itemStyle: {
+                color: "#efc2c8",
+              },
+            },
+            {
+              name: "紫",
+              des: "",
+              category: 0,
+              symbolSize: 50,
+              itemStyle: {
+                color: "#efc2c8",
+              },
+            },
+          ],
+          // 关系部分，source 起始节点，target 目标节点，name 边的名称，des 边的描述信息
+          //这个关系图的数据调整顺序，结果不变
+          links: [
+            {
+              name: "like1",
+              source: "至",
+              des: "",
+              target: "白",
+            },
+            {
+              name: "like3",
+              source: "孙",
+              des: "",
+              target: "紫",
+            },
+            {
+              name: "like2",
+              source: "白",
+              des: "",
+              target: "孙",
+            },
+            {
+              name: "like4",
+              source: "紫",
+              des: "",
+              target: "至",
+            }
+          ],
+          // categories: categories, // 将之前定义的类目数组传递给图表配置
+        },
+      ],
     }
   }
 ];
