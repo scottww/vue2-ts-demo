@@ -348,6 +348,15 @@ const routes: Array<RouteConfig> = [
           title: "mapToolBar"
         }
       },
+      {
+        path: "/headerSection",
+        name: "headerSection",
+        component: () =>
+          import(/* webpackChunkName: "HeaderSection" */ "../views/headerSection/index.vue"),
+        meta: {
+          title: "headerSection"
+        }
+      },
     ]
   },
   {
