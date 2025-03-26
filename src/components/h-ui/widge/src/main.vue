@@ -82,7 +82,8 @@ $main-color: #6bc3e6;
 
   &__tags {
     .tags-item a {
-      text-transform: uppercase;
+      // 字符 大写 显示
+      text-transform: uppercase; 
       transition: all 0.3s ease;
       display: inline-block;
       vertical-align: top;

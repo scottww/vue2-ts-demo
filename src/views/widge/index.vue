@@ -1,6 +1,7 @@
 <template>
   <div class="h-widge-demo">
     <h-widge title="常用网站" :data="dataList"></h-widge>
+    <h-widge title="AI" :data="aiList"></h-widge>
   </div>
 </template>
 
@@ -18,8 +19,8 @@ export default class HWidgeDemo extends Vue {
 
   dataList = [
     {
-      url: "https://kian-404.github.io/vue-class-component-zh/",
-      label: "Vue Class Component"
+      label: "Vue Class Component",
+      url: "https://kian-404.github.io/vue-class-component-zh/"
     },
     {
       label: "在线工具 Fx",
@@ -32,6 +33,29 @@ export default class HWidgeDemo extends Vue {
     {
       url: "https://cssgrid-generator.netlify.app/",
       label: "cssgrid-generator"
+    }
+  ];
+
+  aiList = [
+    {
+      label: "AI 工具集官网",
+      url: "https://ai-bot.cn/"
+    },
+    {
+      label: "豆包",
+      url: "https://www.doubao.com/chat/"
+    },
+    {
+      label: "Kimi",
+      url: "https://kimi.moonshot.cn/"
+    },
+    {
+      label: "DeepSeek",
+      url: "https://www.deepseek.com/"
+    },
+    {
+      label: "纳米",
+      url: "https://bot.n.cn/"
     }
   ];
 
