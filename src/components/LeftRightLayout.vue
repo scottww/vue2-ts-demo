@@ -68,6 +68,7 @@ export default {
 
 .main {
   flex: 1;
+  width: 100%;
   background-color: #f8f8f8;
   /* border: 1px solid #888; */
   height: calc(100% - 20px);

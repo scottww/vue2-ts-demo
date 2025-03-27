@@ -41,7 +41,8 @@ export default {
         { id: 17, text: "Form", path: "/form" },
         { id: 18, text: "三维可视化", path: "/cesium" },
         { id: 19, text: "地图工具栏", path: "/mapToolbar" },
-        { id: 20, text: "HeaderSection", path: "/headerSection" }
+        { id: 20, text: "HeaderSection", path: "/headerSection" },
+        { id: 21, text: "customTabs", path: "/customTabs" }
       ]
     };
   },
@@ -74,6 +75,9 @@ export default {
   background-color: #fff;
   /* background-color: #7ac4e1; */
   transition: left 0.3s ease;
+
+  overflow: auto;
+  padding-bottom: 100px;
 }
 
 .sidebar-toggle {

@@ -357,6 +357,15 @@ const routes: Array<RouteConfig> = [
           title: "headerSection"
         }
       },
+      {
+        path: "/customTabs",
+        name: "customTabs",
+        component: () =>
+          import(/* webpackChunkName: "CustomTabs" */ "../views/customTabs/index.vue"),
+        meta: {
+          title: "customTabs"
+        }
+      },
     ]
   },
   {
