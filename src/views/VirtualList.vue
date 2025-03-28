@@ -2,7 +2,7 @@
   <div class="virtual-list-demo__container">
     <div class="section item2">
       <div class="head-box">
-        <span>事件列表</span>
+        <span>数据列表</span>
       </div>
       <div class="search-box">
         <span class="search__label">关键词：</span>
@@ -32,7 +32,7 @@
 
     <div class="section item2">
       <div class="head-box">
-        <span>事件列表</span>
+        <span>数据列表</span>
       </div>
       <div class="search-box">
         <span class="search__label">关键词：</span>
