@@ -1,5 +1,8 @@
 <template>
-  <div class="custom-tabs" :class="{ 'is-no-border': noBorder }">
+  <div
+    class="custom-tabs"
+    :class="{ 'is-no-border': noBorder, 'show-indicator': showIndicator }"
+  >
     <div class="tabs-header" :class="{ 'is-no-bg-color': noBgColor }">
       <span
         v-for="(tab, index) in tabs"
@@ -39,10 +42,8 @@ export default {
       type: Boolean,
       default: false
     },
-    noContent: {
-      type: Boolean,
-      default: false
-    },
+    noContent: Boolean, //是否显示content
+    showIndicator: Boolean, //是否显示左侧指示条
     noBorder: {
       type: Boolean,
       default: false
@@ -72,6 +73,16 @@ export default {
   border-bottom: 2px solid #ddd;
 }
 
+.custom-tabs.show-indicator::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 24px;
+  bottom: 24px;
+  width: 3px;
+  background-color: #4c84ff;
+}
+
 .tabs-header {
   display: flex;
 }
@@ -98,7 +109,7 @@ export default {
 .is-no-bg-color {
   background-color: transparent !important;
 }
-.is-no-border{
+.is-no-border {
   border-bottom: 2px solid transparent;
 }
 </style>

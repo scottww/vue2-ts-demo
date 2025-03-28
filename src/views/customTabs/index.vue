@@ -1,14 +1,22 @@
 <template>
-  <div>
-    <CustomTabs v-model="activeTab" :tabs="tabList" @tab-click="change">
-      <div v-if="activeTab === 'Tab 1'">Tab 1 Content</div>
-      <div v-if="activeTab === 'Tab 2'">Tab 2 Content</div>
-    </CustomTabs>
-
-    <CustomTabs v-model="activeTab" :tabs="tabList" @tab-click="change" noBorder>
-      <div v-if="activeTab === 'Tab 1'"></div>
-      <div v-if="activeTab === 'Tab 2'"></div>
-    </CustomTabs>
+  <div class="CustomTabs__demo">
+    <div class="item">
+      <CustomTabs v-model="activeTab" :tabs="tabList" @tab-click="change" showIndicator>
+        <div v-if="activeTab === 'Tab 1'">Tab 1 Content</div>
+        <div v-if="activeTab === 'Tab 2'">Tab 2 Content</div>
+      </CustomTabs>
+    </div>
+    <div class="item">
+      <CustomTabs
+        v-model="activeTab"
+        :tabs="tabList"
+        @tab-click="change"
+        noBorder
+      >
+        <div v-if="activeTab === 'Tab 1'"></div>
+        <div v-if="activeTab === 'Tab 2'"></div>
+      </CustomTabs>
+    </div>
   </div>
 </template>
 
@@ -34,3 +42,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+// 组件指示器位置定位参考
+.CustomTabs__demo .item {
+  position: relative; 
+  padding: 0 20px;
+}
+</style>
