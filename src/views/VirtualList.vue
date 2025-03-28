@@ -131,8 +131,8 @@ export default {
     handleChose() {},
     handleDetail() {},
     handleNext() {
-      this.defaultItems = [...this.defaultItems2];
-      this.items = [...this.items2];
+      // this.defaultItems = [...this.defaultItems2];
+      // this.items = [...this.items2];
     }
   }
 };
@@ -144,9 +144,6 @@ export default {
 }
 
 .section {
-}
-.item1 {
-  text-align: center;
 }
 
 .item2 {

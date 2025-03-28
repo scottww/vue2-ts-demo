@@ -1,7 +1,6 @@
 <template>
   <div class="virtual-scroll__container">
     <div
-      v-if="dataList.length"
       class="virtual-scroll-list"
       ref="listRef"
       @scroll="onScroll"
@@ -13,7 +12,7 @@
       >
         <div
           v-for="(item, index) in displayData"
-          :key="index"
+          :key="item.uuid"
           class="item"
           :class="{
             active: item.uuid === selectedId,
@@ -56,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div v-if="dataList.length === 0" class="no-data">暂无数据</div>
+    <div v-if="list.length === 0" class="no-data">暂无数据</div>
   </div>
 </template>
 
@@ -97,7 +96,7 @@ export default {
   },
   computed: {
     listHeight() {
-      return this.dataList.length * this.itemHeight;
+      return this.list.length * this.itemHeight;
     },
     containerH({ containerHeight }) {
       return {
@@ -116,18 +115,18 @@ export default {
       // return Math.min(this.start + this.itemCount, this.dataList.length);
     },
     displayData() {
-      return this.dataList.slice(this.start, this.end);
+      return this.list.slice(this.start, this.end);
     },
     translateY() {
       return this.start * this.itemHeight;
     },
     showNextPage() {
-      return this.hasNextPage && this.dataList.length > 0;
+      return this.hasNextPage && this.list.length > 0;
     }
   },
   mounted() {
     this.selectedId = this.defaultSelectedKey;
-    // this.list = [...this.dataList];
+    this.list = [...this.dataList];
   },
   methods: {
     onScroll() {
@@ -141,8 +140,13 @@ export default {
         // this.$emit("load-more"); // 触发父组件的加载方法
         // this.$forceUpdate(); // 强制更新，确保 Vue 重新渲染
       }
-      
     },
+    // onScroll() {
+    //   if (this.scrollTimeout) cancelAnimationFrame(this.scrollTimeout);
+    //   this.scrollTimeout = requestAnimationFrame(() => {
+    //     this.scrollTop = this.$refs.listRef.scrollTop;
+    //   });
+    // },
     onSelect(item, index) {
       console.log("onSelect ...", item, index);
       this.selectedId = item.uuid;
@@ -173,12 +177,12 @@ export default {
       if (newV === oldV) return;
       this.selectedId = newV;
     },
-    // dataList(newV, oldV) {
-    //   console.log('items watch ...', newV, oldV);
-    //   this.list = [...newV];
-    //   this.scrollTop = 0;
-    //   this.$forceUpdate();
-    // }
+    dataList(newV, oldV) {
+      console.log('items watch ...', newV, oldV);
+      this.list = [...newV];
+      this.scrollTop = 0;
+      this.$forceUpdate();
+    }
   }
 };
 </script>
