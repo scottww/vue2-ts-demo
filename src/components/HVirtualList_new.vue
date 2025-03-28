@@ -1,11 +1,12 @@
 <template>
-  <div
-    class="virtual-scroll-list"
-    ref="listRef"
-    @scroll="onScroll"
-    :style="containerH"
-  >
-    <div v-if="dataList.length" class="list">
+  <div class="virtual-scroll__container">
+    <div
+      v-if="dataList.length"
+      class="virtual-scroll-list"
+      ref="listRef"
+      @scroll="onScroll"
+      :style="containerH"
+    >
       <div
         :style="`transform: translateY(${translateY}px)`"
         class="itemContainer"
@@ -16,7 +17,7 @@
           class="item"
           :class="{
             active: item.uuid === selectedId,
-            'is-click': itemCanClick,
+            'is-click': itemCanClick
           }"
           :style="{ height: `${itemHeight}px` }"
           @click="onItemClick(item, index)"
@@ -46,6 +47,13 @@
             >
           </div>
         </div>
+        <div
+          v-if="showNextPage"
+          class="load-next-page"
+          @click="onNextPageClick"
+        >
+          下一页
+        </div>
       </div>
     </div>
     <div v-if="dataList.length === 0" class="no-data">暂无数据</div>
@@ -58,29 +66,33 @@ export default {
   props: {
     dataList: {
       type: Array,
-      required: true,
+      required: true
     },
     defaultSelectedKey: {
       type: String,
-      required: true,
+      required: true
     }, //默认选中某项，值为item的唯一标识，比如id
     itemHeight: {
       type: Number,
-      default: 60, // 每项高度
+      default: 60 // 每项高度
     },
     containerHeight: {
       type: Number,
-      default: 300, // 容器高度
+      default: 300 // 容器高度
     },
     itemCanClick: {
       type: Boolean,
-      default: false, // 是否启用item点击事件
-    },
+      default: false // 是否启用item点击事件
+    }
   },
   data() {
     return {
       scrollTop: 0,
       selectedId: null,
+      hasPrev: true, // 是否上一页按钮
+      hasNextPage: false, // 是否下一页按钮
+      hasReset: true, // 是否重置按钮
+      list: []
     };
   },
   computed: {
@@ -89,17 +101,19 @@ export default {
     },
     containerH({ containerHeight }) {
       return {
-        "--height": `${containerHeight}px`,
+        "--height": `${containerHeight}px`
       };
     },
     itemCount() {
       return Math.ceil(this.containerHeight / this.itemHeight) + 1;
+      // return Math.ceil(this.containerHeight / this.itemHeight);
     },
     start() {
       return Math.floor(this.scrollTop / this.itemHeight);
     },
     end() {
       return this.start + this.itemCount;
+      // return Math.min(this.start + this.itemCount, this.dataList.length);
     },
     displayData() {
       return this.dataList.slice(this.start, this.end);
@@ -107,13 +121,27 @@ export default {
     translateY() {
       return this.start * this.itemHeight;
     },
+    showNextPage() {
+      return this.hasNextPage && this.dataList.length > 0;
+    }
   },
   mounted() {
     this.selectedId = this.defaultSelectedKey;
+    // this.list = [...this.dataList];
   },
   methods: {
     onScroll() {
       this.scrollTop = this.$refs.listRef.scrollTop;
+
+      // 判断是否滚动到底部（10px 以内误差）
+      const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        // this.hasNextPage = true;
+        console.log("滚到头了 ....");
+        // this.$emit("load-more"); // 触发父组件的加载方法
+        // this.$forceUpdate(); // 强制更新，确保 Vue 重新渲染
+      }
+      
     },
     onSelect(item, index) {
       console.log("onSelect ...", item, index);
@@ -135,6 +163,9 @@ export default {
       // 正则匹配 <span> 标签及其内容
       return inputString.replace(/<span[^>]*>(.*?)<\/span>/g, "$1");
     },
+    onNextPageClick() {
+      this.$emit("to-next");
+    }
   },
   watch: {
     defaultSelectedKey(newV, oldV) {
@@ -142,11 +173,21 @@ export default {
       if (newV === oldV) return;
       this.selectedId = newV;
     },
-  },
+    // dataList(newV, oldV) {
+    //   console.log('items watch ...', newV, oldV);
+    //   this.list = [...newV];
+    //   this.scrollTop = 0;
+    //   this.$forceUpdate();
+    // }
+  }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.virtual-scroll__container {
+  position: relative;
+  overflow: hidden;
+}
 .virtual-scroll-list {
   position: relative;
   overflow-y: auto;
@@ -154,6 +195,10 @@ export default {
   /* border: 1px solid #ddd; */
   max-height: var(--height); /* 确保内容不超过父容器的高度 */
   width: 100%; /* 或者根据需要设置 */
+}
+
+.itemContainer {
+  height: 100%;
 }
 
 /* 列表项样式 */
@@ -270,5 +315,18 @@ export default {
 .is-click > .item__top span,
 .item__down span {
   cursor: pointer;
+}
+
+.load-next-page {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  color: #4c84ff;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+  background: #f7f9ff;
+}
+.load-next-page:hover {
+  opacity: 0.7;
 }
 </style>

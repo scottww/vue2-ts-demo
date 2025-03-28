@@ -21,10 +21,11 @@
         <HVirtualListNew
           :dataList="items"
           :itemHeight="60"
-          :containerHeight="340"
+          :containerHeight="410"
           :defaultSelectedKey="selectedKey"
           @on-select="handleChose"
           @on-detail="handleDetail"
+          @to-next="handleNext"
         />
       </div>
     </div>
@@ -50,7 +51,7 @@
         <HVirtualListNew
           :dataList="items"
           :itemHeight="60"
-          :containerHeight="340"
+          :containerHeight="300"
           :defaultSelectedKey="selectedKey"
           @on-select="handleChose"
           @on-detail="handleDetail"
@@ -76,17 +77,31 @@ export default {
       items: [],
       keyword: "",
       selectedKey: "",
-      defaultItems: Array.from({ length: 100000 }, (_, i) => {
+      defaultItems: Array.from({ length: 20 }, (_, i) => {
         return {
           uuid: `uuid-${i}`,
           name: `数据 ${i}`,
           time: `2024-03-18`
         };
       }),
-      items: Array.from({ length: 100000 }, (_, i) => {
+      items: Array.from({ length: 20 }, (_, i) => {
         return {
           uuid: `uuid-${i}`,
           name: `数据 ${i}`,
+          time: `2024-03-18`
+        };
+      }),
+      defaultItems2: Array.from({ length: 20 }, (_, i) => {
+        return {
+          uuid: `uuid-${i}`,
+          name: `数据2页 ${i}`,
+          time: `2024-03-18`
+        };
+      }),
+      items2: Array.from({ length: 20 }, (_, i) => {
+        return {
+          uuid: `uuid-${i}`,
+          name: `数据2页 ${i}`,
           time: `2024-03-18`
         };
       })
@@ -114,7 +129,11 @@ export default {
       this.items = [...hihtlightItems];
     },
     handleChose() {},
-    handleDetail() {}
+    handleDetail() {},
+    handleNext() {
+      this.defaultItems = [...this.defaultItems2];
+      this.items = [...this.items2];
+    }
   }
 };
 </script>
@@ -173,7 +192,7 @@ export default {
 .list-box {
   margin-top: 20px;
   padding: 0 5px;
-  height: calc(100% - 150px);
+  height: calc(100% - 100px);
   overflow: hidden;
 }
 </style>
