@@ -1,6 +1,8 @@
 <template>
   <div class="load-read-file-container">
+    <!-- <button @click="loadTemplate">加载模版</button> -->
     <button @click="loadFile">加载文件</button>
+    <span class="tips">加载一个txt文本</span>
     <!-- <div>
       {{ fileContent }}
     </div> -->
@@ -21,12 +23,16 @@ export default {
   },
   data() {
     return {
-      fileContent: "",
+      fileContent: "json string ...",
       jsonData: { foo: "bar", baz: [1, 2, 3] }
     };
   },
   mounted() {},
   methods: {
+    loadTemplate(filePath) {
+      console.log("loadTemplate ...");
+      //读取本地json_tpl.txt
+    },
     strToJson(str) {
       const json = eval("(" + str + ")");
       return json;
@@ -39,7 +45,10 @@ export default {
       fileInput.onchange = (event) => {
         const file = event.target.files[0];
 
+        
+
         const reader = new FileReader();
+        console.log('reader', reader);
         reader.onload = () => {
           this.fileContent = { ...this.strToJson(reader.result) };
           console.log(this.fileContent);
@@ -57,5 +66,11 @@ export default {
 <style scoped>
 .load-read-file-container {
   text-align: left;
+}
+
+.tips {
+  display: inline-block;
+  color: #666;
+  margin-left: 10px;
 }
 </style>

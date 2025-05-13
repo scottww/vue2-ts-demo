@@ -366,6 +366,26 @@ const routes: Array<RouteConfig> = [
           title: "customTabs"
         }
       },
+      {
+        path: "/road",
+        name: "road",
+        component: () =>
+          import(/* webpackChunkName: "RoadNetInfoDB" */ "../views/roadNetInfoDB/index.vue"),
+        meta: {
+          title: "road",
+          isFull: true
+        }
+      },
+      {
+        path: "/xz",
+        name: "xz",
+        component: () =>
+          import(/* webpackChunkName: "XZ" */ "../views/xz/index.vue"),
+        meta: {
+          title: "xz",
+          isFull: true
+        }
+      },
     ]
   },
   {

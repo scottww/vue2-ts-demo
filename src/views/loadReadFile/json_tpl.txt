@@ -1,0 +1,44 @@
+{
+  "dataList": [
+    {
+      "id": "1",
+      "name": "zs"
+    },
+    {
+      "id": "2",
+      "name": "ls"
+    }
+  ],
+  "nodes": [
+    {
+      "name": "1",
+      "des": "",
+      "category": 0,
+      "symbolSize": 50
+    },
+    {
+      "name": "2",
+      "des": "",
+      "category": 0,
+      "symbolSize": 50
+    },
+    {
+      "name": "3",
+      "des": "",
+      "category": 0,
+      "symbolSize": 50
+    }
+  ],
+  "links": [
+    {
+      "name": "势如破竹",
+      "source": "1",
+      "target": "2"
+    },
+    {
+      "name": "勇冠三军",
+      "source": "2",
+      "target": "3"
+    }
+  ]
+}

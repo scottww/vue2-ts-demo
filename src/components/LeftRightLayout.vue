@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="sidebar" :class="{ isHide: !isOpen }">
+    <div class="sidebar" :class="{ isFull: isFull, isHide: !isOpen }">
       <SideBar @on-change="onChange" />
     </div>
     <div class="main" ref="main">
@@ -25,7 +25,8 @@ export default {
   },
   data() {
     return {
-      isOpen: true
+      isOpen: true,
+      isFull: false
     };
   },
   methods: {
@@ -35,6 +36,8 @@ export default {
   },
   watch: {
     $route: function (to, from) {
+      console.log("watch $route ...", to, from);
+      this.isFull = to.meta.isFull || false;
       this.$refs.main.scrollTo({
         top: 0,
         left: 0
@@ -66,13 +69,18 @@ export default {
   /* left: -200px; */
 }
 
+.sidebar.isFull {
+  display: none;
+}
+
 .main {
   flex: 1;
   width: 100%;
   background-color: #f8f8f8;
   /* border: 1px solid #888; */
   height: calc(100% - 20px);
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  overflow: hidden;
 }
 
 .main > .breadcrumb-container {
@@ -81,7 +89,8 @@ export default {
 
 .main-container {
   /* BFC */
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-y: auto;
   padding: 20px;
   height: calc(100% - 20px);
   margin: 20px;
