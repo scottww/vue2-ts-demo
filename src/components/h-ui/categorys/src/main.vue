@@ -6,10 +6,11 @@
         <ul>
           <li
             class="list-item"
-            v-for="(item, idx) in category.items"
+            v-for="(item, idx) in category.children"
             :key="idx"
           >
-            <a :href="item.path">{{ item.text }}</a>
+            <!-- <a :href="item.path">{{ item.text }}</a> -->
+            <a @click="$router.push(item.path)">{{ item.text }}</a>
           </li>
         </ul>
       </div>
@@ -29,21 +30,21 @@ export default class HCategorys extends Vue {
     default: () => []
   })
   public data!: any[];
-  private categorys = this.data;
+  public categorys = this.data;
   //计算属性
   // get categorys1() {
   //   return this.data;
   // }
 
-  hasItems(category: { items: [] | any[] }) {
-    return category.items ? (category.items.length ? true : false) : false;
+  hasItems(category: { children: [] | any[] }) {
+    return category.children ? (category.children.length ? true : false) : false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .categorys {
-  width: 240px;
+  // width: 240px;
 }
 .categorys__title {
   font-size: 12px;

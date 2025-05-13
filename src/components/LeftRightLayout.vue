@@ -1,14 +1,14 @@
 <template>
-  <div class="wrapper">
-    <div class="sidebar" :class="{ isFull: isFull, isHide: !isOpen }">
+  <div class="app-wrapper">
+    <div class="app__sidebar" :class="{ isFull: isFull, isHide: !isOpen }">
       <SideBar @on-change="onChange" />
     </div>
-    <div class="main" ref="main">
+    <div class="app__main" ref="main">
       <div class="breadcrumb-container">
         <h-breadcrumb />
       </div>
 
-      <div class="main-container">
+      <div class="container">
         <router-view />
       </div>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SideBar from "@/components/SideBar2.vue";
+import SideBar from "@/components/SideBar3.vue";
 import HBreadcrumb from "@/components/h-ui/breadcrumb";
 export default {
   components: {
@@ -48,15 +48,16 @@ export default {
 };
 </script>
 
-<style scoped>
-.wrapper {
+<style lang="scss" scoped>
+$width: 240px;
+.app-wrapper {
   display: flex;
   flex-direction: row;
   height: 100%;
 }
 
-.sidebar {
-  width: 200px;
+.app__sidebar {
+  width: $width;
   /* left: 0; */
   background-color: #fff;
   /* #e5e6eb */
@@ -64,16 +65,16 @@ export default {
   transition: width 0.3s ease;
 }
 
-.sidebar.isHide {
+.app__sidebar.isHide {
   width: 0;
   /* left: -200px; */
 }
 
-.sidebar.isFull {
+.app__sidebar.isFull {
   display: none;
 }
 
-.main {
+.app__main {
   flex: 1;
   width: 100%;
   background-color: #f8f8f8;
@@ -83,11 +84,11 @@ export default {
   overflow: hidden;
 }
 
-.main > .breadcrumb-container {
+.app__main > .breadcrumb-container {
   margin: 20px;
 }
 
-.main-container {
+.app__main > .container {
   /* BFC */
   /* overflow: hidden; */
   overflow-y: auto;

@@ -1,56 +1,56 @@
 export const SUB_MENU_LIST = [
   {
     name: "组件",
-    items: [
+    children: [
       {
-        text: "Layout布局",
+        text: "Layout 布局",
         path: ""
       },
       {
-        text: "Breadcrumb面包屑",
+        text: "Breadcrumb 面包屑",
         path: ""
       },
       {
-        text: "CardCarousel卡片走马灯",
+        text: "CardCarousel 卡片走马灯",
         path: ""
       },
       {
-        text: "Carousel走马灯",
+        text: "Carousel 走马灯",
         path: ""
       },
 
       {
-        text: "Grid网格布局",
+        text: "Grid 网格布局",
         path: ""
       },
       {
-        text: "Indicators指示器",
+        text: "Indicators 指示器",
         path: ""
       },
       {
-        text: "Input输出框",
+        text: "Input 输出框",
         path: ""
       }
     ]
   },
   {
     name: "优化",
-    items: [
+    children: [
       {
-        text: "虚拟列表",
+        text: "VirtualList 虚拟列表",
         path: ""
       }
     ]
   },
   {
     name: "常用",
-    items: [
+    children: [
       {
-        text: "功能",
+        text: "Functional 功能",
         path: ""
       },
       {
-        text: "网站",
+        text: "Widge 网站",
         path: ""
       }
     ]
