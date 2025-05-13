@@ -27,7 +27,7 @@ export default {
   name: "Skeleton",
   data() {
     return {
-      loadingTime: 5,
+      loadingTime: 3,
       lists: [
         {
           id: 0,

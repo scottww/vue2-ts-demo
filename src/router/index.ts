@@ -27,7 +27,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue"
           ),
         meta: {
-          title: "快速向导"
+          title: "Guide 快速向导"
         }
       },
       {
@@ -38,7 +38,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Skeleton" */ "../views/skeleton/index.vue"
           ),
         meta: {
-          title: "骨架屏"
+          title: "Skeleton 骨架屏"
         }
       },
       {
@@ -52,7 +52,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "VirtualList" */ "../views/VirtualList.vue"
           ),
         meta: {
-          title: "虚拟列表"
+          title: "VirtualList 虚拟列表"
         }
       },
       {
@@ -64,7 +64,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Components" */ "../views/Tabs0.vue"),
         meta: {
-          title: "组件"
+          title: "Tabs 组件"
         }
       },
       {
@@ -75,7 +75,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "ClassComponents" */ "../views/classComponents/index.vue"
           ),
         meta: {
-          title: "类组件"
+          title: "ClassComponents 类组件"
         }
       },
       {
@@ -84,7 +84,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Chart" */ "../views/chart/index.vue"),
         meta: {
-          title: "图表"
+          title: "Chart 图表"
         }
       },
       {
@@ -95,7 +95,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Table" */ "../views/tableRender/index.vue"
           ),
         meta: {
-          title: "表格"
+          title: "Table 表格"
         }
       },
       {
@@ -106,7 +106,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Decorator" */ "../views/decorator/index.vue"
           ),
         meta: {
-          title: "装饰器"
+          title: "Decorator 装饰器"
         }
       },
       {
@@ -117,7 +117,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "LoadReadFile" */ "../views/loadReadFile/index.vue"
           ),
         meta: {
-          title: "读取文件"
+          title: "LoadReadFile 读取文件"
         }
       },
       {
@@ -126,7 +126,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue"),
         meta: {
-          title: "常用网站"
+          title: "Widge 常用网站"
         }
       },
       {
@@ -144,7 +144,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Color" */ "../views/color/index.vue"),
         meta: {
-          title: "颜色卡"
+          title: "Color 颜色卡"
         }
       },
       {
@@ -153,7 +153,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Color" */ "../views/color/index2.vue"),
         meta: {
-          title: "颜色卡2"
+          title: "Color 颜色卡2"
         }
       },
       {
@@ -164,7 +164,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Indicators" */ "../views/indicators/index.vue"
           ),
         meta: {
-          title: "指示器"
+          title: "Indicators 指示器"
         }
       },
       {
@@ -175,7 +175,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Carousel" */ "../views/carousel/index.vue"
           ),
         meta: {
-          title: "走马灯"
+          title: "Carousel 走马灯"
         }
       },
       {
@@ -186,7 +186,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Categorys" */ "../views/categorys/index.vue"
           ),
         meta: {
-          title: "分类菜单"
+          title: "Carousel 分类菜单"
         }
       },
       {
@@ -197,7 +197,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "FlexBox" */ "../views/flexBox/index.vue"
           ),
         meta: {
-          title: "伸缩盒"
+          title: "FlexBox 伸缩盒"
         }
       },
       {
@@ -208,7 +208,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "BackgroundClip" */ "../views/backgroundClip/index.vue"
           ),
         meta: {
-          title: "BackgroundClip"
+          title: "BackgroundClip 裁剪背景"
         }
       },
       {
@@ -217,7 +217,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Radio" */ "../views/radio/index.vue"),
         meta: {
-          title: "Radio"
+          title: "Radio 单选框"
         }
       },
       {
@@ -228,7 +228,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "FlexAnimationCycle" */ "../views/flexAnimationCycle/index.vue"
           ),
         meta: {
-          title: "FlexAnimationCycle"
+          title: "FlexAnimationCycle 动画循环"
         }
       },
       {
@@ -237,7 +237,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Title" */ "../views/title/index.vue"),
         meta: {
-          title: "Title"
+          title: "Title 标题"
         }
       },
       {
@@ -246,7 +246,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Avatar" */ "../views/avatar/index.vue"),
         meta: {
-          title: "Avatar"
+          title: "Avatar 头像"
         }
       },
       {
@@ -255,7 +255,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Form" */ "../views/form/index.vue"),
         meta: {
-          title: "Form"
+          title: "Form 表单"
         }
       },
       {
@@ -354,7 +354,7 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "HeaderSection" */ "../views/headerSection/index.vue"),
         meta: {
-          title: "headerSection"
+          title: "HeaderSection 头部"
         }
       },
       {

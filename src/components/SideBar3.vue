@@ -30,6 +30,7 @@ export default {
           children: [
             { id: 1, text: "Chart 图表", path: "/chart" },
             { id: 6, text: "Table 表格", path: "/table" },
+            { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
             { id: 9, text: "Indicators 指示器", path: "/indicators" },
             { id: 18, text: "3D map 三维可视化", path: "/cesium" }
           ]
@@ -37,9 +38,10 @@ export default {
         {
           name: "组件",
           children: [
-            { id: 2, text: "Components 组件", path: "/components" },
+            { id: 2, text: "Tabs 组件", path: "/components" },
             { id: 11, text: "Categorys 分类菜单", path: "/categorys" },
             { id: 4, text: "VirtualList 虚拟列表", path: "/virtualList" },
+            { id: 5, text: "Decorator 装饰器", path: "/decorator" },
             
             { id: 14, text: "FlexAnimationCycle 动画循环", path: "/flexAnimationCycle" },
             { id: 15, text: "Title 标题", path: "/title" },
@@ -61,7 +63,7 @@ export default {
             { id: 10, text: "Carousel 走马灯", path: "/carousel" },
             {
               id: 12,
-              text: "BackgroundClip 背景切割",
+              text: "BackgroundClip 裁剪背景",
               path: "/backgroundClip"
             },
             { id: 13, text: "Radio 单选框", path: "/radio" }
@@ -93,6 +95,7 @@ export default {
         // { id: 19, text: "地图工具栏", path: "/mapToolbar" },
         // { id: 20, text: "HeaderSection", path: "/headerSection" },
         // { id: 21, text: "customTabs", path: "/customTabs" }
+        // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" }
       ]
     };
   },
