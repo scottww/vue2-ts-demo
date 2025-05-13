@@ -382,7 +382,16 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "XZ" */ "../views/xz/index.vue"),
         meta: {
-          title: "xz",
+          title: "xz"
+        }
+      },
+      {
+        path: "/weekPlan",
+        name: "weekPlan",
+        component: () =>
+          import(/* webpackChunkName: "WeekPlan" */ "../views/xz/weekPlan/index.vue"),
+        meta: {
+          title: "weekPlan",
           isFull: true
         }
       },
