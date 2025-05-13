@@ -10,7 +10,7 @@
             :key="idx"
           >
             <!-- <a :href="item.path">{{ item.text }}</a> -->
-            <a @click="$router.push(item.path)">{{ item.text }}</a>
+            <a class="ellipsis" @click="$router.push(item.path)" :title="item.text">{{ item.text }}</a>
           </li>
         </ul>
       </div>
@@ -54,6 +54,7 @@ export default class HCategorys extends Vue {
 }
 .categorys__list {
   .list-item {
+    // width: 200px;
     a {
       font-size: 14px;
       color: #333;
@@ -74,6 +75,13 @@ export default class HCategorys extends Vue {
     }
   }
 }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // a {
 //   color: var(--theme-color);
 //   text-decoration: none;
