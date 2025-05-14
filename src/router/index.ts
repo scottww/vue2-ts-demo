@@ -322,6 +322,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/map",
+        name: "map",
+        component: () =>
+          import(/* webpackChunkName: "Map2D" */ "../views/map2D/index.vue"),
+        meta: {
+          title: "map"
+        }
+      },
+      {
         path: "/cesium",
         name: "Cesium",
         component: () =>

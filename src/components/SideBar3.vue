@@ -32,6 +32,7 @@ export default {
             { id: 6, text: "Table 表格", path: "/table" },
             { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
             { id: 9, text: "Indicators 指示器", path: "/indicators" },
+            { id: 24, text: "2D map 二维地图", path: "/map" },
             { id: 18, text: "3D map 三维可视化", path: "/cesium" }
           ]
         },
@@ -95,12 +96,13 @@ export default {
         // { id: 15, text: "Title", path: "/title" },
         // { id: 16, text: "Avatar", path: "/avatar" },
         // { id: 17, text: "Form", path: "/form" },
-        // { id: 18, text: "三维可视化", path: "/cesium" },
+        // { id: 18, text: "3D map 三维可视化", path: "/cesium" },
         // { id: 19, text: "地图工具栏", path: "/mapToolbar" },
         // { id: 20, text: "HeaderSection", path: "/headerSection" },
         // { id: 21, text: "customTabs", path: "/customTabs" }
         // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" }
         // { id: 23, text: "URL 编码/解码", path: "/urlTransform" }
+        // { id: 24, text: "2D map 二维地图", path: "/map" }
       ]
     };
   },

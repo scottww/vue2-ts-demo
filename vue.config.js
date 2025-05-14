@@ -39,6 +39,23 @@ module.exports = {
         "@": resolve("src") // 确保 @ 指向 src 目录
       }
     };
+
+    // 添加 Babel loader 处理 ol 特定文件
+    /** 解决报错
+      ./node_modules/ol/renderer/webgl/PointsLayer.js 165:61
+      Module parse failed: Unexpected token (165:61)
+      You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders>
+      this.hitDetectionEnabled_ = options.hitDetectionEnabled ?? true;
+      const customAttributes = options.attributes
+     * */
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
+    config.module.rules.push({
+      test: /PointsLayer\.js$/,
+      // include: path.resolve(__dirname, "node_modules/ol/renderer/webgl"),
+      include: path.resolve(__dirname, "node_modules/ol"), // 修改为 ol 目录
+      use: "babel-loader"
+    });
   },
 
   // 开发服务器配置
@@ -77,4 +94,16 @@ module.exports = {
       })
       .end();
   }
+
+  // configureWebpack: {
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /PointsLayer.js$/,
+  //         include: path.resolve(__dirname, "node_modules/ol/renderer/webgl"),
+  //         use: "babel-loader"
+  //       }
+  //     ]
+  //   }
+  // }
 };
