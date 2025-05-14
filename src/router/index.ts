@@ -395,6 +395,15 @@ const routes: Array<RouteConfig> = [
           isFull: true
         }
       },
+      {
+        path: "/urlTransform",
+        name: "urlTransform",
+        component: () =>
+          import(/* webpackChunkName: "UrlTransform" */ "../views/urlTransform/index.vue"),
+        meta: {
+          title: "URL 编码/解码",
+        }
+      },
     ]
   },
   {

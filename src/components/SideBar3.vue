@@ -70,6 +70,10 @@ export default {
           ]
         },
         {
+          name: "Tool 工具",
+          children: [{ id: 23, text: "URL 编码/解码", path: "/urlTransform" }]
+        },
+        {
           name: "Others",
           children: [{ id: 8, text: "Widge 常用网站", path: "/widge" }]
         }
@@ -96,6 +100,7 @@ export default {
         // { id: 20, text: "HeaderSection", path: "/headerSection" },
         // { id: 21, text: "customTabs", path: "/customTabs" }
         // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" }
+        // { id: 23, text: "URL 编码/解码", path: "/urlTransform" }
       ]
     };
   },
