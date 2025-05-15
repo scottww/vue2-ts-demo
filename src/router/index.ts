@@ -413,6 +413,15 @@ const routes: Array<RouteConfig> = [
           title: "URL 编码/解码",
         }
       },
+      {
+        path: "/carouselCard",
+        name: "carouselCard",
+        component: () =>
+          import(/* webpackChunkName: "CarouselCard" */ "../views/carouselCard/index.vue"),
+        meta: {
+          title: "carouselCard 轮播卡",
+        }
+      },
     ]
   },
   {

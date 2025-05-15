@@ -62,6 +62,7 @@ export default {
           name: "UI",
           children: [
             { id: 10, text: "Carousel 走马灯", path: "/carousel" },
+            { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" },
             {
               id: 12,
               text: "BackgroundClip 裁剪背景",
@@ -103,6 +104,7 @@ export default {
         // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" }
         // { id: 23, text: "URL 编码/解码", path: "/urlTransform" }
         // { id: 24, text: "2D map 二维地图", path: "/map" }
+        // { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" }
       ]
     };
   },
