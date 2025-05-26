@@ -73,6 +73,11 @@ module.exports = {
           "^/api": "" // 重写路径
         }
       }
+    },
+    // 解决某些系统或环境中新建文件不被 webpack-dev-server 热更新的问题
+    watchOptions: {
+      poll: 1000, // 每秒检查一次文件是否有变化
+      ignored: /node_modules/ // 忽略 node_modules，提高性能
     }
   },
 

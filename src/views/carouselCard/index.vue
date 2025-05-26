@@ -33,9 +33,10 @@ export default {};
 }
 
 .track {
+  --animateTime: 10s;
   display: flex;
   width: max-content;
-  animation: scroll 10s linear infinite;
+  animation: scroll var(--animateTime) linear infinite;
 }
 
 .item {

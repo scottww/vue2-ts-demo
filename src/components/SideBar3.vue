@@ -68,7 +68,8 @@ export default {
               text: "BackgroundClip 裁剪背景",
               path: "/backgroundClip"
             },
-            { id: 13, text: "Radio 单选框", path: "/radio" }
+            { id: 13, text: "Radio 单选框", path: "/radio" },
+            { id: 26, text: "table 样式", path: "/tableStyle" }
           ]
         },
         {
@@ -100,11 +101,12 @@ export default {
         // { id: 18, text: "3D map 三维可视化", path: "/cesium" },
         // { id: 19, text: "地图工具栏", path: "/mapToolbar" },
         // { id: 20, text: "HeaderSection", path: "/headerSection" },
-        // { id: 21, text: "customTabs", path: "/customTabs" }
-        // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" }
-        // { id: 23, text: "URL 编码/解码", path: "/urlTransform" }
-        // { id: 24, text: "2D map 二维地图", path: "/map" }
-        // { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" }
+        // { id: 21, text: "customTabs", path: "/customTabs" },
+        // { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
+        // { id: 23, text: "URL 编码/解码", path: "/urlTransform" },
+        // { id: 24, text: "2D map 二维地图", path: "/map" },
+        // { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" },
+        // { id: 26, text: "table 样式", path: "/tableStyle" }
       ]
     };
   },

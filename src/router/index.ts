@@ -422,6 +422,15 @@ const routes: Array<RouteConfig> = [
           title: "carouselCard 轮播卡",
         }
       },
+      {
+        path: "/tableStyle",
+        name: "tableStyle",
+        component: () =>
+          import(/* webpackChunkName: "TableStyle" */ "../views/tableStyle/index.vue"),
+        meta: {
+          title: "table 样式",
+        }
+      },
     ]
   },
   {
