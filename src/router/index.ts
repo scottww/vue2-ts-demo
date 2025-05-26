@@ -431,6 +431,15 @@ const routes: Array<RouteConfig> = [
           title: "table 样式",
         }
       },
+      {
+        path: "/dynamicForm",
+        name: "dynamicForm",
+        component: () =>
+          import(/* webpackChunkName: "DynamicForm" */ "../views/dynamicForm/index.vue"),
+        meta: {
+          title: "dynamicForm 动态表单",
+        }
+      },
     ]
   },
   {

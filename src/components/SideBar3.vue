@@ -48,6 +48,7 @@ export default {
             { id: 15, text: "Title 标题", path: "/title" },
             { id: 16, text: "Avatar 头像", path: "/avatar" },
             { id: 17, text: "Form 表单", path: "/form" },
+            { id: 27, text: "DynamicForm 动态表单", path: "/dynamicForm" },
             { id: 20, text: "HeaderSection 头部", path: "/headerSection" },
             { id: 21, text: "CustomTabs 自定义标签", path: "/customTabs" },
 
