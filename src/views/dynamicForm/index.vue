@@ -59,7 +59,6 @@ export default {
   methods: {
     onSubmit(data) {
       console.log("提交的数据", data);
-      this.submit();
     },
     submit(data) {
       this.$refs.dynamicForm
