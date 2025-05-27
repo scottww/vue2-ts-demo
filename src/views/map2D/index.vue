@@ -9,6 +9,9 @@
       <button @click="startDraw('Polygon')">绘制面</button>
       <button @click="measure('LineString')">测量距离</button>
       <button @click="measure('Polygon')">测量面积</button>
+      <button @click="measure('None')">取消测量</button>
+      <button @click="measure2()">测量2</button>
+      <button @click="measure3()">测量3</button>
     </div>
     <div ref="mapContainer" class="map-container"></div>
     <el-dialog title="保存绘制要素" :visible.sync="dialogVisible">
@@ -41,7 +44,7 @@ import XYZ from "ol/source/XYZ";
 import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
-import { Icon, Style, Stroke, Fill } from "ol/style";
+import { Icon, Style, Stroke, Fill, Text } from "ol/style";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import Draw from "ol/interaction/Draw";
@@ -75,7 +78,11 @@ export default {
       },
       pendingFeature: null,
       nodeOverlays: [], // 存储红色圆圈和 x 按钮
-      distanceOverlay: null // 显示距离的 overlay
+      distanceOverlay: null, // 显示距离的 overlay
+
+      // 新版比那辆
+      overlays: [],
+      totalLength: 0 // 总距离
     };
   },
   mounted() {
@@ -368,6 +375,274 @@ export default {
       this.map.addInteraction(this.draw);
     },
 
+    measure2() {
+      this.map.removeInteraction(this.draw);
+      this.map.removeLayer(this.drawLayer);
+      this.drawLayer = new VectorLayer({
+        source: this.drawSource,
+        style: new Style({
+          stroke: new Stroke({
+            color: "red",
+            width: 3
+          })
+        })
+      });
+
+      const draw = new Draw({
+        source: this.drawSource,
+        type: "LineString",
+        style: new Style({
+          stroke: new Stroke({ color: "red", width: 2 }),
+          image: new CircleStyle({
+            radius: 5,
+            fill: new Fill({ color: "red" })
+          })
+        })
+      });
+
+      this.map.addInteraction(draw);
+      this.map.addLayer(this.drawLayer);
+
+      const that = this;
+      draw.on("drawstart", (e) => {
+        that.overlays.forEach((o) => that.map.removeOverlay(o));
+        that.overlays = [];
+        that.totalLength = 0;
+
+        const sketch = e.feature;
+        const geometry = sketch.getGeometry();
+
+        let tempPoints = []; // 用于记录当前临时拐点的红点 Feature
+
+        // 每次 geometry 改变（用户点击添加新点）
+        geometry.on("change", (evt) => {
+          const geom = evt.target;
+          const coords = geom.getCoordinates();
+
+          // 清空旧的红点
+          tempPoints.forEach((f) => this.drawSource.removeFeature(f));
+          tempPoints = [];
+
+          // 绘制新拐点红点（不含终点文字）
+          coords.forEach((coord, i) => {
+            const pointFeature = new Feature(new Point(coord));
+            pointFeature.setStyle(
+              new Style({
+                image: new CircleStyle({
+                  radius: 6,
+                  fill: new Fill({ color: "red" }),
+                  stroke: new Stroke({ color: "#fff", width: 2 })
+                }),
+                // text:
+                //   i === 0
+                //     ? new Text({
+                //         text: "起点",
+                //         offsetY: -15,
+                //         fill: new Fill({ color: "#000" }),
+                //         stroke: new Stroke({ color: "#fff", width: 2 })
+                //       })
+                //     : undefined
+                text:
+                  i === 0
+                    ? this.addLabel(this.map, coord, "起点", true)
+                    : undefined
+              })
+            );
+            this.drawSource.addFeature(pointFeature);
+            tempPoints.push(pointFeature);
+          });
+        });
+      });
+
+      draw.on("drawend", (e) => {
+        // const geometry = e.feature.getGeometry();
+        // const coords = geometry.getCoordinates();
+
+        // for (let i = 1; i < coords.length; i++) {
+        //   const seg = new LineString([coords[i - 1], coords[i]]);
+        //   const length = getLength(seg, { projection: "EPSG:4326" });
+        //   that.totalLength += length;
+
+        //   const mid = [
+        //     (coords[i - 1][0] + coords[i][0]) / 2,
+        //     (coords[i - 1][1] + coords[i][1]) / 2
+        //   ];
+        //   that.addLabel(that.map, mid, `${(length / 1000).toFixed(2)} 公里`);
+        // }
+
+        // const last = coords[coords.length - 1];
+        // that.addLabel(
+        //   that.map,
+        //   last,
+        //   `共 ${(that.totalLength / 1000).toFixed(2)} 公里`,
+        //   true
+        // );
+        const geometry = e.feature.getGeometry();
+        const coords = geometry.getCoordinates();
+
+        // 添加每个拐点的红点
+        coords.forEach((coord) => {
+          const pointFeature = new Feature({
+            geometry: new Point(coord)
+          });
+          pointFeature.setStyle(
+            new Style({
+              image: new CircleStyle({
+                radius: 5,
+                fill: new Fill({ color: "red" })
+              })
+            })
+          );
+          this.drawSource.addFeature(pointFeature);
+        });
+
+        for (let i = 1; i < coords.length; i++) {
+          const seg = new LineString([coords[i - 1], coords[i]]);
+          const length = getLength(seg, { projection: "EPSG:4326" });
+          this.totalLength += length;
+
+          // 添加起点标注
+          if (false && i === 1) {
+            this.addLabel(this.map, coords[i], "起点", true);
+          } else {
+            //标记在中点
+            // const mid = [
+            //   (coords[i - 1][0] + coords[i][0]) / 2,
+            //   (coords[i - 1][1] + coords[i][1]) / 2
+            // ];
+            // this.addLabel(this.map, mid, `${(length / 1000).toFixed(2)} 公里`);
+
+            // 使用拐点作为标注位置
+            const point = coords[i];
+            //传入this.totalLength 标记总长，传入length 标记每段长
+            this.addLabel(
+              this.map,
+              point,
+              `${(this.totalLength / 1000).toFixed(2)} 公里`
+            );
+          }
+          // 添加终点标注
+          if (i === coords.length - 1) {
+            // this.addLabel(this.map, coords[i], '终点', true)
+          }
+        }
+
+        that.map.render(); // 确保强制刷新地图
+      });
+    },
+    measure3() {
+      // 图层和数据源
+      // const vectorSource = new VectorSource();
+      // const vectorLayer = new VectorLayer({
+      //   source: vectorSource
+      // });
+      this.map.removeInteraction(this.draw);
+      this.map.removeLayer(this.drawLayer);
+      // 绘制交互
+      const draw = new Draw({
+        source: this.drawSource,
+        type: "LineString"
+      });
+      this.map.addInteraction(draw);
+      this.map.addLayer(this.drawLayer);
+
+      // 样式函数
+      const createPointFeature = (coord, label) => {
+        const point = new Feature(new Point(coord));
+        point.setStyle(
+          new Style({
+            image: new CircleStyle({
+              radius: 5,
+              fill: new Fill({ color: "red" })
+            }),
+            text: new Text({
+              text: label,
+              offsetY: -15,
+              font: "12px sans-serif",
+              fill: new Fill({ color: "black" }),
+              stroke: new Stroke({ color: "white", width: 2 })
+            })
+          })
+        );
+        this.drawSource.addFeature(point);
+      };
+
+      // 中间标注
+      const addLabelAt = (coord, label) => {
+        const feature = new Feature(new Point(coord));
+        feature.setStyle(
+          new Style({
+            text: new Text({
+              text: label,
+              offsetY: -15,
+              font: "12px sans-serif",
+              fill: new Fill({ color: "blue" }),
+              stroke: new Stroke({ color: "white", width: 2 })
+            })
+          })
+        );
+        this.drawSource.addFeature(feature);
+      };
+
+      // 绘制完成事件
+      draw.on("drawend", (e) => {
+        const geometry = e.feature.getGeometry();
+        const coords = geometry.getCoordinates();
+
+        let totalLength = 0;
+
+        coords.forEach((coord, i) => {
+          if (i === 0) {
+            createPointFeature(coord, "起点");
+          } else if (i === coords.length - 1) {
+            createPointFeature(
+              coord,
+              `共 ${(totalLength / 1000).toFixed(2)} 公里`
+            );
+          } else {
+            createPointFeature(coord, "");
+          }
+        });
+
+        for (let i = 1; i < coords.length; i++) {
+          const segment = new LineString([coords[i - 1], coords[i]]);
+          const length = getLength(segment, { projection: "EPSG:3857" });
+          totalLength += length;
+
+          const mid = [
+            (coords[i - 1][0] + coords[i][0]) / 2,
+            (coords[i - 1][1] + coords[i][1]) / 2
+          ];
+          addLabelAt(mid, `${(length / 1000).toFixed(2)} 公里`);
+        }
+
+        this.map.render();
+      });
+    },
+    addLabel(map, coord, text, isTotal = false) {
+      const div = document.createElement("div");
+      div.className = "measure-label";
+      div.innerText = text;
+      if (true || isTotal) {
+        div.style.fontWeight = "bold";
+        div.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+      }
+
+      const overlay = new Overlay({
+        element: div,
+        position: coord,
+        positioning: "bottom-center",
+        stopEvent: false
+      });
+      this.overlays.push(overlay);
+      map.addOverlay(overlay);
+    },
+    clearMeasure() {
+      this.drawSource.clear();
+      this.overlays.forEach((o) => this.map.removeOverlay(o));
+      this.overlays = [];
+    },
+
     saveFeature() {
       if (this.formData.name.trim() === "") {
         this.$message.warning("请输入名称");
@@ -493,5 +768,15 @@ export default {
       background-color: #3a8ee6;
     }
   }
+}
+
+//measure2
+.measure-label {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 </style>
