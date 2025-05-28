@@ -440,6 +440,15 @@ const routes: Array<RouteConfig> = [
           title: "dynamicForm 动态表单",
         }
       },
+      {
+        path: "/wx_cloud",
+        name: "wx_cloud",
+        component: () =>
+          import(/* webpackChunkName: "Wx_cloud" */ "../views/wx_cloud/index.vue"),
+        meta: {
+          title: "wx_cloud 卫星云图",
+        }
+      },
     ]
   },
   {

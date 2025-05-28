@@ -12,6 +12,7 @@
       <button @click="measure('None')">取消测量</button>
       <button @click="measure2()">测量2</button>
       <button @click="measure3()">测量3</button>
+      <button @click="clearAll()">全部清除</button>
     </div>
     <div ref="mapContainer" class="map-container"></div>
     <el-dialog title="保存绘制要素" :visible.sync="dialogVisible">
@@ -670,6 +671,11 @@ export default {
         this.pendingFeature = null;
       }
       this.dialogVisible = false;
+    },
+    clearAll() {
+      this.drawSource.clear();
+      this.overlays.forEach((o) => this.map.removeOverlay(o));
+      this.overlays = [];
     }
   }
 };
