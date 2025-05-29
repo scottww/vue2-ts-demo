@@ -1,102 +1,120 @@
 <template>
-  <div class="map-viewer">
-    <div ref="mapContainer" class="map-container"></div>
+  <div class="cloud-player">
+    <div ref="mapContainer" class="map"></div>
+    <div class="controls">
+      <button @click="togglePlay">{{ isPlaying ? '暂停' : '播放' }}</button>
+    </div>
   </div>
 </template>
 
 <script>
-import Map from "ol/Map";
-import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-import TileWMS from "ol/source/TileWMS";
-import { Tile as TileSource } from "ol/source";
-import { fromLonLat } from "ol/proj";
-
-import ImageLayer from "ol/layer/Image";
-import ImageStatic from "ol/source/ImageStatic";
-import { Extent } from "ol/extent";
-
-import { createMapService } from "@/utils/map";
+import Map from 'ol/Map';
+import View from 'ol/View';
+import ImageLayer from 'ol/layer/Image';
+import ImageStatic from 'ol/source/ImageStatic';
+import { fromLonLat } from 'ol/proj';
 
 export default {
-  name: "CloudMap",
+  name: 'CloudPlayer',
   data() {
     return {
-      type: "2D",
-      center: [120.153576, 30.287459],
-      zoom: 11,
       map: null,
-      wmsLayer: null,
-      timestamps: [],
+      imageLayer: null,
+      totalFrames: 10, // 假设你有 cloud1.png ~ cloud10.png
+      currentIndex: 1,
       timer: null,
-      currentIndex: 0,
-      vectorSource: null,
-      vectorLayer: null,
-      mapTileLayer: null
+      intervalMs: 1500,
+      isPlaying: true,
     };
   },
   mounted() {
     this.initMap();
-    // this.prepareTimestamps();
+    this.startAnimation();
   },
   beforeDestroy() {
-    if (this.timer) clearInterval(this.timer);
+    this.stopAnimation();
   },
   methods: {
     initMap() {
-      // this.wmsLayer = new TileLayer({
-      //   source: new TileWMS({
-      //     url: "https://www.nsmc.org.cn/NSMC_WMS/WMSServer",
-      //     params: {
-      //       LAYERS: "FY4A_AGRI_DISK_1339E_L1C_ASIA_CHANNEL1", // 可见光通道
-      //       FORMAT: "image/png",
-      //       TRANSPARENT: true
-      //     },
-      //     crossOrigin: "anonymous"
-      //   })
-      // });
-      console.log("initMap");
-      const mapService = createMapService(this.type, this.$refs.mapContainer, {
-        zoom: this.zoom
+      this.map = new Map({
+        target: this.$refs.mapContainer,
+        view: new View({
+          center: fromLonLat([105, 30]),
+          zoom: 4,
+        }),
+        layers: [],
       });
+    },
+    loadCloudFrame(index) {
+      const url = `/satellite/cloud${index}.png`;
+      const imageExtent = [70, 10, 140, 55]; // EPSG:4326
 
-      // 切换中心
-      mapService.setCenter(this.center);
-      // this.vectorSource = new VectorSource();
-      // this.vectorLayer = new VectorLayer({
-      //   source: this.vectorSource,
-      // });
-      this.map = mapService.getMapInsatance();
+      if (this.imageLayer) {
+        this.map.removeLayer(this.imageLayer);
+      }
 
-      // 这张卫星图的地理范围（左下和右上经纬度），如下：
-      const extent = [95, -2, 160, 43];
-      const url = "/satellite/cloud1.png";
-      const satelliteLayer = new ImageLayer({
+      this.imageLayer = new ImageLayer({
         source: new ImageStatic({
-          // url: "https://example.com/satellite-image.png", // 你的云图URL
-          url: url,
-          imageExtent: extent,
-          projection: "EPSG:4326" // 根据地图设置
+          url,
+          imageExtent,
+          projection: 'EPSG:4326',
         }),
         zIndex: 10,
       });
 
-      this.map.addLayer(satelliteLayer);
-    }
-  }
+      this.map.addLayer(this.imageLayer);
+    },
+    startAnimation() {
+      this.stopAnimation(); // 避免重复定时器
+      this.isPlaying = true;
+      this.timer = setInterval(() => {
+        this.loadCloudFrame(this.currentIndex);
+        this.currentIndex++;
+        if (this.currentIndex > this.totalFrames) {
+          this.currentIndex = 1;
+        }
+      }, this.intervalMs);
+    },
+    stopAnimation() {
+      this.isPlaying = false;
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    },
+    togglePlay() {
+      if (this.isPlaying) {
+        this.stopAnimation();
+      } else {
+        this.startAnimation();
+      }
+    },
+  },
 };
 </script>
-<style lang="scss" scoped>
-.map-viewer {
-  width: 100%;
-  height: 600px;
-}
-.controls {
-  margin: 10px;
-}
-.map-container {
+
+<style scoped>
+.cloud-player {
+  position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid #ccc;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+button {
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
 </style>
