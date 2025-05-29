@@ -13,8 +13,24 @@
       <button @click="measure2()">测量2</button>
       <button @click="measure3()">测量3</button>
       <button @click="clearAll()">全部清除</button>
+      <button @click="addPictureToMap()">图片覆盖物</button>
     </div>
-    <div ref="mapContainer" class="map-container"></div>
+    <div ref="mapContainer" class="map-container">
+      <div class="map-change-btns">
+        <el-button-group>
+          <el-button
+            :type="currentMaptype === 'vec' ? 'primary' : ''"
+            @click="mapChage('vec')"
+            >矢量</el-button
+          >
+          <el-button
+            :type="currentMaptype === 'img' ? 'primary' : ''"
+            @click="mapChage('img')"
+            >影像</el-button
+          >
+        </el-button-group>
+      </div>
+    </div>
     <el-dialog title="保存绘制要素" :visible.sync="dialogVisible">
       <el-form :model="formData" label-width="80px">
         <el-form-item label="名称">
@@ -36,6 +52,7 @@
 
 <script>
 import { createMapService } from "@/utils/map";
+import { createTileLayerManager } from "@/utils/map/tileLayerManager";
 const pointMarker = require("@/assets/mapIcon/marker.png");
 
 import Map from "ol/Map";
@@ -59,6 +76,7 @@ export default {
   data() {
     return {
       type: "2D",
+      currentMaptype: "vec",
       center: [120.153576, 30.287459],
       zoom: 11,
       pointMarker,
@@ -83,7 +101,9 @@ export default {
 
       // 新版比那辆
       overlays: [],
-      totalLength: 0 // 总距离
+      totalLength: 0, // 总距离
+      imageLayer: null,
+      tileLayerManager: null //图层管理器
     };
   },
   mounted() {
@@ -95,6 +115,7 @@ export default {
       const mapService = createMapService(this.type, this.$refs.mapContainer, {
         zoom: this.zoom
       });
+      // mapService.addTileLayer("TDT_vec");
 
       // 切换中心
       mapService.setCenter(this.center);
@@ -112,16 +133,22 @@ export default {
       this.mapService = mapService;
       this.map = mapService.getMapInsatance();
 
+      // 只控制底图图层，不影响其他业务图层
+      this.tileLayerManager = createTileLayerManager(this.map);
+      this.tileLayerManager.switchTo("TDT_vec");
+
       // 初始化图层用于显示图标
       this.markerLayer = new VectorLayer({
-        source: new VectorSource()
+        source: new VectorSource(),
+        zIndex: 10
       });
       this.map.addLayer(this.markerLayer);
 
       // 初始化绘图图层
       this.drawSource = new VectorSource();
       this.drawLayer = new VectorLayer({
-        source: this.drawSource
+        source: this.drawSource,
+        zIndex: 20
       });
       this.map.addLayer(this.drawLayer);
     },
@@ -676,6 +703,26 @@ export default {
       this.drawSource.clear();
       this.overlays.forEach((o) => this.map.removeOverlay(o));
       this.overlays = [];
+    },
+    addPictureToMap() {
+      if (this.imageLayer) {
+        this.map.removeLayer(this.imageLayer);
+      }
+      const extent = [116.38536, 39.91138, 116.39594, 39.9214];
+      const imgPath = `/satellite/gugong.jpg`;
+      // const imgPath = `/satellite/cloud1.png`;
+
+      const layer = this.mapService.createSatelliteMap(imgPath, extent);
+      this.map.addLayer(layer);
+      this.map.getView().fit(extent, { size: this.map.getSize() });
+    },
+    mapChage(mapType) {
+      this.currentMaptype = mapType;
+      if (mapType === "vec") {
+        this.tileLayerManager.switchTo("TDT_vec"); // type 为 "TDT_vec" 或 "TDT_img"
+      } else if (mapType === "img") {
+        this.tileLayerManager.switchTo("TDT_img");
+      }
     }
   }
 };
@@ -692,6 +739,7 @@ export default {
   width: 100%;
   height: 100%;
   border: 1px solid #ccc;
+  position: relative;
 }
 
 .input-group {
@@ -784,5 +832,16 @@ export default {
   font-size: 12px;
   border-radius: 4px;
   white-space: nowrap;
+}
+
+.map-change-btns {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.14);
+  z-index: 98;
 }
 </style>

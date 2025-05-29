@@ -27,9 +27,6 @@ export default {
       zoom: 11,
       map: null,
       wmsLayer: null,
-      timestamps: [],
-      timer: null,
-      currentIndex: 0,
       vectorSource: null,
       vectorLayer: null,
       mapTileLayer: null
@@ -37,11 +34,8 @@ export default {
   },
   mounted() {
     this.initMap();
-    // this.prepareTimestamps();
   },
-  beforeDestroy() {
-    if (this.timer) clearInterval(this.timer);
-  },
+  beforeDestroy() {},
   methods: {
     initMap() {
       // this.wmsLayer = new TileLayer({
@@ -78,7 +72,7 @@ export default {
           imageExtent: extent,
           projection: "EPSG:4326" // 根据地图设置
         }),
-        zIndex: 10,
+        zIndex: 10
       });
 
       this.map.addLayer(satelliteLayer);
