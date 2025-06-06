@@ -449,6 +449,15 @@ const routes: Array<RouteConfig> = [
           title: "wx_cloud 卫星云图",
         }
       },
+      {
+        path: "/chatItem",
+        name: "chatItem",
+        component: () =>
+          import(/* webpackChunkName: "ChatItem" */ "../views/chatItem/index.vue"),
+        meta: {
+          title: "chatItem 聊天选项",
+        }
+      },
     ]
   },
   {

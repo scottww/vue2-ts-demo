@@ -57,6 +57,7 @@ export default {
             { id: 19, text: "MapToolbar 地图工具栏", path: "/mapToolbar" },
             { id: 3, text: "ClassComponents 类组件", path: "/classComponents" },
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
+            { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
           ]
         },
         {
@@ -70,7 +71,7 @@ export default {
               path: "/backgroundClip"
             },
             { id: 13, text: "Radio 单选框", path: "/radio" },
-            { id: 26, text: "table 样式", path: "/tableStyle" }
+            { id: 26, text: "Table 样式", path: "/tableStyle" }
           ]
         },
         {
@@ -107,7 +108,8 @@ export default {
         // { id: 23, text: "URL 编码/解码", path: "/urlTransform" },
         // { id: 24, text: "2D map 二维地图", path: "/map" },
         // { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" },
-        // { id: 26, text: "table 样式", path: "/tableStyle" }
+        // { id: 26, text: "Table 样式", path: "/tableStyle" }
+        // { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
       ]
     };
   },
