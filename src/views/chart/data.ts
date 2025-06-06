@@ -1,3 +1,32 @@
+const PIE_LABEL_LINE_SERIES_DATA = [
+  // [
+  //   { name: "圣彼得堡来客", value: 5.6 },
+  //   { name: "陀思妥耶夫斯基全集", value: 1 },
+  //   { name: "史记精注全译（全6册）", value: 0.8 },
+  //   { name: "加德纳艺术通史", value: 0.5 },
+  //   { name: "表象与本质", value: 0.5 },
+  //   { name: "其它", value: 3.8 }
+  // ],
+  // [
+  //   { name: "银河帝国5：迈向基地", value: 3.8 },
+  //   { name: "俞军产品方法论", value: 2.3 },
+  //   { name: "艺术的逃难", value: 2.2 },
+  //   { name: "第一次世界大战回忆录（全五卷）", value: 1.3 },
+  //   { name: "Scrum 精髓", value: 1.2 },
+  //   { name: "其它", value: 5.7 }
+  // ],
+  [
+    { name: "克莱因壶", value: 3.5 },
+    { name: "投资最重要的事", value: 2.8 },
+    { name: "简读中国史", value: 1.7 },
+    { name: "你当像鸟飞往你的山", value: 1.4 },
+    { name: "表象与本质", value: 0.5 },
+    { name: "其它", value: 3.8 },
+    { name: "测试0", value: 0 },
+    { name: "测试1", value: 0 }
+  ]
+];
+
 export const CHART_LIST = [
   {
     name: "柱状图",
@@ -403,6 +432,182 @@ export const CHART_LIST = [
         }
       ]
     }
+  },
+  // {
+  //   name: "饼图引导线1",
+  //   option: {
+  //     title: {
+  //       text: "阅读书籍分布",
+  //       left: "center",
+  //       textStyle: {
+  //         color: "#999",
+  //         fontWeight: "normal",
+  //         fontSize: 14
+  //       }
+  //     },
+  //     series: PIE_LABEL_LINE_SERIES_DATA.map(function (data, idx) {
+  //       var top = idx * 33.3;
+  //       return {
+  //         type: "pie",
+  //         radius: [50, 70],
+  //         top: top + "%",
+  //         // height: "33.33%",
+  //         left: "center",
+  //         width: 400,
+  //         itemStyle: {
+  //           borderColor: "#fff",
+  //           borderWidth: 1
+  //         },
+  //         label: {
+  //           alignTo: "edge",
+  //           formatter: "{name|{b}}\n{time|{c} 小时}",
+  //           minMargin: 5,
+  //           edgeDistance: 10,
+  //           lineHeight: 15,
+  //           rich: {
+  //             time: {
+  //               fontSize: 10,
+  //               color: "#999"
+  //             }
+  //           }
+  //         },
+  //         labelLine: {
+  //           length: 15,
+  //           length2: 0,
+  //           maxSurfaceAngle: 80
+  //         },
+  //         // labelLayout: function (params) {
+  //         //   const isLeft = params.labelRect.x < myChart.getWidth() / 2;
+  //         //   const points = params.labelLinePoints;
+  //         //   // Update the end point.
+  //         //   points[2][0] = isLeft
+  //         //     ? params.labelRect.x
+  //         //     : params.labelRect.x + params.labelRect.width;
+  //         //   return {
+  //         //     labelLinePoints: points
+  //         //   };
+  //         // },
+  //         data: data
+  //       };
+  //     })
+  //   }
+  // }
+  {
+    name: "饼图引导线2",
+    option: {
+      legend: {
+        type: "scroll", // 多项滚动 legend（如果数据很多）
+        orient: "vertical",
+        left: 10,
+        top: 20,
+        bottom: 20,
+        // icon: "circle",
+        icon: 'rect',
+        itemWidth: 10,
+        itemHeight: 10,
+        formatter: (name: any) => {
+          // 自定义 legend 显示文本，比如加单位
+          return name;
+        },
+        textStyle: {
+          color: "#ccc",
+          fontSize: 14
+        }
+      },
+      tooltip: {
+        trigger: "item",
+        borderRadius: 0,
+        borderWidth: 1,
+        borderColor: "rgba(52, 148, 255, 0.89)",
+        backgroundColor: "rgba(10, 24, 45, 0.85)",
+        textStyle: {
+          fontSize: 14,
+          color: "#88AEBD"
+        },
+        confine: true
+      },
+      series: [
+        {
+          type: "pie",
+          center: ["50%", "50%"],
+          radius: ["50%", "70%"],
+          avoidLabelOverlap: false,
+          label: {
+            show: true,
+            position: "outside",
+            formatter: (params: any) => {
+              const { percent, value } = params;
+              return `{percentStyle|${percent.toFixed(
+                2
+              )}%}\n{valueStyle|${value}}`;
+            },
+            rich: {
+              percentStyle: {
+                fontSize: 16,
+                color: "#999", // 百分比颜色
+                fontWeight: "bold"
+              },
+              valueStyle: {
+                fontSize: 14,
+                color: "#19A6DD "
+              }
+            }
+          },
+          labelLayout: {
+            hideOverlap: false
+          },
+
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 16,
+              fontWeight: "bold"
+            }
+          },
+          labelLine: {
+            length: 15,
+            length2: 0,
+            lineStyle: {
+              color: "#aaa"
+            }
+          },
+          data: [
+            // {
+            //   name: "类型 1",
+            //   value: 0,
+            //   percent: 0,
+            //   itemStyle: {
+            //     color: "#FCEB0E"
+            //   }
+            // },
+            // {
+            //   name: "类型 2",
+            //   value: 0,
+            //   percent: 0,
+            //   itemStyle: {
+            //     color: "#127BF4"
+            //   }
+            // },
+            {
+              name: "类型 3",
+              value: 1,
+              percent: 0.5,
+              itemStyle: {
+                color: "#F07B5F"
+              }
+            },
+            {
+              name: "类型 4",
+              value: 1,
+              percent: 0.5,
+              itemStyle: {
+                color: "#FFAE40"
+              }
+            }
+          ]
+        }
+      ]
+    }
   }
 ];
 
@@ -501,3 +706,71 @@ export const SERIES_DATA = [
   ["2025-05-24 00:00:00", 4491],
   ["2025-05-25 00:00:00", 4903]
 ];
+
+const pieChartConfig = (pieData = []) => ({
+  name: "饼图引导线2",
+  options: {
+    tooltip: {
+      trigger: "item",
+      borderRadius: 0,
+      borderWidth: 1,
+      borderColor: "rgba(52, 148, 255, 0.89)",
+      backgroundColor: "rgba(10, 24, 45, 0.85)",
+      textStyle: {
+        fontSize: 14,
+        color: "#88AEBD"
+      },
+      confine: true
+    },
+    series: [
+      {
+        type: "pie",
+        center: ["50%", "50%"],
+        radius: ["55%", "65%"],
+        avoidLabelOverlap: false,
+        label: {
+          show: true,
+          position: "outside",
+          formatter: (params: any) => {
+            const { percent, value } = params;
+            return `{percentStyle|${percent.toFixed(
+              2
+            )}%}\n{valueStyle|${value}}`;
+          },
+          rich: {
+            percentStyle: {
+              fontSize: 11,
+              color: "#ffffff",
+              fontWeight: "bold"
+            },
+            valueStyle: {
+              fontSize: 11,
+              color: "#19A6DD"
+            }
+          }
+        },
+        labelLayout: {
+          hideOverlap: false
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 14,
+            fontWeight: "bold"
+          }
+        },
+        labelLine: {
+          show: true,
+          length: 8,
+          length2: 6,
+          lineStyle: {
+            color: "#aaa"
+          }
+        },
+        data: pieData
+      }
+    ]
+  }
+});
+
+export default pieChartConfig;
