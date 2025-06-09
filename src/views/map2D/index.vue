@@ -30,7 +30,41 @@
           >
         </el-button-group>
       </div>
+
+      <div class="tool-bar">
+        <div
+          class="tool-bar-item-wrapper"
+          @mouseenter="onMouseEnter"
+          @mouseleave="onMouseLeave"
+        >
+          <div class="tool-bar-item">
+            <img :src="showMenu ? hoverIcon : normalIcon" alt="新增" />
+          </div>
+        </div>
+        <div class="tool-bar-divider-line"></div>
+        <div class="tool-bar-item">
+          <img src="../../assets/mapToolBar/delete.png" alt="删除" />
+        </div>
+        <div class="menu" v-if="showMenu">
+          <div
+            class="menu-item"
+            v-for="(item, index) in menuItems"
+            :key="index"
+            @click="handleMenu(item.label)"
+            @mouseenter="hoverIndex = index"
+            @mouseleave="hoverIndex = -1"
+          >
+            <img
+              class="menu-icon"
+              :src="hoverIndex === index ? item.hoverIcon : item.icon"
+              alt="图标"
+            />
+            {{ item.label }}
+          </div>
+        </div>
+      </div>
     </div>
+
     <el-dialog title="保存绘制要素" :visible.sync="dialogVisible">
       <el-form :model="formData" label-width="80px">
         <el-form-item label="名称">
@@ -70,9 +104,10 @@ import CircleStyle from "ol/style/Circle";
 import Overlay from "ol/Overlay";
 import { getLength, getArea } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
+import HoverMenu from "./tool-bar.vue";
 
 export default {
-  components: {},
+  components: { HoverMenu },
   data() {
     return {
       type: "2D",
@@ -103,7 +138,30 @@ export default {
       overlays: [],
       totalLength: 0, // 总距离
       imageLayer: null,
-      tileLayerManager: null //图层管理器
+      tileLayerManager: null, //图层管理器
+      // tool-bar
+      hideTimer: null,
+      showMenu: false,
+      hoverIndex: -1, // 用于追踪当前 hover 的菜单项
+      hoverIcon: require("@/assets/mapToolBar/add3_hover.png"),
+      normalIcon: require("@/assets/mapToolBar/add3.png"),
+      menuItems: [
+        {
+          label: "新增规划",
+          icon: require("../../assets/mapToolBar/type12.png"),
+          hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
+        },
+        {
+          label: "新增占用",
+          icon: require("../../assets/mapToolBar/type12.png"),
+          hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
+        },
+        {
+          label: "新增补偿",
+          icon: require("../../assets/mapToolBar/type3.png"),
+          hoverIcon: require("../../assets/mapToolBar/type3_hover.png")
+        }
+      ]
     };
   },
   mounted() {
@@ -723,6 +781,24 @@ export default {
       } else if (mapType === "img") {
         this.tileLayerManager.switchTo("TDT_img");
       }
+    },
+    onMouseEnter() {
+      clearTimeout(this.hideTimer);
+      this.showMenu = true;
+    },
+    onMouseLeave() {
+      this.hideTimer = setTimeout(() => {
+        this.showMenu = false;
+      }, 200); // 延迟隐藏
+    },
+    //tool-bar
+    handleMenu(option) {
+      this.showMenu = false;
+      console.log("点击了菜单：", option);
+      // 这里可执行实际功能逻辑
+    },
+    onMenuSelect(item) {
+      console.log("点击菜单：", item.label);
     }
   }
 };
@@ -843,5 +919,92 @@ export default {
   overflow: hidden;
   box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.14);
   z-index: 98;
+}
+
+// tool-bar
+.tool-bar {
+  position: absolute;
+  background-color: #fff;
+  // border: 1px solid #ccc;
+  width: 100px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  // border-radius: 4px;
+  width: fit-content;
+  padding: 4px 8px;
+  box-shadow: 2px 0px 8px 0px #000000;
+  border-radius: 2px 2px 2px 2px;
+  top: 10px;
+  left: 160px;
+  z-index: 999;
+}
+
+.tool-bar-item-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.tool-bar-item {
+  position: relative;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.tool-bar-item img {
+  width: 15px;
+  height: 16px;
+  transition: all 0.2s;
+}
+
+.tool-bar-divider {
+  margin: 0 4px;
+  color: #ccc;
+  font-weight: bold;
+  user-select: none;
+}
+
+.tool-bar-divider-line {
+  width: 1px;
+  height: 24px;
+  background-color: #ccc;
+  margin: 0 8px;
+}
+
+/* 弹出菜单 */
+.menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 10;
+  min-width: 80px;
+}
+
+.menu-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+  color: #409eff;
+}
+
+.menu-icon {
+  width: 14px;
+  height: 14px;
+  transition: all 0.2s;
 }
 </style>
