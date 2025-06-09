@@ -271,7 +271,9 @@ const routes: Array<RouteConfig> = [
         path: "/aButton",
         name: "AButton",
         component: () =>
-          import(/* webpackChunkName: "AButton" */ "../views/aButton/index.vue"),
+          import(
+            /* webpackChunkName: "AButton" */ "../views/aButton/index.vue"
+          ),
         meta: {
           title: "AButton"
         }
@@ -289,7 +291,9 @@ const routes: Array<RouteConfig> = [
         path: "/aTextArea",
         name: "ATextArea",
         component: () =>
-          import(/* webpackChunkName: "ATextArea" */ "../views/aTextArea/index.vue"),
+          import(
+            /* webpackChunkName: "ATextArea" */ "../views/aTextArea/index.vue"
+          ),
         meta: {
           title: "ATextArea"
         }
@@ -298,7 +302,9 @@ const routes: Array<RouteConfig> = [
         path: "/aInputNumber",
         name: "AInputNumber",
         component: () =>
-          import(/* webpackChunkName: "AInputNumber" */ "../views/aInputNumber/index.vue"),
+          import(
+            /* webpackChunkName: "AInputNumber" */ "../views/aInputNumber/index.vue"
+          ),
         meta: {
           title: "AInputNumber"
         }
@@ -307,7 +313,9 @@ const routes: Array<RouteConfig> = [
         path: "/aPagination",
         name: "APagination",
         component: () =>
-          import(/* webpackChunkName: "APagination" */ "../views/aPagination/index.vue"),
+          import(
+            /* webpackChunkName: "APagination" */ "../views/aPagination/index.vue"
+          ),
         meta: {
           title: "APagination"
         }
@@ -352,7 +360,9 @@ const routes: Array<RouteConfig> = [
         path: "/mapToolBar",
         name: "mapToolBar",
         component: () =>
-          import(/* webpackChunkName: "MapToolbar" */ "../views/mapToolBar/index.vue"),
+          import(
+            /* webpackChunkName: "MapToolbar" */ "../views/mapToolBar/index.vue"
+          ),
         meta: {
           title: "mapToolBar"
         }
@@ -361,7 +371,9 @@ const routes: Array<RouteConfig> = [
         path: "/headerSection",
         name: "headerSection",
         component: () =>
-          import(/* webpackChunkName: "HeaderSection" */ "../views/headerSection/index.vue"),
+          import(
+            /* webpackChunkName: "HeaderSection" */ "../views/headerSection/index.vue"
+          ),
         meta: {
           title: "HeaderSection 头部"
         }
@@ -370,7 +382,9 @@ const routes: Array<RouteConfig> = [
         path: "/customTabs",
         name: "customTabs",
         component: () =>
-          import(/* webpackChunkName: "CustomTabs" */ "../views/customTabs/index.vue"),
+          import(
+            /* webpackChunkName: "CustomTabs" */ "../views/customTabs/index.vue"
+          ),
         meta: {
           title: "customTabs"
         }
@@ -379,7 +393,9 @@ const routes: Array<RouteConfig> = [
         path: "/road",
         name: "road",
         component: () =>
-          import(/* webpackChunkName: "RoadNetInfoDB" */ "../views/roadNetInfoDB/index.vue"),
+          import(
+            /* webpackChunkName: "RoadNetInfoDB" */ "../views/roadNetInfoDB/index.vue"
+          ),
         meta: {
           title: "road",
           isFull: true
@@ -398,7 +414,9 @@ const routes: Array<RouteConfig> = [
         path: "/weekPlan",
         name: "weekPlan",
         component: () =>
-          import(/* webpackChunkName: "WeekPlan" */ "../views/xz/weekPlan/index.vue"),
+          import(
+            /* webpackChunkName: "WeekPlan" */ "../views/xz/weekPlan/index.vue"
+          ),
         meta: {
           title: "weekPlan",
           isFull: true
@@ -408,56 +426,90 @@ const routes: Array<RouteConfig> = [
         path: "/urlTransform",
         name: "urlTransform",
         component: () =>
-          import(/* webpackChunkName: "UrlTransform" */ "../views/urlTransform/index.vue"),
+          import(
+            /* webpackChunkName: "UrlTransform" */ "../views/urlTransform/index.vue"
+          ),
         meta: {
-          title: "URL 编码/解码",
+          title: "URL 编码/解码"
         }
       },
       {
         path: "/carouselCard",
         name: "carouselCard",
         component: () =>
-          import(/* webpackChunkName: "CarouselCard" */ "../views/carouselCard/index.vue"),
+          import(
+            /* webpackChunkName: "CarouselCard" */ "../views/carouselCard/index.vue"
+          ),
         meta: {
-          title: "carouselCard 轮播卡",
+          title: "carouselCard 轮播卡"
         }
       },
       {
         path: "/tableStyle",
         name: "tableStyle",
         component: () =>
-          import(/* webpackChunkName: "TableStyle" */ "../views/tableStyle/index.vue"),
+          import(
+            /* webpackChunkName: "TableStyle" */ "../views/tableStyle/index.vue"
+          ),
         meta: {
-          title: "table 样式",
+          title: "table 样式"
         }
       },
       {
         path: "/dynamicForm",
         name: "dynamicForm",
         component: () =>
-          import(/* webpackChunkName: "DynamicForm" */ "../views/dynamicForm/index.vue"),
+          import(
+            /* webpackChunkName: "DynamicForm" */ "../views/dynamicForm/index.vue"
+          ),
         meta: {
-          title: "dynamicForm 动态表单",
+          title: "dynamicForm 动态表单"
         }
       },
       {
         path: "/wx_cloud",
         name: "wx_cloud",
         component: () =>
-          import(/* webpackChunkName: "Wx_cloud" */ "../views/wx_cloud/index.vue"),
+          import(
+            /* webpackChunkName: "Wx_cloud" */ "../views/wx_cloud/index.vue"
+          ),
         meta: {
-          title: "wx_cloud 卫星云图",
+          title: "wx_cloud 卫星云图"
         }
       },
       {
         path: "/chatItem",
         name: "chatItem",
         component: () =>
-          import(/* webpackChunkName: "ChatItem" */ "../views/chatItem/index.vue"),
+          import(
+            /* webpackChunkName: "ChatItem" */ "../views/chatItem/index.vue"
+          ),
         meta: {
-          title: "chatItem 聊天选项",
+          title: "chatItem 聊天选项"
         }
       },
+      {
+        path: "/baguaChart",
+        name: "baguaChart",
+        component: () =>
+          import(
+            /* webpackChunkName: "BaguaChart" */ "../views/baguaChart/index.vue"
+          ),
+        meta: {
+          title: "BaguaChart 八卦图"
+        }
+      },
+      {
+        path: "/customCalendar",
+        name: "customCalendar",
+        component: () =>
+          import(
+            /* webpackChunkName: "CustomCalendar" */ "../views/customCalendar/index.vue"
+          ),
+        meta: {
+          title: "CustomCalendar 自定义日历"
+        }
+      }
     ]
   },
   {

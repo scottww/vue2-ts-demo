@@ -58,6 +58,7 @@ export default {
             { id: 3, text: "ClassComponents 类组件", path: "/classComponents" },
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
             { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
+            { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
           ]
         },
         {
@@ -110,6 +111,7 @@ export default {
         // { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" },
         // { id: 26, text: "Table 样式", path: "/tableStyle" }
         // { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
+        // { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
       ]
     };
   },

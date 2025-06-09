@@ -8739,6 +8739,11 @@
     "uuid" "^8.3.2"
     "websocket-driver" "^0.7.4"
 
+"solarlunar@^2.0.7":
+  "integrity" "sha512-2SfuCCgAAxFU5MTMYuKGbRgRLcPTJQf3azMEw/GmBpHXA7N2eAQJStSqktZJjnq4qRCboBPnqEB866+PCregag=="
+  "resolved" "https://registry.npmmirror.com/solarlunar/-/solarlunar-2.0.7.tgz"
+  "version" "2.0.7"
+
 "sort-asc@^0.1.0":
   "integrity" "sha512-jBgdDd+rQ+HkZF2/OHCmace5dvpos/aWQpcxuyRs9QUbPRnkEJmYVo81PIGpjIdpOcsnJ4rGjStfDHsbn+UVyw=="
   "resolved" "https://registry.npmmirror.com/sort-asc/-/sort-asc-0.1.0.tgz"
