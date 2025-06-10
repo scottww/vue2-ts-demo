@@ -33,45 +33,57 @@
 
       <div class="tool-bar">
         <div
-          class="tool-bar-item-wrapper"
+          class="tool-bar-item-wrapper-with-menu"
           @mouseenter="onMouseEnter"
           @mouseleave="onMouseLeave"
         >
-          <div class="tool-bar-item">
-            <img :src="showMenu ? hoverIcon : normalIcon" alt="新增" />
+          <!-- 主按钮 -->
+          <div class="tool-bar-item-wrapper">
+            <div class="tool-bar-item">
+              <img :src="showMenu ? hoverIcon : normalIcon" alt="新增" />
+            </div>
+          </div>
+
+          <!-- 子菜单 -->
+          <div class="menu" v-if="showMenu">
+            <div
+              class="menu-item"
+              v-for="(item, index) in menuItems"
+              :key="index"
+              @click="handleMenu(item.label)"
+              @mouseenter="hoverIndex = index"
+              @mouseleave="hoverIndex = -1"
+            >
+              <img
+                class="menu-icon"
+                :src="hoverIndex === index ? item.hoverIcon : item.icon"
+                alt="图标"
+              />
+              {{ item.label }}
+            </div>
           </div>
         </div>
+
+        <!-- 分割线 -->
         <div class="tool-bar-divider-line"></div>
-        <div class="tool-bar-item">
+
+        <!-- 删除按钮 -->
+        <div class="tool-bar-item" @click="clearDrawLayer">
           <img src="../../assets/mapToolBar/delete.png" alt="删除" />
-        </div>
-        <div class="menu" v-if="showMenu">
-          <div
-            class="menu-item"
-            v-for="(item, index) in menuItems"
-            :key="index"
-            @click="handleMenu(item.label)"
-            @mouseenter="hoverIndex = index"
-            @mouseleave="hoverIndex = -1"
-          >
-            <img
-              class="menu-icon"
-              :src="hoverIndex === index ? item.hoverIcon : item.icon"
-              alt="图标"
-            />
-            {{ item.label }}
-          </div>
         </div>
       </div>
     </div>
 
-    <el-dialog title="保存绘制要素" :visible.sync="dialogVisible">
+    <el-dialog title="提交" :visible.sync="dialogVisible" width="500px">
       <el-form :model="formData" label-width="80px">
-        <el-form-item label="名称">
-          <el-input v-model="formData.name" placeholder="请输入名称" />
-        </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item label="绘制类型">
           <el-input v-model="formData.type" disabled />
+        </el-form-item>
+        <el-form-item label="面积">
+          <!-- <el-input v-model="formData.type" disabled /> -->
+          <el-input v-model="formData.area" placeholder="请输入面积">
+            <template slot="append">㎡</template>
+          </el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -120,15 +132,19 @@ export default {
       map: null,
       markerLayer: null,
       // draw
+
       draw: null,
       overlay: null,
       drawType: null, // point / line / polygon
       drawSource: null,
       drawLayer: null,
+      drawInteraction: null,
+
       dialogVisible: false,
       formData: {
         name: "",
-        type: ""
+        type: "",
+        area: ""
       },
       pendingFeature: null,
       nodeOverlays: [], // 存储红色圆圈和 x 按钮
@@ -148,8 +164,8 @@ export default {
       menuItems: [
         {
           label: "新增规划",
-          icon: require("../../assets/mapToolBar/type12.png"),
-          hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
+          icon: require("../../assets/mapToolBar/type3.png"),
+          hoverIcon: require("../../assets/mapToolBar/type3_hover.png")
         },
         {
           label: "新增占用",
@@ -158,8 +174,8 @@ export default {
         },
         {
           label: "新增补偿",
-          icon: require("../../assets/mapToolBar/type3.png"),
-          hoverIcon: require("../../assets/mapToolBar/type3_hover.png")
+          icon: require("../../assets/mapToolBar/type12.png"),
+          hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
         }
       ]
     };
@@ -203,12 +219,14 @@ export default {
       this.map.addLayer(this.markerLayer);
 
       // 初始化绘图图层
-      this.drawSource = new VectorSource();
-      this.drawLayer = new VectorLayer({
-        source: this.drawSource,
-        zIndex: 20
-      });
-      this.map.addLayer(this.drawLayer);
+      // this.drawSource = new VectorSource();
+      // this.drawLayer = new VectorLayer({
+      //   source: this.drawSource,
+      //   zIndex: 20
+      // });
+      // this.map.addLayer(this.drawLayer);
+
+      this.initDrawLayer();
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -791,14 +809,177 @@ export default {
         this.showMenu = false;
       }, 200); // 延迟隐藏
     },
+    initDrawLayer() {
+      this.drawSource = new VectorSource();
+
+      const drawLayer = new VectorLayer({
+        source: this.drawSource,
+        style: (feature) => {
+          const geometry = feature.getGeometry();
+          const styles = [];
+
+          // 主体样式
+          styles.push(
+            new Style({
+              stroke: new Stroke({
+                color: "#FD6204",
+                width: 2
+              }),
+              fill: new Fill({
+                color: "rgba(23,143,255, 0.1)" //#178FFF
+              })
+            })
+          );
+
+          // 添加红色节点标记
+          if (geometry instanceof Polygon) {
+            const coords = geometry.getCoordinates()[0];
+            coords.forEach((coord) => {
+              styles.push(
+                new Style({
+                  geometry: new Point(coord),
+                  image: new CircleStyle({
+                    radius: 4,
+                    fill: new Fill({ color: "red" }),
+                    stroke: new Stroke({ color: "#fff", width: 1 })
+                  })
+                })
+              );
+            });
+          }
+
+          return styles;
+        }
+      });
+
+      this.map.addLayer(drawLayer);
+    },
+    formatArea(area, precision = 4) {
+      //按照面积大小显示不同的单位
+      // if (area > 1000000) {
+      //   return {
+      //     value: (area / 1000000).toFixed(2),
+      //     unit: "km²"
+      //   };
+      // } else if (area > 10000) {
+      //   return {
+      //     value: (area / 10000).toFixed(2),
+      //     unit: "ha"
+      //   };
+      // } else {
+      //   return {
+      //     value: area.toFixed(2),
+      //     unit: "m²"
+      //   };
+      // }
+
+      //始终显示km²
+      // return {
+      //   value: (area / 1000000).toFixed(precision), // 始终转成平方千米
+      //   unit: "km²"
+      // };
+      return {
+        value: area.toFixed(precision),
+        unit: "m²"
+      };
+    },
+    //千位分隔符显示
+    formatArea2(area) {
+      const formatNumber = (num, decimals = 0) =>
+        Number(num).toLocaleString(undefined, {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+
+      if (area >= 1000000) {
+        return {
+          value: formatNumber(area / 1000000, 2),
+          unit: "km²"
+        };
+      } else {
+        return {
+          value: formatNumber(area, 0),
+          unit: "m²"
+        };
+      }
+    },
+    startDrawPolygon() {
+      let { drawInteraction, drawSource } = this;
+      if (drawInteraction) {
+        this.map.removeInteraction(drawInteraction);
+      }
+
+      drawInteraction = new Draw({
+        source: drawSource,
+        type: "Polygon"
+      });
+
+      this.map.addInteraction(drawInteraction);
+
+      drawInteraction.on("drawend", (event) => {
+        // 使用 feature 本身而不是 event.geometry
+        // const polygon = event.feature;
+        const polygon = event.feature.getGeometry();
+        const area = getArea(polygon);
+        console.log("获取到的面积 ...", area);
+        const { value: formattedArea, unit } = this.formatArea(area, 4);
+
+        // 添加面积标注
+        const center = polygon.getInteriorPoint().getCoordinates();
+
+        const areaFeature = new Feature({
+          geometry: new Point(center)
+        });
+
+        areaFeature.setStyle(
+          new Style({
+            text: new Text({
+              text: `${formattedArea} ${unit}`,
+              font: "16px sans-serif",
+              fill: new Fill({ color: "#FFCB00" }),
+              stroke: new Stroke({ color: "white", width: 2 }),
+              offsetY: -10
+            })
+          })
+        );
+
+        drawSource.addFeature(areaFeature);
+
+        // 弹出表单
+        this.showFormWithArea(formattedArea, unit);
+
+        this.map.removeInteraction(drawInteraction);
+        drawInteraction = null;
+      });
+    },
+    showFormWithArea(area, unit) {
+      // 示例：ElementUI 弹窗逻辑
+      this.$confirm(
+        `绘制完成，面积为 ${area} ${unit}。是否填写信息？`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info"
+        }
+      ).then(() => {
+        // 打开自定义表单
+        this.dialogVisible = true;
+        this.formData.area = area;
+      });
+    },
     //tool-bar
     handleMenu(option) {
-      this.showMenu = false;
       console.log("点击了菜单：", option);
+      this.showMenu = false;
       // 这里可执行实际功能逻辑
+      this.startDrawPolygon();
     },
     onMenuSelect(item) {
       console.log("点击菜单：", item.label);
+    },
+    clearDrawLayer() {
+      this.drawSource.clear();
     }
   }
 };
