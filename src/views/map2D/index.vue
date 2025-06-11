@@ -660,6 +660,7 @@ export default {
       this.draw.on("drawend", (event) => {
         //绘制结束后，清空draw激活状态
         this.map.removeInteraction(this.draw);
+        this.draw = null;
         const feature = event.feature;
         // const geometry = feature.getGeometry();
         const geometry = event.feature.getGeometry();
@@ -679,7 +680,7 @@ export default {
           displayCoord = coords[coords.length - 1];
         } else if (geomType === "Polygon") {
           // const area = getArea(geometry, { projection: "EPSG:4326" });
-          labelText = this.getFormattedArea(geometry, 2);  //应返回 { value, unit }
+          labelText = this.getFormattedArea(geometry, 2); //应返回 { value, unit }
           const coords = geometry.getCoordinates()[0];
           closeDisplayCoord = [coords[0][0], coords[0][1]];
           displayCoord = geometry.getInteriorPoint().getCoordinates();
@@ -767,6 +768,10 @@ export default {
         // 更新线或面数据
         const features = this.drawSource.getFeatures();
         this.lineData = features.map((f) => f.getGeometry().getCoordinates());
+
+        console.log("this.lineData ...", this.lineData);
+        // 弹出表单
+        this.showFormWithArea(labelText.value, labelText.unit);
       });
     },
 
@@ -1138,7 +1143,7 @@ export default {
         this.showMenu = false;
       }, 200); // 延迟隐藏
     },
-    initDrawLayer() {
+    initDrawLayer(zIndex = 20) {
       this.drawSource = new VectorSource();
 
       const drawLayer = new VectorLayer({
@@ -1178,7 +1183,8 @@ export default {
           }
 
           return styles;
-        }
+        },
+        zIndex: 20
       });
 
       this.map.addLayer(drawLayer);
@@ -1310,8 +1316,9 @@ export default {
       console.log("点击了菜单：", item);
       this.showMenu = false;
       // 这里可执行实际功能逻辑
-      this.formData.type = item.value;
-      this.startDrawPolygon();
+      this.formData.type = item.label;
+      // this.startDrawPolygon();
+      this.startDraw2_1('Polygon');
     },
     onMenuSelect(item) {
       console.log("点击菜单：", item.label);
