@@ -34,7 +34,7 @@ export default class Map2DService extends BaseMapService {
         center: options.center || [0, 0],
         zoom: options.zoom || 11,
         // projection: 'EPSG:3857',
-        projection: "EPSG:4326"
+        projection: "EPSG:4326" //默认为EPSG:4326
       })
     });
   }

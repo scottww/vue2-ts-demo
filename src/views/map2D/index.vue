@@ -7,6 +7,8 @@
       <button @click="startDraw('Point')">绘制点</button>
       <button @click="startDraw('LineString')">绘制线</button>
       <button @click="startDraw('Polygon')">绘制面</button>
+      <button @click="startDraw2('Polygon')">绘制面2</button>
+      <button @click="startDraw2_1('Polygon')">绘制面2_1</button>
       <button @click="measure('LineString')">测量距离</button>
       <button @click="measure('Polygon')">测量面积</button>
       <button @click="measure('None')">取消测量</button>
@@ -50,7 +52,7 @@
               class="menu-item"
               v-for="(item, index) in menuItems"
               :key="index"
-              @click="handleMenu(item.label)"
+              @click="handleMenu(item)"
               @mouseenter="hoverIndex = index"
               @mouseleave="hoverIndex = -1"
             >
@@ -77,7 +79,21 @@
     <el-dialog title="提交" :visible.sync="dialogVisible" width="500px">
       <el-form :model="formData" label-width="80px">
         <el-form-item label="绘制类型">
-          <el-input v-model="formData.type" disabled />
+          <!-- <el-input v-model="formData.type" disabled /> -->
+          <el-select
+            v-model="formData.type"
+            placeholder="请选择"
+            style="width: 100%"
+            disabled
+          >
+            <el-option
+              v-for="item in drawTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="面积">
           <!-- <el-input v-model="formData.type" disabled /> -->
@@ -114,7 +130,7 @@ import VectorLayer from "ol/layer/Vector";
 import Draw from "ol/interaction/Draw";
 import CircleStyle from "ol/style/Circle";
 import Overlay from "ol/Overlay";
-import { getLength, getArea } from "ol/sphere";
+import { getLength, getArea, getCenter } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
 import HoverMenu from "./tool-bar.vue";
 
@@ -164,19 +180,30 @@ export default {
       menuItems: [
         {
           label: "新增规划",
+          value: "plan",
           icon: require("../../assets/mapToolBar/type3.png"),
           hoverIcon: require("../../assets/mapToolBar/type3_hover.png")
         },
         {
           label: "新增占用",
+          value: "occupy",
           icon: require("../../assets/mapToolBar/type12.png"),
           hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
         },
         {
           label: "新增补偿",
+          value: "compensate",
           icon: require("../../assets/mapToolBar/type12.png"),
           hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
         }
+      ],
+      drawTypeOptions: [
+        // { label: "规划", value: "plan" },
+        // { label: "占用", value: "occupy" },
+        // { label: "补偿", value: "compensate" }
+        { label: "规划", value: "规划" },
+        { label: "占用", value: "占用" },
+        { label: "补偿", value: "补偿" }
       ]
     };
   },
@@ -208,8 +235,8 @@ export default {
       this.map = mapService.getMapInsatance();
 
       // 只控制底图图层，不影响其他业务图层
-      // this.tileLayerManager = createTileLayerManager(this.map);
-      // this.tileLayerManager.switchTo("TDT_vec");
+      this.tileLayerManager = createTileLayerManager(this.map);
+      this.tileLayerManager.switchTo("TDT_vec");
 
       // 初始化图层用于显示图标
       this.markerLayer = new VectorLayer({
@@ -315,6 +342,7 @@ export default {
 
       this.map.addInteraction(this.draw);
     },
+    //这个方法完成了节点标记、长度标记、删除按钮标记
     startDraw(type) {
       // 清除之前图层和交互
       this.map.removeInteraction(this.draw);
@@ -390,7 +418,6 @@ export default {
               close.style.lineHeight = "12px";
               close.style.fontWeight = "700";
 
-
               close.addEventListener("click", () => {
                 // 点击后移除绘制和所有图层内容
                 this.map.removeInteraction(this.draw);
@@ -445,6 +472,299 @@ export default {
 
       // 绘制完成后更新所有 features 数组
       this.draw.on("drawend", (event) => {
+        const features = this.drawSource.getFeatures();
+        this.lineData = features.map((f) => f.getGeometry().getCoordinates());
+      });
+    },
+    //这个方法实现了标记，但是每次重新绘制，标记会消失
+    startDraw2(type) {
+      // 清除之前图层和交互
+      this.map.removeInteraction(this.draw);
+      if (this.drawLayer) this.map.removeLayer(this.drawLayer);
+      this.clearNodeOverlays();
+
+      // 初始化 source 和 layer
+      this.drawSource = new VectorSource();
+      this.drawLayer = new VectorLayer({
+        source: this.drawSource,
+        style: new Style({
+          fill: new Fill({ color: "rgba(23,143,255, 0.1)" }),
+          stroke: new Stroke({ color: "#FD6204", width: 3 }),
+          image: new CircleStyle({
+            radius: 7,
+            fill: new Fill({ color: "#FD6204" })
+          })
+        }),
+        zIndex: 10
+      });
+      this.map.addLayer(this.drawLayer);
+
+      // 初始化绘制交互
+      this.draw = new Draw({
+        source: this.drawSource,
+        type: type
+      });
+      this.map.addInteraction(this.draw);
+
+      // 绘制完成时处理
+      this.draw.on("drawend", (event) => {
+        const feature = event.feature;
+        // const geometry = feature.getGeometry();
+        const geometry = event.feature.getGeometry();
+        const geomType = geometry.getType();
+
+        this.clearNodeOverlays();
+
+        let labelText = "";
+        let displayCoord;
+        let closeDisplayCoord;
+
+        if (geomType === "LineString") {
+          const length = getLength(geometry, { projection: "EPSG:4326" });
+          labelText =
+            length > 1000
+              ? (length / 1000).toFixed(2) + " km"
+              : length.toFixed(2) + " m";
+          const coords = geometry.getCoordinates();
+          displayCoord = coords[coords.length - 1]; // 末点
+        } else if (geomType === "Polygon") {
+          const area = getArea(geometry, { projection: "EPSG:4326" });
+          console.log("area ...", area);
+          labelText = this.formatArea(area, 2);
+          // const extent = geometry.getExtent();
+          // displayCoord = getCenter(extent); // 使用 OpenLayers 的 getCenter
+
+          const coords = geometry.getCoordinates()[0];
+          closeDisplayCoord = [coords[0][0], coords[0][1]];
+          //面积标签位置坐标
+          displayCoord = geometry.getInteriorPoint().getCoordinates(); // polygon获取中心点
+        }
+
+        const coordinates = geometry.getCoordinates()[0];
+        console.log(`coordinates ...`, coordinates);
+        coordinates.forEach((coord) => {
+          const node = document.createElement("div");
+          // Object.assign(node.style, {
+          //   width: "8px",
+          //   height: "8px",
+          //   backgroundColor: "red",
+          //   borderRadius: "50%",
+          //   position: "absolute",
+          //   transform: "translate(-50%, -50%)"
+          // });
+          node.style.width = "10px";
+          node.style.height = "10px";
+          node.style.backgroundColor = "#fff"; // 白色填充
+          node.style.border = "2px solid red"; // 红色边框
+          node.style.borderRadius = "50%";
+          node.style.position = "absolute";
+          node.style.transform = "translate(-50%, -50%)";
+
+          const nodeOverlay = new Overlay({
+            element: node,
+            position: coord,
+            positioning: "center-center",
+            stopEvent: false
+          });
+
+          this.map.addOverlay(nodeOverlay);
+          this.nodeOverlays.push(nodeOverlay);
+        });
+
+        // 面积 overlay
+        const label = document.createElement("div");
+        Object.assign(label.style, {
+          // background: "white",
+          // padding: "2px 6px",
+          // border: "1px solid #ccc",
+          // borderRadius: "4px",
+          fontFamily: "sans-serif",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "#FFCB00"
+          // position: "absolute"
+        });
+        label.innerHTML = `${labelText.value} ${labelText.unit}`;
+
+        this.areaOverlay = new Overlay({
+          element: label,
+          offset: [0, -10],
+          positioning: "center-center"
+          // stopEvent: false
+        });
+        this.map.addOverlay(this.areaOverlay);
+        this.areaOverlay.setPosition(displayCoord);
+        this.nodeOverlays.push(this.areaOverlay);
+
+        // 删除按钮 overlay
+        const close = document.createElement("div");
+        close.title = "点击删除";
+        close.innerText = "x";
+        Object.assign(close.style, {
+          color: "red",
+          background: "#fff",
+          border: "1px solid red",
+          cursor: "pointer",
+          width: "16px",
+          height: "16px",
+          textAlign: "center",
+          lineHeight: "12px",
+          fontWeight: "700"
+          // borderRadius: "50%",
+          // fontSize: "12px",
+          // position: "absolute",
+          // zIndex: "1000"
+        });
+
+        close.addEventListener("click", () => {
+          this.map.removeInteraction(this.draw);
+          this.drawSource.removeFeature(feature);
+          this.clearNodeOverlays();
+          if (this.distanceOverlay) {
+            this.map.removeOverlay(this.distanceOverlay);
+            this.distanceOverlay = null;
+          }
+        });
+
+        console.log("displayCoord ...", displayCoord);
+        console.log("closeDisplayCoord ...", closeDisplayCoord);
+
+        const closeOverlay = new Overlay({
+          element: close,
+          offset: [0, -10],
+          // offset: [10, 20],
+          positioning: "bottom-left",
+          stopEvent: false
+        });
+        this.map.addOverlay(closeOverlay);
+        closeOverlay.setPosition(closeDisplayCoord);
+        this.nodeOverlays.push(closeOverlay);
+
+        // 保存数据
+        const features = this.drawSource.getFeatures();
+        this.lineData = features.map((f) => f.getGeometry().getCoordinates());
+      });
+    },
+    //在startDraw2的基础上改造
+    startDraw2_1(type) {
+      // 不再全局清除交互和图层，只移除当前 draw 交互
+      if (this.draw) this.map.removeInteraction(this.draw);
+
+      // 保留之前的图层，初始化新交互
+      this.draw = new Draw({
+        source: this.drawSource,
+        type: type
+      });
+      this.map.addInteraction(this.draw);
+
+      this.draw.on("drawend", (event) => {
+        //绘制结束后，清空draw激活状态
+        this.map.removeInteraction(this.draw);
+        const feature = event.feature;
+        // const geometry = feature.getGeometry();
+        const geometry = event.feature.getGeometry();
+        const geomType = geometry.getType();
+
+        let labelText = "";
+        let displayCoord;
+        let closeDisplayCoord;
+
+        if (geomType === "LineString") {
+          const length = getLength(geometry, { projection: "EPSG:4326" });
+          labelText =
+            length > 1000
+              ? { value: (length / 1000).toFixed(2), unit: "km" }
+              : { value: length.toFixed(2), unit: "m" };
+          const coords = geometry.getCoordinates();
+          displayCoord = coords[coords.length - 1];
+        } else if (geomType === "Polygon") {
+          // const area = getArea(geometry, { projection: "EPSG:4326" });
+          labelText = this.getFormattedArea(geometry, 2);  //应返回 { value, unit }
+          const coords = geometry.getCoordinates()[0];
+          closeDisplayCoord = [coords[0][0], coords[0][1]];
+          displayCoord = geometry.getInteriorPoint().getCoordinates();
+        }
+
+        // 每次绘制创建新的 overlay 数组用于后续删除
+        const overlaysForThisFeature = [];
+
+        // 节点圆点 Overlay
+        const coordinates = geometry.getCoordinates()[0];
+        coordinates.forEach((coord) => {
+          const node = document.createElement("div");
+          node.style.width = "10px";
+          node.style.height = "10px";
+          node.style.backgroundColor = "#fff";
+          node.style.border = "2px solid red";
+          node.style.borderRadius = "50%";
+          node.style.position = "absolute";
+          node.style.transform = "translate(-50%, -50%)";
+
+          const nodeOverlay = new Overlay({
+            element: node,
+            position: coord,
+            positioning: "center-center",
+            stopEvent: false
+          });
+
+          this.map.addOverlay(nodeOverlay);
+          overlaysForThisFeature.push(nodeOverlay);
+        });
+
+        // 面积标签 Overlay
+        const label = document.createElement("div");
+        Object.assign(label.style, {
+          fontFamily: "sans-serif",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "#FFCB00"
+        });
+        label.innerHTML = `${labelText.value} ${labelText.unit}`;
+
+        const areaOverlay = new Overlay({
+          element: label,
+          offset: [0, -10],
+          positioning: "center-center"
+        });
+        this.map.addOverlay(areaOverlay);
+        areaOverlay.setPosition(displayCoord);
+        overlaysForThisFeature.push(areaOverlay);
+
+        // 删除按钮 Overlay
+        const close = document.createElement("div");
+        close.title = "点击删除";
+        close.innerText = "x";
+        Object.assign(close.style, {
+          color: "red",
+          background: "#fff",
+          border: "1px solid red",
+          cursor: "pointer",
+          width: "16px",
+          height: "16px",
+          textAlign: "center",
+          lineHeight: "12px",
+          fontWeight: "700"
+        });
+
+        close.addEventListener("click", () => {
+          this.drawSource.removeFeature(feature);
+          overlaysForThisFeature.forEach((o) => this.map.removeOverlay(o));
+        });
+
+        const closeOverlay = new Overlay({
+          element: close,
+          offset: [0, -10],
+          positioning: "bottom-left",
+          stopEvent: false
+        });
+        this.map.addOverlay(closeOverlay);
+        closeOverlay.setPosition(closeDisplayCoord);
+        overlaysForThisFeature.push(closeOverlay);
+
+        // 添加进全局列表（如果你还需要统一管理）
+        this.nodeOverlays.push(...overlaysForThisFeature);
+
+        // 更新线或面数据
         const features = this.drawSource.getFeatures();
         this.lineData = features.map((f) => f.getGeometry().getCoordinates());
       });
@@ -865,32 +1185,40 @@ export default {
     },
     formatArea(area, precision = 4) {
       //按照面积大小显示不同的单位
-      // if (area > 1000000) {
-      //   return {
-      //     value: (area / 1000000).toFixed(2),
-      //     unit: "km²"
-      //   };
-      // } else if (area > 10000) {
-      //   return {
-      //     value: (area / 10000).toFixed(2),
-      //     unit: "ha"
-      //   };
-      // } else {
-      //   return {
-      //     value: area.toFixed(2),
-      //     unit: "m²"
-      //   };
-      // }
+      if (area > 1000000) {
+        return {
+          value: (area / 1000000).toFixed(precision),
+          unit: "km²"
+        };
+        // } else if (area > 10000) {
+        //   return {
+        //     value: (area / 10000).toFixed(precision),
+        //     unit: "ha" //公顷  1 ha => 10000 m²
+        //   };
+      } else {
+        return {
+          value: area.toFixed(precision),
+          unit: "m²"
+        };
+      }
 
       //始终显示km²
       // return {
       //   value: (area / 1000000).toFixed(precision), // 始终转成平方千米
       //   unit: "km²"
       // };
-      return {
-        value: area.toFixed(precision),
-        unit: "m²"
-      };
+      // return {
+      //   value: area.toFixed(precision),
+      //   unit: "m²"
+      // };
+    },
+    getFormattedArea(geometry, precision = 2) {
+      const projection = this.map.getView().getProjection();
+      const area = getArea(geometry, { projection });
+
+      return area > 1000000
+        ? { value: (area / 1000000).toFixed(precision), unit: "km²" }
+        : { value: area.toFixed(precision), unit: "m²" };
     },
     //千位分隔符显示
     formatArea2(area) {
@@ -978,10 +1306,11 @@ export default {
       });
     },
     //tool-bar
-    handleMenu(option) {
-      console.log("点击了菜单：", option);
+    handleMenu(item) {
+      console.log("点击了菜单：", item);
       this.showMenu = false;
       // 这里可执行实际功能逻辑
+      this.formData.type = item.value;
       this.startDrawPolygon();
     },
     onMenuSelect(item) {
