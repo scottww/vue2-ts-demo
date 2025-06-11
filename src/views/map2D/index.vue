@@ -208,8 +208,8 @@ export default {
       this.map = mapService.getMapInsatance();
 
       // 只控制底图图层，不影响其他业务图层
-      this.tileLayerManager = createTileLayerManager(this.map);
-      this.tileLayerManager.switchTo("TDT_vec");
+      // this.tileLayerManager = createTileLayerManager(this.map);
+      // this.tileLayerManager.switchTo("TDT_vec");
 
       // 初始化图层用于显示图标
       this.markerLayer = new VectorLayer({
@@ -375,13 +375,21 @@ export default {
             // 最后一个节点添加关闭按钮 ✕
             if (index === coords.length - 1) {
               const close = document.createElement("div");
-              close.innerText = "✕";
-              close.style.color = "#fff";
-              close.style.background = "red";
-              close.style.padding = "2px 4px";
-              close.style.borderRadius = "4px";
+              // close.innerText = "✕";
+              close.innerText = "x";
+              close.style.color = "red";
+              close.style.background = "#fff";
+              close.style.border = "1px solid red";
+              // close.style.padding = "2px 4px";
+              // close.style.borderRadius = "4px";
               close.style.cursor = "pointer";
-              close.style.fontSize = "12px";
+              // close.style.fontSize = "14px";
+              close.style.width = "16px";
+              close.style.height = "16px";
+              close.style.textAlign = "center";
+              close.style.lineHeight = "12px";
+              close.style.fontWeight = "700";
+
 
               close.addEventListener("click", () => {
                 // 点击后移除绘制和所有图层内容
@@ -397,7 +405,8 @@ export default {
               const closeOverlay = new Overlay({
                 element: close,
                 position: coord,
-                offset: [10, -10],
+                // offset: [10, -10],
+                offset: [10, 20],
                 positioning: "bottom-left"
               });
               this.map.addOverlay(closeOverlay);
