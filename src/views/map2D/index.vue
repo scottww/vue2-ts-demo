@@ -97,15 +97,20 @@
         </el-form-item>
         <el-form-item label="面积">
           <!-- <el-input v-model="formData.type" disabled /> -->
-          <el-input v-model="formData.area" placeholder="请输入面积">
+          <el-input
+            v-model="formData.area"
+            @input="handleInput"
+            maxlength="30"
+            placeholder="请输入面积"
+          >
             <template slot="append">㎡</template>
           </el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="cancelSave">取消</el-button>
-          <el-button type="primary" @click="saveFeature">保存</el-button>
+          <el-button @click="handleCancelForm">取消</el-button>
+          <el-button type="primary" @click="handleSaveForm">保存</el-button>
         </span>
       </template>
     </el-dialog>
@@ -133,6 +138,7 @@ import Overlay from "ol/Overlay";
 import { getLength, getArea, getCenter } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
 import HoverMenu from "./tool-bar.vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   components: { HoverMenu },
@@ -158,13 +164,18 @@ export default {
 
       dialogVisible: false,
       formData: {
-        name: "",
+        // itemInfoGuid: "945B5327-A07E-48D1-A68D-786B41B5D81A",
+        id: null, // 唯一标识
         type: "",
-        area: ""
+        area: "",
+        coordinates: "" //序列化后的字符串
       },
       pendingFeature: null,
       nodeOverlays: [], // 存储红色圆圈和 x 按钮
       distanceOverlay: null, // 显示距离的 overlay
+
+      savedLayer: null, // 保存的图层
+      savedSource: null, // 保存的图层源
 
       // 新版比那辆
       overlays: [],
@@ -180,19 +191,19 @@ export default {
       menuItems: [
         {
           label: "新增规划",
-          value: "plan",
+          value: "规划",
           icon: require("../../assets/mapToolBar/type3.png"),
           hoverIcon: require("../../assets/mapToolBar/type3_hover.png")
         },
         {
           label: "新增占用",
-          value: "occupy",
+          value: "占用",
           icon: require("../../assets/mapToolBar/type12.png"),
           hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
         },
         {
           label: "新增补偿",
-          value: "compensate",
+          value: "补偿",
           icon: require("../../assets/mapToolBar/type12.png"),
           hoverIcon: require("../../assets/mapToolBar/type12_hover.png")
         }
@@ -204,7 +215,9 @@ export default {
         { label: "规划", value: "规划" },
         { label: "占用", value: "占用" },
         { label: "补偿", value: "补偿" }
-      ]
+      ],
+      onFormSave: null, // 保存回调
+      onCancel: null // 取消回调
     };
   },
   mounted() {
@@ -254,6 +267,7 @@ export default {
       // this.map.addLayer(this.drawLayer);
 
       this.initDrawLayer();
+      this.initSavedLayer();
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -691,6 +705,9 @@ export default {
 
         // 节点圆点 Overlay
         const coordinates = geometry.getCoordinates()[0];
+        // console.log(`geometry.getCoordinates() ...`, geometry.getCoordinates());
+        //存储原始结构
+        this.formData.coordinates = geometry.getCoordinates();
         coordinates.forEach((coord) => {
           const node = document.createElement("div");
           node.style.width = "10px";
@@ -771,7 +788,22 @@ export default {
 
         console.log("this.lineData ...", this.lineData);
         // 弹出表单
-        this.showFormWithArea(labelText.value, labelText.unit);
+        // this.showFormWithArea(labelText.value, labelText.unit);
+
+        this.showFormWithArea(labelText.value, labelText.unit)
+          .then((action) => {
+            if (action === "save") {
+              // 用户最终点击了保存
+              console.log("用户已保存，执行保存逻辑");
+              // 例如：调用接口 this.saveFeatureData(feature)
+            }
+          })
+          .catch((reason) => {
+            // 无论是 confirm 阶段点击了取消，还是 form 中取消，统一清理 feature 和 overlay
+            this.drawSource.removeFeature(feature);
+            overlaysForThisFeature.forEach((o) => this.map.removeOverlay(o));
+            console.log("用户取消绘制，已清除", reason);
+          });
       });
     },
 
@@ -1082,8 +1114,13 @@ export default {
     },
 
     saveFeature() {
-      if (this.formData.name.trim() === "") {
-        this.$message.warning("请输入名称");
+      // if (this.formData.name.trim() === "") {
+      //   this.$message.warning("请输入名称");
+      //   return;
+      // }
+
+      if (this.formData.area.trim() === "") {
+        this.$message.warning("请输入面积");
         return;
       }
 
@@ -1189,6 +1226,152 @@ export default {
 
       this.map.addLayer(drawLayer);
     },
+    initSavedLayer0(zIndex = 20) {
+      this.savedSource = new VectorSource();
+
+      const savedLayer = new VectorLayer({
+        source: this.savedSource,
+        style: (feature) => {
+          const geometry = feature.getGeometry();
+          const areaType = feature.get("type");
+          const styles = [];
+
+          // 主体样式
+          // styles.push(
+          //   new Style({
+          //     stroke: new Stroke({
+          //       color: "#FD6204",
+          //       width: 2
+          //     }),
+          //     fill: new Fill({
+          //       color: "rgba(23,143,255, 0.1)" //#178FFF
+          //     })
+          //   })
+          // );
+
+          //规划、占用、补偿
+          const style = this.getStyleByType(areaType);
+
+          styles.push(style);
+
+          // 添加红色节点标记
+          // if (geometry instanceof Polygon) {
+          //   const coords = geometry.getCoordinates()[0];
+          //   coords.forEach((coord) => {
+          //     styles.push(
+          //       new Style({
+          //         geometry: new Point(coord),
+          //         image: new CircleStyle({
+          //           radius: 4,
+          //           fill: new Fill({ color: "red" }),
+          //           stroke: new Stroke({ color: "#fff", width: 1 })
+          //         })
+          //       })
+          //     );
+          //   });
+          // }
+
+          return styles;
+        },
+        zIndex: 20
+      });
+
+      this.map.addLayer(savedLayer);
+    },
+    initSavedLayer(zIndex = 20) {
+      this.savedSource = new VectorSource();
+
+      const savedLayer = new VectorLayer({
+        source: this.savedSource,
+        style: (feature) => this.getFeatureRenderStyles(feature),
+        zIndex: zIndex
+      });
+
+      this.savedLayer = savedLayer; // ✅保留图层引用
+      this.map.addLayer(savedLayer);
+
+      this.map.on("singleclick", (evt) => {
+        // 1. 通过坐标获取对应的要素
+        this.map.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
+          // 2. 判断点击位置是否在删除按钮范围内（通常在右上角）
+          if (this.isClickOnDeleteIcon(evt.coordinate, feature)) {
+            // 3. 删除对应的 feature
+            this.savedSource.removeFeature(feature);
+            console.log("删除了feature", feature.getId());
+            return true; // 结束遍历
+          }
+        });
+      });
+    },
+    isClickOnDeleteIcon(clickCoord, feature) {
+      const geometry = feature.getGeometry();
+      if (!(geometry instanceof Polygon)) return false;
+
+      const extent = geometry.getExtent();
+      const topRight = [extent[2], extent[3]];
+
+      // 转成像素点
+      const clickPixel = this.map.getPixelFromCoordinate(clickCoord);
+      const iconPixel = this.map.getPixelFromCoordinate(topRight);
+
+      const dx = clickPixel[0] - iconPixel[0];
+      const dy = clickPixel[1] - iconPixel[1];
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      const tolerancePx = 15; // 像素容差
+
+      return distance < tolerancePx;
+    },
+    getFeatureRenderStyles(feature) {
+      const styles = [];
+
+      const areaType = feature.get("type");
+      const area = feature.get("area");
+      // if (!areaType || !area || !(geometry instanceof Polygon)) return [];
+      const geometry = feature.getGeometry();
+
+      // 主体样式，即使没有属性也可以默认显示
+      const baseStyle =
+        this.getStyleByType(areaType) ||
+        new Style({
+          stroke: new Stroke({ color: "#aaa", width: 2 }),
+          fill: new Fill({ color: "rgba(170, 170, 170, 0.2)" })
+        });
+      styles.push(baseStyle);
+
+      // 👉 有 area 和 geometry 才加标签和按钮
+      if (area && geometry instanceof Polygon) {
+        const center = geometry.getInteriorPoint();
+        styles.push(
+          new Style({
+            geometry: center,
+            text: new Text({
+              text: `${(area / 10000).toFixed(2)} 万㎡`,
+              font: "14px sans-serif",
+              fill: new Fill({ color: "#000" }),
+              stroke: new Stroke({ color: "#fff", width: 2 }),
+              offsetY: -12
+            })
+          })
+        );
+
+        const extent = geometry.getExtent();
+        const topRight = [extent[2], extent[3]];
+        styles.push(
+          new Style({
+            geometry: new Point(topRight),
+            image: new Icon({
+              src: require("@/assets/mapToolBar/remove.png"),
+              scale: 1, // 放大1倍，默认是0.5，试试 0.8、1、1.2 逐步调试
+              anchor: [0.5, 0.5] // 图标锚点，0.5,0.5 是中心
+              // size: [32, 32],    // 你可以指定图标大小，单位px（需要图标本身支持）
+            })
+          })
+        );
+      }
+
+      return styles;
+    },
     formatArea(area, precision = 4) {
       //按照面积大小显示不同的单位
       if (area > 1000000) {
@@ -1221,6 +1404,8 @@ export default {
     getFormattedArea(geometry, precision = 2) {
       const projection = this.map.getView().getProjection();
       const area = getArea(geometry, { projection });
+      //面积赋值到表单，单位为平方米
+      this.formData.area = area.toFixed(precision);
 
       return area > 1000000
         ? { value: (area / 1000000).toFixed(precision), unit: "km²" }
@@ -1245,6 +1430,29 @@ export default {
           unit: "m²"
         };
       }
+    },
+    //限制输入框只能输入数字
+    handleInput(val) {
+      // 只允许数字和小数点
+      let filtered = val.replace(/[^\d.]/g, "");
+
+      // 只保留第一个小数点
+      const parts = filtered.split(".");
+      filtered =
+        parts[0] +
+        (parts[1] !== undefined ? "." + parts.slice(1).join("") : "");
+
+      // 去除整数部分前导0（但保留 '0' 和 '0.xxx'）
+      const [integerPart, decimalPart] = filtered.split(".");
+      let normalizedInt = integerPart.replace(/^0+(?=\d)/, "") || "0";
+
+      // 拼接小数部分
+      filtered =
+        decimalPart !== undefined
+          ? normalizedInt + "." + decimalPart
+          : normalizedInt;
+
+      this.formData.area = filtered;
     },
     startDrawPolygon() {
       let { drawInteraction, drawSource } = this;
@@ -1295,7 +1503,7 @@ export default {
         drawInteraction = null;
       });
     },
-    showFormWithArea(area, unit) {
+    showFormWithArea0(area, unit) {
       // 示例：ElementUI 弹窗逻辑
       this.$confirm(
         `绘制完成，面积为 ${area} ${unit}。是否填写信息？`,
@@ -1308,17 +1516,250 @@ export default {
       ).then(() => {
         // 打开自定义表单
         this.dialogVisible = true;
-        this.formData.area = area;
+        // this.formData.area = area;
       });
+    },
+    showFormWithArea(area, unit) {
+      return new Promise((resolve, reject) => {
+        this.$confirm(
+          `绘制完成，面积为 ${area} ${unit}。是否填写信息？`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "info"
+          }
+        )
+          .then(() => {
+            // 用户点击了“确定” → 打开真正的表单填写
+            this.dialogVisible = true;
+
+            // 用于 resolve/reject 表单操作结果
+            this.onFormSave = async () => {
+              console.log("onFormSave");
+              try {
+                // 假设 formData 是你要提交的数据
+                // const res = await this.saveFeatureApi(this.formData);
+                // TODO 模拟接口返回
+                const res = await this.saveFeatureApiMock(this.formData);
+
+                console.log("保存结果", res);
+
+                if (res && res.success) {
+                  this.clearNodeOverlays();
+
+                  // 根据返回结果进行绘制
+                  this.drawFeatureByType(res); // 你可以根据 res.data.type 判断怎么画
+
+                  this.dialogVisible = false;
+                  this.$message.success("保存成功");
+                  resolve("save");
+                } else {
+                  this.$message.error("保存失败");
+                }
+              } catch (err) {
+                console.error("保存失败", err);
+                this.$message.error("请求出错");
+              }
+            };
+
+            this.onFormCancel = () => {
+              console.log("onFormCancel");
+              this.dialogVisible = false;
+              reject("cancelForm");
+            };
+          })
+          .catch(() => {
+            // 用户点击了“取消” → 不进入填写表单
+            reject("cancelConfirm");
+          });
+      });
+    },
+    saveFeatureApi(data) {
+      return this.$axios.post("/api/saveFeature", data);
+    },
+    saveFeatureApiMock(formData) {
+      let _dataForm = { ...formData };
+      const coordinates = JSON.stringify(_dataForm.coordinates);
+      delete _dataForm.coordinates;
+      _dataForm.id = uuidv4();
+      _dataForm.geom = {
+        type: "Polygon",
+        coordinates: coordinates
+      };
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            code: 200,
+            success: true,
+            message: "保存成功",
+            data: [
+              {
+                itemInfoGuid: "945B5327-A07E-48D1-A68D-786B41B5D81A",
+                type: "规划",
+                //旧有接口返回的这个是一个整体 多个面 （看这次接口改造是否需要新增一个字段或者数据进行拆分标识数据）
+                spaceArea:
+                  '{"type":"Polygon","coordinates":[[[121.50118163912144,28.346588891364323],[121.50034078110218,28.346642221161627],[121.50034042676931,28.34635349112079],[121.50118118226578,28.346219046971495],[121.50118163912144,28.346588891364323]]]}',
+                drawArea: [_dataForm]
+              }
+            ]
+          });
+        }, 800);
+      });
+    },
+    //根据接口返回数据，绘制要素面
+    drawFeatureByType(res) {
+      console.log("模拟接口返回 ...", res);
+      const drawAreas = res.data[0].drawArea;
+      this.clearDrawLayer();
+      drawAreas.forEach((item) => {
+        const { geom } = item;
+        const coords =
+          typeof geom.coordinates === "string"
+            ? JSON.parse(geom.coordinates)
+            : geom.coordinates;
+        // let feature = new Feature(new Polygon(coords), {
+        //   type: item.type,
+        //   id: item.id,
+        //   area: item.area
+        // });
+        let feature = new Feature({
+          geometry: new Polygon(coords)
+        });
+        feature.setProperties({
+          type: item.type,
+          id: item.id,
+          area: item.area
+        });
+        // feature.setStyle(this.getStyleByType(item.type));
+        const type = feature.get("type");
+        console.log("绘制类型 ...", type);
+        this.savedSource.addFeature(feature);
+        // 添加面积和删除按钮Overlay
+        this.addOverlaysForFeature(feature);
+      });
+      // this.savedLayer.setStyle((feature) =>
+      //   this.getFeatureRenderStyles(feature)
+      // );
+    },
+    addOverlaysForFeature(feature) {
+      const overlaysForThisFeature = [];
+      const geometry = feature.getGeometry();
+
+      if (!(geometry instanceof Polygon)) return overlaysForThisFeature;
+
+      // 面积标签
+      const area = this.getFormattedArea(geometry, 2); // 返回 { value, unit }
+      const label = document.createElement("div");
+      Object.assign(label.style, {
+        fontFamily: "sans-serif",
+        fontSize: "16px",
+        fontWeight: "bold",
+        color: "#FFCB00",
+        userSelect: "none",
+        pointerEvents: "none" // 让面积标签不阻塞点击
+      });
+      label.innerHTML = `${area.value} ${area.unit}`;
+
+      const areaOverlay = new Overlay({
+        element: label,
+        offset: [0, -10],
+        positioning: "center-center",
+        stopEvent: false
+      });
+      this.map.addOverlay(areaOverlay);
+      areaOverlay.setPosition(geometry.getInteriorPoint().getCoordinates());
+      overlaysForThisFeature.push(areaOverlay);
+
+      // 删除按钮
+      const extent = geometry.getExtent();
+      const topLeftCoord = [extent[0], extent[3]]; // 取左上角或右上角，根据你的需求
+      const close = document.createElement("div");
+      close.title = "点击删除";
+      close.innerText = "×";
+      Object.assign(close.style, {
+        color: "red",
+        background: "#fff",
+        border: "1px solid red",
+        cursor: "pointer",
+        width: "16px",
+        height: "16px",
+        textAlign: "center",
+        lineHeight: "14px",
+        fontWeight: "700",
+        userSelect: "none"
+      });
+      close.addEventListener("click", () => {
+        this.savedSource.removeFeature(feature);
+        overlaysForThisFeature.forEach((o) => this.map.removeOverlay(o));
+      });
+
+      const closeOverlay = new Overlay({
+        element: close,
+        offset: [0, -10],
+        positioning: "bottom-left",
+        stopEvent: true
+      });
+      this.map.addOverlay(closeOverlay);
+      closeOverlay.setPosition(topLeftCoord);
+      overlaysForThisFeature.push(closeOverlay);
+
+      // 记得存起来方便后续管理
+      this.nodeOverlays.push(...overlaysForThisFeature);
+
+      return overlaysForThisFeature;
+    },
+
+    getStyleByType(type) {
+      // const type = feature.get("type");
+      console.log("getStyleByType ...", type);
+      const styles = {
+        规划: new Style({
+          stroke: new Stroke({
+            color: "#ff0606",
+            width: 2
+          })
+          // fill: new Fill({
+          //   color: "#ff0606"
+          // })
+        }),
+        占用: new Style({
+          stroke: new Stroke({
+            color: [76, 175, 80, 1],
+            width: 4
+          }),
+          fill: new Fill({
+            color: [76, 175, 80, 1]
+          })
+        }),
+        补偿: new Style({
+          stroke: new Stroke({
+            color: "#0080ff",
+            width: 4
+          }),
+          fill: new Fill({
+            color: "#0080ff"
+          })
+        })
+      };
+
+      return styles[type];
+    },
+    handleSaveForm() {
+      if (this.onFormSave) this.onFormSave();
+    },
+    handleCancelForm() {
+      if (this.onFormCancel) this.onFormCancel();
     },
     //tool-bar
     handleMenu(item) {
       console.log("点击了菜单：", item);
       this.showMenu = false;
       // 这里可执行实际功能逻辑
-      this.formData.type = item.label;
+      this.formData.type = item.value;
       // this.startDrawPolygon();
-      this.startDraw2_1('Polygon');
+      this.startDraw2_1("Polygon");
     },
     onMenuSelect(item) {
       console.log("点击菜单：", item.label);
