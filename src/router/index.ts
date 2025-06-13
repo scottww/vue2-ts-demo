@@ -339,6 +339,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/map_done",
+        name: "map_done",
+        component: () =>
+          import(/* webpackChunkName: "MAP_DONE" */ "../views/map2D/index_done.vue"),
+        meta: {
+          title: "map_done 完成版"
+        }
+      },
+      {
         path: "/cesium",
         name: "Cesium",
         component: () =>
