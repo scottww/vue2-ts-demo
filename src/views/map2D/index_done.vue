@@ -58,14 +58,22 @@
         <div class="tool-bar-divider-line"></div>
 
         <!-- 删除按钮 -->
-        <div class="tool-bar-item" @click="clearDrawLayer">
-          <img src="../../assets/mapToolBar/delete.png" alt="删除" />
+        <div class="tool-bar-item" @click="clearAllLayer">
+          <img
+            src="../../assets/mapToolBar/delete.png"
+            alt="删除"
+            title="清除所有图层"
+          />
         </div>
 
         <!-- 分割线 -->
         <div class="tool-bar-divider-line"></div>
         <div class="tool-bar-item" @click="setDelButtonsVisible">
-          <img src="../../assets/mapToolBar/delete.png" alt="展示删除" />
+          <img
+            src="../../assets/mapToolBar/close.png"
+            alt="显示/隐藏删除标记"
+            :title="visibleDel ? '隐藏删除标记' : '显示删除标记'"
+          />
         </div>
       </div>
 
@@ -294,7 +302,7 @@ export default {
       this.initSavedLayer();
 
       //注册hover事件(要在savedLayer之后注册)
-      // mapService.on("pointermove", this.handleMapPointerMove);
+      mapService.on("pointermove", this.handleMapPointerMove);
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -1180,6 +1188,11 @@ export default {
     },
     clearDrawLayer() {
       this.drawSource.clear();
+    },
+    clearAllLayer() {
+      this.drawSource.clear();
+      this.savedSource.clear();
+      this.savedOverlays.forEach((o) => this.map.removeOverlay(o));
     },
     // 点击删除按钮才显示要素删除按钮
     showCloseButtonsForFeature(feature) {
