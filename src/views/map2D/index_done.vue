@@ -584,9 +584,13 @@ export default {
     initSavedLayer(zIndex = 20) {
       this.savedSource = new VectorSource();
 
+      // const hoverStyle = new Style({
+      //   fill: new Fill({ color: "rgba(255, 255, 0, 0.7)" }),
+      //   stroke: new Stroke({ color: "#ff0", width: 2 })
+      // });
       const hoverStyle = new Style({
-        fill: new Fill({ color: "rgba(255, 255, 0, 0.7)" }),
-        stroke: new Stroke({ color: "#ff0", width: 2 })
+        fill: new Fill({ color: "rgba(255, 255, 0, 0.5)" }), // 透明且柔和的黄色填充
+        stroke: new Stroke({ color: "#ffcc00", width: 4, lineDash: [10, 10] }) // 橙黄色虚线，更醒目
       });
       const savedLayer = new VectorLayer({
         source: this.savedSource,
