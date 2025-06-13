@@ -89,6 +89,10 @@
           >
         </el-row>
       </div>
+
+      <div id="layer-overlays">
+        <!-- 你的标签 -->
+      </div>
     </div>
 
     <el-dialog
@@ -248,7 +252,9 @@ export default {
       showButtons: [], // 存储显示要素类型的数组
       isAction1: true,
       isAction2: true,
-      isAction3: true
+      isAction3: true,
+      featureIdToClose: null, // 存储需要关闭的feature的id
+      isDrawing: false // 是否正在绘制
     };
   },
   mounted() {
@@ -365,7 +371,9 @@ export default {
       });
       this.map.addInteraction(this.draw);
 
+      this.isDrawing = true;
       this.draw.on("drawend", (event) => {
+        this.isDrawing = false;
         //绘制结束后，清空draw激活状态
         this.map.removeInteraction(this.draw);
         this.draw = null;
@@ -587,7 +595,9 @@ export default {
           if (feature.get("hidden")) {
             return null; // 这句话非常关键，return null 就是不渲染这个要素
           }
-          return this.getFeatureRenderStyles(feature);
+          return feature.get("hover")
+            ? hoverStyle
+            : this.getFeatureRenderStyles(feature);
         },
         zIndex: zIndex
       });
@@ -772,7 +782,9 @@ export default {
 
       this.map.addInteraction(drawInteraction);
 
+      this.isDrawing = true;
       drawInteraction.on("drawend", (event) => {
+        this.isDrawing = false;
         // 使用 feature 本身而不是 event.geometry
         // const polygon = event.feature;
         const polygon = event.feature.getGeometry();
@@ -934,7 +946,8 @@ export default {
         });
         feature.setProperties({
           type: item.type,
-          id: item.id,
+          // id: item.id,
+          id: uuidv4(),
           area: item.area,
           hidden: false //用于控制显、隐
         });
@@ -1103,9 +1116,16 @@ export default {
           lineHeight: "14px",
           fontWeight: "700",
           userSelect: "none",
-          display: this.visibleDel ? "" : "none" // 初始不展示
+          display: this.visibleDel ? "" : "none", // 初始不展示
+          transform: "none",
+          transition: "transform 0.2s ease, opacity 0.2s ease",
+          opacity: "0.5"
         });
         close.classList.add("close-button");
+        // const id = feature.getId();
+        const id = feature.get("id");
+        this.featureIdToClose = this.featureIdToClose || {};
+        this.featureIdToClose[id] = close;
 
         close.addEventListener("click", () => {
           this.savedSource.removeFeature(feature);
@@ -1308,7 +1328,7 @@ export default {
           break;
       }
     },
-    handleMapPointerMove(evt) {
+    handleMapPointerMove0(evt) {
       // 检查鼠标是不是在哪个要素上
       const hovered = this.map.forEachFeatureAtPixel(
         evt.pixel,
@@ -1316,7 +1336,6 @@ export default {
       );
 
       console.log("hovered feature ...", hovered);
-
       const { lastHoveredFeature } = this;
       // 清空上一个
       if (this.lastHoveredFeature && this.lastHoveredFeature !== hovered) {
@@ -1333,7 +1352,61 @@ export default {
 
       this.savedSource.changed();
       // 重新渲染
-      this.savedLayer.changed();
+      // this.savedLayer.changed();
+
+      // 设置鼠标样式为 pointer
+      if (hovered) {
+        this.map.getTargetElement().style.cursor = "pointer";
+      } else {
+        this.map.getTargetElement().style.cursor = "default";
+      }
+    },
+    handleMapPointerMove(evt) {
+      console.log("handleMapPointerMove ...", evt, this.isDrawing);
+      if (this.isDrawing) return;
+      // 检查鼠标是不是在哪个要素上
+      const hovered = this.map.forEachFeatureAtPixel(
+        evt.pixel,
+        (feature) => feature
+      );
+
+      // 清空上一个
+      if (this.lastHoveredFeature && this.lastHoveredFeature !== hovered) {
+        this.lastHoveredFeature.unset("hover");
+
+        //复原上一个对应标签样式
+        const prevId = this.lastHoveredFeature.get("id");
+        const prevClose = this.featureIdToClose[prevId];
+        if (prevClose) {
+          prevClose.style.opacity = "0.5";
+          prevClose.style.transform = "none";
+        }
+      }
+
+      // 设置当前为 hover
+      if (hovered && hovered !== this.lastHoveredFeature) {
+        hovered.set("hover", true);
+
+        // 高亮当前标签样式
+        const id = hovered.get("id");
+        const close = this.featureIdToClose[id];
+        if (close) {
+          close.style.opacity = "1";
+          close.style.transform = "scale(1.2)";
+        }
+      }
+
+      // 记录到 this
+      this.lastHoveredFeature = hovered;
+
+      this.savedSource.changed();
+
+      // 设置鼠标样式为 pointer
+      if (hovered) {
+        this.map.getTargetElement().style.cursor = "pointer";
+      } else {
+        this.map.getTargetElement().style.cursor = "default";
+      }
     }
   }
 };
@@ -1550,5 +1623,28 @@ export default {
   bottom: 40px;
   transform: translateX(-50%);
   z-index: 2000;
+}
+
+// 删除按钮 样式
+.close-button {
+  color: red;
+  background: #fff;
+  border: 1px solid red;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  textalign: center;
+  line-height: 14px;
+  fontweight: 700;
+  userselect: none;
+  display: none;
+  transform: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.5;
+}
+
+.close-button.active {
+  transform: scale(1.2);
+  opacity: 1;
 }
 </style>
