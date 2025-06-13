@@ -61,6 +61,25 @@
         <div class="tool-bar-item" @click="clearDrawLayer">
           <img src="../../assets/mapToolBar/delete.png" alt="删除" />
         </div>
+
+        <!-- 分割线 -->
+        <div class="tool-bar-divider-line"></div>
+        <div class="tool-bar-item" @click="setDelButtonsVisible">
+          <img src="../../assets/mapToolBar/delete.png" alt="展示删除" />
+        </div>
+      </div>
+
+      <div class="layer-buttons">
+        <el-row>
+          <el-button
+            v-for="buttontype in showButtons"
+            :key="buttontype"
+            :type="getButtonStyle(buttontype)"
+            @click="itemClick(buttontype)"
+            round
+            >{{ buttontype }}</el-button
+          >
+        </el-row>
       </div>
     </div>
 
@@ -69,6 +88,7 @@
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      @close="handleCancelForm"
       width="500px"
     >
       <el-form :model="formData" label-width="80px">
@@ -212,7 +232,15 @@ export default {
         { label: "补偿", value: "补偿" }
       ],
       onFormSave: null, // 保存回调
-      onCancel: null // 取消回调
+      onCancel: null, // 取消回调
+      featureCloseButtons: null, // 存储关闭按钮的数组
+      delButtons: null, // 存储删除按钮的数组
+      visibleDel: false, //删除按钮 总开关 标识
+      lastHoveredFeature: null, //上一个被hover的feature
+      showButtons: [], // 存储显示要素类型的数组
+      isAction1: true,
+      isAction2: true,
+      isAction3: true
     };
   },
   mounted() {
@@ -264,6 +292,9 @@ export default {
 
       this.initDrawLayer();
       this.initSavedLayer();
+
+      //注册hover事件(要在savedLayer之后注册)
+      // mapService.on("pointermove", this.handleMapPointerMove);
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -537,9 +568,19 @@ export default {
     initSavedLayer(zIndex = 20) {
       this.savedSource = new VectorSource();
 
+      const hoverStyle = new Style({
+        fill: new Fill({ color: "rgba(255, 255, 0, 0.7)" }),
+        stroke: new Stroke({ color: "#ff0", width: 2 })
+      });
       const savedLayer = new VectorLayer({
         source: this.savedSource,
-        style: (feature) => this.getFeatureRenderStyles(feature),
+        // style: (feature) => this.getFeatureRenderStyles(feature),
+        style: (feature) => {
+          if (feature.get("hidden")) {
+            return null; // 这句话非常关键，return null 就是不渲染这个要素
+          }
+          return this.getFeatureRenderStyles(feature);
+        },
         zIndex: zIndex
       });
 
@@ -886,11 +927,16 @@ export default {
         feature.setProperties({
           type: item.type,
           id: item.id,
-          area: item.area
+          area: item.area,
+          hidden: false //用于控制显、隐
         });
         // feature.setStyle(this.getStyleByType(item.type));
         const type = feature.get("type");
         console.log("绘制类型 ...", type);
+        if (!this.showButtons.includes(type)) {
+          this.showButtons.push(type);
+        }
+
         this.savedSource.addFeature(feature);
         // 添加面积和删除按钮Overlay
         this.addOverlaysForFeature(feature);
@@ -899,7 +945,7 @@ export default {
       //   this.getFeatureRenderStyles(feature)
       // );
     },
-    addOverlaysForFeature(feature) {
+    addOverlaysForFeature0(feature) {
       const overlaysForThisFeature = [];
       const geometry = feature.getGeometry();
 
@@ -946,7 +992,8 @@ export default {
         textAlign: "center",
         lineHeight: "14px",
         fontWeight: "700",
-        userSelect: "none"
+        userSelect: "none",
+        display: "none" // 初时不展示
       });
       close.addEventListener("click", () => {
         this.savedSource.removeFeature(feature);
@@ -963,7 +1010,120 @@ export default {
       closeOverlay.setPosition(closeDisplayCoord);
       overlaysForThisFeature.push(closeOverlay);
 
+      // 为几何体绑定点击事件，展示删除按钮
+      this.map.on("click", (evt) => {
+        // 检查是不是点到了这个feature
+        this.map.forEachFeatureAtPixel(evt.pixel, (foundFeature) => {
+          if (foundFeature === feature) {
+            close.style.display = "";
+          } else {
+            close.style.display = "none";
+          }
+        });
+      });
+
+      // 记下来方便后续根据外部按钮进行展示
+      // if (!this.featureCloseButtons) {
+      //   this.featureCloseButtons = new Map();
+      // }
+      // this.featureCloseButtons.set(feature, close);
+
+      //总开关删除按钮显示、隐藏
+      // 记下来方便后续统一展示/隐藏
+      if (!this.delButtons) {
+        this.delButtons = []; // 统一保存
+      }
+      this.delButtons.push(close);
+
       // 记得存起来方便后续管理
+      this.savedOverlays.push(...overlaysForThisFeature);
+
+      return overlaysForThisFeature;
+    },
+    addOverlaysForFeature(feature) {
+      const overlaysForThisFeature = [];
+
+      if (feature.get("hidden")) return overlaysForThisFeature;
+
+      const geometry = feature.getGeometry();
+
+      if (geometry instanceof Polygon) {
+        // 面积标签
+        const area = this.getFormattedArea(geometry, 2);
+        const label = document.createElement("div");
+
+        Object.assign(label.style, {
+          fontFamily: "sans-serif",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "#FFCB00",
+          userSelect: "none",
+          pointerEvents: "none"
+        });
+
+        label.innerHTML = `${area.value} ${area.unit}`;
+
+        const areaOverlay = new Overlay({
+          element: label,
+          offset: [0, -10],
+          positioning: "center-center",
+          stopEvent: false
+        });
+
+        this.map.addOverlay(areaOverlay);
+        areaOverlay.setPosition(geometry.getInteriorPoint().getCoordinates());
+
+        overlaysForThisFeature.push(areaOverlay);
+
+        // 删除按钮
+        const coords = geometry.getCoordinates()[0];
+        const closeDisplayCoord = [coords[0][0], coords[0][1]];
+        const close = document.createElement("div");
+
+        close.title = "点击删除";
+
+        close.innerText = "×";
+
+        Object.assign(close.style, {
+          color: "red",
+          background: "#fff",
+          border: "1px solid red",
+          cursor: "pointer",
+          width: "16px",
+          height: "16px",
+          textAlign: "center",
+          lineHeight: "14px",
+          fontWeight: "700",
+          userSelect: "none",
+          display: this.visibleDel ? "" : "none" // 初始不展示
+        });
+        close.classList.add("close-button");
+
+        close.addEventListener("click", () => {
+          this.savedSource.removeFeature(feature);
+          overlaysForThisFeature.forEach((o) => this.map.removeOverlay(o));
+        });
+
+        const closeOverlay = new Overlay({
+          element: close,
+          offset: [0, -10],
+          positioning: "bottom-left",
+          stopEvent: true
+        });
+
+        this.map.addOverlay(closeOverlay);
+        closeOverlay.setPosition(closeDisplayCoord);
+        overlaysForThisFeature.push(closeOverlay);
+
+        if (!this.delButtons) {
+          this.delButtons = []; // 统一保存
+        }
+        this.delButtons.push(close);
+      }
+
+      // 绑定到要素方便后续对其进行展示/隐藏
+      feature.set("overlays", overlaysForThisFeature);
+
       this.savedOverlays.push(...overlaysForThisFeature);
 
       return overlaysForThisFeature;
@@ -1018,11 +1178,149 @@ export default {
       this.formData.type = item.value;
       this.startDraw2_1("Polygon");
     },
-    onMenuSelect(item) {
-      console.log("点击菜单：", item.label);
-    },
     clearDrawLayer() {
       this.drawSource.clear();
+    },
+    // 点击删除按钮才显示要素删除按钮
+    showCloseButtonsForFeature(feature) {
+      const close = this.featureCloseButtons?.get(feature);
+      if (close) {
+        close.style.display = "";
+      }
+    },
+    hideCloseButtonsForFeature(feature) {
+      const close = this.featureCloseButtons?.get(feature);
+      if (close) {
+        close.style.display = "none";
+      }
+    },
+    toggleCloseButtonsForFeature() {
+      this.isShowCloseButtons = !this.isShowCloseButtons;
+    },
+    // 是否显示 删除按钮  总开关 标识：
+    setDelButtonsVisible() {
+      // 取非
+      this.visibleDel = !this.visibleDel;
+
+      // 每时刻根据总开关渲染每一个要素
+      this.savedSource.getFeatures().forEach((feature) => {
+        // 要素若为hidden，不展示删除按钮
+        if (feature.get("hidden")) return;
+
+        const overlays = feature.get("overlays") || [];
+        overlays.forEach((o) => {
+          if (o.getElement().classList.contains("close-button")) {
+            o.getElement().style.display = this.visibleDel ? "" : "none";
+          }
+        });
+      });
+    },
+    hideFeaturesByType(type) {
+      this.savedSource.getFeatures().forEach((feature) => {
+        if (feature.get("type") === type) {
+          feature.set("hidden", true);
+
+          // 显示对应的 overlays
+          const overlays = feature.get("overlays") || [];
+          overlays.forEach((o) => (o.getElement().style.display = "none"));
+        }
+      });
+      this.savedSource.changed();
+    },
+    showFeaturesByType(type) {
+      this.savedSource.getFeatures().forEach((feature) => {
+        if (feature.get("type") === type) {
+          feature.unset("hidden"); // 解除
+
+          // 每个要素上绑定的 overlays 都需要一同展示，但是需要根据总开关进行渲染
+          const overlays = feature.get("overlays") || [];
+          overlays.forEach((o) => {
+            if (o.getElement().classList.contains("close-button")) {
+              o.getElement().style.display = this.visibleDel ? "" : "none";
+            } else {
+              o.getElement().style.display = "";
+            }
+          });
+        }
+      });
+      this.savedSource.changed();
+    },
+    getButtonStyle(type) {
+      switch (type) {
+        case "占用":
+          return "success";
+        case "补偿":
+          return "primary";
+        case "规划":
+          return "danger";
+        default:
+          return "";
+      }
+    },
+    itemClick(type) {
+      console.log("type", type);
+      switch (type) {
+        case "占用":
+          if (this.isAction1) {
+            // this.delZyLayer();
+            this.hideFeaturesByType("占用");
+            this.isAction1 = false;
+          } else {
+            this.isAction1 = true;
+            this.showFeaturesByType("占用");
+            // this.addZyLayer();
+          }
+          break;
+        case "补偿":
+          if (this.isAction2) {
+            // this.delBcLayer();
+            this.hideFeaturesByType("补偿");
+            this.isAction2 = false;
+          } else {
+            // this.addBcLayer();
+            this.showFeaturesByType("补偿");
+            this.isAction2 = true;
+          }
+          break;
+        case "规划":
+          if (this.isAction3) {
+            // this.delGhLayer();
+            this.hideFeaturesByType("规划");
+            this.isAction3 = false;
+          } else {
+            // this.addGhLayer();
+            this.showFeaturesByType("规划");
+            this.isAction3 = true;
+          }
+          break;
+      }
+    },
+    handleMapPointerMove(evt) {
+      // 检查鼠标是不是在哪个要素上
+      const hovered = this.map.forEachFeatureAtPixel(
+        evt.pixel,
+        (feature) => feature
+      );
+
+      console.log("hovered feature ...", hovered);
+
+      const { lastHoveredFeature } = this;
+      // 清空上一个
+      if (this.lastHoveredFeature && this.lastHoveredFeature !== hovered) {
+        this.lastHoveredFeature.unset("hover"); // 解除 hover
+      }
+
+      // 设置当前为 hover
+      if (hovered && hovered !== this.lastHoveredFeature) {
+        hovered.set("hover", true);
+      }
+
+      // 记录到 this
+      this.lastHoveredFeature = hovered;
+
+      this.savedSource.changed();
+      // 重新渲染
+      this.savedLayer.changed();
     }
   }
 };
@@ -1125,14 +1423,14 @@ export default {
 }
 
 //measure2
-.measure-label {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 2px 4px;
-  font-size: 12px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
+// .measure-label {
+//   background: white;
+//   border: 1px solid #ccc;
+//   padding: 2px 4px;
+//   font-size: 12px;
+//   border-radius: 4px;
+//   white-space: nowrap;
+// }
 
 .map-change-btns {
   position: absolute;
@@ -1230,5 +1528,14 @@ export default {
   width: 14px;
   height: 14px;
   transition: all 0.2s;
+}
+
+//要素类型控制组
+.layer-buttons {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 2000;
 }
 </style>

@@ -1280,7 +1280,7 @@ export default {
     },
     initSavedLayer(zIndex = 20) {
       this.savedSource = new VectorSource();
-
+      
       const savedLayer = new VectorLayer({
         source: this.savedSource,
         style: (feature) => this.getFeatureRenderStyles(feature),
