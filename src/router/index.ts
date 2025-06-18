@@ -520,7 +520,7 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
-        path: "/pdf",
+        path: "/pdfPreview",
         name: "pdfPreview",
         component: () =>
           import(

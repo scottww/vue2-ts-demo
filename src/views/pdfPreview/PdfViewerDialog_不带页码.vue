@@ -31,8 +31,9 @@
 
 <script>
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker.entry.js');
+//使用静态cdn
+// pdfjsLib.GlobalWorkerOptions.workerSrc = '/cdn/pdf.worker.min.js';
 
 export default {
   name: "PdfViewerDialog",

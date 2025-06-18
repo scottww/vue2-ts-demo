@@ -59,6 +59,7 @@ export default {
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
             { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
             { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
+            { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
           ]
         },
         {
@@ -112,6 +113,7 @@ export default {
         // { id: 26, text: "Table 样式", path: "/tableStyle" }
         // { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
         // { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
+        // { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
       ]
     };
   },

@@ -10,18 +10,47 @@
       width="90%"
       top="5vh"
       :destroy-on-close="true"
-      @opened="renderAllPages"
+      @opened="initPdf"
     >
       <!-- 工具栏 -->
-      <div style="margin-bottom: 10px">
+      <div
+        style="
+          margin-bottom: 10px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        "
+      >
         <el-button size="mini" @click="zoomOut">缩小</el-button>
         <el-button size="mini" @click="zoomIn">放大</el-button>
         <el-button size="mini" type="primary" @click="downloadPdf"
           >下载</el-button
         >
-        <span style="margin-left: 10px"
-          >缩放: {{ currentScale.toFixed(1) }}x</span
+        <span>当前缩放：{{ currentScale.toFixed(1) }}x</span>
+
+        <el-input-number
+          v-model="gotoPage"
+          :min="1"
+          :max="totalPages"
+          size="mini"
+          style="margin-left: auto; width: 120px"
+          placeholder="跳转页码"
+        />
+        <el-button size="mini" @click="scrollToPage(gotoPage)">跳转</el-button>
+      </div>
+
+      <!-- 目录导航 -->
+      <div v-if="outline.length" style="margin-bottom: 10px">
+        <span style="font-weight: bold">目录：</span>
+        <el-button
+          v-for="(item, index) in outline"
+          :key="index"
+          size="mini"
+          type="text"
+          @click="scrollToPage(item.pageNumber)"
         >
+          {{ item.title }}
+        </el-button>
       </div>
 
       <!-- 渲染容器 -->
@@ -35,8 +64,8 @@
         "
       >
         <div
-          v-for="(pageNum, idx) in totalPages"
-          :key="idx"
+          v-for="pageNum in totalPages"
+          :key="pageNum"
           class="pdf-page-container"
         >
           <canvas :ref="'canvas_' + pageNum" class="pdf-canvas"></canvas>
@@ -51,12 +80,11 @@
 
 <script>
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
-pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker.entry.js');
-//使用静态cdn
-// pdfjsLib.GlobalWorkerOptions.workerSrc = '/cdn/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
 
 export default {
-  name: "WpsStylePdfViewer",
+  name: "FullPdfViewer",
   props: {
     pdfUrl: {
       type: String,
@@ -64,7 +92,7 @@ export default {
     },
     scale: {
       type: Number,
-      default: 1.5
+      default: 1.2
     }
   },
   data() {
@@ -72,7 +100,9 @@ export default {
       dialogVisible: false,
       pdfDoc: null,
       totalPages: 0,
-      currentScale: this.scale
+      currentScale: this.scale,
+      gotoPage: 1,
+      outline: []
     };
   },
   computed: {
@@ -82,11 +112,20 @@ export default {
     }
   },
   methods: {
-    async renderAllPages() {
-      const loadingTask = pdfjsLib.getDocument(this.pdfUrl);
-      this.pdfDoc = await loadingTask.promise;
-      this.totalPages = this.pdfDoc.numPages;
+    async initPdf() {
+      try {
+        const loadingTask = pdfjsLib.getDocument(this.pdfUrl);
+        this.pdfDoc = await loadingTask.promise;
+        this.totalPages = this.pdfDoc.numPages;
+        this.gotoPage = 1;
 
+        await this.renderAllPages();
+        await this.loadOutline();
+      } catch (err) {
+        console.error("PDF 加载失败：", err);
+      }
+    },
+    async renderAllPages() {
       for (let pageNum = 1; pageNum <= this.totalPages; pageNum++) {
         const page = await this.pdfDoc.getPage(pageNum);
         const viewport = page.getViewport({ scale: this.currentScale });
@@ -102,6 +141,27 @@ export default {
         };
 
         await page.render(renderContext).promise;
+      }
+    },
+    async loadOutline() {
+      const outline = await this.pdfDoc.getOutline();
+      console.log("outline", outline);
+      // this.outline = [];
+      this.outline = [
+        { title: "第1页：前端简介", pageNumber: 1 },
+        { title: "第2页：Vue 基础", pageNumber: 2 },
+        { title: "第3页：组件通信", pageNumber: 3 }
+      ];
+
+      if (outline) {
+        for (let item of outline) {
+          const dest = await this.pdfDoc.getDestination(item.dest);
+          const pageIndex = await this.pdfDoc.getPageIndex(dest[0]);
+          this.outline.push({
+            title: item.title,
+            pageNumber: pageIndex + 1
+          });
+        }
       }
     },
     zoomIn() {
@@ -120,18 +180,13 @@ export default {
       link.download = this.fileName;
       link.click();
     },
-    getDisplayFileName(url) {
-      // 获取文件名
-      const fileName = url.split("/").pop();
-
-      if (!fileName) return "";
-      const index = fileName.indexOf("简报");
-
-      if (index !== -1) {
-        return fileName.slice(0, index + 2) + ".pdf";
-      } else {
-        return fileName;
-      }
+    scrollToPage(pageNum) {
+      this.$nextTick(() => {
+        const target = this.$refs["canvas_" + pageNum]?.[0];
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      });
     }
   }
 };
@@ -144,7 +199,6 @@ export default {
   margin: 20px auto;
   padding: 10px;
   width: fit-content;
-  position: relative;
   text-align: center;
 }
 .pdf-canvas {
