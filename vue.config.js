@@ -81,8 +81,10 @@ module.exports = {
     }
   },
 
+  transpileDependencies: ["pdfjs-dist"], // ✅ 让 babel 转译 pdfjs-dist
   // 其他插件配置
   chainWebpack: (config) => {
+    
     // 可以在这里添加更多的 Webpack 配置
     // 例如，添加一个 SVG 加载器
     config.module.rule("svg").exclude.add(resolve("src/icons")).end();

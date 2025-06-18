@@ -518,6 +518,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "CustomCalendar 自定义日历"
         }
+      },
+      {
+        path: "/pdf",
+        name: "pdfPreview",
+        component: () =>
+          import(
+            /* webpackChunkName: "pdfPreview" */ "../views/pdfPreview/index.vue"
+          ),
+        meta: {
+          title: "PdfPreview 预览PDF"
+        }
       }
     ]
   },

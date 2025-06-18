@@ -7304,6 +7304,11 @@
   "resolved" "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   "version" "4.0.0"
 
+"path2d-polyfill@^2.0.1":
+  "integrity" "sha512-ad/3bsalbbWhmBo0D6FZ4RNMwsLsPpL6gnvhuSaU5Vm7b06Kr5ubSltQQ0T7YKsiJQO+g22zJ4dJKNTXIyOXtA=="
+  "resolved" "https://registry.npmmirror.com/path2d-polyfill/-/path2d-polyfill-2.0.1.tgz"
+  "version" "2.0.1"
+
 "pbf@3.2.1":
   "integrity" "sha512-ClrV7pNOn7rtmoQVF4TS1vyU0WhYRnP92fzbfF75jAIwpnzdJXf8iTd4CMEqO4yUenH6NDqLiwjqlh6QgZzgLQ=="
   "resolved" "https://registry.npmmirror.com/pbf/-/pbf-3.2.1.tgz"
@@ -7322,6 +7327,14 @@
     "ripemd160" "^2.0.1"
     "safe-buffer" "^5.0.1"
     "sha.js" "^2.4.8"
+
+"pdfjs-dist@^3.7.107":
+  "integrity" "sha512-D0pZgz4u8VNjCCXfNCjzeFcenxKFGh2RnGlLIvDHgpT+ZvOlsBlHugpOfmcLQyKk7csHBhPalf+mCM6thiclSQ=="
+  "resolved" "https://registry.npmmirror.com/pdfjs-dist/-/pdfjs-dist-3.7.107.tgz"
+  "version" "3.7.107"
+  optionalDependencies:
+    "canvas" "^2.11.2"
+    "path2d-polyfill" "^2.0.1"
 
 "performance-now@^2.1.0":
   "integrity" "sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow=="
