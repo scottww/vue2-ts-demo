@@ -22,7 +22,8 @@
 
 <script>
 import HCard from "@/components/HCard";
-import * as echarts from "echarts/dist/echarts.esm";
+// import * as echarts from "echarts/dist/echarts.esm";
+import * as echarts from "echarts";
 import { CHART_LIST } from "./data";
 export default {
   name: "Chart",

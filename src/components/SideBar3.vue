@@ -60,6 +60,7 @@ export default {
             { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
             { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
             { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
+            { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
           ]
         },
         {
@@ -113,7 +114,8 @@ export default {
         // { id: 26, text: "Table 样式", path: "/tableStyle" }
         // { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
         // { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
-        // { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
+        // { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },customNumberInput
+        // { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
       ]
     };
   },

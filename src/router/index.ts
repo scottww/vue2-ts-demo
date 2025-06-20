@@ -342,7 +342,9 @@ const routes: Array<RouteConfig> = [
         path: "/map_done",
         name: "map_done",
         component: () =>
-          import(/* webpackChunkName: "MAP_DONE" */ "../views/map2D/index_done.vue"),
+          import(
+            /* webpackChunkName: "MAP_DONE" */ "../views/map2D/index_done.vue"
+          ),
         meta: {
           title: "map_done 完成版"
         }
@@ -528,6 +530,17 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "PdfPreview 预览PDF"
+        }
+      },
+      {
+        path: "/customNumberInput",
+        name: "customNumberInput",
+        component: () =>
+          import(
+            /* webpackChunkName: "customNumberInput" */ "../views/customNumberInput/index.vue"
+          ),
+        meta: {
+          title: "customNumberInput 自定义数字输入框"
         }
       }
     ]
