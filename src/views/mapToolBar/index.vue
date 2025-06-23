@@ -92,10 +92,14 @@
         <span class="item-label">批量导入</span>
       </div>
     </div>
+    <div class="tools-box3">
+      <custom-adcd-select />
+    </div>
   </div>
 </template>
 
 <script>
+import customAdcdSelect from "./customAdcdSelect.vue";
 const defaultImage1 = require("@/assets/mapToolBar/add_grey.png"); // 默认图片
 const activeImage1 = require("@/assets/mapToolBar/add.png"); // 悬停时的图片
 const defaultImageEdit1 = require("@/assets/mapToolBar/edit_grey.png"); // 默认图片
@@ -116,6 +120,7 @@ const defaultImageImport = require("@/assets/mapToolBarNew/import.png");
 const activeImageImport = require("@/assets/mapToolBarNew/import_hover.png");
 
 export default {
+  components: { customAdcdSelect },
   data() {
     return {
       defaultImage1,
@@ -323,4 +328,9 @@ export default {
   box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2);
   border-radius: 4px 4px 4px 4px;
 }
+
+.tools-box3 {
+  margin-top: 20px;
+}
+
 </style>
