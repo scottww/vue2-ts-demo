@@ -120,6 +120,8 @@
 <script>
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
+import PointLayerManager from "@/utils/map/PointLayerManager";
+
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
 const warnIcon_svg = require("@/assets/mapIcon/warn_icon1.svg");
 const warnIcon11 = require("@/assets/mapIcon/warn_icon1.png");
@@ -143,7 +145,7 @@ import { LineString, Polygon } from "ol/geom";
 import HoverMenu from "./tool-bar.vue";
 import { v4 as uuidv4 } from "uuid";
 
-import { POINT_LIST } from './data';
+import { POINT_LIST } from "./data";
 
 export default {
   components: { HoverMenu },
@@ -254,7 +256,7 @@ export default {
       // mapService.addMarkerByLngLat([120.1, 30.3], warnIcon_svg, { color: "#ffff00" });
       // mapService.addMarkerByLngLat([120.2, 30.3], warnIcon11);
       // mapService.addMarkerByLngLat([120.3, 30.3], warnIcon2);
-      
+
       this.mapService = mapService;
       this.map = mapService.getMapInsatance();
 
@@ -282,10 +284,11 @@ export default {
       this.initDrawLayer();
       this.initSavedLayer();
     },
-    addPointToMap() {
+    //改造前
+    addPointToMap0() {
       const that = this;
-      let src = require('@/assets/mapIcon/jsz.png');
-      let src_hover = require('@/assets/mapIcon/point_hover.png');
+      let src = require("@/assets/mapIcon/jsz.png");
+      let src_hover = require("@/assets/mapIcon/point_hover.png");
       var styleIcon = new Style({
         // 设置图片效果
         image: new Icon({
@@ -293,8 +296,8 @@ export default {
           //anchor: [0.1, 0.1],
           //width: 20,
           anchor: [0.5, 1],
-          scale: 0.5,
-        }),
+          scale: 0.5
+        })
       });
       // hover 样式
       function getHoverStyle(feature) {
@@ -303,14 +306,57 @@ export default {
             // src: src_hover,
             src: src,
             anchor: [0.5, 1],
-            scale: 0.6,
+            scale: 0.6
           }),
-          text: that.mapService.getDefaultTextStyle(feature.get('stnm'), -40, 'rgba(0,107,255, 0.6)'),
+          text: that.mapService.getDefaultTextStyle(
+            feature.get("stnm"),
+            -40,
+            "rgba(0,107,255, 0.6)"
+          )
         });
       }
-      this.multiplePoints = this.mapService.addBatchPointFeature(POINT_LIST, styleIcon, true);
-      this.mapService.enableFeatureHover(this.map, this.multiplePoints, getHoverStyle, (feature) => feature.get('defaultStyle'));
+      this.multiplePoints = this.mapService.addBatchPointFeature(
+        POINT_LIST,
+        styleIcon,
+        true
+      );
+      this.mapService.enableFeatureHover(
+        this.map,
+        this.multiplePoints,
+        getHoverStyle,
+        (feature) => feature.get("defaultStyle")
+      );
       this.map.addLayer(this.multiplePoints);
+    },
+    //改造后
+    addPointToMap() {
+      const src = require("@/assets/mapIcon/jsz.png");
+      const srcHover = require("@/assets/mapIcon/point_hover.png");
+      //注册点图层管理器
+      const manager = new PointLayerManager(this.map, this.mapService);
+
+      //样式固定了，不灵活
+      // manager.addPoints(POINT_LIST, src, srcHover);
+
+      manager.addPoints(POINT_LIST, {
+        icon: src,
+        // hoverIcon: src,
+        scale: 0.6,
+        hoverScale: 0.7,
+        textStyle: {
+          offsetY: -50,
+          fillColor: "#fff",
+          bgColor: "rgba(0, 0, 0, 0.5)",
+          // font: "bold 16px Microsoft YaHei"
+        },
+        hoverTextStyle: {
+          offsetY: -55,
+          // fillColor: "#fff",
+          bgColor: "rgba(255, 0, 0, 0.6)",
+          // bgColor: "rgba(0,107,255, 0.4)",
+          // font: "bold 18px Microsoft YaHei"
+        }
+      });
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
