@@ -120,7 +120,10 @@
 <script>
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
-const pointMarker = require("@/assets/mapIcon/marker.png");
+const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
+const warnIcon_svg = require("@/assets/mapIcon/warn_icon1.svg");
+const warnIcon11 = require("@/assets/mapIcon/warn_icon1.png");
+const warnIcon2 = require("@/assets/mapIcon/预警2.png");
 
 import Map from "ol/Map";
 import View from "ol/View";
@@ -140,6 +143,8 @@ import { LineString, Polygon } from "ol/geom";
 import HoverMenu from "./tool-bar.vue";
 import { v4 as uuidv4 } from "uuid";
 
+import { POINT_LIST } from './data';
+
 export default {
   components: { HoverMenu },
   data() {
@@ -148,7 +153,7 @@ export default {
       currentMaptype: "vec",
       center: [120.153576, 30.287459],
       zoom: 11,
-      pointMarker,
+      pointMarkerIcon,
       coordinates: "120.153576,30.287459",
       mapService: null,
       map: null,
@@ -217,7 +222,8 @@ export default {
         { label: "补偿", value: "补偿" }
       ],
       onFormSave: null, // 保存回调
-      onCancel: null // 取消回调
+      onCancel: null, // 取消回调
+      multiplePoints: null //批量加点图层
     };
   },
   mounted() {
@@ -243,9 +249,16 @@ export default {
       //   mapService.addMarkerByLngLat(this.center, pointMarker);
       // });
 
-      mapService.addMarkerByLngLat(this.center, pointMarker);
+      mapService.addMarkerByLngLat(this.center, pointMarkerIcon);
+      //SVG改颜色
+      // mapService.addMarkerByLngLat([120.1, 30.3], warnIcon_svg, { color: "#ffff00" });
+      // mapService.addMarkerByLngLat([120.2, 30.3], warnIcon11);
+      // mapService.addMarkerByLngLat([120.3, 30.3], warnIcon2);
+      
       this.mapService = mapService;
       this.map = mapService.getMapInsatance();
+
+      this.addPointToMap();
 
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);
@@ -268,6 +281,36 @@ export default {
 
       this.initDrawLayer();
       this.initSavedLayer();
+    },
+    addPointToMap() {
+      const that = this;
+      let src = require('@/assets/mapIcon/jsz.png');
+      let src_hover = require('@/assets/mapIcon/point_hover.png');
+      var styleIcon = new Style({
+        // 设置图片效果
+        image: new Icon({
+          src: src,
+          //anchor: [0.1, 0.1],
+          //width: 20,
+          anchor: [0.5, 1],
+          scale: 0.5,
+        }),
+      });
+      // hover 样式
+      function getHoverStyle(feature) {
+        return new Style({
+          image: new Icon({
+            // src: src_hover,
+            src: src,
+            anchor: [0.5, 1],
+            scale: 0.6,
+          }),
+          text: that.mapService.getDefaultTextStyle(feature.get('stnm'), -40, 'rgba(0,107,255, 0.6)'),
+        });
+      }
+      this.multiplePoints = this.mapService.addBatchPointFeature(POINT_LIST, styleIcon, true);
+      this.mapService.enableFeatureHover(this.map, this.multiplePoints, getHoverStyle, (feature) => feature.get('defaultStyle'));
+      this.map.addLayer(this.multiplePoints);
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -1280,7 +1323,7 @@ export default {
     },
     initSavedLayer(zIndex = 20) {
       this.savedSource = new VectorSource();
-      
+
       const savedLayer = new VectorLayer({
         source: this.savedSource,
         style: (feature) => this.getFeatureRenderStyles(feature),
