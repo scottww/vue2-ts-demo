@@ -121,6 +121,7 @@
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
 import PointLayerManager from "@/utils/map/PointLayerManager";
+import { PopupManager, PointManager } from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
 const warnIcon_svg = require("@/assets/mapIcon/warn_icon1.svg");
@@ -260,8 +261,6 @@ export default {
       this.mapService = mapService;
       this.map = mapService.getMapInsatance();
 
-      this.addPointToMap();
-
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);
       this.tileLayerManager.switchTo("TDT_vec");
@@ -280,6 +279,18 @@ export default {
       //   zIndex: 20
       // });
       // this.map.addLayer(this.drawLayer);
+
+      // 初始化弹窗管理器
+      const popup = new PopupManager(this.map);
+      this.addPointToMap(this.map, popup);
+
+      // this.map.on("click", (evt) => {
+      //   this.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+      //     const coord = feature.getGeometry().getCoordinates();
+      //     const name = feature.get("stnm");
+      //     popup.showPopup(coord, `<div><b>${name}</b><br>这是一个点</div>`);
+      //   });
+      // });
 
       this.initDrawLayer();
       this.initSavedLayer();
@@ -329,7 +340,7 @@ export default {
       this.map.addLayer(this.multiplePoints);
     },
     //改造后
-    addPointToMap() {
+    addPointToMap1() {
       const src = require("@/assets/mapIcon/jsz.png");
       const srcHover = require("@/assets/mapIcon/point_hover.png");
       //注册点图层管理器
@@ -346,13 +357,49 @@ export default {
         textStyle: {
           offsetY: -50,
           fillColor: "#fff",
-          bgColor: "rgba(0, 0, 0, 0.5)",
+          bgColor: "rgba(0, 0, 0, 0.5)"
           // font: "bold 16px Microsoft YaHei"
         },
         hoverTextStyle: {
           offsetY: -55,
           // fillColor: "#fff",
-          bgColor: "rgba(255, 0, 0, 0.6)",
+          bgColor: "rgba(255, 0, 0, 0.6)"
+          // bgColor: "rgba(0,107,255, 0.4)",
+          // font: "bold 18px Microsoft YaHei"
+        }
+      });
+    },
+    //使用popup
+    addPointToMap(map, popupManager) {
+      const src = require("@/assets/mapIcon/jsz.png");
+      const srcHover = require("@/assets/mapIcon/point_hover.png");
+      // 初始化点位管理器
+      const pointManager = new PointManager(map, popupManager, {
+        icon: warnIcon2,
+        scale: 0.6
+      });
+
+      // 添加点位
+      // pointManager.addPoints([
+      //   { longitude: 120.2, latitude: 30.3, stnm: "杭州" },
+      //   { longitude: 117.2, latitude: 31.8, stnm: "合肥" }
+      // ]);
+
+      pointManager.addPoints(POINT_LIST, {
+        icon: src,
+        // hoverIcon: src,
+        scale: 0.6,
+        hoverScale: 0.7,
+        textStyle: {
+          offsetY: -50,
+          fillColor: "#fff",
+          bgColor: "rgba(0, 0, 0, 0.5)"
+          // font: "bold 16px Microsoft YaHei"
+        },
+        hoverTextStyle: {
+          offsetY: -55,
+          // fillColor: "#fff",
+          bgColor: "rgba(255, 0, 0, 0.6)"
           // bgColor: "rgba(0,107,255, 0.4)",
           // font: "bold 18px Microsoft YaHei"
         }

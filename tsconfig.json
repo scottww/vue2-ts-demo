@@ -25,8 +25,8 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/utils/decorator/index.js"
-  ],
+    "src/utils/decorator/index.js",
+    "src/utils/map/mapUtils/index.js", "src/utils/map/mapUtils/features/PointManager.js"],
   "exclude": ["node_modules", "build", "public"]
   // "rules":{
   //   "@typescript-eslint/explicit-module-boundary-types":"off"
