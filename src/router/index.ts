@@ -542,6 +542,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "customNumberInput 自定义数字输入框"
         }
+      },
+      {
+        path: "/customPopup",
+        name: "customPopup",
+        component: () =>
+          import(
+            /* webpackChunkName: "customPopup" */ "../views/customPopup/index.vue"
+          ),
+        meta: {
+          title: "customPopup 自定义弹窗"
+        }
       }
     ]
   },

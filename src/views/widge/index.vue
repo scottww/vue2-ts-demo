@@ -56,6 +56,14 @@ export default class HWidgeDemo extends Vue {
     {
       label: "纳米",
       url: "https://bot.n.cn/"
+    },
+    {
+      label: "智谱清言",
+      url: "https://chatglm.cn/"
+    },
+    {
+      label: "Trae",
+      url: "https://www.trae.ai/"
     }
   ];
 
