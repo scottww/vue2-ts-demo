@@ -8,12 +8,7 @@
       </label>
     </div>
 
-    <input
-      type="file"
-      @change="handleFileChange"
-      accept=".txt"
-      class="file-input"
-    />
+    <input type="file" @change="handleFileChange" accept=".txt" class="file-input" />
 
     <div v-if="paragraphs.length" class="tools">
       <input
@@ -22,9 +17,7 @@
         placeholder="🔍 多关键词用空格分隔"
         class="search-input"
       />
-      <button @click="scrollToNext" :disabled="!matchIndexes.length">
-        下一个匹配
-      </button>
+      <button @click="scrollToNext" :disabled="!matchIndexes.length">下一个匹配</button>
       <button @click="downloadAsHtml">⬇ HTML</button>
       <button @click="downloadAsPdf">⬇ PDF</button>
     </div>
@@ -33,26 +26,24 @@
       <p
         v-for="(html, index) in highlightedParagraphs"
         :key="index"
-        :ref="(el) => (paraRefs[index] = el)"
+        :ref="el => paraRefs[index] = el"
         v-html="html"
-        :class="{
-          active: matchIndexes.includes(index) && index === currentMatchIndex
-        }"
+        :class="{ active: matchIndexes.includes(index) && index === currentMatchIndex }"
       ></p>
     </div>
   </div>
 </template>
 
 <script>
-import html2pdf from "html2pdf.js";
+import html2pdf from 'html2pdf.js';
 
 export default {
-  name: "EnhancedTxtReader",
+  name: 'EnhancedTxtReader',
   data() {
     return {
-      rawText: "",
+      rawText: '',
       paragraphs: [],
-      searchKeyword: "",
+      searchKeyword: '',
       paraRefs: [],
       matchIndexes: [],
       currentMatchIndex: -1,
@@ -66,14 +57,17 @@ export default {
   },
   computed: {
     highlightedParagraphs() {
-      const keywords = this.searchKeyword.trim().split(/\s+/).filter(Boolean);
+      const keywords = this.searchKeyword
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
       return this.paragraphs.map((para) => {
         let html = this.escapeHtml(para);
         keywords.forEach((kw) => {
-          const reg = new RegExp(`(${this.escapeRegExp(kw)})`, "gi");
+          const reg = new RegExp(`(${this.escapeRegExp(kw)})`, 'gi');
           html = html.replace(reg, '<span class="highlight">$1</span>');
         });
-        return html.replace(/\n/g, "<br/>");
+        return html.replace(/\n/g, '<br/>');
       });
     }
   },
@@ -87,18 +81,18 @@ export default {
         this.processText(this.rawText);
         this.$nextTick(() => this.updateMatchIndexes());
       };
-      reader.readAsText(file, "utf-8");
+      reader.readAsText(file, 'utf-8');
     },
     processText(text) {
       const lines = text.split(/\r?\n/);
       const paragraphs = [];
-      let current = "";
+      let current = '';
       lines.forEach((line) => {
-        if (line.trim() === "") {
+        if (line.trim() === '') {
           if (current.trim()) paragraphs.push(current.trim());
-          current = "";
+          current = '';
         } else {
-          current += line + "\n";
+          current += line + '\n';
         }
       });
       if (current.trim()) paragraphs.push(current.trim());
@@ -106,42 +100,40 @@ export default {
     },
     escapeHtml(text) {
       return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
     },
     escapeRegExp(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     },
     updateMatchIndexes() {
       this.matchIndexes = [];
       this.currentMatchIndex = -1;
       const keywords = this.searchKeyword.trim().split(/\s+/).filter(Boolean);
       this.paragraphs.forEach((p, idx) => {
-        if (keywords.some((kw) => new RegExp(kw, "i").test(p))) {
+        if (keywords.some((kw) => new RegExp(kw, 'i').test(p))) {
           this.matchIndexes.push(idx);
         }
       });
     },
     scrollToNext() {
       if (!this.matchIndexes.length) return;
-      this.currentMatchIndex =
-        (this.currentMatchIndex + 1) % this.matchIndexes.length;
+      this.currentMatchIndex = (this.currentMatchIndex + 1) % this.matchIndexes.length;
       const el = this.paraRefs[this.matchIndexes[this.currentMatchIndex]];
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },
     downloadAsHtml() {
       const html = this.highlightedParagraphs
-        .map((p) => `<p>${p}</p>`)
-        .join("\n");
-      const blob = new Blob(
-        [`<html><body style="font-family:Arial;">${html}</body></html>`],
-        { type: "text/html;charset=utf-8" }
-      );
+        .map((p) => `<p>${p}</p>`) 
+        .join('\n');
+      const blob = new Blob([
+        `<html><body style="font-family:Arial;">${html}</body></html>`
+      ], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = "formatted.html";
+      a.download = 'formatted.html';
       a.click();
       URL.revokeObjectURL(url);
     },
@@ -149,10 +141,10 @@ export default {
       const element = this.$refs.printArea;
       const opt = {
         margin: 0.5,
-        filename: "formatted.pdf",
-        image: { type: "jpeg", quality: 0.98 },
+        filename: 'formatted.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().from(element).set(opt).save();
     }
@@ -184,9 +176,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.dark .header h2 {
-  color: #eee;
 }
 .theme-toggle {
   font-size: 14px;

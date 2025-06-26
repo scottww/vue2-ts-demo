@@ -553,6 +553,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "customPopup 自定义弹窗"
         }
+      },
+      {
+        path: "/txtRender",
+        name: "txtRender",
+        component: () =>
+          import(
+            /* webpackChunkName: "txtRender" */ "../views/txtRender/index.vue"
+          ),
+        meta: {
+          title: "txtRender 文本渲染"
+        }
       }
     ]
   },

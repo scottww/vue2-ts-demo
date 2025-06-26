@@ -61,6 +61,7 @@ export default {
             { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
             { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
             { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
+            { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
           ]
         },
         {
@@ -116,6 +117,7 @@ export default {
         // { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
         // { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },customNumberInput
         // { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
+        // { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
       ]
     };
   },
