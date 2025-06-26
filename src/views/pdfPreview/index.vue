@@ -30,8 +30,8 @@ export default {
 .pdf-preview-demo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  // align-items: center;
+  // justify-content: center;
   // height: 100vh;
   margin-bottom: 120px;
   overflow: auto;

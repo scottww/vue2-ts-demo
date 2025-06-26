@@ -16,6 +16,8 @@
       <button @click="measure3()">测量3</button>
       <button @click="clearAll()">全部清除</button>
       <button @click="addPictureToMap()">图片覆盖物</button>
+      <button @click="measureLength()">测距（MeasureTool）</button>
+      <button @click="measureArea()">测面积（MeasureTool）</button>
     </div>
     <div ref="mapContainer" class="map-container">
       <div class="map-change-btns">
@@ -121,7 +123,7 @@
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
 import PointLayerManager from "@/utils/map/PointLayerManager";
-import { PopupManager, PointManager } from "@/utils/map/mapUtils";
+import { PopupManager, PointManager, MeasureTool } from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
 const warnIcon_svg = require("@/assets/mapIcon/warn_icon1.svg");
@@ -226,7 +228,8 @@ export default {
       ],
       onFormSave: null, // 保存回调
       onCancel: null, // 取消回调
-      multiplePoints: null //批量加点图层
+      multiplePoints: null, //批量加点图层
+      measureTool: null //测量工具
     };
   },
   mounted() {
@@ -291,6 +294,10 @@ export default {
       //     popup.showPopup(coord, `<div><b>${name}</b><br>这是一个点</div>`);
       //   });
       // });
+
+      // 初始化测量工具
+      const measureTool = new MeasureTool(this.map);
+      this.measureTool = measureTool;
 
       this.initDrawLayer();
       this.initSavedLayer();
@@ -1902,6 +1909,14 @@ export default {
     },
     clearDrawLayer() {
       this.drawSource.clear();
+    },
+    measureLength(){
+      this.measureTool.clear();
+      this.measureTool.startMeasure('LineString'); // 开始测距
+    },
+    measureArea(){
+      this.measureTool.clear();
+      this.measureTool.startMeasure('Polygon'); // 开始测面
     }
   }
 };
@@ -1962,7 +1977,8 @@ export default {
   align-items: center;
   gap: 8px;
   margin: 12px 0;
-  width: 500px;
+  // width: 500px;
+  flex-wrap: wrap;
 
   span {
     font-size: 14px;

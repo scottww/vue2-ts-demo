@@ -3,6 +3,6 @@
 export * from './features/PointManager.js';
 export * from './features/PopupManager.js';
 // export * from './features/DrawTool.js';
-// export * from './features/MeasureTool.js';
+export * from './features/MeasureTool.js';
 // export * from './features/ViewportLoader.js';
 // export * from './features/BoundaryManager.js';

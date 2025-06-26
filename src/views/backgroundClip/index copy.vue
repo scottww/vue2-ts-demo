@@ -2,15 +2,12 @@
   <div class="background-clip">
     <h1>Genshin Impact Eula</h1>
     <h2>Genshin Impact Eula</h2>
-    <FancyTitle title="Genshin Impact Citlali" subtitle="冰之骑士 永不低头" />
   </div>
 </template>
 
 <script>
-import FancyTitle from "./FancyTitle.vue";
 export default {
   name: "BackgroundClip",
-  components: { FancyTitle },
   data() {
     return {};
   }
@@ -46,7 +43,7 @@ export default {
       background-position: 100px 0, 100px 0, 100px 0;
     }
   }
-  h2 {
+  h2{
     font-size: 4rem;
   }
 }

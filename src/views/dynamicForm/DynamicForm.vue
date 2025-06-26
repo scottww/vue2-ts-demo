@@ -32,8 +32,8 @@
       <slot v-if="item.slot" :name="item.slot" :form="formData" />
     </el-form-item>
 
-    <!-- 按钮区域，label-width设为0让按钮和表单对齐 -->
-    <el-form-item :label-width="0">
+    <!-- 按钮区域，label-width让按钮和表单对齐 -->
+    <el-form-item :label-width="labelWidth">
       <el-button type="primary" @click="submit">提交</el-button>
       <el-button @click="reset">重置</el-button>
     </el-form-item>
