@@ -22,6 +22,8 @@ import "./styles";
 // import 'ant-design-vue/lib/date-picker/style/css'; // 加载 CSS
 // import 'ant-design-vue/lib/date-picker/style';         // 加载 LESS
 
+import '@/assets/mySvg/Glyphter.css';
+
 import antDesignVue from 'ant-design-vue';
 Vue.use(antDesignVue);
 

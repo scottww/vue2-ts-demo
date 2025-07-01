@@ -564,6 +564,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "txtRender 文本渲染"
         }
+      },
+      {
+        path: "/mySvg",
+        name: "mySvg",
+        component: () =>
+          import(
+            /* webpackChunkName: "mySvg" */ "../views/mySvg/index.vue"
+          ),
+        meta: {
+          title: "mySvg 图标"
+        }
       }
     ]
   },

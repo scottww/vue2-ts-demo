@@ -1,0 +1,46 @@
+// export default [
+//   "mySvg-1",
+//   "mySvg-2",
+//   "mySvg-3",
+//   "mySvg-4",
+//   "mySvg-5",
+//   "mySvg-6",
+//   "mySvg-7",
+//   "mySvg-8",
+//   "mySvg-9",
+//   "mySvg-10",
+//   "mySvg-11",
+//   "mySvg-12",
+//   "mySvg-13",
+//   "mySvg-14",
+//   "mySvg-15",
+//   "mySvg-16",
+//   "mySvg-17",
+//   "mySvg-18",
+//   "mySvg-19",
+//   "mySvg-20"
+// ];
+
+//改名了
+export default [
+  "mySvg-view",
+  "mySvg-monitor",
+  "mySvg-database",
+  "mySvg-broadcast",
+  "mySvg-camera",
+  "mySvg-lock",
+  "mySvg-location",
+  "mySvg-like",
+  "mySvg-music",
+  "mySvg-setting",
+  "mySvg-delete",
+  "mySvg-star-off",
+  "mySvg-search",
+  "mySvg-position",
+  "mySvg-message",
+  "mySvg-pencil",
+  "mySvg-broadcast2",
+  "mySvg-tag",
+  "mySvg-video-camera",
+  "mySvg-site"
+];
