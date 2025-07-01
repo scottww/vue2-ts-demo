@@ -51,6 +51,7 @@ export default {
             { id: 27, text: "DynamicForm 动态表单", path: "/dynamicForm" },
             { id: 20, text: "HeaderSection 头部", path: "/headerSection" },
             { id: 21, text: "CustomTabs 自定义标签", path: "/customTabs" },
+            { id: 32, text: "SvgIcon 图标", path: "/svgIcon" },
 
             // 功能类
             { id: 7, text: "LoadReadFile 读取文件", path: "/loadReadFile" },
@@ -118,6 +119,7 @@ export default {
         // { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },customNumberInput
         // { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
         // { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
+        // { id: 32, text: "SvgIcon 图标", path: "/SvgIcon" },
       ]
     };
   },

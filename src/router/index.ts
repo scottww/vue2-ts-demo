@@ -566,14 +566,14 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
-        path: "/mySvg",
-        name: "mySvg",
+        path: "/svgIcon",
+        name: "svgIcon",
         component: () =>
           import(
-            /* webpackChunkName: "mySvg" */ "../views/mySvg/index.vue"
+            /* webpackChunkName: "svgIcon" */ "../views/mySvg/index.vue"
           ),
         meta: {
-          title: "mySvg 图标"
+          title: "svgIcon 图标"
         }
       }
     ]
