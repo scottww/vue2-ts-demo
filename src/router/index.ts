@@ -569,11 +569,20 @@ const routes: Array<RouteConfig> = [
         path: "/svgIcon",
         name: "svgIcon",
         component: () =>
-          import(
-            /* webpackChunkName: "svgIcon" */ "../views/mySvg/index.vue"
-          ),
+          import(/* webpackChunkName: "svgIcon" */ "../views/mySvg/index.vue"),
         meta: {
           title: "svgIcon 图标"
+        }
+      },
+      {
+        path: "/toolbar",
+        name: "toolbar",
+        component: () =>
+          import(
+            /* webpackChunkName: "toolbar" */ "../views/toolbar/index.vue"
+          ),
+        meta: {
+          title: "toolbar 工具栏"
         }
       }
     ]
