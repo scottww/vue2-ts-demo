@@ -30,6 +30,18 @@ const baseMapGroups = {
       url: `http://t{0-6}.tianditu.gov.cn/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk=${tk}`,
       zIndex: 1
     }
+  ],
+  TDT_ter: [
+    {
+      key: "TDT_ter",
+      url: `http://t{0-6}.tianditu.gov.cn/DataServer?T=ter_w&X={x}&Y={y}&L={z}&tk=${tk}`,
+      zIndex: 0
+    },
+    {
+      key: "TDT_ter_anno",
+      url: `http://t{0-6}.tianditu.gov.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}&tk=${tk}`,
+      zIndex: 1
+    }
   ]
 };
 

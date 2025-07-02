@@ -32,6 +32,11 @@
             @click="mapChage('img')"
             >影像</el-button
           >
+          <el-button
+            :type="currentMaptype === 'ter' ? 'primary' : ''"
+            @click="mapChage('ter')"
+            >地形</el-button
+          >
         </el-button-group>
       </div>
 
@@ -1312,6 +1317,8 @@ export default {
         this.tileLayerManager.switchTo("TDT_vec"); // type 为 "TDT_vec" 或 "TDT_img"
       } else if (mapType === "img") {
         this.tileLayerManager.switchTo("TDT_img");
+      } else if (mapType === "ter") {
+        this.tileLayerManager.switchTo("TDT_ter");
       }
     },
     onMouseEnter() {
