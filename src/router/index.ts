@@ -584,6 +584,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "toolbar 工具栏"
         }
+      },
+      {
+        path: "/citySelector",
+        name: "citySelector",
+        component: () =>
+          import(
+            /* webpackChunkName: "citySelector" */ "../views/citySelector/index.vue"
+          ),
+        meta: {
+          title: "citySelector 城市选择器"
+        }
       }
     ]
   },
