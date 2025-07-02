@@ -7,45 +7,65 @@
       :title="item.title"
       @click="item.onClick"
     >
-      <img :src="item.icon" alt="" />
+      <component
+        :is="isSvg(item.icon) ? 'SvgImage' : 'img'"
+        :src="item.icon"
+        :size="20"
+        color="#666"
+        hoverColor="#1890ff"
+        alt=""
+      />
     </div>
   </div>
 </template>
 
 <script>
+import SvgImage from './SvgImage.vue'; //兼容png, svg
+
 export default {
-  name: "MapToolbar",
+  name: 'MapControl',
+  components: {
+    SvgImage
+  },
   data() {
     return {
       tools: [
         {
-          title: "放大",
-          icon: require("@/assets/mapToolBar/zoom-in.png"),
-          onClick: () => this.$emit("zoom-in"),
+          title: '放大',
+          icon: require('@/assets/mapToolBar/zoom-in.png'),
+          onClick: () => this.$emit('zoom-in')
         },
         {
-          title: "缩小",
-          icon: require("@/assets/mapToolBar/zoom-out.png"),
-          onClick: () => this.$emit("zoom-out"),
+          title: '缩小',
+          icon: require('@/assets/mapToolBar/zoom-out.png'),
+          onClick: () => this.$emit('zoom-out')
         },
         {
-          title: "定位",
-          icon: require("@/assets/mapToolBar/locate.png"),
-          onClick: () => this.$emit("locate"),
+          title: '定位您的位置',
+          icon: require('@/assets/mapToolBar/locate.svg'),
+          // icon: require('@/assets/mapToolBar/locate.svg'),
+          onClick: () => this.$emit('locate')
         },
         {
-          title: "测距",
-          icon: require("@/assets/mapToolBar/ruler.png"),
-          onClick: () => this.$emit("measure"),
+          title: '测距',
+          icon: require('@/assets/mapToolBar/ruler.svg'),
+          onClick: () => this.$emit('measure')
         },
         {
-          title: "全屏",
-          icon: require("@/assets/mapToolBar/fullscreen.png"),
-          onClick: () => this.$emit("fullscreen"),
-        },
-      ],
+          title: '全屏',
+          icon: require('@/assets/mapToolBar/fullscreen.png'),
+          onClick: () => this.$emit('fullscreen')
+        }
+      ]
     };
   },
+  methods: {
+    isSvg(icon) {
+      return typeof icon === 'string'
+        ? icon.endsWith('.svg')
+        : icon?.default?.endsWith?.('.svg');
+    }
+  }
 };
 </script>
 
@@ -53,7 +73,7 @@ export default {
 .map-toolbar {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
