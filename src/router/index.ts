@@ -586,6 +586,17 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/toolbar2",
+        name: "toolbar2",
+        component: () =>
+          import(
+            /* webpackChunkName: "toolbar2" */ "../views/toolbar2/index.vue"
+          ),
+        meta: {
+          title: "toolbar2 工具栏"
+        }
+      },
+      {
         path: "/citySelector",
         name: "citySelector",
         component: () =>
