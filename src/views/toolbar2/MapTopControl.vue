@@ -34,6 +34,7 @@ import MapLayerDropdown from "./MapLayerDropdown.vue"; // 地图切换
 //这个要实现 svg跟文字一起hover颜色变化
 import SvgImage from "./SvgImage.vue";
 import PngHoverIcon from "./PngHoverIcon.vue";
+import SmartIcon from "./SmartIcon.vue";
 
 export default {
   name: "MapTopControl",
@@ -42,7 +43,8 @@ export default {
     BaseDropdown,
     MapLayerDropdown,
     SvgImage,
-    PngHoverIcon
+    PngHoverIcon,
+    SmartIcon
   },
   data() {
     return {
@@ -75,9 +77,21 @@ export default {
               //   }
               // },
               //使用 PngHoverIcon 组件
+              // {
+              //   label: "测距",
+              //   value: "measure",
+              //   component: PngHoverIcon,
+              //   componentProps: {
+              //     src: require("@/assets/mapToolBar/measure.png"),
+              //     hoverSrc: require("@/assets/mapToolBar/measure_hover.png"),
+              //     width: 16,
+              //     height: 16
+              //   }
+              // },
+              //使用 SmartIcon 组件
               {
                 label: "测距",
-                value: "measure",
+                value: "measure-length",
                 component: PngHoverIcon,
                 componentProps: {
                   src: require("@/assets/mapToolBar/measure.png"),
@@ -87,18 +101,30 @@ export default {
                 }
               },
               {
+                label: "测面",
+                value: "measure-area",
+                component: PngHoverIcon,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/measure-area.png"),
+                  hoverSrc: require("@/assets/mapToolBar/measure-area_hover.png"),
+                  width: 16,
+                  height: 16
+                }
+              },
+              {
                 label: "标绘",
                 value: "draw",
-                component: SvgImage,
+                component: SmartIcon,
                 componentProps: {
                   src: require("@/assets/mapToolBar/pencil-solid.svg"),
-                  size: 16
+                  width: 16,
+                  height: 16
                 }
               },
               {
                 label: "清除",
                 value: "clear",
-                component: SvgImage,
+                component: SmartIcon,
                 componentProps: {
                   src: require("@/assets/mapToolBar/clear.svg"),
                   size: 16
@@ -112,18 +138,22 @@ export default {
   },
   methods: {
     toggleDropdown(index) {
+      console.log("toggleDropdown ...", index);
       this.activeIndex = this.activeIndex === index ? null : index;
     },
     closeDropdown() {
       this.activeIndex = null;
     },
     handleChange(type) {
+      console.log("handleChange layer...", type);
       this.$emit("change-layer", type); // 地图图层切换
     },
     handleSelect(area) {
+      console.log("handleSelect ...", area);
       this.$emit("select", area); // 省市区选择
     },
     handleTool(type) {
+      console.log("handleTool ...", type);
       this.$emit("tool", type); // 工具箱操作
     }
   }
