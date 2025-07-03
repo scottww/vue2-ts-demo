@@ -16,6 +16,7 @@
       <div v-if="activeIndex === index" class="dropdown-content" @click.stop>
         <component
           :is="item.dropdown"
+          v-bind="item.props || {}"
           @change="handleChange"
           @select="handleSelect"
           @tool="handleTool"
@@ -32,6 +33,7 @@ import MapLayerDropdown from "./MapLayerDropdown.vue"; // 地图切换
 // import SvgImage from "../toolbar/SvgImage.vue";
 //这个要实现 svg跟文字一起hover颜色变化
 import SvgImage from "./SvgImage.vue";
+import PngHoverIcon from "./PngHoverIcon.vue";
 
 export default {
   name: "MapTopControl",
@@ -39,7 +41,8 @@ export default {
     ToolDropdown,
     BaseDropdown,
     MapLayerDropdown,
-    SvgImage
+    SvgImage,
+    PngHoverIcon
   },
   data() {
     return {
@@ -58,7 +61,51 @@ export default {
         {
           label: "工具箱",
           icon: require("@/assets/mapToolBar/toolbox.svg"),
-          dropdown: "ToolDropdown"
+          dropdown: "ToolDropdown",
+          props: {
+            items: [
+              //使用SvgImage组件
+              // {
+              //   label: "测距",
+              //   value: "measure",
+              //   component: SvgImage,
+              //   componentProps: {
+              //     src: require("@/assets/mapToolBar/ruler.svg"),
+              //     size: 16
+              //   }
+              // },
+              //使用 PngHoverIcon 组件
+              {
+                label: "测距",
+                value: "measure",
+                component: PngHoverIcon,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/measure.png"),
+                  hoverSrc: require("@/assets/mapToolBar/measure_hover.png"),
+                  width: 16,
+                  height: 16
+                }
+              },
+              {
+                label: "标绘",
+                value: "draw",
+                component: SvgImage,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/pencil-solid.svg"),
+                  size: 16
+                }
+              },
+              {
+                label: "清除",
+                value: "clear",
+                component: SvgImage,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/clear.svg"),
+                  size: 16
+                }
+              }
+            ]
+          }
         }
       ]
     };
@@ -158,5 +205,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
   color: #333; /* 防止继承变色 */
+  /* width: 100%;  */
 }
 </style>
