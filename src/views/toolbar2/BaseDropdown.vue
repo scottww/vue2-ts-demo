@@ -3,7 +3,8 @@
     <!-- 顶部导航 -->
     <div class="menu-header">
       <div class="breadcrumb-wrapper">
-        <span class="location-label">📍 当前位置：</span>
+        <span class="location-label">
+          <PngHoverIcon :src="locateIcon" width="17" height="20"></PngHoverIcon >当前位置：</span>
         <span class="breadcrumb">{{ defaultProvince }}</span>
         <template v-if="selectedCity">
           <span class="breadcrumb-separator">›</span>
@@ -60,7 +61,10 @@
 </template>
 
 <script>
+import PngHoverIcon from '../toolbar2/PngHoverIcon.vue';
+
 export default {
+  components: { PngHoverIcon },
   name: "BaseDropdown",
   props: {
     defaultProvince: {
@@ -70,6 +74,7 @@ export default {
   },
   data() {
     return {
+      locateIcon: require("@/assets/mapToolBar/location2.png"),
       selectedCity: "",
       selectedDistrict: "",
       data: [
