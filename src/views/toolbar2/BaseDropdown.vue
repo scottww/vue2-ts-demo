@@ -177,7 +177,7 @@ export default {
   align-items: center;
   font-weight: 500;
   color: #333;
-  margin-right: 4px;
+  /* margin-right: 4px; */
   gap: 4px; /* 图标和文字之间的间距，可根据实际调整 */
 }
 

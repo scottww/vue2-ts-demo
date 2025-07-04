@@ -45,6 +45,10 @@ export default {
     handleAreaSelect(area) {
       console.log("选中的区域：", area);
       // TODO: 可根据选中区域定位地图
+    },
+    // 关闭dropdown逻辑
+    handleClose(){
+      
     }
   }
 };
