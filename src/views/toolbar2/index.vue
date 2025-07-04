@@ -7,14 +7,18 @@
       @select="handleAreaSelect"
       @close="handleClose"
     />
+    <div class="right-panel">
+      <RightPanel />
+    </div>
   </div>
 </template>
 
 <script>
 import MapTopControl from "./MapTopControl.vue";
+import RightPanel from "./RightPanel.vue";
 
 export default {
-  components: { MapTopControl },
+  components: { MapTopControl, RightPanel },
   data() {
     return {
       currentLayer: "vector"
@@ -47,9 +51,7 @@ export default {
       // TODO: 可根据选中区域定位地图
     },
     // 关闭dropdown逻辑
-    handleClose(){
-      
-    }
+    handleClose() {}
   }
 };
 </script>
@@ -64,5 +66,23 @@ export default {
 // 定制dropdown样式
 ::v-deep .dropdown-content.dropdown-BaseDropdown {
   width: auto;
+}
+
+// right-panel样式
+.right-panel {
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+  // width: 300px;
+  // height: 100%;
+  // background-color: #fff;
+  // box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  /* 注意这里不要写死宽度！让子组件控制宽度 */
+  /* ❌ 不要写 width 和 background，交给子组件控制 */
 }
 </style>
