@@ -24,10 +24,14 @@
 export default {
   name: 'MapLayerDropdown',
   props: {
-    default: {
+    value: {
       type: String,
       default: 'vector'
     },
+    // default: {
+    //   type: String,
+    //   default: 'vector'
+    // },
     items: {
       type: Array,
       default: () => []
@@ -35,16 +39,20 @@ export default {
   },
   data() {
     return {
-      selected: this.default,
+      // selected: this.default,
       hoverIndex: null
     };
   },
+  computed: {
+    selected() {
+      return this.value; // 绑定外部值
+    }
+  },
   methods: {
     selectLayer(value) {
-      this.selected = value;
       this.$emit('change', value);
     }
-  }
+  },
 };
 </script>
 

@@ -3,24 +3,17 @@
     <div
       v-for="(item, index) in controls"
       :key="index"
-      class="control-button-wrapper"
+      class="control-button"
+      @click="toggleDropdown(index)"
     >
-      <!-- 按钮主体 -->
-      <div
-        class="control-button"
-        @click="toggleDropdown(index)"
-      >
-        <SvgImage :src="item.icon" :size="16" class="tool-icon" />
-        <span class="label">{{ item.label }}</span>
-        <span class="arrow" :class="{ open: activeIndex === index }">▾</span>
-      </div>
+      <!-- <img :src="item.icon" class="icon" /> -->
+      <!-- <SvgImage :src="item.icon" :color="'#666'" :size="16" :hoverColor="'#1890ff'" class="tool-icon" /> -->
+      <SvgImage :src="item.icon" :size="16" class="tool-icon" />
+      <span class="label">{{ item.label }}</span>
+      <span class="arrow" :class="{ open: activeIndex === index }">▾</span>
 
-      <!-- 下拉弹层，注意位置独立 -->
-      <div
-        v-if="activeIndex === index"
-        class="dropdown-content"
-        @click.stop
-      >
+      <!-- 下拉内容 -->
+      <div v-if="activeIndex === index" class="dropdown-content" @click.stop>
         <component
           :is="item.dropdown"
           v-bind="item.props || {}"
@@ -62,6 +55,7 @@ export default {
   data() {
     return {
       activeIndex: null,
+      _toggleLock: false,
       controls: [
         {
           label: "地址选择",
@@ -189,6 +183,9 @@ export default {
   methods: {
     toggleDropdown(index) {
       console.log("toggleDropdown ...", index);
+      if (this._toggleLock) return;
+      this._toggleLock = true;
+      setTimeout(() => (this._toggleLock = false), 100); // 解除锁
       this.activeIndex = this.activeIndex === index ? null : index;
     },
     closeDropdown() {
@@ -248,31 +245,23 @@ export default {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
-
-.control-button-wrapper {
-  position: relative;
-  border-right: 1px solid #e8e8e8;
-}
-
-.control-button-wrapper:last-child {
-  border-right: none;
-}
-
 .control-button {
+  position: relative;
   padding: 0 12px;
   height: 36px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  /* border-right: 1px solid #e8e8e8; */
-  color: #666;
+  border-right: 1px solid #e8e8e8;
+  user-select: none;
+
+  color: #666; /* 默认灰色 */
   transition: color 0.3s ease;
 }
 
 .control-button:hover {
   color: #1890ff;
 }
-
 .control-button:hover .tool-icon,
 .control-button:hover .label {
   color: #1890ff;
@@ -283,18 +272,25 @@ export default {
   margin-right: 4px;
   transition: color 0.3s ease;
 }
-
 .control-button:last-child {
   border-right: none;
 }
-
-.tool-icon {
-  margin-right: 6px;
+.icon {
   width: 16px;
   height: 16px;
+  margin-right: 6px;
+}
+.tool-icon {
+  /* width: 100%;
+  height: 100%;
+  margin-right: 6px;
+  max-width: 16px;
+  max-height: 16px; */
+  margin-right: 6px;
+  width: 100%;
+  height: 100%;
   transition: color 0.3s ease;
 }
-
 .arrow {
   margin-left: 4px;
   transition: transform 0.2s;
@@ -302,7 +298,6 @@ export default {
 .arrow.open {
   transform: rotate(180deg);
 }
-
 .dropdown-content {
   position: absolute;
   top: 100%;

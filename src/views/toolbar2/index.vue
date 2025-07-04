@@ -1,6 +1,7 @@
 <template>
   <div class="MapTopControlDemo">
     <MapTopControl
+      :value="currentLayer"
       @tool="handleTool"
       @change-layer="handleLayerChange"
       @select="handleAreaSelect"
@@ -13,6 +14,11 @@ import MapTopControl from "./MapTopControl.vue";
 
 export default {
   components: { MapTopControl },
+  data() {
+    return {
+      currentLayer: "vector"
+    };
+  },
   methods: {
     handleTool(type) {
       if (type === "measure") {
@@ -26,6 +32,7 @@ export default {
     handleLayerChange(layerType) {
       // eg. 调用百度地图 API 切换图层
       console.log("切换地图图层为:", layerType);
+      this.currentLayer = layerType;
       if (layerType === "vector") {
         // 切换到矢量图
       } else if (layerType === "satellite") {
