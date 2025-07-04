@@ -6,21 +6,14 @@
       class="control-button-wrapper"
     >
       <!-- 按钮主体 -->
-      <div
-        class="control-button"
-        @click="toggleDropdown(index)"
-      >
+      <div class="control-button" @click="toggleDropdown(index)">
         <SvgImage :src="item.icon" :size="16" class="tool-icon" />
         <span class="label">{{ item.label }}</span>
         <span class="arrow" :class="{ open: activeIndex === index }">▾</span>
       </div>
 
       <!-- 下拉弹层，注意位置独立 -->
-      <div
-        v-if="activeIndex === index"
-        class="dropdown-content"
-        @click.stop
-      >
+      <div v-if="activeIndex === index" class="dropdown-content" @click.stop>
         <component
           :is="item.dropdown"
           v-bind="item.props || {}"
@@ -66,7 +59,10 @@ export default {
         {
           label: "地址选择",
           icon: require("@/assets/mapToolBar/location.svg"),
-          dropdown: "BaseDropdown"
+          dropdown: "BaseDropdown",
+          props: {
+            defaultProvince: "浙江省"
+          }
         },
         {
           label: "地图切换",
