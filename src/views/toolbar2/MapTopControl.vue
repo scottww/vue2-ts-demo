@@ -58,7 +58,40 @@ export default {
         {
           label: "地图切换",
           icon: require("@/assets/mapToolBar/satellite.svg"),
-          dropdown: "MapLayerDropdown"
+          dropdown: "MapLayerDropdown",
+          props: {
+            items: [
+              {
+                label: "矢量图",
+                value: "vector",
+                component: SmartIcon,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/location.svg"),
+                  size: 16
+                }
+              },
+              {
+                label: "卫星图",
+                value: "satellite",
+                component: PngHoverIcon,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/satellite.png"),
+                  hoverSrc: require("@/assets/mapToolBar/satellite_hover.png"),
+                  width: 16,
+                  height: 16
+                }
+              },
+              {
+                label: "地形图",
+                value: "terrain",
+                component: SmartIcon,
+                componentProps: {
+                  src: require("@/assets/mapToolBar/location.svg"),
+                  size: 16
+                }
+              }
+            ]
+          }
         },
         {
           label: "工具箱",
