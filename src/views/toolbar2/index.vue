@@ -56,4 +56,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+// 定制dropdown样式
+::v-deep .dropdown-content.dropdown-BaseDropdown {
+  width: auto;
+}
 </style>

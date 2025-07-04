@@ -60,7 +60,7 @@ export default {
 .layer-dropdown {
   display: flex;
   flex-direction: column;
-  min-width: 120px;
+  /* min-width: 120px; */
 }
 .layer-item {
   padding: 6px 12px;

@@ -13,7 +13,7 @@
       </div>
 
       <!-- 下拉弹层，注意位置独立 -->
-      <div v-if="activeIndex === index" class="dropdown-content" @click.stop>
+      <div v-if="activeIndex === index" class="dropdown-content" :class="`dropdown-${item.dropdown}`" @click.stop>
         <component
           :is="item.dropdown"
           v-bind="item.props || {}"
@@ -311,6 +311,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
   color: #333; /* 防止继承变色 */
-  /* width: 100%;  */
+  width: 100%; 
 }
 </style>
