@@ -4,7 +4,9 @@
     <div class="menu-header">
       <div class="breadcrumb-wrapper">
         <span class="location-label">
-          <PngHoverIcon :src="locateIcon" width="17" height="20"></PngHoverIcon >当前位置：</span>
+          <PngHoverIcon :src="locateIcon" width="14"></PngHoverIcon
+          >当前位置：</span
+        >
         <span class="breadcrumb">{{ defaultProvince }}</span>
         <template v-if="selectedCity">
           <span class="breadcrumb-separator">›</span>
@@ -32,6 +34,9 @@
         {{ c.name }}
       </div>
     </div>
+
+    <!-- 分隔横线 -->
+    <div class="header-divider" v-if="selectedCity"></div>
 
     <!-- 区县列表 -->
     <div class="district-list" v-if="districts.length">
@@ -61,7 +66,7 @@
 </template>
 
 <script>
-import PngHoverIcon from '../toolbar2/PngHoverIcon.vue';
+import PngHoverIcon from "../toolbar2/PngHoverIcon.vue";
 
 export default {
   components: { PngHoverIcon },
@@ -124,7 +129,7 @@ export default {
       });
     },
     onCancel() {
-      // this.$emit("cancel");
+      this.$emit("close");
       this.selectedCity = "";
       this.selectedDistrict = "";
     }
@@ -135,7 +140,8 @@ export default {
 <style scoped>
 .district-menu {
   background: #fff;
-  min-width: 420px;
+  /* 一行5个 */
+  min-width: 370px; 
   /* padding: 10px; */
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); */
   border-radius: 6px;
@@ -160,10 +166,19 @@ export default {
   gap: 4px;
 }
 
-.location-label {
+/* .location-label {
   font-weight: 500;
   color: #333;
   margin-right: 4px;
+} */
+
+.location-label {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  color: #333;
+  margin-right: 4px;
+  gap: 4px; /* 图标和文字之间的间距，可根据实际调整 */
 }
 
 .breadcrumb {
@@ -199,6 +214,12 @@ export default {
   color: #f5222d;
 }
 
+/* 横线分隔条样式 */
+.header-divider {
+  border-top: 1px solid #e8e8e8;
+  margin: 8px 0 12px;
+}
+
 /* 城市和区县列表 */
 .district-list {
   display: flex;
@@ -229,7 +250,7 @@ export default {
 /* 操作按钮区域 */
 .menu-footer {
   text-align: right;
-  margin-top: 8px;
+  margin-top: 18px;
 }
 
 .btn {

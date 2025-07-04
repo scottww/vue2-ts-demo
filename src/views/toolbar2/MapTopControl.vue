@@ -20,6 +20,7 @@
           @change="handleChange"
           @select="handleSelect"
           @tool="handleTool"
+          @close="toggleDropdown"
         />
       </div>
     </div>

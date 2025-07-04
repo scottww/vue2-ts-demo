@@ -5,6 +5,7 @@
       @tool="handleTool"
       @change-layer="handleLayerChange"
       @select="handleAreaSelect"
+      @close="handleClose"
     />
   </div>
 </template>
