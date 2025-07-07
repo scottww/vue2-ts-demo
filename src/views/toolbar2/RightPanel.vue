@@ -37,14 +37,19 @@
       <div class="section">
         <div class="section-title">2. 图层数据</div>
         <div class="tab-switcher">
-          <div
+          <!-- <div
             v-for="tab in tabs"
             :key="tab"
             :class="['tab', { active: activeTab === tab }]"
             @click="activeTab = tab"
           >
             {{ tab }}
-          </div>
+          </div> -->
+          <CustomTabs
+            v-model="activeTab2"
+            :tabs="tabList"
+            @remove="handleRemove"
+          />
         </div>
 
         <div class="table-content">
@@ -58,20 +63,29 @@
 
 <script>
 import * as echarts from "echarts";
+import CustomTabs from "./CustomTabs.vue";
 
 export default {
   name: "RightPanel",
+  components: { CustomTabs },
   data() {
     return {
       isCollapsed: false,
       tabs: ["类型一", "类型二", "类型三", "特定类型"],
       activeTab: "类型一",
-      pieChartInstance: null // ✅ 图表实例缓存
+      pieChartInstance: null, // ✅ 图表实例缓存
+      activeTab2: "tab1",
+      tabList: [
+        { name: "tab1", label: "类型一" },
+        { name: "tab2", label: "类型二" },
+        { name: "tab3", label: "类型三" },
+        { name: "tab4", label: "特定类型" }
+      ]
     };
   },
   mounted() {
     this.$nextTick(() => {
-      this.initPie();
+      this.initPie2();
     });
   },
   watch: {
@@ -83,7 +97,7 @@ export default {
             if (this.pieChartInstance) {
               this.pieChartInstance.resize();
             } else {
-              this.initPie();
+              this.initPie2();
             }
           }, 100); // 等待 DOM 恢复尺寸
         });
@@ -105,7 +119,7 @@ export default {
 
           // 延迟一点点初始化，确保 DOM 真有尺寸
           setTimeout(() => {
-            this.initPie();
+            this.initPie2();
           }, 50); // 加一点延迟，保险起见
         });
       }
@@ -148,6 +162,218 @@ export default {
           }
         ]
       });
+    },
+    initPie2() {
+      const el = this.$refs.pieChart;
+      if (!el) return;
+
+      this.pieChartInstance = echarts.init(el);
+
+      let data = [],
+        data2 = [];
+      const trafficWay = [
+        {
+          name: "I-II类",
+          value: 14
+        },
+        {
+          name: "III类",
+          value: 18
+        },
+        {
+          name: "IV类",
+          value: 15
+        },
+        {
+          name: "V类",
+          value: 14
+        },
+        {
+          name: "劣V类",
+          value: 10
+        }
+      ];
+      const color = [
+        "#2A8BFD",
+        "#00FAC1",
+        "#FDE056",
+        "#FD9D56",
+        "#FD3A3A",
+        "#FF8A26",
+        "#FF5252",
+        "#9689FF",
+        "#CB00FF"
+      ];
+      for (let i = 0; i < trafficWay.length; i++) {
+        data.push(
+          {
+            value: trafficWay[i].value,
+            name: trafficWay[i].name,
+            itemStyle: {
+              borderWidth: 8,
+              shadowBlur: 20,
+              borderRadius: 20,
+              borderColor: color[i],
+              shadowColor: color[i]
+            }
+          },
+          {
+            value: 1,
+            name: "",
+            itemStyle: {
+              label: {
+                show: false
+              },
+              labelLine: {
+                show: false
+              },
+              color: "rgba(0, 0, 0, 0)",
+              borderColor: "rgba(0, 0, 0, 0)",
+              borderWidth: 0
+            }
+          }
+        );
+        data2.push(
+          {
+            value: trafficWay[i].value,
+            name: trafficWay[i].name
+          },
+          {
+            value: 1,
+            name: "",
+            itemStyle: {
+              label: {
+                show: false
+              },
+              labelLine: {
+                show: false
+              },
+              color: "rgba(0, 0, 0, 0)",
+              borderColor: "rgba(0, 0, 0, 0)",
+              borderWidth: 0,
+              opacity: 0.2
+            }
+          }
+        );
+      }
+      const option = {
+        backgroundColor: "#000000",
+        color: color,
+        grid: {
+          top: "3%",
+          left: "6%",
+          right: "6%",
+          bottom: "3%",
+          containLabel: true
+        },
+        legend: {
+          right: "10%",
+          top: "center",
+          icon: "rect",
+          type: "scroll",
+          orient: "vertical",
+          itemWidth: 15,
+          itemHeight: 15,
+          pageIconColor: "rgba(250, 252, 253, 1)", //翻页按钮的颜色
+          pageIconInactiveColor: "rgba(216, 213, 213, 1)", //翻页按钮不激活时（即翻页到头时）的颜色
+          pageIconSize: [16, 16], //翻页按钮的大小
+          pageTextStyle: {
+            //图例页信息的文字样式
+            color: "rgba(248, 247, 247, 1)"
+          },
+          textStyle: {
+            fontSize: 13,
+            color: "#ffffff"
+          },
+          data: ["I-II类", "III类", "IV类", "V类", "劣V类"],
+          formatter(name) {
+            if (name != "") {
+              const newData = trafficWay;
+              let tarValue = 0;
+              let total = 0;
+              for (let i = 0; i < newData.length; i++) {
+                total += newData[i].value;
+                if (newData[i].name === name) {
+                  tarValue = newData[i].value;
+                }
+              }
+              var percert =
+                total == 0 ? 0 : ((tarValue / total) * 100).toFixed(2);
+              return name + " (" + tarValue + "/" + percert + "%)";
+            } else {
+              return;
+            }
+          }
+        },
+        series: [
+          {
+            name: "",
+            type: "pie",
+            clockWise: false,
+            radius: ["70%", "67%"],
+            //  hoverAnimation: false,
+            center: ["33.33%", "50%"],
+            top: "12%",
+            bottom: "12%",
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                }
+              }
+            },
+            data: data
+          },
+          {
+            type: "pie",
+            //top: "center",
+            top: "12%",
+            bottom: "12%",
+            startAngle: 90,
+            clockwise: false,
+            center: ["33.33%", "50%"],
+            legendHoverLink: false,
+            hoverAnimation: false,
+            radius: ["66%", "35%"],
+            itemStyle: {
+              opacity: 0.15
+            },
+            label: {
+              show: false,
+              position: "center"
+            },
+            labelLine: {
+              show: false
+            },
+            data: data2
+          },
+          {
+            name: "",
+            type: "pie",
+            clockWise: false,
+            center: ["33.33%", "50%"],
+            radius: ["34%", "33%"],
+            hoverAnimation: false,
+            //top: "center",
+            top: "12%",
+            bottom: "12%",
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                }
+              }
+            },
+            data: data
+          }
+        ]
+      };
+
+      this.pieChartInstance.setOption(option);
+    },
+    handleRemove(name) {
+      this.tabList = this.tabList.filter((tab) => tab.name !== name);
+      console.log("Removed tab:", name);
     }
   }
 };
@@ -160,12 +386,13 @@ export default {
   bottom: 0;
   right: 0;
   display: flex;
-  width: 370px;
+  width: 440px;
   height: 100%;
   background: #fff;
   transition: width 0.3s ease;
   z-index: 10;
   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(9, 60, 111, 0.7);
 }
 
 .right-panel-wrapper.collapsed {
