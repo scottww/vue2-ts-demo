@@ -55,12 +55,24 @@
 
         <div class="table-content">
           <div v-if="activeTab2 === 'tab4'">
+            
             <TreeWithStatus
               :treeData="treeData"
               :onlineIcon="require('@/assets/mapToolBar/online.png')"
               :offlineIcon="require('@/assets/mapToolBar/offline.png')"
               @point-click="handlePointClick"
             />
+            <!-- 自定义图标使用方式 TreeWithStatus.vue -->
+            <!-- <TreeWithStatus
+              :treeData="treeData"
+              :iconPngMap="{
+                province: require('@/assets/tree/file.png'),
+                point: require('@/assets/tree/file.png')
+              }"
+              :onlineIcon="require('@/assets/tree/on.png')"
+              :offlineIcon="require('@/assets/tree/off.png')"
+              @point-click="handlePointClick"
+            /> -->
           </div>
           <div v-else>[ 表格展示区域 ]</div>
         </div>
@@ -72,7 +84,7 @@
 <script>
 import * as echarts from "echarts";
 import CustomTabs from "./CustomTabs.vue";
-import TreeWithStatus from "./TreeWithStatus.vue";
+import TreeWithStatus from "./TreeWithStatus_base.vue";
 import { cleanTreeData } from "@/utils/treeHelper";
 
 export default {
