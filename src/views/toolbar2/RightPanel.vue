@@ -73,6 +73,7 @@
 import * as echarts from "echarts";
 import CustomTabs from "./CustomTabs.vue";
 import TreeWithStatus from "./TreeWithStatus.vue";
+import { cleanTreeData } from "@/utils/treeHelper";
 
 export default {
   name: "RightPanel",
@@ -137,6 +138,9 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    // this.cleanedTreeData = cleanTreeData(this.treeData);
   },
   mounted() {
     this.$nextTick(() => {

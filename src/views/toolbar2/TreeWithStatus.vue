@@ -14,34 +14,22 @@
 export default {
   name: "TreeWithStatus",
   props: {
-    treeData: {
-      type: Array,
-      required: true
-    },
-    iconMap: {
-      type: Object,
-      default: () => ({
-        province: "el-icon-location", // 省
-        city: "el-icon-city", // 市
-        district: "el-icon-office-building", // 区
-        irrigation: "el-icon-s-grid", // 灌区
-        point: "el-icon-position" // 点位
-      })
-    },
-    onlineIcon: {
-      type: String,
-      default: "" // 可以是图片路径，也可以是 el-icon 类名
-    },
-    offlineIcon: {
-      type: String,
-      default: ""
-    },
-    // 数据结构字段映射
+    treeData: { type: Array, required: true },
+    onlineIcon: String,
+    offlineIcon: String,
     labelField: { type: String, default: "label" },
     childrenField: { type: String, default: "children" },
     countField: { type: String, default: "count" },
     typeField: { type: String, default: "type" },
     statusField: { type: String, default: "status" }
+  },
+  data() {
+    return {
+      cleanedTreeData: []
+    };
+  },
+  created() {
+    // this.cleanedTreeData = this.cleanTreeData(this.treeData);
   },
   computed: {
     treeProps() {
@@ -52,6 +40,20 @@ export default {
     }
   },
   methods: {
+    //去除子节点的children属性
+    cleanTreeData(nodes) {
+      return nodes.map((node) => {
+        const newNode = { ...node };
+        if (newNode[this.typeField] === "point") {
+          delete newNode[this.childrenField];
+        } else if (Array.isArray(newNode[this.childrenField])) {
+          newNode[this.childrenField] = this.cleanTreeData(
+            newNode[this.childrenField]
+          );
+        }
+        return newNode;
+      });
+    },
     renderContent(h, { node, data }) {
       const type = data[this.typeField];
       const label = data[this.labelField];
@@ -59,74 +61,61 @@ export default {
       const status = data[this.statusField];
       const isPoint = type === "point";
 
-      // 获取前置图标
-      const iconClass = this.iconMap[type] || "el-icon-document";
-
-      // 在线离线图标，可以是图片或者 icon 类名
-      let statusIcon = null;
-      if (isPoint) {
-        if (this.onlineIcon && this.offlineIcon) {
-          // 如果传了图片路径
-          statusIcon = h("img", {
-            attrs: {
-              src: status === "online" ? this.onlineIcon : this.offlineIcon,
-              alt: status === "online" ? "在线" : "离线"
-            },
-            style: { width: "16px", height: "16px", marginLeft: "8px" }
-          });
-        } else {
-          // 默认用 el-icon 圆点表示
-          statusIcon = h("i", {
-            class: [
-              "el-icon-circle",
-              status === "online" ? "status-online" : "status-offline"
-            ],
-            style: { marginLeft: "8px" }
-          });
-        }
-      }
+      const iconClass = isPoint
+        ? "el-icon-position"
+        : node.expanded
+        ? "el-icon-folder-opened"
+        : "el-icon-folder";
 
       return h(
         "div",
         {
           class: "tree-node-content",
+          attrs: {
+            "data-type": type // ⭐⭐关键
+          },
           style: { display: "flex", alignItems: "center" }
         },
         [
-          // 图标
           h("i", {
             class: iconClass,
             style: {
               marginRight: "6px",
-              color: isPoint ? "#67C23A" : "#409EFF"
+              color: isPoint ? "#67C23A" : "#f4b400"
             }
           }),
-          // 文本和数量（非点位显示数量）
           h(
             "span",
             {},
             `${label}${!isPoint && count !== undefined ? `（${count}）` : ""}`
           ),
-          // 状态图标（点位才显示）
-          statusIcon
+          isPoint &&
+            h("img", {
+              attrs: {
+                src: status === "online" ? this.onlineIcon : this.offlineIcon,
+                alt: status
+              },
+              style: { width: "16px", height: "16px", marginLeft: "8px" }
+            })
         ]
       );
     },
     handleNodeClick(data) {
-      const type = data[this.typeField];
-      if (type === "point") {
+      if (data[this.typeField] === "point") {
         this.$emit("point-click", data);
       }
     }
   }
 };
 </script>
-
 <style scoped>
-.status-online {
-  color: #67c23a;
+/* 所有展开箭头默认黄色 */
+::v-deep .el-tree-node__expand-icon {
+  color: #f4b400;
 }
-.status-offline {
-  color: #c0c4cc;
+
+/* 隐藏点位节点的展开图标 */
+::v-deep .el-tree-node__expand-icon.is-leaf {
+  color: transparent;
 }
 </style>
