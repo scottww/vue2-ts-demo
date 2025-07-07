@@ -46,14 +46,22 @@
             {{ tab }}
           </div> -->
           <CustomTabs
-            v-model="activeTab2"
+            :value="activeTab2"
             :tabs="tabList"
+            @input="tabsChange"
             @remove="handleRemove"
           />
         </div>
 
         <div class="table-content">
-          <div v-if="activeTab === '特定类型'">[ 树结构展示区域 ]</div>
+          <div v-if="activeTab2 === 'tab4'">
+            <TreeWithStatus
+              :treeData="treeData"
+              :onlineIcon="require('@/assets/mapToolBar/online.png')"
+              :offlineIcon="require('@/assets/mapToolBar/offline.png')"
+              @point-click="handlePointClick"
+            />
+          </div>
           <div v-else>[ 表格展示区域 ]</div>
         </div>
       </div>
@@ -64,10 +72,11 @@
 <script>
 import * as echarts from "echarts";
 import CustomTabs from "./CustomTabs.vue";
+import TreeWithStatus from "./TreeWithStatus.vue";
 
 export default {
   name: "RightPanel",
-  components: { CustomTabs },
+  components: { CustomTabs, TreeWithStatus },
   data() {
     return {
       isCollapsed: false,
@@ -80,6 +89,52 @@ export default {
         { name: "tab2", label: "类型二" },
         { name: "tab3", label: "类型三" },
         { name: "tab4", label: "特定类型" }
+      ],
+      treeData: [
+        {
+          id: 1,
+          label: "浙江省",
+          count: 20,
+          type: "province",
+          children: [
+            {
+              id: 2,
+              label: "杭州市",
+              count: 15,
+              type: "city",
+              children: [
+                {
+                  id: 3,
+                  label: "西湖区",
+                  count: 10,
+                  type: "district",
+                  children: [
+                    {
+                      id: 4,
+                      label: "西溪灌区",
+                      count: 5,
+                      type: "irrigation",
+                      children: [
+                        {
+                          id: 5,
+                          label: "点位1",
+                          type: "point",
+                          status: "online"
+                        },
+                        {
+                          id: 6,
+                          label: "点位2",
+                          type: "point",
+                          status: "offline"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       ]
     };
   },
@@ -371,9 +426,21 @@ export default {
 
       this.pieChartInstance.setOption(option);
     },
+    tabsChange(name) {
+      console.log("tabsChange ...", name);
+      this.activeTab2 = name;
+    },
     handleRemove(name) {
       this.tabList = this.tabList.filter((tab) => tab.name !== name);
       console.log("Removed tab:", name);
+    },
+    handlePointClick(point) {
+      console.log("选中的点位信息:", point);
+      // TODO：定位地图
+      // const { lng, lat } = point;
+      // if (lng && lat) {
+      //   this.map.setView([lng, lat], 14);
+      // }
     }
   }
 };
