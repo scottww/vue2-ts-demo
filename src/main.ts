@@ -34,6 +34,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+import ElTableVirtualScroll from 'el-table-virtual-scroll';
+Vue.use(ElTableVirtualScroll);
+
 
 Vue.config.productionTip = false;
 

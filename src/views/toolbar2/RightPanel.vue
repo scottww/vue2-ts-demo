@@ -79,10 +79,16 @@
               :tableData="tableData"
             ></StatusTable> -->
             <!-- <VirtualStatusTable :columns="columns" :tableData="tableData" /> -->
-            <StatusTable2
+            <!-- <StatusTable1
               :columns="columns"
               :tableData="tableData"
-            ></StatusTable2>
+            ></StatusTable1> -->
+            <!-- 最终方案 -->
+            <!-- <StatusTableVirtual
+              :columns="columns"
+              :tableData="tableData"
+            ></StatusTableVirtual> -->
+            <StatusTableVirtual :columns="currentColumns" :tableData="tableData" />
           </div>
         </div>
       </div>
@@ -97,7 +103,10 @@ import TreeWithStatus from "./TreeWithStatus_base.vue";
 import { cleanTreeData } from "@/utils/treeHelper";
 import StatusTable from "./StatusTable_noVirtualList.vue";
 import VirtualStatusTable from "./VirtualStatusTable.vue";
-import StatusTable2 from "./StatusTable.vue";
+import StatusTable1 from "./StatusTable_v-scroll.vue";
+import StatusTableVirtual from "./StatusTableVirtual.vue";
+import { generateMockTableData } from "@/utils/generateDataHelper";
+import { columnMap } from "./constants.js";
 
 export default {
   name: "RightPanel",
@@ -106,7 +115,8 @@ export default {
     TreeWithStatus,
     StatusTable,
     VirtualStatusTable,
-    StatusTable2
+    StatusTable1,
+    StatusTableVirtual
   },
   data() {
     return {
@@ -215,9 +225,20 @@ export default {
   created() {
     // this.cleanedTreeData = cleanTreeData(this.treeData);
   },
+  computed: {
+    currentColumns() {
+      console.log("currentColumns ...", columnMap, this.activeTab2);
+      return columnMap[this.activeTab2] || [];
+    }
+    // currentTableData() {
+    //   return tableDataMap[this.activeTab2] || [];
+    // }
+  },
   mounted() {
     this.$nextTick(() => {
       this.initPie2();
+      // 生成 10000 条假数据
+      this.tableData = generateMockTableData(5000);
     });
   },
   watch: {

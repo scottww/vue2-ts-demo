@@ -29,7 +29,8 @@
             class="col-index custom-cell"
             :title="scope.row[col.prop]"
           >
-            <div class="index-text">0{{ scope.row.index }}</div>
+            <!-- <div class="index-text">0{{ scope.row.index }}</div> -->
+            <div class="index-text">{{ scope.row.index }}</div>
           </div>
 
           <div
