@@ -74,10 +74,15 @@
             /> -->
           </div>
           <div v-else>
-            <StatusTable
+            <!-- <StatusTable
               :columns="columns"
               :tableData="tableData"
-            ></StatusTable>
+            ></StatusTable> -->
+            <!-- <VirtualStatusTable :columns="columns" :tableData="tableData" /> -->
+            <StatusTable2
+              :columns="columns"
+              :tableData="tableData"
+            ></StatusTable2>
           </div>
         </div>
       </div>
@@ -90,11 +95,19 @@ import * as echarts from "echarts";
 import CustomTabs from "./CustomTabs.vue";
 import TreeWithStatus from "./TreeWithStatus_base.vue";
 import { cleanTreeData } from "@/utils/treeHelper";
-import StatusTable from "./StatusTable.vue";
+import StatusTable from "./StatusTable_noVirtualList.vue";
+import VirtualStatusTable from "./VirtualStatusTable.vue";
+import StatusTable2 from "./StatusTable.vue";
 
 export default {
   name: "RightPanel",
-  components: { CustomTabs, TreeWithStatus, StatusTable },
+  components: {
+    CustomTabs,
+    TreeWithStatus,
+    StatusTable,
+    VirtualStatusTable,
+    StatusTable2
+  },
   data() {
     return {
       isCollapsed: false,
@@ -170,6 +183,7 @@ export default {
       ],
       tableData: [
         {
+          id: "10001",
           index: 1,
           time: "06-24 16:55",
           name: "名称名称",
@@ -178,6 +192,7 @@ export default {
           status: "online"
         },
         {
+          id: "10002",
           index: 1,
           time: "06-24 16:55",
           name: "名称名称位移名称",
@@ -186,6 +201,7 @@ export default {
           status: "online"
         },
         {
+          id: "10003",
           index: 1,
           time: "06-24 16:55",
           name: "名称名称",
