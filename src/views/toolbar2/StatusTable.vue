@@ -241,6 +241,7 @@ export default {
   text-overflow: ellipsis;
   font-size: inherit;
   line-height: inherit;
+  pointer-events: none;
 }
 
 .col-index.custom-cell {
