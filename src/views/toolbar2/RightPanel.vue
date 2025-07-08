@@ -88,7 +88,12 @@
               :columns="columns"
               :tableData="tableData"
             ></StatusTableVirtual> -->
-            <StatusTableVirtual :columns="currentColumns" :tableData="tableData" />
+            <StatusTableVirtual
+              :columns="currentColumns"
+              :tableData="tableData"
+              :remain="50"
+              :bench="10"
+            />
           </div>
         </div>
       </div>
@@ -235,10 +240,15 @@ export default {
     // }
   },
   mounted() {
+    // 生成 10000 条假数据
+    this.tableData = generateMockTableData(10000);
+    // this.tableData = Array.from({ length: 5000 }, (_, i) => ({
+    //   id: i,
+    //   name: "name-" + i
+    // }));
+    console.log(this.tableData);
     this.$nextTick(() => {
       this.initPie2();
-      // 生成 10000 条假数据
-      this.tableData = generateMockTableData(5000);
     });
   },
   watch: {

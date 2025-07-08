@@ -1,31 +1,54 @@
 <template>
-  <div class="virtual-table-wrapper" ref="wrapper">
+  <div ref="wrapper" class="status-table-wrapper">
     <!-- 表头 -->
-    <div class="table-header" ref="header">
+    <div
+      class="table-header"
+      ref="header"
+      :style="{
+        display: 'flex',
+        userSelect: 'none',
+        overflowX: 'auto'
+      }"
+    >
       <div
         v-for="(col, i) in columns"
         :key="col.prop || i"
-        :style="getHeaderCellStyle(i, col)"
+        :style="{
+          width: columnWidths[i] + 'px',
+          minWidth: columnWidths[i] + 'px',
+          maxWidth: columnWidths[i] + 'px',
+          padding: '0 8px',
+          textAlign: col.align || 'center',
+          lineHeight: rowHeight + 'px',
+          borderBottom: '1px solid #0b83f5',
+          backgroundColor: '#012b52',
+          color: '#fff',
+          fontWeight: 'bold',
+          boxSizing: 'border-box'
+        }"
       >
         {{ col.label }}
       </div>
     </div>
 
-    <!-- 内容区 -->
-    <div class="table-body-scroll" ref="scrollContainer" @scroll="handleScroll">
-      <virtual-list
-        class="virtual-list"
-        :size="rowHeight"
-        :remain="visibleCount"
-        :data-key="'id'"
-        :data-sources="tableData"
-        :data-component="VirtualRow"
-        :extra-props="{ columns, columnWidths, rowHeight }"
-        ref="virtualList"
-      />
+    <!-- 空数据提示 -->
+    <div v-if="tableData.length === 0" class="empty-placeholder">
+      暂无数据
     </div>
 
-    <div v-if="tableData.length === 0" class="empty-placeholder">暂无数据</div>
+    <!-- 虚拟滚动列表 -->
+    <virtual-list
+      class="virtual-list"
+      :size="rowHeight"
+      :remain="visibleCount"
+      :data-key="'id'"
+      :data-sources="tableData"
+      :data-component="VirtualRow"
+      :extra-props="{ columns, columnWidths, rowHeight }"
+      style="height: 400px; overflow-y: auto; overflow-x: auto"
+      @scroll="handleScroll"
+      ref="virtualList"
+    />
   </div>
 </template>
 
@@ -34,14 +57,13 @@ import VirtualList from "vue-virtual-scroll-list";
 import VirtualRow from "./VirtualRow.vue";
 
 export default {
-  name: "AutoFitVirtualTable",
+  name: "StatusTableVirtual",
   components: { VirtualList },
   props: {
     tableData: { type: Array, required: true },
     columns: { type: Array, required: true },
     rowHeight: { type: Number, default: 38 },
-    visibleCount: { type: Number, default: 15 },
-    fit: { type: Boolean, default: true } // 是否自动撑满容器宽度
+    visibleCount: { type: Number, default: 15 }
   },
   data() {
     return {
@@ -58,53 +80,39 @@ export default {
   },
   methods: {
     calcColumnWidths() {
-      const wrapperWidth = this.$refs.wrapper?.clientWidth || 0;
-      let fixedWidths = [];
-      let autoCols = [];
-
-      this.columnWidths = this.columns.map((col, i) => {
-        if (col.width) {
-          fixedWidths.push(col.width);
-          return col.width;
-        } else if (col.minWidth) {
-          fixedWidths.push(col.minWidth);
-          return col.minWidth;
-        } else {
-          autoCols.push(i);
-          return 0; // 先填 0
+      this.$nextTick(() => {
+        if (!this.columns || !this.columns.length) {
+          this.columnWidths = [];
+          return;
         }
-      });
+        const containerWidth = this.$refs.wrapper
+          ? this.$refs.wrapper.clientWidth
+          : 440;
 
-      if (this.fit && wrapperWidth > 0) {
-        const used = fixedWidths.reduce((a, b) => a + b, 0);
-        const remaining = wrapperWidth - used;
-        const share = Math.floor(remaining / autoCols.length);
-        autoCols.forEach((i) => {
-          this.columnWidths[i] = share > 50 ? share : 50;
+        let fixedTotal = 0;
+        let flexibleCount = 0;
+
+        this.columns.forEach((col) => {
+          if (col.width) fixedTotal += Number(col.width);
+          else flexibleCount++;
         });
-      } else {
-        autoCols.forEach((i) => {
-          this.columnWidths[i] = 50;
+
+        let remainingWidth = containerWidth - fixedTotal;
+        if (remainingWidth < 0) remainingWidth = 0;
+
+        const flexibleWidth = flexibleCount > 0
+          ? Math.floor(remainingWidth / flexibleCount)
+          : 0;
+
+        this.columnWidths = this.columns.map((col) => {
+          if (col.width) return Number(col.width);
+          if (col.minWidth) return Math.max(flexibleWidth, Number(col.minWidth));
+          return flexibleWidth || 50;
         });
-      }
+      });
     },
     handleScroll(e) {
-      const scrollLeft = e.target.scrollLeft;
-      if (this.$refs.header) {
-        this.$refs.header.scrollLeft = scrollLeft;
-      }
-    },
-    getHeaderCellStyle(i, col) {
-      const width = this.columnWidths[i] || 50;
-      return {
-        width: width + "px",
-        minWidth: width + "px",
-        maxWidth: width + "px",
-        padding: "0 6px",
-        textAlign: col.align || "center",
-        lineHeight: this.rowHeight + "px",
-        borderBottom: "1px solid #0b83f5"
-      };
+      this.$refs.header.scrollLeft = e.target.scrollLeft;
     }
   },
   watch: {
@@ -120,55 +128,31 @@ export default {
 </script>
 
 <style scoped>
-.virtual-table-wrapper {
+.status-table-wrapper {
   border: 1px solid #012b52;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 100%;
-  position: relative;
+  background-color: #083b6c;
+  color: #fff;
 }
 .table-header {
-  display: flex;
-  background: #012b52;
-  color: white;
-  font-weight: bold;
-  user-select: none;
-  overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
 }
-.table-body-scroll {
-  height: 600px;
-  overflow: auto;
-  padding: 0;
-  margin: 0;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(1, 43, 82, 0.3) transparent;
-}
-.virtual-list {
-  min-width: 100%;
-  box-sizing: border-box;
-}
+
+/* 空数据提示 */
 .empty-placeholder {
-  position: absolute;
-  top: 38px;
-  left: 0;
-  right: 0;
-  height: calc(100% - 38px);
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #aaa;
   background: #001f3f;
   font-size: 14px;
-  pointer-events: none;
 }
-::v-deep(.table-body-scroll::-webkit-scrollbar) {
-  height: 4px;
-  width: 4px;
-}
-::v-deep(.table-body-scroll::-webkit-scrollbar-thumb) {
-  background-color: rgba(1, 43, 82, 0.3);
-  border-radius: 2px;
-}
-::v-deep(.table-body-scroll::-webkit-scrollbar-track) {
-  background-color: transparent;
+.virtual-list {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  height: 400px; /* 固定高度可根据需求调整 */
 }
 </style>

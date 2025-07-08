@@ -2,7 +2,7 @@ export const columnMap = {
   tab1: [
     { label: "序号", prop: "index", minWidth: 60 },
     { label: "时间", prop: "time", minWidth: 120 },
-    { label: "名称", prop: "name", },
+    { label: "名称", prop: "name"},
     { label: "状态", prop: "status", minWidth: 80 }
   ],
   tab2: [
