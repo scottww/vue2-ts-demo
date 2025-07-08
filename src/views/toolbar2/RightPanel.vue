@@ -55,7 +55,6 @@
 
         <div class="table-content">
           <div v-if="activeTab2 === 'tab4'">
-            
             <TreeWithStatus
               :treeData="treeData"
               :onlineIcon="require('@/assets/mapToolBar/online.png')"
@@ -74,7 +73,12 @@
               @point-click="handlePointClick"
             /> -->
           </div>
-          <div v-else>[ 表格展示区域 ]</div>
+          <div v-else>
+            <StatusTable
+              :columns="columns"
+              :tableData="tableData"
+            ></StatusTable>
+          </div>
         </div>
       </div>
     </div>
@@ -86,10 +90,11 @@ import * as echarts from "echarts";
 import CustomTabs from "./CustomTabs.vue";
 import TreeWithStatus from "./TreeWithStatus_base.vue";
 import { cleanTreeData } from "@/utils/treeHelper";
+import StatusTable from "./StatusTable.vue";
 
 export default {
   name: "RightPanel",
-  components: { CustomTabs, TreeWithStatus },
+  components: { CustomTabs, TreeWithStatus, StatusTable },
   data() {
     return {
       isCollapsed: false,
@@ -147,6 +152,46 @@ export default {
               ]
             }
           ]
+        }
+      ],
+      columns: [
+        // { prop: "index", label: "序号", width: 50 },
+        // { prop: "time", label: "监测时间",width: 110 },
+        // { prop: "name", label: "站点名称",width: 110 },
+        // { prop: "type", label: "类型" },
+        // { prop: "count", label: "测点" },
+        // { prop: "status", label: "状态", width: 60 }
+        { prop: "index", label: "序号", minWidth: 50 },
+        { prop: "time", label: "监测时间", minWidth: 110 },
+        { prop: "name", label: "站点名称", minWidth: 110 },
+        { prop: "type", label: "类型", width: 60 },
+        { prop: "count", label: "测点", minWidth: 50 },
+        { prop: "status", label: "状态" }
+      ],
+      tableData: [
+        {
+          index: 1,
+          time: "06-24 16:55",
+          name: "名称名称",
+          count: 1,
+          type: "位移位移位移",
+          status: "online"
+        },
+        {
+          index: 1,
+          time: "06-24 16:55",
+          name: "名称名称位移名称",
+          count: 1,
+          type: "位移",
+          status: "online"
+        },
+        {
+          index: 1,
+          time: "06-24 16:55",
+          name: "名称名称",
+          count: 1,
+          type: "位移",
+          status: "online"
         }
       ]
     };
@@ -469,7 +514,9 @@ export default {
   bottom: 0;
   right: 0;
   display: flex;
-  width: 440px;
+  /* width: 1280px; */
+  /* width: 440px; */
+  width: 466px;
   height: 100%;
   background: #fff;
   transition: width 0.3s ease;
@@ -580,6 +627,6 @@ export default {
   min-height: 150px;
   background: #fff;
   border: 1px solid #ddd;
-  padding: 10px;
+  /* padding: 10px; */
 }
 </style>
