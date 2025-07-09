@@ -56,5 +56,5 @@ li {
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 #app::-webkit-scrollbar {
-  width: 0;
+  // width: 0;  //这个去掉影响子组件的样式
 }

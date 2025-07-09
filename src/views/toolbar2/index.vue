@@ -24,9 +24,10 @@ import MapTopControl from "./MapTopControl.vue";
 import RightPanel from "./RightPanel.vue";
 import LayerControl from "./components/LayerControl.vue";
 import LegendPanel from "./components/LegendPanel.vue";
+import LegendScrollTest from "./components/LegendScrollTest.vue";
 
 export default {
-  components: { MapTopControl, RightPanel, LayerControl, LegendPanel },
+  components: { MapTopControl, RightPanel, LayerControl, LegendPanel, LegendScrollTest },
   data() {
     return {
       currentLayer: "vector"
