@@ -22,6 +22,12 @@
           <div class="legend-item"><span class="circle purple" /> 50-100</div>
           <div class="legend-item"><span class="circle pink" /> 100-250</div>
           <div class="legend-item"><span class="circle red" /> ＞250</div>
+          <!-- 临时复制雨量项多几行 -->
+          <div class="legend-item"><span class="circle red" /> ＞250</div>
+          <div class="legend-item"><span class="circle red" /> ＞250</div>
+          <div class="legend-item"><span class="circle red" /> ＞250</div>
+          <div class="legend-item"><span class="circle red" /> ＞250</div>
+          <div class="legend-item"><span class="circle red" /> ＞250</div>
         </div>
       </div>
 
@@ -38,26 +44,40 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .legend-scroll-container {
+  height: 200px;
   max-height: 200px; /* 控制最大高度 */
   /* 动态调整 */
   /* max-height: calc(100vh - 100px); */
   overflow-y: auto;
-  padding-right: 4px;
+  // padding-right: 4px;
+  padding: 10px;
 }
 
-/* 滚动条样式（可选） */
+// 滚动条样式
 .legend-scroll-container::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
+
+.legend-scroll-container11::-webkit-scrollbar-thumb {
+  background-color: #00ff00;
+  border-radius: 6px;
+  min-height: 24px; /* 保证滑块最小高度 */
+  background-clip: content-box;
+}
+
 .legend-scroll-container::-webkit-scrollbar-thumb {
-  /* background-color: rgba(255, 255, 255, 0.3); */
-  background-color: rgb(8, 59, 108, 0.3);
-  border-radius: 3px;
+  background-color: #888;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
+
 .legend-scroll-container::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
 }
 
 /* 内容样式 */
@@ -110,5 +130,9 @@ export default {
 }
 .pink {
   background: #f472b6;
+}
+
+::v-deep .panel-body {
+  padding: 0;
 }
 </style>

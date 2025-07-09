@@ -1,86 +1,152 @@
 <template>
   <CollapsePanel title="图例">
     <div class="legend-scroll-container">
-      <div class="legend-section">
-        <div class="legend-label">水位</div>
+      <div
+        class="legend-section"
+        v-for="(section, index) in legendData"
+        :key="index"
+      >
+        <div class="legend-label">{{ section.title }}</div>
         <div class="legend-items">
-          <div class="legend-item"><span class="dot blue" /> 正常</div>
-          <div class="legend-item"><span class="dot orange" /> 超警</div>
-          <div class="legend-item"><span class="dot red" /> 超汛/超保</div>
-        </div>
-      </div>
-
-      <div class="legend-section">
-        <div class="legend-label">雨量</div>
-        <div class="legend-items">
-          <div class="legend-item"><span class="circle gray" /> 无降雨</div>
-          <div class="legend-item"><span class="circle green" /> 0-10</div>
-          <div class="legend-item">
-            <span class="circle lightgreen" /> 10-25
+          <div
+            class="legend-item"
+            v-for="(item, idx) in section.items"
+            :key="idx"
+            :class="layout === 'horizontal' ? 'legend-item-horizontal' : 'legend-item-vertical'"
+          >
+            <template v-if="usePng">
+              <img :src="item.icon" class="legend-icon" />
+            </template>
+            <template v-else>
+              <span :class="[item.shape, item.color]" />
+            </template>
+            {{ item.label }}
           </div>
-          <div class="legend-item"><span class="circle blue" /> 25-50</div>
-          <div class="legend-item"><span class="circle purple" /> 50-100</div>
-          <div class="legend-item"><span class="circle pink" /> 100-250</div>
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
-          <!-- 临时复制雨量项多几行 -->
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
-          <div class="legend-item"><span class="circle red" /> ＞250</div>
         </div>
       </div>
-
-      <!-- 可继续添加更多图例类型... -->
     </div>
   </CollapsePanel>
 </template>
 
 <script>
 import CollapsePanel from "./CollapsePanel.vue";
+
 export default {
   name: "LegendPanel",
-  components: { CollapsePanel }
+  components: { CollapsePanel },
+  props: {
+    usePng: {
+      type: Boolean,
+      default: false
+    },
+    layout: {
+      type: String,
+      default: "vertical" // or "horizontal"
+    }
+  },
+  data() {
+    return {
+      legendData: [
+        {
+          title: "水位",
+          items: [
+            {
+              label: "正常",
+              shape: "dot",
+              color: "blue",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "超警",
+              shape: "dot",
+              color: "orange",
+              icon: require("@/assets/legend/WL_yellow.png")
+            },
+            {
+              label: "超汛/超保",
+              shape: "dot",
+              color: "red",
+              icon: require("@/assets/legend/WL_red.png")
+            }
+          ]
+        },
+        {
+          title: "雨量",
+          items: [
+            {
+              label: "无降雨",
+              shape: "circle",
+              color: "gray",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "0-10",
+              shape: "circle",
+              color: "green",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "10-25",
+              shape: "circle",
+              color: "lightgreen",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "25-50",
+              shape: "circle",
+              color: "blue",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "50-100",
+              shape: "circle",
+              color: "purple",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "100-250",
+              shape: "circle",
+              color: "pink",
+              icon: require("@/assets/legend/WL_normal.png")
+            },
+            {
+              label: "＞250",
+              shape: "circle",
+              color: "red",
+              icon: require("@/assets/legend/WL_normal.png")
+            }
+          ]
+        }
+      ]
+    };
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .legend-scroll-container {
   height: 200px;
-  max-height: 200px; /* 控制最大高度 */
-  /* 动态调整 */
-  /* max-height: calc(100vh - 100px); */
+  max-height: 200px;
   overflow-y: auto;
-  // padding-right: 4px;
   padding: 10px;
 }
 
 // 滚动条样式
 .legend-scroll-container::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
-
-.legend-scroll-container11::-webkit-scrollbar-thumb {
-  background-color: #00ff00;
-  border-radius: 6px;
-  min-height: 24px; /* 保证滑块最小高度 */
-  background-clip: content-box;
-}
-
 .legend-scroll-container::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 5px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
-
 .legend-scroll-container::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
 }
 
-/* 内容样式 */
+// 内容样式
 .legend-section {
   margin-top: 10px;
 }
@@ -88,17 +154,42 @@ export default {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 4px;
+  background: #000e1b;
+  border-radius: 4px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
 }
 .legend-items {
   display: flex;
   flex-wrap: wrap;
 }
 .legend-item {
-  width: 50%;
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
+.legend-item-horizontal {
+  width: 100%;
+}
+.legend-item-vertical {
+  width: 50%;
+}
+
+/* ✅ PNG 图标展示真实尺寸 */
+.legend-icon {
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+  height: auto;
+  width: auto;
+  /* 保底限制，防止超宽容器，但不强行缩小图标 */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 原始圆点图标样式 */
 .dot,
 .circle {
   display: inline-block;
@@ -132,6 +223,7 @@ export default {
   background: #f472b6;
 }
 
+// 清除 CollapsePanel 默认 padding
 ::v-deep .panel-body {
   padding: 0;
 }

@@ -11,7 +11,8 @@
       <LayerControl @update-layers="handleLayerChange" />
     </div>
     <div class="legendPanel-box">
-      <LegendPanel />
+      <!-- <LegendPanel /> -->
+      <LegendPanel :usePng="true" layout="horizontal" />
     </div>
     <div class="right-panel">
       <RightPanel />

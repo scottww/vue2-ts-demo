@@ -37,7 +37,7 @@ export default {
 <style scoped>
 /* 基础容器样式 */
 .collapse-panel {
-  background: rgba(10, 32, 61, 0.85);
+  background: rgba(10, 32, 61, 0.83);
   border-radius: 6px;
   color: #fff;
   width: 200px;
@@ -53,6 +53,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   user-select: none;
+  border-bottom: 1px solid #fff;
 }
 .el-icon-arrow-down {
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
