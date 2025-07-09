@@ -3,10 +3,16 @@
     <MapTopControl
       :value="currentLayer"
       @tool="handleTool"
-      @change-layer="handleLayerChange"
+      @change-layer="switchMap"
       @select="handleAreaSelect"
       @close="handleClose"
     />
+    <div class="LayerControl-box">
+      <LayerControl @update-layers="handleLayerChange" />
+    </div>
+    <div class="legendPanel-box">
+      <LegendPanel />
+    </div>
     <div class="right-panel">
       <RightPanel />
     </div>
@@ -16,9 +22,11 @@
 <script>
 import MapTopControl from "./MapTopControl.vue";
 import RightPanel from "./RightPanel.vue";
+import LayerControl from "./components/LayerControl.vue";
+import LegendPanel from "./components/LegendPanel.vue";
 
 export default {
-  components: { MapTopControl, RightPanel },
+  components: { MapTopControl, RightPanel, LayerControl, LegendPanel },
   data() {
     return {
       currentLayer: "vector"
@@ -34,15 +42,15 @@ export default {
         // 清除图层
       }
     },
-    handleLayerChange(layerType) {
+    switchMap(mapType) {
       // eg. 调用百度地图 API 切换图层
-      console.log("切换地图图层为:", layerType);
-      this.currentLayer = layerType;
-      if (layerType === "vector") {
+      console.log("切换地图为:", mapType);
+      this.currentLayer = mapType;
+      if (mapType === "vector") {
         // 切换到矢量图
-      } else if (layerType === "satellite") {
+      } else if (mapType === "satellite") {
         // 切换到卫星图
-      } else if (layerType === "terrain") {
+      } else if (mapType === "terrain") {
         // 切换到地形图
       }
     },
@@ -51,7 +59,11 @@ export default {
       // TODO: 可根据选中区域定位地图
     },
     // 关闭dropdown逻辑
-    handleClose() {}
+    handleClose() {},
+    handleLayerChange(val) {
+      console.log("选中的图层：", val);
+      // TODO: 控制图层显示隐藏
+    }
   }
 };
 </script>
@@ -84,5 +96,15 @@ export default {
   z-index: 10;
   /* 注意这里不要写死宽度！让子组件控制宽度 */
   /* ❌ 不要写 width 和 background，交给子组件控制 */
+}
+
+.LayerControl-box {
+  position: absolute;
+  bottom: 70px;
+}
+.legendPanel-box {
+  position: absolute;
+  bottom: 70px;
+  left: 210px;
 }
 </style>
