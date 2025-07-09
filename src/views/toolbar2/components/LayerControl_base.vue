@@ -1,28 +1,20 @@
 <template>
-  <CollapsePanel title="图层">
-    <div class="layer-scroll-container">
-      <el-checkbox-group v-model="checkedLayers">
-        <el-checkbox
-          v-for="layer in layerList"
-          :key="layer.value"
-          :label="layer.value"
-        >
-          <i :class="layer.icon" class="icon" /> {{ layer.label }}
-        </el-checkbox>
-      </el-checkbox-group>
-    </div>
-  </CollapsePanel>
+  <div class="panel">
+    <div class="panel-title">图层</div>
+    <el-checkbox-group v-model="checkedLayers">
+      <el-checkbox v-for="layer in layerList" :key="layer.value" :label="layer.value">
+        <i :class="layer.icon" class="icon" /> {{ layer.label }}
+      </el-checkbox>
+    </el-checkbox-group>
+  </div>
 </template>
 
 <script>
-import CollapsePanel from "./CollapsePanel.vue";
-
 export default {
   name: "LayerControl",
-  components: { CollapsePanel },
   data() {
     return {
-      checkedLayers: ["water", "rain"],
+      checkedLayers: ["water", "rain", "work", "flow", "quality", "safety", "land", "video"],
       layerList: [
         { label: "水情监测", value: "water", icon: "el-icon-water-cup" },
         { label: "雨情监测", value: "rain", icon: "el-icon-cloudy" },
@@ -40,6 +32,7 @@ export default {
   },
   watch: {
     checkedLayers(val) {
+      // 可 emit 或操作地图图层显隐
       this.$emit("update-layers", val);
     },
   },
@@ -47,26 +40,18 @@ export default {
 </script>
 
 <style scoped>
+.panel {
+  background: rgba(10, 32, 61, 0.85);
+  border-radius: 6px;
+  padding: 10px;
+  color: #fff;
+  width: 200px;
+}
+.panel-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
 .icon {
   margin-right: 4px;
-}
-
-/* 滚动容器样式 */
-.layer-scroll-container {
-  max-height: 200px; /* 自定义最大高度，超出可滚动 */
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-/* 滚动条美化（和图例一致） */
-.layer-scroll-container::-webkit-scrollbar {
-  width: 6px;
-}
-.layer-scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-}
-.layer-scroll-container::-webkit-scrollbar-track {
-  background: transparent;
 }
 </style>

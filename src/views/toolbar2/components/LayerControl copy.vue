@@ -1,17 +1,11 @@
 <template>
-  <CollapsePanel title="图层">
-    <div class="layer-scroll-container">
-      <el-checkbox-group v-model="checkedLayers">
-        <el-checkbox
-          v-for="layer in layerList"
-          :key="layer.value"
-          :label="layer.value"
-        >
-          <i :class="layer.icon" class="icon" /> {{ layer.label }}
-        </el-checkbox>
-      </el-checkbox-group>
-    </div>
-  </CollapsePanel>
+  <collapse-panel title="图层">
+    <el-checkbox-group v-model="checkedLayers">
+      <el-checkbox v-for="layer in layerList" :key="layer.value" :label="layer.value">
+        <i :class="layer.icon" class="icon" /> {{ layer.label }}
+      </el-checkbox>
+    </el-checkbox-group>
+  </collapse-panel>
 </template>
 
 <script>
@@ -22,7 +16,7 @@ export default {
   components: { CollapsePanel },
   data() {
     return {
-      checkedLayers: ["water", "rain"],
+      checkedLayers: ["water", "rain", "work", "flow", "quality", "safety", "land", "video"],
       layerList: [
         { label: "水情监测", value: "water", icon: "el-icon-water-cup" },
         { label: "雨情监测", value: "rain", icon: "el-icon-cloudy" },
@@ -49,24 +43,5 @@ export default {
 <style scoped>
 .icon {
   margin-right: 4px;
-}
-
-/* 滚动容器样式 */
-.layer-scroll-container {
-  max-height: 200px; /* 自定义最大高度，超出可滚动 */
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-/* 滚动条美化（和图例一致） */
-.layer-scroll-container::-webkit-scrollbar {
-  width: 6px;
-}
-.layer-scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-}
-.layer-scroll-container::-webkit-scrollbar-track {
-  background: transparent;
 }
 </style>
