@@ -12,27 +12,19 @@
             class="legend-item"
             v-for="(item, idx) in section.items"
             :key="idx"
-            :class="[
-              section.layout === 'horizontal' ? 'horizontal' : 'vertical'
-            ]"
-            :style="{ width: section.layout === 'horizontal' ? 100 / (section.perRow || 2) + '%' : '100%' }"
+            :class="
+              section.layout === 'horizontal'
+                ? 'legend-item-horizontal'
+                : 'legend-item-vertical'
+            "
           >
-            <div
-              class="legend-content"
-              :class="[
-                section.direction === 'column'
-                  ? 'legend-direction-column'
-                  : 'legend-direction-row'
-              ]"
-            >
-              <template v-if="usePng">
-                <img :src="item.icon" class="legend-icon" />
-              </template>
-              <template v-else>
-                <span :class="[item.shape, item.color]" />
-              </template>
-              <span class="legend-label-text">{{ item.label }}</span>
-            </div>
+            <template v-if="usePng">
+              <img :src="item.icon" class="legend-icon" />
+            </template>
+            <template v-else>
+              <span :class="[item.shape, item.color]" />
+            </template>
+            {{ item.label }}
           </div>
         </div>
       </div>
@@ -57,9 +49,7 @@ export default {
       legendData: [
         {
           title: "水位",
-          layout: "horizontal", // 水平布局 horizontal | 竖直布局 vertical
-          direction: "column", // 图标和文字左右排布 row | 图标在上文字在下 column
-          perRow: 3, // 每行显示多少个, 仅水平布局时生效，
+          layout: "vertical", // 水平布局 horizontal | 竖直布局 vertical
           items: [
             {
               label: "正常",
@@ -83,9 +73,8 @@ export default {
         },
         {
           title: "雨量",
-          layout: "vertical",
-          direction: "row", // 图标在上，文字在下
-          items: [ 
+          layout: "horizontal",
+          items: [
             {
               label: "无降雨",
               shape: "circle",
@@ -139,11 +128,12 @@ export default {
 <style lang="scss" scoped>
 .legend-scroll-container {
   height: 200px;
+  max-height: 200px;
   overflow-y: auto;
   padding: 10px;
 }
 
-// 滚动条
+// 滚动条样式
 .legend-scroll-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -155,9 +145,10 @@ export default {
 }
 .legend-scroll-container::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
 }
 
-// 样式区域
+// 内容样式
 .legend-section {
   margin-top: 10px;
 }
@@ -177,43 +168,29 @@ export default {
 }
 .legend-item {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 6px;
 }
-.legend-item.horizontal {
+.legend-item-horizontal {
   width: 50%;
 }
-.legend-item.vertical {
+.legend-item-vertical {
   width: 100%;
 }
-.legend-content {
-  display: flex;
-  align-items: center;
-}
-.legend-direction-row {
-  flex-direction: row;
-}
-.legend-direction-column {
-  flex-direction: column;
-  text-align: center;
-}
-.legend-label-text {
-  font-size: 12px;
-  white-space: nowrap;
-}
+
+/* PNG 图标 - 实际尺寸展示 */
 .legend-icon {
   display: inline-block;
-  width: auto;
-  height: auto;
-  object-fit: contain;
   margin-right: 6px;
-}
-.legend-direction-column .legend-icon {
-  margin-right: 0;
-  margin-bottom: 4px;
+  vertical-align: middle;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-// 颜色圆点样式（非PNG时）
+/* 圆点图例样式 */
 .dot,
 .circle {
   display: inline-block;
@@ -247,6 +224,7 @@ export default {
   background: #f472b6;
 }
 
+// CollapsePanel 内容去 padding
 ::v-deep .panel-body {
   padding: 0;
 }

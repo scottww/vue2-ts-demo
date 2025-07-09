@@ -12,7 +12,8 @@
     </div>
     <div class="legendPanel-box">
       <!-- <LegendPanel /> -->
-      <LegendPanel :usePng="true" layout="horizontal" />
+      <!-- <LegendPanel :usePng="true" layout="horizontal" /> -->
+      <LegendPanel :usePng="true" />
     </div>
     <div class="right-panel">
       <RightPanel />

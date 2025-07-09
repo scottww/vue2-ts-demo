@@ -46,7 +46,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .icon {
   margin-right: 4px;
 }
@@ -55,18 +55,26 @@ export default {
 .layer-scroll-container {
   max-height: 200px; /* 自定义最大高度，超出可滚动 */
   overflow-y: auto;
-  padding-right: 4px;
+  // padding-right: 4px;
+  padding: 10px;
 }
 
 /* 滚动条美化（和图例一致） */
 .layer-scroll-container::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 .layer-scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
+  background-color: #888;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 .layer-scroll-container::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+// CollapsePanel 内容去 padding
+::v-deep .panel-body {
+  padding: 0;
 }
 </style>
