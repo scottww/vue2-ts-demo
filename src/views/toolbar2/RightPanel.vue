@@ -93,7 +93,7 @@
               ref="statusTableVirtual"
               :columns="currentColumns"
               :tableData="tableData"
-              :remain="50"
+              :remain="10"
               :bench="10"
               style="height: 200px"
             />
@@ -245,7 +245,7 @@ export default {
   },
   mounted() {
     // 生成 10000 条假数据
-    this.tableData = generateMockTableData(10000);
+    this.tableData = generateMockTableData(100000);
     // this.tableData = Array.from({ length: 5000 }, (_, i) => ({
     //   id: i,
     //   name: "name-" + i

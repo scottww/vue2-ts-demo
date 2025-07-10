@@ -31,7 +31,7 @@
       }"
     >
       <template v-if="row.prop === 'index'">
-        <div class="index-text">0{{ source.index }}</div>
+        <div class="index-text">{{ source.index }}</div>
       </template>
 
       <template v-else-if="row.prop === 'time'">

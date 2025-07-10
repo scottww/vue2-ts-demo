@@ -23,27 +23,20 @@
       </div>
 
       <!-- 内容区 -->
-      <div
-        class="virtual-list-wrapper"
-        :style="{
-          width: totalWidth + 'px',
-          height: contentHeight + 'px',
-          overflowY: 'auto',
-          overflowX: 'hidden'
-        }"
-        ref="virtualWrapper"
-      >
-        <virtual-list
-          ref="virtualList"
-          class="virtual-list"
-          :size="rowHeight"
-          :remain="visibleCount"
-          :data-key="'id'"
-          :data-sources="tableData"
-          :data-component="VirtualRow"
-          :extra-props="{ columns, columnWidths, rowHeight, totalWidth }"
-          style="width: 100%"
-        />
+      <div class="virtual-list-wrapper" ref="virtualWrapper">
+        <div class="scroll-body">
+          <virtual-list
+            ref="virtualList"
+            class="virtual-list"
+            :size="rowHeight"
+            :remain="remain"
+            :data-key="'id'"
+            :data-sources="tableData"
+            :data-component="VirtualRow"
+            :extra-props="{ columns, columnWidths, rowHeight, totalWidth }"
+            style="width: 100%; height: 100%"
+          />
+        </div>
       </div>
     </div>
 
@@ -61,9 +54,9 @@ export default {
   props: {
     tableData: { type: Array, required: true },
     columns: { type: Array, required: true },
-    rowHeight: { type: Number, default: 38 },
-    visibleCount: { type: Number, default: 15 },
-    contentHeight: { type: Number, default: 400 }
+    rowHeight: { type: Number, default: 38 }, //每一行的高度
+    remain: { type: Number, default: 15 }, //显示的条数
+    bench: { type: Number, default: 10 } //上下预加载的条数
   },
   data() {
     return {
@@ -175,13 +168,6 @@ export default {
 }
 
 .table-header-cell {
-  /* font-weight: bold;
-  background: #012b52;
-  color: #fff;
-  line-height: 38px;
-  flex-shrink: 0;
-  box-sizing: border-box; */
-
   font-weight: bold;
   background: #012b52;
   color: #fff;
@@ -209,10 +195,30 @@ export default {
 
 /* 内容区外层 */
 .virtual-list-wrapper {
-  flex: 1; /* 高度自适应填满剩余 */
+  flex: 1;
+  overflow: hidden; /* 由 scroll-body 控制滚动 */
+  position: relative;
+}
+
+/* 加这一层控制滚动条 */
+.scroll-body {
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  white-space: nowrap;
+}
+
+/* 滚动条 */
+.virtual-list::-webkit-scrollbar {
+  width: 8px;
+}
+.virtual-list::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.virtual-list::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* 虚拟列表本体 */
