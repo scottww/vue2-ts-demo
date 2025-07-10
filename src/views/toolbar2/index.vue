@@ -15,8 +15,28 @@
       <!-- <LegendPanel :usePng="true" layout="horizontal" /> -->
       <LegendPanel :usePng="true" />
     </div>
-    <div class="right-panel">
-      <RightPanel />
+    <div class="toggleButton-box" :class="{ collapsed: isPanelCollapsed }">
+      <ToggleButton
+        :active="current === 'search'"
+        label="搜索定位"
+        @click="current = 'search'"
+      >
+        <template #icon>
+          <SvgImage :src="searchIcon" :size="24" />
+        </template>
+      </ToggleButton>
+      <ToggleButton
+        :active="current === 'warning'"
+        label="预警信息"
+        @click="current = 'warning'"
+      >
+        <template #icon>
+          <SvgImage :src="warningIcon" :size="24" />
+        </template>
+      </ToggleButton>
+    </div>
+    <div class="right-panel-box">
+      <RightPanel ref="rightPanel" @toggle="handlePanelToggle" />
     </div>
   </div>
 </template>
@@ -27,13 +47,40 @@ import RightPanel from "./RightPanel.vue";
 import LayerControl from "./components/LayerControl.vue";
 import LegendPanel from "./components/LegendPanel.vue";
 import LegendScrollTest from "./components/LegendScrollTest.vue";
+import ToggleButton from "./components/ToggleButton.vue";
+
+import searchIcon from "@/assets/mapIcon/search.svg";
+import warningIcon from "@/assets/mapIcon/waring.svg";
+import SvgImage from "./SvgImage.vue";
 
 export default {
-  components: { MapTopControl, RightPanel, LayerControl, LegendPanel, LegendScrollTest },
+  components: {
+    MapTopControl,
+    RightPanel,
+    LayerControl,
+    LegendPanel,
+    LegendScrollTest,
+    ToggleButton,
+    SvgImage
+  },
   data() {
     return {
+      isPanelCollapsed: null, // 初始设置为 null，表示"等待 RightPanel 通知"
+      // rightPanelWidth: 440, // 默认展开宽度
+      current: "search",
+      searchIcon,
+      warningIcon,
       currentLayer: "vector"
     };
+  },
+  mounted() {
+    // this.updateRightPanelWidth(); // 初始同步
+    console.log("RightPanel 初始宽度:", this.rightPanelWidth);
+    console.log("面板是否折叠:", this.isPanelCollapsed);
+    // window.addEventListener("resize", this.updateRightPanelWidth);
+  },
+  beforeDestroy() {
+    // window.removeEventListener("resize", this.updateRightPanelWidth);
   },
   methods: {
     handleTool(type) {
@@ -66,6 +113,20 @@ export default {
     handleLayerChange(val) {
       console.log("选中的图层：", val);
       // TODO: 控制图层显示隐藏
+    },
+    updateRightPanelWidth() {
+      console.log("updateRightPanelWidth ...");
+      this.$nextTick(() => {
+        const el = this.$refs.rightPanel?.$el;
+        console.log("updateRightPanelWidth1 ...", el);
+        if (el) {
+          console.log("el.offsetWidth ...", el.offsetWidth);
+          this.rightPanelWidth = el.offsetWidth || 440;
+        }
+      });
+    },
+    handlePanelToggle(isCollapsed) {
+      this.isPanelCollapsed = isCollapsed;
     }
   }
 };
@@ -83,8 +144,8 @@ export default {
   width: auto;
 }
 
-// right-panel样式
-.right-panel {
+// right-panel-box样式
+.right-panel-box {
   // position: absolute;
   // top: 0;
   // right: 0;
@@ -109,5 +170,20 @@ export default {
   position: absolute;
   bottom: 70px;
   left: 210px;
+}
+.toggleButton-box {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  transition: transform 0.3s ease;
+  // 初始状态：RightPanel 是展开的，按钮不平移
+  transform: translateX(0);
+}
+.toggleButton-box.collapsed {
+  transform: translateX(-400px); // 注意：= RightPanel宽度(440) - 自己宽度(40)
 }
 </style>

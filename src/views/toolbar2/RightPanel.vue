@@ -255,6 +255,9 @@ export default {
     this.$nextTick(() => {
       this.initPie2();
     });
+
+    console.log("RightPanel mounted，当前折叠状态：", this.isCollapsed);
+    this.$emit("toggle", !this.isCollapsed); // 告知父组件面板状态
   },
   watch: {
     // isCollapsed(newVal) {
@@ -279,6 +282,7 @@ export default {
         this.showTable = false;
       }
       this.isCollapsed = !this.isCollapsed;
+      this.$emit("toggle", !this.isCollapsed); // 告知父组件面板状态
     },
     onTransitionEnd(e) {
       // if (e.propertyName === "width" && !this.isCollapsed) {
@@ -301,7 +305,6 @@ export default {
         this.$nextTick(() => {
           // ✅ 重新计算列宽
           this.$refs.statusTableVirtual?.calcColumnWidths?.();
-
           // ✅ 图表也重新渲染
           if (this.pieChartInstance) {
             this.pieChartInstance.dispose();
