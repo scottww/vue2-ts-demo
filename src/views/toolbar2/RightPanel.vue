@@ -89,6 +89,8 @@
               :tableData="tableData"
             ></StatusTableVirtual> -->
             <StatusTableVirtual
+              v-if="showTable"
+              ref="statusTableVirtual"
               :columns="currentColumns"
               :tableData="tableData"
               :remain="50"
@@ -224,7 +226,8 @@ export default {
           type: "位移",
           status: "online"
         }
-      ]
+      ],
+      showTable: true // 控制 StatusTableVirtual 是否渲染
     };
   },
   created() {
@@ -252,38 +255,60 @@ export default {
     });
   },
   watch: {
-    isCollapsed(newVal) {
-      if (!newVal) {
-        // ✅ 展开后延迟触发 resize
-        this.$nextTick(() => {
-          setTimeout(() => {
-            if (this.pieChartInstance) {
-              this.pieChartInstance.resize();
-            } else {
-              this.initPie2();
-            }
-          }, 100); // 等待 DOM 恢复尺寸
-        });
-      }
-    }
+    // isCollapsed(newVal) {
+    //   if (!newVal) {
+    //     // ✅ 展开后延迟触发 resize
+    //     this.$nextTick(() => {
+    //       setTimeout(() => {
+    //         if (this.pieChartInstance) {
+    //           this.pieChartInstance.resize();
+    //         } else {
+    //           this.initPie2();
+    //         }
+    //       }, 100); // 等待 DOM 恢复尺寸
+    //     });
+    //   }
+    // }
   },
   methods: {
     togglePanel() {
+      if (this.isCollapsed) {
+        // 当前是折叠状态，准备展开 → 隐藏表格，等待动画结束再展示
+        this.showTable = false;
+      }
       this.isCollapsed = !this.isCollapsed;
     },
     onTransitionEnd(e) {
+      // if (e.propertyName === "width" && !this.isCollapsed) {
+      //   this.$nextTick(() => {
+      //     // 无论有没有，先销毁旧图表
+      //     if (this.pieChartInstance) {
+      //       this.pieChartInstance.dispose();
+      //       this.pieChartInstance = null;
+      //     }
+
+      //     // 延迟一点点初始化，确保 DOM 真有尺寸
+      //     setTimeout(() => {
+      //       this.initPie2();
+      //     }, 50); // 加一点延迟，保险起见
+      //   });
+      // }
       if (e.propertyName === "width" && !this.isCollapsed) {
+        // ✅ 展开完成后才显示表格
+        this.showTable = true;
         this.$nextTick(() => {
-          // 无论有没有，先销毁旧图表
+          // ✅ 重新计算列宽
+          this.$refs.statusTableVirtual?.calcColumnWidths?.();
+
+          // ✅ 图表也重新渲染
           if (this.pieChartInstance) {
             this.pieChartInstance.dispose();
             this.pieChartInstance = null;
           }
 
-          // 延迟一点点初始化，确保 DOM 真有尺寸
           setTimeout(() => {
             this.initPie2();
-          }, 50); // 加一点延迟，保险起见
+          }, 50);
         });
       }
     },
