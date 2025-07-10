@@ -17,7 +17,8 @@
             textAlign: col.align || 'center'
           }"
         >
-          {{ col.label }}
+          <div class="header-label">{{ col.label }}</div>
+          <div class="header-unit" v-if="col.unit">{{ col.unit }}</div>
         </div>
       </div>
 
@@ -174,12 +175,36 @@ export default {
 }
 
 .table-header-cell {
-  font-weight: bold;
+  /* font-weight: bold;
   background: #012b52;
   color: #fff;
   line-height: 38px;
   flex-shrink: 0;
+  box-sizing: border-box; */
+
+  font-weight: bold;
+  background: #012b52;
+  color: #fff;
+  flex-shrink: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.2;
+  padding: 4px 2px;
+  height: 38px; /* 总高度固定为38 */
+}
+
+.header-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.header-unit {
+  font-size: 12px;
+  color: #b0c4de;
+  line-height: 1.2;
 }
 
 /* 内容区外层 */

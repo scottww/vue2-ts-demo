@@ -9,14 +9,25 @@ export const columnMap = {
     { label: "序号", prop: "index", width: 60, minWidth: 60 },
     { label: "时间", prop: "time", minWidth: 120 },
     { label: "名称", prop: "name", minWidth: 100 },
-    { label: "单位", prop: "org", formatter: (val) => val || "--" },
+    {
+      label: "字段1",
+      prop: "f1",
+      unit: "(mm)",
+      formatter: (val) => val || "--"
+    },
+    {
+      label: "字段2",
+      prop: "字段2",
+      unit: "(m³/s)",
+      formatter: (val) => val || "--"
+    },
     { label: "在线", prop: "status", minWidth: 80 }
   ],
   tab3: [
     { label: "序号", prop: "index", width: 60, minWidth: 60 },
     { label: "时间", prop: "time", minWidth: 120 },
     { label: "名称", prop: "name", minWidth: 100 },
-    { label: "字段1", prop: "f1" },
+    { label: "字段1", prop: "f1", unit: "(mm)" },
     { label: "字段2", prop: "f2" },
     { label: "字段3", prop: "f3" }
   ],

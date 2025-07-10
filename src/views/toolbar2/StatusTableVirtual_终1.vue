@@ -3,21 +3,34 @@
     <!-- 横向滚动容器 -->
     <div class="scroll-container" ref="scrollContainer" @scroll="handleScroll">
       <!-- 表头 -->
-      <div class="table-header" ref="header" :style="{ width: totalWidth + 'px' }">
+      <div
+        class="table-header"
+        ref="header"
+        :style="{ width: totalWidth + 'px' }"
+      >
         <div
           v-for="(col, i) in columns"
           :key="col.prop || i"
           class="table-header-cell"
-          :style="{ width: columnWidths[i] + 'px', textAlign: col.align || 'center' }"
+          :style="{
+            width: columnWidths[i] + 'px',
+            textAlign: col.align || 'center'
+          }"
         >
-          {{ col.label }}
+          <div class="header-label">{{ col.label }}</div>
+          <div class="header-unit" v-if="col.unit">{{ col.unit }}</div>
         </div>
       </div>
 
       <!-- 内容区 -->
       <div
         class="virtual-list-wrapper"
-        :style="{ width: totalWidth + 'px', height: contentHeight + 'px', overflowY: 'auto', overflowX: 'hidden' }"
+        :style="{
+          width: totalWidth + 'px',
+          height: contentHeight + 'px',
+          overflowY: 'auto',
+          overflowX: 'hidden'
+        }"
         ref="virtualWrapper"
       >
         <virtual-list
@@ -29,14 +42,12 @@
           :data-sources="tableData"
           :data-component="VirtualRow"
           :extra-props="{ columns, columnWidths, rowHeight, totalWidth }"
-          style="width: 100%;"
+          style="width: 100%"
         />
       </div>
     </div>
 
-    <div v-if="tableData.length === 0" class="empty-placeholder">
-      暂无数据
-    </div>
+    <div v-if="tableData.length === 0" class="empty-placeholder">暂无数据</div>
   </div>
 </template>
 
@@ -95,18 +106,30 @@ export default {
         let remainingWidth = containerWidth - fixedWidthSum;
         if (remainingWidth < 0) remainingWidth = 0;
 
-        const flexibleWidth = flexibleCount > 0 ? Math.floor(remainingWidth / flexibleCount) : 50;
+        const flexibleWidth =
+          flexibleCount > 0 ? Math.floor(remainingWidth / flexibleCount) : 50;
 
-        this.columnWidths = this.columns.map((col) => {
-          if (col.width) return Number(col.width);
-          return flexibleWidth;
-        });
+        // 先算出原始 columnWidths
+        let columnWidths = this.columns.map((col) =>
+          col.width ? Number(col.width) : flexibleWidth
+        );
+
+        // 如果总宽度小于容器宽，自动撑满：给最后一列补宽度
+        const currentTotalWidth = columnWidths.reduce((sum, w) => sum + w, 0);
+        if (currentTotalWidth < containerWidth) {
+          columnWidths[columnWidths.length - 1] +=
+            containerWidth - currentTotalWidth;
+        }
+
+        this.columnWidths = columnWidths;
       });
     },
+
     handleScroll(e) {
       const scrollLeft = e.target.scrollLeft;
       if (this.$refs.header) this.$refs.header.scrollLeft = scrollLeft;
-      if (this.$refs.virtualWrapper) this.$refs.virtualWrapper.scrollLeft = scrollLeft;
+      if (this.$refs.virtualWrapper)
+        this.$refs.virtualWrapper.scrollLeft = scrollLeft;
     }
   },
   watch: {
@@ -124,18 +147,21 @@ export default {
 <style scoped>
 .status-table-wrapper {
   width: 100%;
-  border: 1px solid #012b52;
+  height: 100%; /* 由外部父组件控制高度 */
+  display: flex;
+  flex-direction: column;
   background-color: #083b6c;
-  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
   box-sizing: border-box;
 }
 
 .scroll-container {
-  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-x: auto;
   overflow-y: hidden;
-  box-sizing: border-box;
 }
 
 /* 表头 */
@@ -144,24 +170,48 @@ export default {
   white-space: nowrap;
   border-bottom: 1px solid #0b83f5;
   user-select: none;
+  height: 38px; /* 表头高度固定 */
+  flex-shrink: 0;
 }
 
 .table-header-cell {
-  /* padding: 8px; */
-  box-sizing: border-box;
+  /* font-weight: bold;
+  background: #012b52;
+  color: #fff;
+  line-height: 38px;
+  flex-shrink: 0;
+  box-sizing: border-box; */
+
   font-weight: bold;
   background: #012b52;
   color: #fff;
-  /* border-right: 1px solid #0b83f5; */
-  line-height: 38px;
   flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.2;
+  padding: 4px 2px;
+  height: 38px; /* 总高度固定为38 */
+}
+
+.header-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.header-unit {
+  font-size: 12px;
+  color: #b0c4de;
+  line-height: 1.2;
 }
 
 /* 内容区外层 */
 .virtual-list-wrapper {
+  flex: 1; /* 高度自适应填满剩余 */
   overflow-y: auto;
-  overflow-x: hidden; /* 横向滚动交给scroll-container */
-  box-sizing: border-box;
+  overflow-x: hidden;
   white-space: nowrap;
 }
 
