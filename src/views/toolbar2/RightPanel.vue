@@ -95,6 +95,7 @@
               :tableData="tableData"
               :remain="50"
               :bench="10"
+              style="height: 200px"
             />
           </div>
         </div>
@@ -697,6 +698,7 @@ export default {
 }
 
 .table-content {
+  height: 160px;
   min-height: 150px;
   background: #fff;
   border: 1px solid #ddd;
