@@ -9,7 +9,7 @@ export const columnMap = {
     { label: "序号", prop: "index", minWidth: 60 },
     { label: "时间", prop: "time", minWidth: 120 },
     { label: "名称", prop: "name", minWidth: 100 },
-    { label: "单位", prop: "org", minWidth: 120 },
+    { label: "单位", prop: "org" },
     { label: "在线", prop: "status", minWidth: 80 }
   ],
   tab4: [] // tab4 是 Tree，不用 StatusTable

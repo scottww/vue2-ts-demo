@@ -52,7 +52,9 @@
         </template>
 
         <template v-else>
-          {{ source[col.prop] }}
+          <span :title="source[col.prop]">
+            {{ source[col.prop] }}
+          </span>
         </template>
       </div>
     </div>

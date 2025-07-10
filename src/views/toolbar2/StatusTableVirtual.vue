@@ -45,7 +45,9 @@
     </div>
 
     <!-- 空数据提示 -->
-    <div v-if="tableData.length === 0" class="empty-placeholder">暂无数据</div>
+    <div v-if="tableData.length === 0" class="empty-placeholder">
+      暂无数据
+    </div>
   </div>
 </template>
 
@@ -108,8 +110,7 @@ export default {
 
         this.columnWidths = this.columns.map((col) => {
           if (col.width) return Number(col.width);
-          if (col.minWidth)
-            return Math.max(flexibleWidth, Number(col.minWidth));
+          if (col.minWidth) return Math.max(flexibleWidth, Number(col.minWidth));
           return flexibleWidth || 50;
         });
       });
