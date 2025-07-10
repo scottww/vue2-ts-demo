@@ -563,8 +563,8 @@ export default {
   display: flex;
   /* width: 1280px; */
   /* width: 440px; */
-  /* width: 466px; */
-  width: 600px;
+  width: 466px;
+  /* width: 600px; */
   height: 100%;
   background: #fff;
   transition: width 0.3s ease;

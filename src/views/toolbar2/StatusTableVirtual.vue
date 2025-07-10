@@ -1,50 +1,39 @@
 <template>
   <div ref="wrapper" class="status-table-wrapper">
-    <!-- 横向滚动统一容器 -->
+    <!-- 横向滚动容器 -->
     <div class="scroll-container" ref="scrollContainer" @scroll="handleScroll">
       <!-- 表头 -->
-      <div class="table-header" ref="header">
+      <div class="table-header" ref="header" :style="{ width: totalWidth + 'px' }">
         <div
           v-for="(col, i) in columns"
           :key="col.prop || i"
-          :style="{
-            width: columnWidths[i] + 'px',
-            minWidth: columnWidths[i] + 'px',
-            maxWidth: columnWidths[i] + 'px',
-            padding: '0 8px',
-            textAlign: col.align || 'center',
-            lineHeight: rowHeight + 'px',
-            borderBottom: '1px solid #0b83f5',
-            backgroundColor: '#012b52',
-            color: '#fff',
-            fontWeight: 'bold',
-            boxSizing: 'border-box'
-          }"
+          class="table-header-cell"
+          :style="{ width: columnWidths[i] + 'px', textAlign: col.align || 'center' }"
         >
           {{ col.label }}
         </div>
       </div>
 
-      <!-- 虚拟列表 -->
-      <virtual-list
-        ref="virtualList"
-        class="virtual-list"
-        :size="rowHeight"
-        :remain="visibleCount"
-        :data-key="'id'"
-        :data-sources="tableData"
-        :data-component="VirtualRow"
-        :extra-props="{
-          columns,
-          columnWidths,
-          rowHeight,
-          totalWidth
-        }"
-        style="height: 400px"
-      />
+      <!-- 内容区 -->
+      <div
+        class="virtual-list-wrapper"
+        :style="{ width: totalWidth + 'px', height: contentHeight + 'px', overflowY: 'auto', overflowX: 'hidden' }"
+        ref="virtualWrapper"
+      >
+        <virtual-list
+          ref="virtualList"
+          class="virtual-list"
+          :size="rowHeight"
+          :remain="visibleCount"
+          :data-key="'id'"
+          :data-sources="tableData"
+          :data-component="VirtualRow"
+          :extra-props="{ columns, columnWidths, rowHeight, totalWidth }"
+          style="width: 100%;"
+        />
+      </div>
     </div>
 
-    <!-- 空数据提示 -->
     <div v-if="tableData.length === 0" class="empty-placeholder">
       暂无数据
     </div>
@@ -62,7 +51,8 @@ export default {
     tableData: { type: Array, required: true },
     columns: { type: Array, required: true },
     rowHeight: { type: Number, default: 38 },
-    visibleCount: { type: Number, default: 15 }
+    visibleCount: { type: Number, default: 15 },
+    contentHeight: { type: Number, default: 400 }
   },
   data() {
     return {
@@ -72,7 +62,7 @@ export default {
   },
   computed: {
     totalWidth() {
-      return this.columnWidths.reduce((a, b) => a + b, 0);
+      return this.columnWidths.reduce((sum, w) => sum + w, 0);
     }
   },
   mounted() {
@@ -85,49 +75,47 @@ export default {
   methods: {
     calcColumnWidths() {
       this.$nextTick(() => {
-        if (!this.columns || !this.columns.length) {
+        if (!this.columns || this.columns.length === 0) {
           this.columnWidths = [];
           return;
         }
 
         const containerWidth = this.$refs.wrapper
           ? this.$refs.wrapper.clientWidth
-          : 440;
+          : 600;
 
-        let fixedTotal = 0;
+        let fixedWidthSum = 0;
         let flexibleCount = 0;
 
         this.columns.forEach((col) => {
-          if (col.width) fixedTotal += Number(col.width);
+          if (col.width) fixedWidthSum += Number(col.width);
           else flexibleCount++;
         });
 
-        let remainingWidth = containerWidth - fixedTotal;
+        let remainingWidth = containerWidth - fixedWidthSum;
         if (remainingWidth < 0) remainingWidth = 0;
 
-        const flexibleWidth =
-          flexibleCount > 0 ? Math.floor(remainingWidth / flexibleCount) : 0;
+        const flexibleWidth = flexibleCount > 0 ? Math.floor(remainingWidth / flexibleCount) : 50;
 
         this.columnWidths = this.columns.map((col) => {
           if (col.width) return Number(col.width);
-          if (col.minWidth) return Math.max(flexibleWidth, Number(col.minWidth));
-          return flexibleWidth || 50;
+          return flexibleWidth;
         });
       });
     },
     handleScroll(e) {
       const scrollLeft = e.target.scrollLeft;
-      this.$refs.header.scrollLeft = scrollLeft;
-      this.$refs.virtualList.$el.scrollLeft = scrollLeft;
+      if (this.$refs.header) this.$refs.header.scrollLeft = scrollLeft;
+      if (this.$refs.virtualWrapper) this.$refs.virtualWrapper.scrollLeft = scrollLeft;
     }
   },
   watch: {
     columns: {
+      immediate: true,
+      deep: true,
       handler() {
         this.calcColumnWidths();
-      },
-      immediate: true,
-      deep: true
+      }
     }
   }
 };
@@ -135,53 +123,61 @@ export default {
 
 <style scoped>
 .status-table-wrapper {
-  border: 1px solid #012b52;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 100%;
+  border: 1px solid #012b52;
   background-color: #083b6c;
   color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
-/* 新增统一滚动容器 */
 .scroll-container {
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  box-sizing: border-box;
 }
 
 /* 表头 */
 .table-header {
   display: flex;
   white-space: nowrap;
+  border-bottom: 1px solid #0b83f5;
+  user-select: none;
 }
 
-/* 虚拟列表 */
+.table-header-cell {
+  /* padding: 8px; */
+  box-sizing: border-box;
+  font-weight: bold;
+  background: #012b52;
+  color: #fff;
+  /* border-right: 1px solid #0b83f5; */
+  line-height: 38px;
+  flex-shrink: 0;
+}
+
+/* 内容区外层 */
+.virtual-list-wrapper {
+  overflow-y: auto;
+  overflow-x: hidden; /* 横向滚动交给scroll-container */
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* 虚拟列表本体 */
 .virtual-list {
-  min-width: 100%;
+  width: 100%;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  height: 400px;
+  user-select: none;
 }
 
-/* 滚动条 */
-.virtual-list::-webkit-scrollbar {
-  width: 8px;
-}
-.virtual-list::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 5px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-.virtual-list::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* 空数据提示 */
 .empty-placeholder {
   height: 400px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   color: #aaa;
   background: #001f3f;
   font-size: 14px;

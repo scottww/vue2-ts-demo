@@ -1,62 +1,59 @@
 <template>
-  <!-- 宽度撑满，触发横向滚动 -->
-  <div :style="{ width: totalWidth + 'px' }">
+  <div
+    class="virtual-row"
+    :style="{
+      display: 'flex',
+      lineHeight: rowHeight + 'px',
+      height: rowHeight + 'px',
+      cursor: 'pointer',
+      backgroundColor: backgroundColor
+    }"
+    @click="$emit('row-click', source)"
+    @mouseenter="hover = true"
+    @mouseleave="hover = false"
+  >
     <div
-      class="virtual-row"
+      v-for="(col, i) in columns"
+      :key="col.prop || i"
+      :class="getColClass(col.prop)"
       :style="{
-        display: 'flex',
-        lineHeight: rowHeight + 'px',
-        height: rowHeight + 'px',
-        cursor: 'pointer',
-        backgroundColor: backgroundColor
+        width: columnWidths[i] + 'px',
+        minWidth: columnWidths[i] + 'px',
+        maxWidth: columnWidths[i] + 'px',
+        padding: '0 4px',
+        boxSizing: 'border-box',
+        textAlign: col.align || 'center',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        alignItems: 'center',
+        backgroundColor: getColBgColor(col.prop)
       }"
-      @click="$emit('row-click', source)"
-      @mouseenter="hover = true"
-      @mouseleave="hover = false"
     >
-      <div
-        v-for="(col, i) in columns"
-        :key="col.prop || i"
-        :class="getColClass(col.prop)"
-        :style="{
-          width: columnWidths[i] + 'px',
-          minWidth: columnWidths[i] + 'px',
-          maxWidth: columnWidths[i] + 'px',
-          padding: '0 8px',
-          boxSizing: 'border-box',
-          textAlign: col.align || 'center',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          alignItems: 'center',
-          backgroundColor: getColBgColor(col.prop)
-        }"
-      >
-        <template v-if="col.prop === 'index'">
-          <div class="index-text">0{{ source.index }}</div>
-        </template>
+      <template v-if="col.prop === 'index'">
+        <div class="index-text">0{{ source.index }}</div>
+      </template>
 
-        <template v-else-if="col.prop === 'time'">
-          <i
-            class="el-icon-caret-right"
-            style="color: #0b83f5; padding-right: 4px"
-          ></i>
-          <span>{{ source.time }}</span>
-        </template>
+      <template v-else-if="col.prop === 'time'">
+        <i
+          class="el-icon-caret-right"
+          style="color: #0b83f5; padding-right: 4px"
+        ></i>
+        <span>{{ source.time }}</span>
+      </template>
 
-        <template v-else-if="col.prop === 'status'">
-          <span
-            class="status-dot"
-            :class="{ online: source.status === 'online' }"
-          />
-        </template>
+      <template v-else-if="col.prop === 'status'">
+        <span
+          class="status-dot"
+          :class="{ online: source.status === 'online' }"
+        />
+      </template>
 
-        <template v-else>
-          <span :title="source[col.prop]">
-            {{ source[col.prop] }}
-          </span>
-        </template>
-      </div>
+      <template v-else>
+        <span :title="source[col.prop]">
+          {{ source[col.prop] }}
+        </span>
+      </template>
     </div>
   </div>
 </template>
@@ -68,8 +65,7 @@ export default {
     source: { type: Object, required: true },
     columns: { type: Array, required: true },
     columnWidths: { type: Array, required: true },
-    rowHeight: { type: Number, required: true },
-    totalWidth: { type: Number, required: true }
+    rowHeight: { type: Number, required: true }
   },
   data() {
     return {
@@ -87,7 +83,7 @@ export default {
       if (prop === "time") return "col-time";
       return "col-others";
     },
-    getColBgColor(prop) {
+    getColBgColor() {
       return "#0a4183";
     }
   }
@@ -125,10 +121,12 @@ export default {
 
 .col-time {
   background-color: #0a4183;
-  display: flex;
-  align-items: center;
   font-size: 12px;
   color: #fff;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .status-dot {
