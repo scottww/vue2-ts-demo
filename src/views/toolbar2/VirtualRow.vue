@@ -13,36 +13,38 @@
     @mouseleave="hover = false"
   >
     <div
-      v-for="(col, i) in columns"
-      :key="col.prop || i"
-      :class="getColClass(col.prop)"
+      v-for="(row, i) in columns"
+      :key="row.prop || i"
+      :class="getColClass(row.prop)"
       :style="{
         width: columnWidths[i] + 'px',
         minWidth: columnWidths[i] + 'px',
         maxWidth: columnWidths[i] + 'px',
         padding: '0 4px',
         boxSizing: 'border-box',
-        textAlign: col.align || 'center',
+        textAlign: row.align || 'center',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         alignItems: 'center',
-        backgroundColor: getColBgColor(col.prop)
+        backgroundColor: getColBgColor(row.prop)
       }"
     >
-      <template v-if="col.prop === 'index'">
+      <template v-if="row.prop === 'index'">
         <div class="index-text">0{{ source.index }}</div>
       </template>
 
-      <template v-else-if="col.prop === 'time'">
+      <template v-else-if="row.prop === 'time'">
         <i
           class="el-icon-caret-right"
           style="color: #0b83f5; padding-right: 4px"
         ></i>
-        <span>{{ source.time }}</span>
+        <span :title="getFormattedValue(row, source.time)">{{
+          getFormattedValue(row, source.time)
+        }}</span>
       </template>
 
-      <template v-else-if="col.prop === 'status'">
+      <template v-else-if="row.prop === 'status'">
         <span
           class="status-dot"
           :class="{ online: source.status === 'online' }"
@@ -50,8 +52,8 @@
       </template>
 
       <template v-else>
-        <span :title="source[col.prop]">
-          {{ source[col.prop] }}
+        <span :title="getFormattedValue(row, source[row.prop])">
+          {{ getFormattedValue(row, source[row.prop]) }}
         </span>
       </template>
     </div>
@@ -85,6 +87,14 @@ export default {
     },
     getColBgColor() {
       return "#0a4183";
+    },
+    getFormattedValue(row, value) {
+      if (typeof row.formatter === "function") {
+        return row.formatter(value, this.source); // 第二个参数是整行数据
+      }
+      return value === null || value === undefined || value === ""
+        ? "--"
+        : value;
     }
   }
 };
