@@ -54,7 +54,7 @@
         </div>
 
         <div class="table-content">
-          <div v-if="activeTab2 === 'tab4'">
+          <div v-if="activeTab2 === 'tab5'">
             <TreeWithStatus
               :treeData="treeData"
               :onlineIcon="require('@/assets/mapToolBar/online.png')"
@@ -129,7 +129,7 @@ export default {
   data() {
     return {
       isCollapsed: false,
-      tabs: ["类型一", "类型二", "类型三", "特定类型"],
+      tabs: ["类型一", "类型二", "类型三", "类型四", "特定类型"],
       activeTab: "类型一",
       pieChartInstance: null, // ✅ 图表实例缓存
       activeTab2: "tab1",
@@ -137,7 +137,8 @@ export default {
         { name: "tab1", label: "类型一" },
         { name: "tab2", label: "类型二" },
         { name: "tab3", label: "类型三" },
-        { name: "tab4", label: "特定类型" }
+        { name: "tab4", label: "类型四" },
+        { name: "tab5", label: "特定类型" }
       ],
       treeData: [
         {
@@ -588,9 +589,8 @@ export default {
   right: 0;
   display: flex;
   /* width: 1280px; */
-  /* width: 440px; */
-  width: 466px;
-  /* width: 600px; */
+  width: 440px;
+  /* width: 466px; */
   height: 100%;
   background: #fff;
   transition: width 0.3s ease;

@@ -31,7 +31,14 @@ export const columnMap = {
     { label: "字段2", prop: "f2" },
     { label: "字段3", prop: "f3" }
   ],
-  tab4: [] // tab4 是 Tree，不用 StatusTable
+  tab4: [
+    { label: "序号", prop: "index", width: 60, minWidth: 60 },
+    { label: "监测时间", prop: "time", minWidth: 120 },
+    { label: "站点名称", prop: "name", minWidth: 100 },
+    { label: "瞬间流量", prop: "f1", unit: "(m³/s)" },
+    { label: "今日水量", prop: "f2", unit: "(m³)" },
+  ],
+  tab5: [] // tab5 是 Tree，不用 StatusTable
 };
 
 export const tableDataMap = {

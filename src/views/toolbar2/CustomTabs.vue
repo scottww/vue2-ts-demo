@@ -101,13 +101,23 @@ export default {
 
 .tab-item:hover {
   background-color: #e6f0ff; /* hover 蓝灰背景 */
-  color: #409EFF;
+  color: #409eff;
 }
 
 .tab-item.active {
-  background-color: #409EFF;
+  background-color: #409eff;
   color: #fff;
   font-weight: 500;
+
+  /* background: linear-gradient(to bottom, #0187F2 0%, rgba(16, 203, 179, 0.6) 100%); */
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 203, 179, 0.6) 0%,
+    #0187f2 100%
+  );
+  border-radius: 11px 11px 11px 11px;
+  /* border: 1px solid; */
+  border-image: radial-gradient(circle, rgba(0, 240.016, 255, 1)) 1 1;
 }
 
 .tab-label {
@@ -150,7 +160,6 @@ export default {
 .close-btn:hover {
   color: #f56c6c;
 } */
-
 
 /* .close-btn {
   font-size: 12px;
@@ -205,7 +214,4 @@ export default {
 .close-btn:hover {
   color: #f56c6c;
 }
-
-
-
 </style>
