@@ -6,18 +6,25 @@
 export default {
   name: "SvgImage",
   props: {
-    src: { type: String, required: true },
-    size: { type: [Number, String], default: 16 },
+    src: {
+      type: String,
+      required: true
+    },
+    size: {
+      type: [Number, String],
+      default: 16
+    },
     direction: {
       type: String,
-      default: "left",
-      validator: (v) => ["left", "right", "up", "down"].includes(v)
+      default: null, // 不传默认保持 SVG 原始方向
+      validator: (v) =>
+        [null, "", "left", "right", "up", "down"].includes(v)
     }
   },
   data() {
     return {
       content: "",
-      currentSrc: "" // 用于异步安全判断
+      currentSrc: "" // 防止异步响应冲突
     };
   },
   computed: {
@@ -25,13 +32,16 @@ export default {
       return typeof this.size === "number" ? `${this.size}px` : this.size;
     },
     transformStyle() {
+      if (!this.direction) return "none"; // 不设置时不旋转
+
       switch (this.direction) {
-        case "right":
-          return "scaleX(-1)";
+        case "left":
+          return "rotate(180deg)";
         case "up":
           return "rotate(-90deg)";
         case "down":
           return "rotate(90deg)";
+        case "right":
         default:
           return "none";
       }
@@ -58,8 +68,7 @@ export default {
         fetch(val)
           .then((res) => res.text())
           .then((svgText) => {
-            // 防止异步响应覆盖更新
-            if (this.currentSrc !== val) return;
+            if (this.currentSrc !== val) return; // 异步安全
 
             const cleaned = svgText
               .replace(/<\?xml.*?\?>/g, "")
@@ -71,8 +80,8 @@ export default {
             this.content = cleaned;
           })
           .catch((err) => {
-            console.error(`Failed to load SVG from: ${val}`, err);
-            this.content = ""; // 清空内容，防止加载失败显示乱码
+            console.error(`❌ Failed to load SVG: ${val}`, err);
+            this.content = ""; // 加载失败时清空内容
           });
       }
     }

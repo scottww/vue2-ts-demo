@@ -23,7 +23,7 @@
         <!-- 组件内置了配置 -->
         <SvgImage
           class="toggle-icon"
-          :direction="!isCollapsed ? 'right' : 'left'"
+          :direction="isCollapsed ? 'right' : 'left'"
           :src="require('@/assets/mapIcon/double_arrow_left.svg')"
           :size="12"
         />
