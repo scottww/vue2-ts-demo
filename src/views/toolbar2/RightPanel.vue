@@ -7,8 +7,26 @@
     <!-- 左侧搜索栏 -->
     <div class="side-search">
       <!-- <button class="search-btn">🔍</button> -->
-      <button class="toggle-btn" @click="togglePanel">
-        {{ isCollapsed ? "<<" : ">>" }}
+      <button
+        class="toggle-btn"
+        @click="togglePanel"
+        :title="isCollapsed ? '展开' : '收起'"
+      >
+        <!-- <img :src="isCollapsed ? arrowRight : arrowLeft" /> -->
+        <!-- 额外样式实现方式 -->
+        <!-- <SvgImage
+          class="toggle-icon"
+          :class="{ 'flip-horizontal': !isCollapsed }"
+          :src="require('@/assets/mapIcon/double_arrow_left.svg')"
+          :size="12"
+        /> -->
+        <!-- 组件内置了配置 -->
+        <SvgImage
+          class="toggle-icon"
+          :direction="!isCollapsed ? 'right' : 'left'"
+          :src="require('@/assets/mapIcon/double_arrow_left.svg')"
+          :size="12"
+        />
       </button>
     </div>
 
@@ -115,6 +133,7 @@ import StatusTable1 from "./StatusTable_v-scroll.vue";
 import StatusTableVirtual from "./StatusTableVirtual.vue";
 import { generateMockTableData } from "@/utils/generateDataHelper";
 import { columnMap } from "./constants.js";
+import SvgImage from "./SvgImage.vue";
 
 export default {
   name: "RightPanel",
@@ -124,7 +143,8 @@ export default {
     StatusTable,
     VirtualStatusTable,
     StatusTable1,
-    StatusTableVirtual
+    StatusTableVirtual,
+    SvgImage
   },
   data() {
     return {
@@ -584,7 +604,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .right-panel-wrapper {
   position: absolute;
   top: 0;
@@ -603,12 +623,12 @@ export default {
 }
 
 .right-panel-wrapper.collapsed {
-  width: 40px;
+  width: 0; //这个是收起时右侧面板的宽度
   background: transparent !important;
 }
 
 .side-search {
-  width: 40px;
+  /* width: 40px;
   background: #f3f3f3;
   display: flex;
   flex-direction: column;
@@ -616,11 +636,43 @@ export default {
   justify-content: space-between;
   padding: 8px 0;
   border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc; */
+
+  width: 15px;
+  background: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
+  padding: 0;
 }
 
-.search-btn,
 .toggle-btn {
+  all: unset;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .toggle-icon {
+    color: #fff; // 支持 currentColor 传入
+    transition: color 0.3s ease;
+  }
+
+  &:hover .toggle-icon {
+    color: #ffcc00; // hover 状态变色
+  }
+}
+// svg图标翻转
+.flip-horizontal {
+  transform: scaleX(-1);
+}
+
+.search-btn {
   background: #fff;
   border: 1px solid #ccc;
   width: 30px;

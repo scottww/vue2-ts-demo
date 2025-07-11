@@ -174,7 +174,7 @@ export default {
 .toggleButton-box {
   position: absolute;
   top: 10px;
-  right: 40px;
+  right: 0;
   margin-right: 20px;
   display: flex;
   flex-direction: column;
@@ -185,5 +185,6 @@ export default {
 }
 .toggleButton-box.collapsed {
   transform: translateX(-400px); // 注意：= RightPanel宽度(440) - 自己宽度(40)
+  right: 40px;
 }
 </style>
