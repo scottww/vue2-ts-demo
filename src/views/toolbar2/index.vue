@@ -15,6 +15,9 @@
       <!-- <LegendPanel :usePng="true" layout="horizontal" /> -->
       <LegendPanel :usePng="true" />
     </div>
+    <div class="searchPanel-box">
+      <SearchPanel />
+    </div>
     <div class="toggleButton-box" :class="{ collapsed: isPanelCollapsed }">
       <ToggleButton
         :active="current === 'search'"
@@ -48,6 +51,7 @@ import LayerControl from "./components/LayerControl.vue";
 import LegendPanel from "./components/LegendPanel.vue";
 import LegendScrollTest from "./components/LegendScrollTest.vue";
 import ToggleButton from "./components/ToggleButton.vue";
+import SearchPanel from "./components/SearchPanel.vue";
 
 import searchIcon from "@/assets/mapIcon/search.svg";
 import warningIcon from "@/assets/mapIcon/waring.svg";
@@ -61,7 +65,8 @@ export default {
     LegendPanel,
     LegendScrollTest,
     ToggleButton,
-    SvgImage
+    SvgImage,
+    SearchPanel
   },
   data() {
     return {
@@ -170,6 +175,13 @@ export default {
   position: absolute;
   bottom: 70px;
   left: 210px;
+}
+.searchPanel-box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  z-index: 20;
 }
 .toggleButton-box {
   position: absolute;

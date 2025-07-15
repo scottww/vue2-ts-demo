@@ -23,3 +23,10 @@ export function generateMockTableData(count = 100) {
     status: Math.random() > 0.3 ? 'online' : 'offline'
   }));
 }
+
+export function generateData(prefix, count, start = 1) {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i + start,
+    name: `${prefix}${i + start}`
+  }));
+}
