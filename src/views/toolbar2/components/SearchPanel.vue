@@ -1,4 +1,4 @@
-<!-- 没有改为虚拟滚动之前 -->
+<!-- 含有虚拟滚动 -->
 <template>
   <div class="combined-search">
     <!-- 左侧自定义下拉选择类型 -->
@@ -276,6 +276,7 @@ export default {
   flex: 1;
   position: relative;
   height: 36px;
+  background: #fff;
 }
 
 .search-input-container {
