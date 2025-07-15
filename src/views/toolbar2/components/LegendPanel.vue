@@ -165,7 +165,7 @@ export default {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 4px;
-  background: #000e1b;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   text-align: center;
   height: 30px;

@@ -133,6 +133,8 @@ import StatusTable1 from "./StatusTable_v-scroll.vue";
 import StatusTableVirtual from "./StatusTableVirtual.vue";
 import { generateMockTableData } from "@/utils/generateDataHelper";
 import { columnMap } from "./constants.js";
+// import horizontalScroll from "./horizontalScroll.js";
+
 import SvgImage from "./SvgImage.vue";
 
 export default {
@@ -146,6 +148,9 @@ export default {
     StatusTableVirtual,
     SvgImage
   },
+  // directives: {
+  //   horizontalScroll
+  // },
   data() {
     return {
       isCollapsed: false,

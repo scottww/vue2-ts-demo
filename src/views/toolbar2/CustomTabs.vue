@@ -71,7 +71,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tabs-wrapper {
   overflow-x: auto;
   white-space: nowrap;
@@ -79,7 +79,7 @@ export default {
 }
 
 .tabs-scroll {
-  overflow-x: auto;
+  // overflow-x: auto;
 }
 
 .tabs {
