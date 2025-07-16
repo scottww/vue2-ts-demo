@@ -108,8 +108,8 @@ export default {
         { value: "other", label: "其他" }
       ],
       searchData: {
-        location: generateData("点位定位", 100000, 1),
-        channel: generateData("测站", 1000, 1),
+        location: generateData("点位定位", 10000, 1),
+        channel: generateData("测站", 5000, 1),
         other: generateData("其他", 1000, 1)
       }
     };

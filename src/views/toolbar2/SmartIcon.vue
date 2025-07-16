@@ -51,7 +51,8 @@ export default {
         height: s,
         display: 'inline-block',
         verticalAlign: 'middle',
-        lineHeight: 1
+        lineHeight: 1,
+        color: this.isHover && this.hoverColor ? this.hoverColor : this.color
       };
     }
   }
