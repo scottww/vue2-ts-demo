@@ -1,5 +1,5 @@
 <template>
-  <span class="smart-icon" :style="wrapperStyle">
+  <span class="smart-icon"  :class="{ 'no-hover': !isHover }" :style="wrapperStyle">
     <component
       :is="isSvg ? 'SvgImage' : 'PngHoverIcon'"
       v-bind="finalProps"

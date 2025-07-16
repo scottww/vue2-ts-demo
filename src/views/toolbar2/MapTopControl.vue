@@ -141,7 +141,7 @@ export default {
                   src: require("@/assets/mapToolBar/measure.png"),
                   hoverSrc: require("@/assets/mapToolBar/measure_hover.png"),
                   width: 16,
-                  height: 16
+                  height: 16,
                 }
               },
               {
