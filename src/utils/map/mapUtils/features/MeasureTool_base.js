@@ -9,16 +9,21 @@ import Overlay from "ol/Overlay";
 export class MeasureTool {
   constructor(map) {
     this.map = map;
-    this.featureGroups = []; // 每个测量对象的信息
-    this.currentDraw = null;
+    this.draw = null;
+    this.drawLayer = null;
+    this.drawSource = null;
+    this.nodeOverlays = [];
   }
 
-  clearAll() {
-    this.featureGroups.forEach(({ layer, overlays }) => {
-      this.map.removeLayer(layer);
-      overlays.forEach((ov) => this.map.removeOverlay(ov));
-    });
-    this.featureGroups = [];
+  clear() {
+    if (this.draw) this.map.removeInteraction(this.draw);
+    if (this.drawLayer) this.map.removeLayer(this.drawLayer);
+    this.clearNodeOverlays();
+  }
+
+  clearNodeOverlays() {
+    this.nodeOverlays.forEach((overlay) => this.map.removeOverlay(overlay));
+    this.nodeOverlays = [];
   }
 
   createNodeOverlay(coord) {
@@ -30,15 +35,16 @@ export class MeasureTool {
       border: "2px solid red",
       borderRadius: "50%",
       position: "absolute",
-      transform: "translate(-50%, -50%)",
-      pointerEvents: "none"
+      transform: "translate(-50%, -50%)"
     });
-    return new Overlay({
+    const overlay = new Overlay({
       element: node,
       position: coord,
       positioning: "center-center",
       stopEvent: false
     });
+    this.map.addOverlay(overlay);
+    this.nodeOverlays.push(overlay);
   }
 
   createLabelOverlay(coord, text) {
@@ -50,17 +56,18 @@ export class MeasureTool {
       backgroundColor: "#000",
       padding: "2px 4px",
       borderRadius: "4px",
-      opacity: 0.8,
-      whiteSpace: "nowrap"
+      opacity: 0.8
     });
     label.innerHTML = text;
-    return new Overlay({
+    const overlay = new Overlay({
       element: label,
       position: coord,
       positioning: "bottom-center",
       offset: [0, -6],
       stopEvent: false
     });
+    this.map.addOverlay(overlay);
+    this.nodeOverlays.push(overlay);
   }
 
   formatLength(line) {
@@ -78,30 +85,26 @@ export class MeasureTool {
   }
 
   start(type) {
-    // 移除当前正在绘制的交互（不移除已绘制内容）
-    if (this.currentDraw) {
-      this.map.removeInteraction(this.currentDraw);
-      this.currentDraw = null;
-    }
+    this.clear();
 
-    const source = new VectorSource();
-    const layer = new VectorLayer({
-      source,
+    this.drawSource = new VectorSource();
+    this.drawLayer = new VectorLayer({
+      source: this.drawSource,
       style: new Style({
         stroke: new Stroke({ color: "#f00", width: 2 }),
         fill: new Fill({ color: "rgba(255,0,0,0.1)" })
       }),
       zIndex: 10
     });
-    this.map.addLayer(layer);
+    this.map.addLayer(this.drawLayer);
 
-    const draw = new Draw({ source, type });
-    this.map.addInteraction(draw);
-    this.currentDraw = draw;
+    this.draw = new Draw({
+      source: this.drawSource,
+      type
+    });
+    this.map.addInteraction(this.draw);
 
-    const overlays = [];
-
-    draw.on("drawstart", (e) => {
+    this.draw.on("drawstart", (e) => {
       const geom = e.feature.getGeometry();
 
       geom.on("change", () => {
@@ -110,33 +113,25 @@ export class MeasureTool {
             ? geom.getCoordinates()[0].slice(0, -1)
             : geom.getCoordinates();
 
-        // 清除上一次绘制时生成的 overlays
-        overlays.forEach((ov) => this.map.removeOverlay(ov));
-        overlays.length = 0;
+        this.clearNodeOverlays();
 
         coords.forEach((c, i) => {
-          const nodeOverlay = this.createNodeOverlay(c);
-          this.map.addOverlay(nodeOverlay);
-          overlays.push(nodeOverlay);
+          this.createNodeOverlay(c);
 
           if (type === "LineString") {
             if (i === 0) {
-              const label = this.createLabelOverlay(c, "起点");
-              this.map.addOverlay(label);
-              overlays.push(label);
+              this.createLabelOverlay(c, "起点");
             } else {
               const line = new LineString(coords.slice(0, i + 1));
-              const len = this.formatLength(line);
-              const label = this.createLabelOverlay(c, `${len.value} ${len.unit}`);
-              this.map.addOverlay(label);
-              overlays.push(label);
+              const total = this.formatLength(line);
+              this.createLabelOverlay(c, `${total.value} ${total.unit}`);
             }
           }
         });
       });
     });
 
-    draw.on("drawend", (e) => {
+    this.draw.on("drawend", (e) => {
       const feature = e.feature;
       const geom = feature.getGeometry();
       const coords =
@@ -144,75 +139,66 @@ export class MeasureTool {
           ? geom.getCoordinates()[0].slice(0, -1)
           : geom.getCoordinates();
 
-      // 清除绘制中的 overlays，重新绘制静态版本
-      overlays.forEach((ov) => this.map.removeOverlay(ov));
-      overlays.length = 0;
+      this.clearNodeOverlays();
 
       coords.forEach((c, i) => {
-        const nodeOverlay = this.createNodeOverlay(c);
-        this.map.addOverlay(nodeOverlay);
-        overlays.push(nodeOverlay);
+        this.createNodeOverlay(c);
 
         if (type === "LineString") {
           if (i === 0) {
-            const label = this.createLabelOverlay(c, "起点");
-            this.map.addOverlay(label);
-            overlays.push(label);
+            this.createLabelOverlay(c, "起点");
           } else {
             const line = new LineString(coords.slice(0, i + 1));
-            const len = this.formatLength(line);
-            const label = this.createLabelOverlay(c, `${len.value} ${len.unit}`);
-            this.map.addOverlay(label);
-            overlays.push(label);
+            const total = this.formatLength(line);
+            this.createLabelOverlay(c, `${total.value} ${total.unit}`);
           }
         }
       });
 
       if (type === "Polygon") {
-        const area = this.formatArea(geom);
+        const areaInfo = this.formatArea(geom);
         const center = geom.getInteriorPoint().getCoordinates();
-        const label = this.createLabelOverlay(center, `${area.value} ${area.unit}`);
-        this.map.addOverlay(label);
-        overlays.push(label);
+        this.createLabelOverlay(center, `${areaInfo.value} ${areaInfo.unit}`);
       }
 
-      // 删除按钮
+      if (type === "LineString" && coords.length > 1) {
+        const total = this.formatLength(new LineString(coords));
+        const last = coords[coords.length - 1];
+        this.createLabelOverlay(last, `总长：${total.value} ${total.unit}`);
+      }
+
+      // 关闭按钮
       const closeBtn = document.createElement("div");
       closeBtn.innerText = "✖";
       Object.assign(closeBtn.style, {
         color: "red",
         background: "#fff",
         border: "1px solid red",
-        // borderRadius: "50%",
-        width: "14px",
-        height: "14px",
+        borderRadius: "50%",
+        width: "18px",
+        height: "18px",
         textAlign: "center",
-        lineHeight: "12px",
+        lineHeight: "16px",
         cursor: "pointer",
         fontSize: "12px",
-        // fontWeight: "bold",
-        zIndex: 999
+        fontWeight: "bold"
       });
 
       closeBtn.addEventListener("click", () => {
-        this.map.removeLayer(layer);
-        overlays.forEach((ov) => this.map.removeOverlay(ov));
-        this.featureGroups = this.featureGroups.filter((g) => g.feature !== feature);
+        this.drawSource.removeFeature(feature);
+        this.clearNodeOverlays();
+        this.map.removeInteraction(this.draw);
       });
 
       const closeOverlay = new Overlay({
         element: closeBtn,
-        positioning: "top-right",
-        offset: [10, 10],
+        positioning: "bottom-left",
+        offset: [0, -10],
         stopEvent: false
       });
       closeOverlay.setPosition(coords[coords.length - 1]);
       this.map.addOverlay(closeOverlay);
-      overlays.push(closeOverlay);
-
-      this.featureGroups.push({ feature, layer, overlays });
-      this.map.removeInteraction(draw);
-      this.currentDraw = null;
+      this.nodeOverlays.push(closeOverlay);
     });
   }
 }

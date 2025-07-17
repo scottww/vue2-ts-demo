@@ -163,8 +163,13 @@ import CircleStyle from "ol/style/Circle";
 import Overlay from "ol/Overlay";
 import { getLength, getArea, getCenter } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
+import { Select } from "ol/interaction";
+import { pointerMove } from "ol/events/condition";
+import GeoJSON from "ol/format/GeoJSON";
+
 import HoverMenu from "./tool-bar.vue";
 import { v4 as uuidv4 } from "uuid";
+import { MOCK_DATA2 } from "./data.js";
 
 export default {
   components: { HoverMenu },
@@ -287,7 +292,7 @@ export default {
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);
       // this.tileLayerManager.switchTo("TDT_vec");
-      this.tileLayerManager.switchTo("TDT_img");
+      // this.tileLayerManager.switchTo("TDT_img");
 
       // 初始化图层用于显示图标
       this.markerLayer = new VectorLayer({
@@ -308,7 +313,8 @@ export default {
       this.initSavedLayer();
 
       //注册hover事件(要在savedLayer之后注册)
-      mapService.on("pointermove", this.handleMapPointerMove);
+      // mapService.on("pointermove", this.handleMapPointerMove);
+      this.addCustomDrawPolygon();
     },
     handleMapClick(event) {
       console.log("地图点击事件:", event);
@@ -1418,6 +1424,150 @@ export default {
       } else {
         this.map.getTargetElement().style.cursor = "default";
       }
+    },
+    // ====================================绘制自定义区域========================================
+    addCustomDrawPolygon(data = []) {
+      const targetData = MOCK_DATA2;
+      // 默认样式
+      // const normalStyle = new Style({
+      //   stroke: new Stroke({ color: "#3399CC", width: 2 }),
+      //   fill: new Fill({ color: "rgba(0, 153, 255, 0.3)" })
+      // });
+
+      // const hoverStyle = new Style({
+      //   stroke: new Stroke({ color: "#FF0000", width: 2 }),
+      //   fill: new Fill({ color: "rgba(255, 0, 0, 0.3)" })
+      // });
+      // 样式映射
+      const styleMap = {
+        规划: {
+          stroke: "#1E90FF",
+          fill: "rgba(30,144,255,0.3)",
+          hoverStroke: "#104E8B",
+          hoverFill: "rgba(30,144,255,0.6)"
+        },
+        占用: {
+          stroke: "#FFA500",
+          fill: "rgba(255,165,0,0.3)",
+          hoverStroke: "#CC8400",
+          hoverFill: "rgba(255,165,0,0.6)"
+        },
+        补偿: {
+          stroke: "#32CD32",
+          fill: "rgba(50,205,50,0.3)",
+          hoverStroke: "#228B22",
+          hoverFill: "rgba(50,205,50,0.6)"
+        },
+        default: {
+          stroke: "#666666",
+          fill: "rgba(102,102,102,0.3)",
+          hoverStroke: "#444",
+          hoverFill: "rgba(102,102,102,0.6)"
+        }
+      };
+
+      const source = new VectorSource();
+
+      targetData.forEach((item) => {
+        const geo = this.parseGeometry(item.spaceArea);
+        if (!geo) return;
+
+        const feature = new GeoJSON().readFeature(
+          {
+            type: "Feature",
+            geometry: geo,
+            properties: {
+              ...item
+            }
+          },
+          {
+            featureProjection: "EPSG:4326"
+          }
+        );
+
+        // feature.setStyle(normalStyle);
+        //根据类型获取样式
+        feature.setStyle(this.getStyleByType2(styleMap, item.type));
+        source.addFeature(feature);
+      });
+
+      const vectorLayer = new VectorLayer({
+        source
+        // style: (f) => this.getStyleByType2(styleMap, f.get("type")) // 再保险
+      });
+
+      this.map.addLayer(vectorLayer);
+
+      // hover 效果：闪烁
+      const selectPointerMove = new Select({
+        condition: pointerMove,
+        style: (f) => this.getStyleByType2(styleMap, f.get("type"), true)
+      });
+
+      this.map.addInteraction(selectPointerMove);
+
+      // hover 闪烁效果（简单版，定时器模拟）
+      this.drawHoverEffect(selectPointerMove, styleMap);
+    },
+    parseGeometry(spaceArea) {
+      try {
+        // 第一步，解析整个 spaceArea 字符串
+        let geo =
+          typeof spaceArea === "string" ? JSON.parse(spaceArea) : spaceArea;
+
+        // 第二步，若 coordinates 是字符串，则再解析一次
+        if (typeof geo.coordinates === "string") {
+          geo.coordinates = JSON.parse(geo.coordinates);
+        }
+
+        return geo;
+      } catch (e) {
+        console.warn("无法解析 geometry：", spaceArea, e);
+        return null;
+      }
+    },
+    getStyleByType2(styleMap, type, isHover = false) {
+      const styleConf = styleMap[type] || styleMap["default"];
+      return new Style({
+        stroke: new Stroke({
+          color: isHover ? styleConf.hoverStroke : styleConf.stroke,
+          width: 2
+        }),
+        fill: new Fill({
+          color: isHover ? styleConf.hoverFill : styleConf.fill
+        })
+      });
+    },
+    drawHoverEffect(selectPointerMove, styleMap) {
+      let lastFeature = null;
+      let flickerTimer = null;
+      const _that = this;
+
+      selectPointerMove.on("select", (e) => {
+        const feature = e.selected[0];
+        console.log("hover feature:", feature && feature.get("id"));
+
+        if (lastFeature && lastFeature !== feature) {
+          lastFeature.setStyle(
+            _that.getStyleByType2(styleMap, lastFeature.get("type"))
+          );
+        }
+
+        if (feature) {
+          if (flickerTimer) clearInterval(flickerTimer);
+          let visible = true;
+          flickerTimer = setInterval(() => {
+            feature.setStyle(
+              _that.getStyleByType2(styleMap, feature.get("type"), visible)
+            );
+            visible = !visible;
+          }, 400);
+        } else {
+          if (flickerTimer) clearInterval(flickerTimer);
+        }
+
+        lastFeature = feature;
+      });
     }
   }
 };
