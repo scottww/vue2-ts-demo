@@ -1,17 +1,32 @@
-// 这时候还没加入tooltips
 import { Draw } from "ol/interaction";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
-import { Style, Stroke, Fill } from "ol/style";
+import { Style, Stroke, Fill, Circle as CircleStyle } from "ol/style";
 import { getLength, getArea } from "ol/sphere";
 import { LineString } from "ol/geom";
 import Overlay from "ol/Overlay";
 
+function hexToRgba(hex, alpha = 1) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 export class MeasureTool {
-  constructor(map) {
+  constructor(map, options = {}) {
     this.map = map;
-    this.featureGroups = []; // 每个测量对象的信息
+    this.featureGroups = [];
     this.currentDraw = null;
+
+    // 配置，支持主题色，默认蓝色
+    this.options = Object.assign(
+      {
+        themeColor: "#3399FF",
+        showDeleteButton: true,
+      },
+      options
+    );
   }
 
   clearAll() {
@@ -27,18 +42,20 @@ export class MeasureTool {
     Object.assign(node.style, {
       width: "10px",
       height: "10px",
-      backgroundColor: "#fff",
-      border: "2px solid red",
+      backgroundColor: hexToRgba(this.options.themeColor, 0.6),
+      border: "2px solid #fff",
       borderRadius: "50%",
       position: "absolute",
       transform: "translate(-50%, -50%)",
-      pointerEvents: "none"
+      pointerEvents: "none",
+      boxSizing: "border-box",
+      zIndex: 1000,
     });
     return new Overlay({
       element: node,
       position: coord,
       positioning: "center-center",
-      stopEvent: false
+      stopEvent: false,
     });
   }
 
@@ -47,15 +64,17 @@ export class MeasureTool {
     Object.assign(label.style, {
       fontSize: "12px",
       fontWeight: "bold",
-      // color: "#fff",
-      // backgroundColor: "#000",
       color: "#7a7a7a",
       backgroundColor: "#fff",
       border: "1px solid #7a7a7a",
       padding: "2px 4px",
       borderRadius: "4px",
       opacity: 0.8,
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
+      userSelect: "none",
+      zIndex: 999,
+      position: "absolute",
+      transform: "translate(-50%, 0)",
     });
     label.innerHTML = text;
     return new Overlay({
@@ -63,7 +82,7 @@ export class MeasureTool {
       position: coord,
       positioning: "bottom-center",
       offset: [0, -6],
-      stopEvent: false
+      stopEvent: false,
     });
   }
 
@@ -82,15 +101,15 @@ export class MeasureTool {
       fontSize: "12px",
       color: "rgb(51, 51, 51)",
       userSelect: "none",
-      zIndex: 999
+      zIndex: 999,
     });
 
     return new Overlay({
       element: div,
       position: coord,
-      positioning: "bottom-left", // 可调
+      positioning: "bottom-left",
       offset: [8, -8],
-      stopEvent: false
+      stopEvent: false,
     });
   }
 
@@ -108,8 +127,41 @@ export class MeasureTool {
       : { value: area.toFixed(2), unit: "㎡" };
   }
 
+  // 绘制时的样式
+  createDrawStyle() {
+    const c = this.options.themeColor;
+    return new Style({
+      stroke: new Stroke({
+        color: c,
+        width: 2,
+        lineDash: [10, 10],
+      }),
+      fill: new Fill({
+        color: hexToRgba(c, 0.2),
+      }),
+      image: new CircleStyle({
+        radius: 5,
+        fill: new Fill({ color: hexToRgba(c, 0.6) }),
+        stroke: new Stroke({ color: "#fff", width: 1 }),
+      }),
+    });
+  }
+
+  // 图层最终样式，实线实色
+  createLayerStyle() {
+    const c = this.options.themeColor;
+    return new Style({
+      stroke: new Stroke({
+        color: c,
+        width: 2,
+      }),
+      fill: new Fill({
+        color: hexToRgba(c, 0.3),
+      }),
+    });
+  }
+
   start(type) {
-    // 移除当前正在绘制的交互（不移除已绘制内容）
     if (this.currentDraw) {
       this.map.removeInteraction(this.currentDraw);
       this.currentDraw = null;
@@ -118,23 +170,15 @@ export class MeasureTool {
     const source = new VectorSource();
     const layer = new VectorLayer({
       source,
-      style: new Style({
-        stroke: new Stroke({ color: "#f00", width: 2 }),
-        fill: new Fill({ color: "rgba(255,0,0,0.1)" })
-      }),
-      zIndex: 10
+      style: this.createLayerStyle(),
+      zIndex: 10,
     });
     this.map.addLayer(layer);
 
     const draw = new Draw({
       source,
       type,
-      style: new Style({
-        // stroke: new Stroke({ color: "#2196F3", width: 2 }),
-        // fill: new Fill({ color: "rgba(33,150,243,0.2)" })
-        stroke: new Stroke({ color: "#f00", width: 2 }),
-        fill: new Fill({ color: "rgba(33,150,243,0.2)" })
-      })
+      style: this.createDrawStyle(),
     });
     this.map.addInteraction(draw);
     this.currentDraw = draw;
@@ -150,7 +194,7 @@ export class MeasureTool {
             ? geom.getCoordinates()[0].slice(0, -1)
             : geom.getCoordinates();
 
-        // 清除上一次绘制时生成的 overlays
+        // 移除旧overlays
         overlays.forEach((ov) => this.map.removeOverlay(ov));
         overlays.length = 0;
 
@@ -187,7 +231,7 @@ export class MeasureTool {
           ? geom.getCoordinates()[0].slice(0, -1)
           : geom.getCoordinates();
 
-      // 清除绘制中的 overlays，重新绘制静态版本
+      // 清理绘制中的 overlays
       overlays.forEach((ov) => this.map.removeOverlay(ov));
       overlays.length = 0;
 
@@ -210,22 +254,6 @@ export class MeasureTool {
             );
             this.map.addOverlay(label);
             overlays.push(label);
-            //定制化结尾标签
-            // if (i === coords.length - 1) {
-            //   const label = this.createFinalLabelOverlay(
-            //     c,
-            //     `总长：${len.value} ${len.unit}`
-            //   );
-            //   this.map.addOverlay(label);
-            //   overlays.push(label);
-            // } else {
-            //   const label = this.createLabelOverlay(
-            //     c,
-            //     `${len.value} ${len.unit}`
-            //   );
-            //   this.map.addOverlay(label);
-            //   overlays.push(label);
-            // }
           }
         }
       });
@@ -233,55 +261,62 @@ export class MeasureTool {
       if (type === "Polygon") {
         const area = this.formatArea(geom);
         const center = geom.getInteriorPoint().getCoordinates();
-        const label = this.createLabelOverlay(
+        const label = this.createFinalLabelOverlay(
           center,
-          `${area.value} ${area.unit}`
+          `总面积：${area.value} ${area.unit}`
         );
-        //定制化标签
-        // const label = this.createFinalLabelOverlay(
-        //   center,
-        //   `总面积：${area.value} ${area.unit}`
-        // );
         this.map.addOverlay(label);
         overlays.push(label);
       }
 
-      // 删除按钮
-      const closeBtn = document.createElement("div");
-      closeBtn.innerText = "✖";
-      closeBtn.title = "清除";
-      Object.assign(closeBtn.style, {
-        color: "red",
-        background: "#fff",
-        border: "1px solid red",
-        // borderRadius: "50%",
-        width: "14px",
-        height: "14px",
-        textAlign: "center",
-        lineHeight: "12px",
-        cursor: "pointer",
-        fontSize: "12px",
-        // fontWeight: "bold",
-        zIndex: 999
-      });
-
-      closeBtn.addEventListener("click", () => {
-        this.map.removeLayer(layer);
-        overlays.forEach((ov) => this.map.removeOverlay(ov));
-        this.featureGroups = this.featureGroups.filter(
-          (g) => g.feature !== feature
+      if (type === "LineString") {
+        const line = new LineString(coords);
+        const lastCoord = coords[coords.length - 1];
+        const length = this.formatLength(line);
+        const label = this.createFinalLabelOverlay(
+          lastCoord,
+          `总长：${length.value} ${length.unit}`
         );
-      });
+        this.map.addOverlay(label);
+        overlays.push(label);
+      }
 
-      const closeOverlay = new Overlay({
-        element: closeBtn,
-        positioning: "top-right",
-        offset: [10, 10],
-        stopEvent: false
-      });
-      closeOverlay.setPosition(coords[coords.length - 1]);
-      this.map.addOverlay(closeOverlay);
-      overlays.push(closeOverlay);
+      if (this.options.showDeleteButton) {
+        const closeBtn = document.createElement("div");
+        closeBtn.innerText = "✖";
+        closeBtn.title = "清除";
+        Object.assign(closeBtn.style, {
+          color: "red",
+          background: "#fff",
+          border: "1px solid red",
+          width: "14px",
+          height: "14px",
+          textAlign: "center",
+          lineHeight: "12px",
+          cursor: "pointer",
+          fontSize: "12px",
+          zIndex: 999,
+          position: "absolute",
+        });
+
+        closeBtn.addEventListener("click", () => {
+          this.map.removeLayer(layer);
+          overlays.forEach((ov) => this.map.removeOverlay(ov));
+          this.featureGroups = this.featureGroups.filter(
+            (g) => g.feature !== feature
+          );
+        });
+
+        const closeOverlay = new Overlay({
+          element: closeBtn,
+          positioning: "top-right",
+          offset: [10, 10],
+          stopEvent: false,
+        });
+        closeOverlay.setPosition(coords[coords.length - 1]);
+        this.map.addOverlay(closeOverlay);
+        overlays.push(closeOverlay);
+      }
 
       this.featureGroups.push({ feature, layer, overlays });
       this.map.removeInteraction(draw);

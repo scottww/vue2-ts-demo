@@ -46,8 +46,11 @@ export class MeasureTool {
     Object.assign(label.style, {
       fontSize: "12px",
       fontWeight: "bold",
-      color: "#fff",
-      backgroundColor: "#000",
+      // color: "#fff",
+      // backgroundColor: "#000",
+      color: "#7a7a7a",
+      backgroundColor: "#fff",
+      border: "1px solid #7a7a7a",
       padding: "2px 4px",
       borderRadius: "4px",
       opacity: 0.8,
@@ -59,6 +62,33 @@ export class MeasureTool {
       position: coord,
       positioning: "bottom-center",
       offset: [0, -6],
+      stopEvent: false
+    });
+  }
+
+  createFinalLabelOverlay(coord, text) {
+    const div = document.createElement("div");
+    div.innerHTML = text;
+
+    Object.assign(div.style, {
+      position: "absolute",
+      display: "inline",
+      cursor: "inherit",
+      backgroundColor: "rgb(255, 255, 255)",
+      border: "1px solid rgb(255, 1, 3)",
+      padding: "3px 5px",
+      whiteSpace: "nowrap",
+      fontSize: "12px",
+      color: "rgb(51, 51, 51)",
+      userSelect: "none",
+      zIndex: 999
+    });
+
+    return new Overlay({
+      element: div,
+      position: coord,
+      positioning: "bottom-left", // 可调
+      offset: [8, -8],
       stopEvent: false
     });
   }
@@ -95,7 +125,16 @@ export class MeasureTool {
     });
     this.map.addLayer(layer);
 
-    const draw = new Draw({ source, type });
+    const draw = new Draw({
+      source,
+      type,
+      style: new Style({
+        // stroke: new Stroke({ color: "#2196F3", width: 2 }),
+        // fill: new Fill({ color: "rgba(33,150,243,0.2)" })
+        stroke: new Stroke({ color: "#f00", width: 2 }),
+        fill: new Fill({ color: "rgba(33,150,243,0.2)" })
+      })
+    });
     this.map.addInteraction(draw);
     this.currentDraw = draw;
 
@@ -127,7 +166,10 @@ export class MeasureTool {
             } else {
               const line = new LineString(coords.slice(0, i + 1));
               const len = this.formatLength(line);
-              const label = this.createLabelOverlay(c, `${len.value} ${len.unit}`);
+              const label = this.createLabelOverlay(
+                c,
+                `${len.value} ${len.unit}`
+              );
               this.map.addOverlay(label);
               overlays.push(label);
             }
@@ -161,9 +203,28 @@ export class MeasureTool {
           } else {
             const line = new LineString(coords.slice(0, i + 1));
             const len = this.formatLength(line);
-            const label = this.createLabelOverlay(c, `${len.value} ${len.unit}`);
+            const label = this.createLabelOverlay(
+              c,
+              `${len.value} ${len.unit}`
+            );
             this.map.addOverlay(label);
             overlays.push(label);
+            //定制化结尾标签
+            // if (i === coords.length - 1) {
+            //   const label = this.createFinalLabelOverlay(
+            //     c,
+            //     `总长：${len.value} ${len.unit}`
+            //   );
+            //   this.map.addOverlay(label);
+            //   overlays.push(label);
+            // } else {
+            //   const label = this.createLabelOverlay(
+            //     c,
+            //     `${len.value} ${len.unit}`
+            //   );
+            //   this.map.addOverlay(label);
+            //   overlays.push(label);
+            // }
           }
         }
       });
@@ -171,7 +232,15 @@ export class MeasureTool {
       if (type === "Polygon") {
         const area = this.formatArea(geom);
         const center = geom.getInteriorPoint().getCoordinates();
-        const label = this.createLabelOverlay(center, `${area.value} ${area.unit}`);
+        const label = this.createLabelOverlay(
+          center,
+          `${area.value} ${area.unit}`
+        );
+        //定制化标签
+        // const label = this.createFinalLabelOverlay(
+        //   center,
+        //   `总面积：${area.value} ${area.unit}`
+        // );
         this.map.addOverlay(label);
         overlays.push(label);
       }
@@ -179,6 +248,7 @@ export class MeasureTool {
       // 删除按钮
       const closeBtn = document.createElement("div");
       closeBtn.innerText = "✖";
+      closeBtn.title = "清除";
       Object.assign(closeBtn.style, {
         color: "red",
         background: "#fff",
@@ -197,7 +267,9 @@ export class MeasureTool {
       closeBtn.addEventListener("click", () => {
         this.map.removeLayer(layer);
         overlays.forEach((ov) => this.map.removeOverlay(ov));
-        this.featureGroups = this.featureGroups.filter((g) => g.feature !== feature);
+        this.featureGroups = this.featureGroups.filter(
+          (g) => g.feature !== feature
+        );
       });
 
       const closeOverlay = new Overlay({
