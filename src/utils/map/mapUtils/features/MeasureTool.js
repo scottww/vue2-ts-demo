@@ -9,16 +9,44 @@ import Overlay from "ol/Overlay";
 export class MeasureTool {
   constructor(map) {
     this.map = map;
-    this.featureGroups = []; // 每个测量对象的信息
+    this.featureGroups = [];
     this.currentDraw = null;
+
+    this.liveTipOverlay = this.createLiveTipOverlay();
+    this.map.addOverlay(this.liveTipOverlay);
+    this.isDrawing = false;
+
+    this.map.on("pointermove", (evt) => {
+      if (!evt.dragging) {
+        this.liveTipOverlay.setPosition(evt.coordinate);
+      }
+    });
   }
 
-  clearAll() {
-    this.featureGroups.forEach(({ layer, overlays }) => {
-      this.map.removeLayer(layer);
-      overlays.forEach((ov) => this.map.removeOverlay(ov));
+  createLiveTipOverlay() {
+    const el = document.createElement("div");
+    Object.assign(el.style, {
+      position: "absolute",
+      fontSize: "12px",
+      color: "#666",
+      background: "#fff",
+      border: "1px solid #ccc",
+      padding: "2px 4px",
+      whiteSpace: "nowrap",
+      zIndex: 999,
+      pointerEvents: "none"
     });
-    this.featureGroups = [];
+    el.innerText = "单击确定起点";
+    return new Overlay({
+      element: el,
+      offset: [8, 8],
+      positioning: "bottom-left",
+      stopEvent: false
+    });
+  }
+
+  updateLiveTip(content) {
+    this.liveTipOverlay.getElement().innerHTML = content;
   }
 
   createNodeOverlay(coord) {
@@ -46,8 +74,6 @@ export class MeasureTool {
     Object.assign(label.style, {
       fontSize: "12px",
       fontWeight: "bold",
-      // color: "#fff",
-      // backgroundColor: "#000",
       color: "#7a7a7a",
       backgroundColor: "#fff",
       border: "1px solid #7a7a7a",
@@ -62,33 +88,6 @@ export class MeasureTool {
       position: coord,
       positioning: "bottom-center",
       offset: [0, -6],
-      stopEvent: false
-    });
-  }
-
-  createFinalLabelOverlay(coord, text) {
-    const div = document.createElement("div");
-    div.innerHTML = text;
-
-    Object.assign(div.style, {
-      position: "absolute",
-      display: "inline",
-      cursor: "inherit",
-      backgroundColor: "rgb(255, 255, 255)",
-      border: "1px solid rgb(255, 1, 3)",
-      padding: "3px 5px",
-      whiteSpace: "nowrap",
-      fontSize: "12px",
-      color: "rgb(51, 51, 51)",
-      userSelect: "none",
-      zIndex: 999
-    });
-
-    return new Overlay({
-      element: div,
-      position: coord,
-      positioning: "bottom-left", // 可调
-      offset: [8, -8],
       stopEvent: false
     });
   }
@@ -108,11 +107,12 @@ export class MeasureTool {
   }
 
   start(type) {
-    // 移除当前正在绘制的交互（不移除已绘制内容）
     if (this.currentDraw) {
       this.map.removeInteraction(this.currentDraw);
       this.currentDraw = null;
     }
+
+    this.updateLiveTip("单击确定起点");
 
     const source = new VectorSource();
     const layer = new VectorLayer({
@@ -129,12 +129,11 @@ export class MeasureTool {
       source,
       type,
       style: new Style({
-        // stroke: new Stroke({ color: "#2196F3", width: 2 }),
-        // fill: new Fill({ color: "rgba(33,150,243,0.2)" })
         stroke: new Stroke({ color: "#f00", width: 2 }),
         fill: new Fill({ color: "rgba(33,150,243,0.2)" })
       })
     });
+
     this.map.addInteraction(draw);
     this.currentDraw = draw;
 
@@ -142,6 +141,7 @@ export class MeasureTool {
 
     draw.on("drawstart", (e) => {
       const geom = e.feature.getGeometry();
+      let confirmedPoints = 0;
 
       geom.on("change", () => {
         const coords =
@@ -149,22 +149,22 @@ export class MeasureTool {
             ? geom.getCoordinates()[0].slice(0, -1)
             : geom.getCoordinates();
 
-        // 清除上一次绘制时生成的 overlays
-        overlays.forEach((ov) => this.map.removeOverlay(ov));
-        overlays.length = 0;
+        if (coords.length > confirmedPoints) {
+          const c = coords[coords.length - 1];
 
-        coords.forEach((c, i) => {
           const nodeOverlay = this.createNodeOverlay(c);
           this.map.addOverlay(nodeOverlay);
           overlays.push(nodeOverlay);
 
-          if (type === "LineString") {
-            if (i === 0) {
+          if (confirmedPoints === 0) {
+            if (type === "LineString") {
               const label = this.createLabelOverlay(c, "起点");
               this.map.addOverlay(label);
               overlays.push(label);
-            } else {
-              const line = new LineString(coords.slice(0, i + 1));
+            }
+          } else {
+            if (type === "LineString") {
+              const line = new LineString(coords);
               const len = this.formatLength(line);
               const label = this.createLabelOverlay(
                 c,
@@ -174,7 +174,19 @@ export class MeasureTool {
               overlays.push(label);
             }
           }
-        });
+
+          confirmedPoints = coords.length;
+        }
+
+        if (type === "LineString" && coords.length > 1) {
+          const line = new LineString(coords);
+          const len = this.formatLength(line);
+          this.updateLiveTip(
+            `长度：${len.value} ${len.unit}<br/><span style="color:#999;">双击结束</span>`
+          );
+        } else {
+          this.updateLiveTip("双击结束");
+        }
       });
     });
 
@@ -186,7 +198,6 @@ export class MeasureTool {
           ? geom.getCoordinates()[0].slice(0, -1)
           : geom.getCoordinates();
 
-      // 清除绘制中的 overlays，重新绘制静态版本
       overlays.forEach((ov) => this.map.removeOverlay(ov));
       overlays.length = 0;
 
@@ -209,22 +220,6 @@ export class MeasureTool {
             );
             this.map.addOverlay(label);
             overlays.push(label);
-            //定制化结尾标签
-            // if (i === coords.length - 1) {
-            //   const label = this.createFinalLabelOverlay(
-            //     c,
-            //     `总长：${len.value} ${len.unit}`
-            //   );
-            //   this.map.addOverlay(label);
-            //   overlays.push(label);
-            // } else {
-            //   const label = this.createLabelOverlay(
-            //     c,
-            //     `${len.value} ${len.unit}`
-            //   );
-            //   this.map.addOverlay(label);
-            //   overlays.push(label);
-            // }
           }
         }
       });
@@ -236,16 +231,11 @@ export class MeasureTool {
           center,
           `${area.value} ${area.unit}`
         );
-        //定制化标签
-        // const label = this.createFinalLabelOverlay(
-        //   center,
-        //   `总面积：${area.value} ${area.unit}`
-        // );
         this.map.addOverlay(label);
         overlays.push(label);
       }
 
-      // 删除按钮
+      // 关闭按钮
       const closeBtn = document.createElement("div");
       closeBtn.innerText = "✖";
       closeBtn.title = "清除";
@@ -253,17 +243,14 @@ export class MeasureTool {
         color: "red",
         background: "#fff",
         border: "1px solid red",
-        // borderRadius: "50%",
         width: "14px",
         height: "14px",
         textAlign: "center",
         lineHeight: "12px",
         cursor: "pointer",
         fontSize: "12px",
-        // fontWeight: "bold",
         zIndex: 999
       });
-
       closeBtn.addEventListener("click", () => {
         this.map.removeLayer(layer);
         overlays.forEach((ov) => this.map.removeOverlay(ov));
@@ -283,8 +270,12 @@ export class MeasureTool {
       overlays.push(closeOverlay);
 
       this.featureGroups.push({ feature, layer, overlays });
+
       this.map.removeInteraction(draw);
       this.currentDraw = null;
+      this.isDrawing = false;
+
+      this.updateLiveTip("单击确定起点");
     });
   }
 }
