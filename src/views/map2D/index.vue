@@ -2408,4 +2408,7 @@ export default {
   height: 14px;
   transition: all 0.2s;
 }
+
+// 测量工具(包含外部css样式的，结合css使用)
+// @import url("../../utils/map/mapUtils/features/MeasureTool.css");
 </style>

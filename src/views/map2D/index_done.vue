@@ -1808,7 +1808,4 @@ export default {
   transform: scale(1.2);
   opacity: 1;
 }
-
-// 测量工具(包含外部css样式的，结合css使用)
-@import url("../../utils/map/mapUtils/features/MeasureTool.css");
 </style>
