@@ -64,7 +64,11 @@ export default class HWidgeDemo extends Vue {
     {
       label: "Trae",
       url: "https://www.trae.ai/"
-    }
+    },
+    {
+      label: "Google AI",
+      url: "https://aistudio.google.com/"
+    },
   ];
 
   // mounted() {

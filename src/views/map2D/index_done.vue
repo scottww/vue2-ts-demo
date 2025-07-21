@@ -292,7 +292,7 @@ export default {
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);
       // this.tileLayerManager.switchTo("TDT_vec");
-      // this.tileLayerManager.switchTo("TDT_img");
+      this.tileLayerManager.switchTo("TDT_img");
 
       // 初始化图层用于显示图标
       this.markerLayer = new VectorLayer({
@@ -1426,7 +1426,7 @@ export default {
       }
     },
     // ====================================绘制自定义区域========================================
-    addCustomDrawPolygon(data = []) {
+    addCustomDrawPolygon0(data = []) {
       const targetData = MOCK_DATA2;
       // 默认样式
       // const normalStyle = new Style({
@@ -1439,7 +1439,7 @@ export default {
       //   fill: new Fill({ color: "rgba(255, 0, 0, 0.3)" })
       // });
       // 样式映射
-      const styleMap = {
+      const styleMap0 = {
         规划: {
           stroke: "#1E90FF",
           fill: "rgba(30,144,255,0.3)",
@@ -1463,6 +1463,70 @@ export default {
           fill: "rgba(102,102,102,0.3)",
           hoverStroke: "#444",
           hoverFill: "rgba(102,102,102,0.6)"
+        }
+      };
+      const styleMap1 = {
+        规划: {
+          stroke: "rgb(223, 177, 177)",
+          fill: "rgba(0, 0, 0, 0)", //透明色 或者 不写也是透明色
+          width: 4,
+          hoverStroke: "#104E8B",
+          hoverFill: "rgba(30,144,255,0.6)"
+        },
+        占用: {
+          stroke: "#050505",
+          fill: "#adadad",
+          width: 4,
+          hoverStroke: "#CC8400",
+          hoverFill: "rgba(255,165,0,0.6)"
+        },
+        补偿: {
+          stroke: "#070ba5",
+          fill: "#027ffa",
+          width: 4,
+          hoverStroke: "#228B22",
+          hoverFill: "rgba(50,205,50,0.6)"
+        },
+        default: {
+          stroke: "#666666",
+          fill: "rgba(102,102,102,0.3)",
+          width: 4,
+          hoverStroke: "#444",
+          hoverFill: "rgba(102,102,102,0.6)"
+        }
+      };
+
+      const unifiedHoverFill = "rgba(30, 144, 255, 0.4)";
+      const unifiedHoverStroke = "#1E90FF";
+
+      const styleMap = {
+        规划: {
+          stroke: "rgb(223, 177, 177)",
+          fill: "rgba(0, 0, 0, 0)", //透明色 或者 不写也是透明色
+          width: 4,
+          hoverStroke: unifiedHoverStroke,
+          hoverFill: unifiedHoverFill
+        },
+        占用: {
+          stroke: "#050505",
+          fill: "#adadad",
+          width: 4,
+          hoverStroke: unifiedHoverStroke,
+          hoverFill: unifiedHoverFill
+        },
+        补偿: {
+          stroke: "#070ba5",
+          fill: "#027ffa",
+          width: 4,
+          hoverStroke: unifiedHoverStroke,
+          hoverFill: unifiedHoverFill
+        },
+        default: {
+          stroke: "#666666",
+          fill: "rgba(102,102,102,0.3)",
+          width: 4,
+          hoverStroke: unifiedHoverStroke,
+          hoverFill: unifiedHoverFill
         }
       };
 
@@ -1501,6 +1565,7 @@ export default {
       // hover 效果：闪烁
       const selectPointerMove = new Select({
         condition: pointerMove,
+        layers: [vectorLayer], // 👈 只监听这个图层
         style: (f) => this.getStyleByType2(styleMap, f.get("type"), true)
       });
 
@@ -1509,6 +1574,94 @@ export default {
       // hover 闪烁效果（简单版，定时器模拟）
       this.drawHoverEffect(selectPointerMove, styleMap);
     },
+    //分三个图层管理
+    addCustomDrawPolygon(data = []) {
+      const targetData = MOCK_DATA2;
+
+      // 样式配置（可自定义）
+      const styleMap = {
+        规划: {
+          stroke: "rgb(223, 177, 177)",
+          fill: "rgba(0, 0, 0, 0)",
+          width: 4,
+          hoverStroke: "#1E90FF",
+          hoverFill: "rgba(30, 144, 255, 0.4)"
+        },
+        占用: {
+          stroke: "#050505",
+          fill: "#adadad",
+          width: 4,
+          hoverStroke: "#1E90FF",
+          hoverFill: "rgba(30, 144, 255, 0.4)"
+        },
+        补偿: {
+          stroke: "#070ba5",
+          fill: "#027ffa",
+          width: 4,
+          hoverStroke: "#1E90FF",
+          hoverFill: "rgba(30, 144, 255, 0.4)"
+        },
+        default: {
+          stroke: "#666666",
+          fill: "rgba(102,102,102,0.3)",
+          width: 4,
+          hoverStroke: "#1E90FF",
+          hoverFill: "rgba(30, 144, 255, 0.4)"
+        }
+      };
+
+      // 三个 source
+      const sourceMap = {
+        规划: new VectorSource(),
+        占用: new VectorSource(),
+        补偿: new VectorSource()
+      };
+
+      // 添加 feature 到对应 source
+      targetData.forEach((item) => {
+        const geo = this.parseGeometry(item.spaceArea);
+        if (!geo) return;
+
+        const feature = new GeoJSON().readFeature(
+          {
+            type: "Feature",
+            geometry: geo,
+            properties: { ...item }
+          },
+          { featureProjection: "EPSG:4326" }
+        );
+
+        const type = item.type;
+        feature.setStyle(this.getStyleByType2(styleMap, type));
+        const targetSource = sourceMap[type];
+        if (targetSource) {
+          targetSource.addFeature(feature);
+        }
+      });
+
+      // 创建图层（规划、占用、补偿）
+      const layerMap = {};
+      ["规划", "占用", "补偿"].forEach((type) => {
+        const layer = new VectorLayer({
+          source: sourceMap[type],
+          style: (f) => this.getStyleByType2(styleMap, f.get("type"))
+        });
+        this.map.addLayer(layer);
+        layerMap[type] = layer;
+      });
+
+      // Hover 效果
+      ["规划", "占用", "补偿"].forEach((type) => {
+        const selectPointerMove = new Select({
+          condition: pointerMove,
+          layers: [layerMap[type]],
+          style: (f) => this.getStyleByType2(styleMap, f.get("type"), true)
+        });
+        this.map.addInteraction(selectPointerMove);
+        this.drawHoverEffect(selectPointerMove, styleMap);
+      });
+    },
+
     parseGeometry(spaceArea) {
       try {
         // 第一步，解析整个 spaceArea 字符串
@@ -1531,7 +1684,7 @@ export default {
       return new Style({
         stroke: new Stroke({
           color: isHover ? styleConf.hoverStroke : styleConf.stroke,
-          width: 2
+          width: styleConf.width || 2
         }),
         fill: new Fill({
           color: isHover ? styleConf.hoverFill : styleConf.fill
@@ -1568,6 +1721,13 @@ export default {
 
         lastFeature = feature;
       });
+    },
+    toggleLayerVisibility(type, visible) {
+      this.layerVisibleMap[type] = visible;
+      const layer = this.layerMap[type];
+      if (layer) {
+        layer.setVisible(visible);
+      }
     }
   }
 };
