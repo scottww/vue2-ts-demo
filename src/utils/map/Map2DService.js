@@ -118,7 +118,7 @@ export default class Map2DService extends BaseMapService {
     this.map.setTarget(null);
   }
 
-  getMapInsatance() {
+  getMapInstance() {
     return this.map;
   }
 

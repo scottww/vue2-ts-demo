@@ -361,6 +361,17 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/map3",
+        name: "map3",
+        component: () =>
+          import(
+            /* webpackChunkName: "MAP3" */ "../views/map2D/map3.vue"
+          ),
+        meta: {
+          title: "MAP3 测试"
+        }
+      },
+      {
         path: "/cesium",
         name: "Cesium",
         component: () =>

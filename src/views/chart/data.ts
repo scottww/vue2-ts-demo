@@ -321,6 +321,7 @@ export const CHART_LIST = [
             show: true
           },
           saveAsImage: {
+            title: "保存为图片",
             show: true
           }
         }
@@ -358,7 +359,17 @@ export const CHART_LIST = [
           label: {
             normal: {
               show: true, // 显示节点标签
-              textStyle: {} // 可以在这里进一步设置节点标签的样式，如字体大小、颜色等
+              textStyle: {}, // 可以在这里进一步设置节点标签的样式，如字体大小、颜色等
+              fontSize: 15, // 节点标签的字体大小为 15
+              position: "middle",
+              // 这里根据边的方向，给 label 设置不同的偏移量
+              offset: function (params: any) {
+                // params 是 label 的参数，可以访问边的 source 和 target
+                // 简单处理：如果 source < target 字符串顺序，label 往上偏移，否则往下偏移
+                return params.data.source < params.data.target
+                  ? [0, -10]
+                  : [0, 10];
+              }
             }
           },
           // 节点部分，包含节点和边的信息
@@ -407,7 +418,10 @@ export const CHART_LIST = [
               name: "like1",
               source: "至",
               des: "",
-              target: "白"
+              target: "白",
+              lineStyle: {
+                curveness: 0 // 直线
+              }
             },
             {
               name: "like3",
@@ -426,6 +440,15 @@ export const CHART_LIST = [
               source: "紫",
               des: "",
               target: "至"
+            },
+            {
+              name: "like5",
+              source: "至",
+              des: "",
+              target: "紫",
+              lineStyle: {
+                curveness: 0.3 // 曲线，偏离直线，使label错开
+              }
             }
           ]
           // categories: categories, // 将之前定义的类目数组传递给图表配置
@@ -502,7 +525,7 @@ export const CHART_LIST = [
         top: 20,
         bottom: 20,
         // icon: "circle",
-        icon: 'rect',
+        icon: "rect",
         itemWidth: 10,
         itemHeight: 10,
         formatter: (name: any) => {

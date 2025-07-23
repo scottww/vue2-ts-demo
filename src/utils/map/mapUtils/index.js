@@ -1,6 +1,7 @@
 // export * from './core/MapService.js';
 // export * from './core/LayerManager.js';
 export * from './features/PointManager.js';
+export * from './features/PolylineLayerManager.js';
 export * from './features/PopupManager.js';
 // export * from './features/DrawTool.js';
 export * from './features/MeasureTool.js';

@@ -32,8 +32,18 @@ export default {
             { id: 6, text: "Table 表格", path: "/table" },
             { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
             { id: 9, text: "Indicators 指示器", path: "/indicators" },
-            { id: 24, text: "2D map 二维地图", path: "/map" },
+            // { id: 24, text: "2D map 二维地图", path: "/map" },
             { id: 18, text: "3D map 三维可视化", path: "/cesium" }
+          ]
+        },
+        {
+          name: "GIS 地图",
+          children: [
+            { id: 24, text: "2D map 二维地图", path: "/map" },
+            { id: 19, text: "Toolbar 地图工具栏", path: "/mapToolbar" },
+            { id: 34, text: "Map2 测试2", path: "/Map2" },
+            { id: 35, text: "Map3 测试3", path: "/Map3" },
+            { id: 18, text: "3D map 三维地图", path: "/cesium" }
           ]
         },
         {
@@ -43,8 +53,12 @@ export default {
             { id: 11, text: "Categorys 分类菜单", path: "/categorys" },
             { id: 4, text: "VirtualList 虚拟列表", path: "/virtualList" },
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
-            
-            { id: 14, text: "FlexAnimationCycle 动画循环", path: "/flexAnimationCycle" },
+
+            {
+              id: 14,
+              text: "FlexAnimationCycle 动画循环",
+              path: "/flexAnimationCycle"
+            },
             { id: 15, text: "Title 标题", path: "/title" },
             { id: 16, text: "Avatar 头像", path: "/avatar" },
             { id: 17, text: "Form 表单", path: "/form" },
@@ -56,14 +70,22 @@ export default {
 
             // 功能类
             { id: 7, text: "LoadReadFile 读取文件", path: "/loadReadFile" },
-            { id: 19, text: "MapToolbar 地图工具栏", path: "/mapToolbar" },
+            // { id: 19, text: "MapToolbar 地图工具栏", path: "/mapToolbar" },
             { id: 3, text: "ClassComponents 类组件", path: "/classComponents" },
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
             { id: 27, text: "ChatItem 聊天选项", path: "/chatItem" },
-            { id: 28, text: "CustomCalendar 自定义日历", path: "/customCalendar" },
+            {
+              id: 28,
+              text: "CustomCalendar 自定义日历",
+              path: "/customCalendar"
+            },
             { id: 29, text: "PdfPreview 预览PDF", path: "/pdfPreview" },
-            { id: 30, text: "CustomNumberInput 自定义数字输入框", path: "/customNumberInput" },
-            { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
+            {
+              id: 30,
+              text: "CustomNumberInput 自定义数字输入框",
+              path: "/customNumberInput"
+            },
+            { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" }
           ]
         },
         {
@@ -122,6 +144,8 @@ export default {
         // { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
         // { id: 32, text: "SvgIcon 图标", path: "/SvgIcon" },
         // { id: 33, text: "Cityselector 城市选择卡", path: "/cityselector" },
+        // { id: 34, text: "Map2 测试2", path: "/Map2" },
+        // { id: 35, text: "Map3 测试3", path: "/Map3" },
       ]
     };
   },
