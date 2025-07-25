@@ -85,7 +85,8 @@ export default {
               text: "CustomNumberInput 自定义数字输入框",
               path: "/customNumberInput"
             },
-            { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" }
+            { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
+            { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" }
           ]
         },
         {
@@ -146,6 +147,7 @@ export default {
         // { id: 33, text: "Cityselector 城市选择卡", path: "/cityselector" },
         // { id: 34, text: "Map2 测试2", path: "/Map2" },
         // { id: 35, text: "Map3 测试3", path: "/Map3" },
+        // { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" },
       ]
     };
   },

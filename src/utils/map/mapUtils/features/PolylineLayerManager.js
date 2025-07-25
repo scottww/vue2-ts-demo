@@ -4,7 +4,7 @@ import { Feature } from "ol";
 import { LineString, MultiLineString } from "ol/geom";
 import { Style, Stroke, Text, Fill } from "ol/style";
 
-export class LineManager {
+export class PolylineLayerManager {
   constructor(map, popupManager) {
     this.map = map;
     this.popup = popupManager;

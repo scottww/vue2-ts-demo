@@ -424,27 +424,27 @@ export default {
     to(rgba(255, 255, 255, 0))
   );
   background-image: -webkit-linear-gradient(
-    top,
+    to bottom,
     rgba(255, 255, 255, 1),
     rgba(255, 255, 255, 0)
   );
   background-image: -moz-linear-gradient(
-    top,
+    to bottom,
     rgba(255, 255, 255, 1),
     rgba(255, 255, 255, 0)
   );
   background-image: -ms-linear-gradient(
-    top,
+    to bottom,
     rgba(255, 255, 255, 1),
     rgba(255, 255, 255, 0)
   );
   background-image: -o-linear-gradient(
-    top,
+    to bottom,
     rgba(255, 255, 255, 1),
     rgba(255, 255, 255, 0)
   );
   background-image: linear-gradient(
-    top,
+    to bottom,
     rgba(255, 255, 255, 1),
     rgba(255, 255, 255, 0)
   );

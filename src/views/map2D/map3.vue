@@ -27,7 +27,7 @@
 <script>
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
-import PolylineLayerManager from "@/utils/map/mapUtils/features/PolylineLayerManager";
+import { PolylineLayerManager } from "@/utils/map/mapUtils/features/PolylineLayerManager";
 const pointMarker = require("@/assets/mapIcon/marker.png");
 
 import Map from "ol/Map";

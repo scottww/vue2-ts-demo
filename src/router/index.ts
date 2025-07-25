@@ -628,6 +628,28 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "citySelector 城市选择器"
         }
+      },
+      {
+        path: "/multiSelectDropdown",
+        name: "multiSelectDropdown",
+        component: () =>
+          import(
+            /* webpackChunkName: "MultiSelectDropdown" */ "../views/multiSelectDropdown/index.vue"
+          ),
+        meta: {
+          title: "MultiSelectDropdown 多选下拉框"
+        }
+      },
+      {
+        path: "/checkCard",
+        name: "checkCard",
+        component: () =>
+          import(
+            /* webpackChunkName: "CheckCard" */ "../views/checkCard/index.vue"
+          ),
+        meta: {
+          title: "CheckCard 多选卡片"
+        }
       }
     ]
   },
