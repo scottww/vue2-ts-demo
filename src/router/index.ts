@@ -672,6 +672,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "aTag 自定义"
         }
+      },
+      {
+        path: "/loadingTest",
+        name: "loadingTest",
+        component: () =>
+          import(
+            /* webpackChunkName: "LoadingTest" */ "../views/loadingTest/index.vue"
+          ),
+        meta: {
+          title: "loadingTest"
+        }
       }
     ]
   },
