@@ -650,6 +650,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "CheckCard 多选卡片"
         }
+      },
+      {
+        path: "/multiCheckbox",
+        name: "multiCheckbox",
+        component: () =>
+          import(
+            /* webpackChunkName: "MultiCheckbox" */ "../views/multiCheckbox/index.vue"
+          ),
+        meta: {
+          title: "MultiCheckbox 多选框"
+        }
       }
     ]
   },
