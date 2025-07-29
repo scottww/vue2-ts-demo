@@ -86,8 +86,16 @@ export default {
               path: "/customNumberInput"
             },
             { id: 31, text: "TxtRender 文本渲染", path: "/txtRender" },
-            { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" }
+            {
+              id: 36,
+              text: "MultiSelectDropdown 多选下拉框",
+              path: "/multiSelectDropdown"
+            }
           ]
+        },
+        {
+          name: "Ant Design 自定义",
+          children: [{ id: 37, text: "aTag 自定义", path: "/aTag" }]
         },
         {
           name: "UI",
@@ -148,6 +156,7 @@ export default {
         // { id: 34, text: "Map2 测试2", path: "/Map2" },
         // { id: 35, text: "Map3 测试3", path: "/Map3" },
         // { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" },
+        // { id: 37, text: "aTag 自定义", path: "/aTag" },
       ]
     };
   },

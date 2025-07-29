@@ -661,6 +661,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "MultiCheckbox 多选框"
         }
+      },
+      {
+        path: "/aTag",
+        name: "aTag",
+        component: () =>
+          import(
+            /* webpackChunkName: "ATag" */ "../views/aTag/index.vue"
+          ),
+        meta: {
+          title: "aTag 自定义"
+        }
       }
     ]
   },
