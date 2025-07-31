@@ -123,7 +123,17 @@ export default {
     displayData() {
       // return this.list.slice(this.start, this.end);
       // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
+      // if (this.start !== this.lastStart || this.end !== this.lastEnd) {
+      //   this.cachedData = this.list.slice(this.start, this.end);
+      //   this.lastStart = this.start;
+      //   this.lastEnd = this.end;
+      // }
+      // return this.cachedData;
+      if (
+        this.start !== this.lastStart ||
+        this.end !== this.lastEnd ||
+        this.cachedData.length === 0 // 加这一句，首次刷新也生效, 同时解决首次加载空白问题
+      ) {
         this.cachedData = this.list.slice(this.start, this.end);
         this.lastStart = this.start;
         this.lastEnd = this.end;
