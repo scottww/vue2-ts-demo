@@ -1,23 +1,17 @@
 <template>
-  <div class="virtual-scroll__container" ref="containerRef">
+  <div class="virtual-scroll__container">
     <div
       class="virtual-scroll-list"
       ref="listRef"
       @scroll="onScroll"
       :style="containerStyle"
     >
-      <div
-        :style="`transform: translateY(${translateY}px)`"
-        class="itemContainer"
-      >
+      <div :style="`transform: translateY(${translateY}px)`" class="itemContainer">
         <div
           v-for="(item, index) in displayData"
           :key="item.uuid"
           class="item"
-          :class="{
-            active: item.uuid === selectedId,
-            'is-click': itemCanClick
-          }"
+          :class="{ active: item.uuid === selectedId, 'is-click': itemCanClick }"
           :style="{ height: `${itemHeight}px` }"
           @click="onItemClick(item, index)"
         >
@@ -46,11 +40,7 @@
             >
           </div>
         </div>
-        <div
-          v-if="showNextPage"
-          class="load-next-page"
-          @click="onNextPageClick"
-        >
+        <div v-if="showNextPage" class="load-next-page" @click="onNextPageClick">
           下一页
         </div>
       </div>
@@ -60,7 +50,6 @@
 </template>
 
 <script>
-const BUFFER_COUNT = 10; // 缓冲条数
 export default {
   name: "HVirtualListNew",
   props: {
@@ -79,39 +68,25 @@ export default {
     itemCanClick: {
       type: Boolean,
       default: false
-    },
-    containerHeight: {
-      type: Number,
-      required: false // 可选传入
     }
   },
   data() {
     return {
       scrollTop: 0,
-      ticking: false, // 新增
       selectedId: null,
       list: [],
-      internalHeight: 350,
-      resizeObserver: null,
-      // 加入缓存逻辑
-      lastStart: 0,
-      lastEnd: 0,
-      cachedData: []
+      containerHeight: 0
     };
   },
   computed: {
-    effectiveHeight() {
-      return this.containerHeight || this.internalHeight;
-    },
     containerStyle() {
       return {
-        height: this.effectiveHeight + "px",
-        maxHeight: this.effectiveHeight + "px"
+        height: this.containerHeight + "px",
+        maxHeight: this.containerHeight + "px"
       };
     },
     itemCount() {
-      // return Math.ceil(this.effectiveHeight / this.itemHeight) + 2; //改为+2让滚动更丝滑
-      return Math.ceil(this.effectiveHeight / this.itemHeight) + BUFFER_COUNT;
+      return Math.ceil(this.containerHeight / this.itemHeight) + 1;
     },
     start() {
       return Math.floor(this.scrollTop / this.itemHeight);
@@ -120,14 +95,7 @@ export default {
       return this.start + this.itemCount;
     },
     displayData() {
-      // return this.list.slice(this.start, this.end);
-      // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
-        this.cachedData = this.list.slice(this.start, this.end);
-        this.lastStart = this.start;
-        this.lastEnd = this.end;
-      }
-      return this.cachedData;
+      return this.list.slice(this.start, this.end);
     },
     translateY() {
       return this.start * this.itemHeight;
@@ -139,43 +107,26 @@ export default {
   mounted() {
     this.selectedId = this.defaultSelectedKey;
     this.list = [...this.dataList];
-    if (!this.containerHeight) {
-      this.$nextTick(() => {
-        const container = this.$refs.containerRef;
-        if (container) {
-          this.resizeObserver = new ResizeObserver(() => {
-            this.internalHeight = container.clientHeight || 350;
-            console.log("组件内部高度 ...", this.internalHeight);
-          });
-          this.resizeObserver.observe(container);
-          this.internalHeight = container.clientHeight || 350;
-          console.log("初始化高度 ...", this.internalHeight);
-        } else {
-          console.warn("containerRef 没找到");
-        }
-      });
-    }
+    this.updateContainerHeight();
+    window.addEventListener("resize", this.updateContainerHeight);
   },
   beforeDestroy() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
+    window.removeEventListener("resize", this.updateContainerHeight);
   },
   methods: {
+    updateContainerHeight() {
+      this.$nextTick(() => {
+        const container = this.$el;
+        if (container) {
+          this.containerHeight = container.clientHeight;
+        }
+      });
+    },
     onScroll() {
-      // this.scrollTop = this.$refs.listRef.scrollTop;
-      // const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
-      // if (scrollTop + clientHeight >= scrollHeight - 10) {
-      //   console.log("滚动到底部");
-      // }
-      const listRef = this.$refs.listRef;
-      if (!this.ticking) {
-        this.ticking = true;
-        requestAnimationFrame(() => {
-          this.scrollTop = listRef.scrollTop;
-          this.ticking = false;
-        });
+      this.scrollTop = this.$refs.listRef.scrollTop;
+      const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        console.log("滚动到底部");
       }
     },
     onSelect(item, index) {
@@ -203,7 +154,7 @@ export default {
     dataList(newV) {
       this.list = [...newV];
       this.scrollTop = 0;
-      // this.$forceUpdate();
+      this.$forceUpdate();
     }
   }
 };
@@ -223,8 +174,6 @@ export default {
 
 .itemContainer {
   height: 100%;
-  transform: translateZ(0);
-  will-change: transform;
 }
 .item {
   display: flex;

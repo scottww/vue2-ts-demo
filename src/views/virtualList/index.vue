@@ -2,7 +2,7 @@
   <div class="virtual-list-demo__container">
     <div class="section item2">
       <div class="head-box">
-        <span>数据列表</span>
+        <span>数据列表1</span>
       </div>
       <div class="search-box">
         <span class="search__label">关键词：</span>
@@ -21,7 +21,7 @@
         <HVirtualListNew
           :dataList="items"
           :itemHeight="60"
-          :containerHeight="410"
+          :containerHeight="600"
           :defaultSelectedKey="selectedKey"
           @on-select="handleChose"
           @on-detail="handleDetail"
@@ -32,7 +32,7 @@
 
     <div class="section item2">
       <div class="head-box">
-        <span>数据列表</span>
+        <span>数据列表2</span>
       </div>
       <div class="search-box">
         <span class="search__label">关键词：</span>
@@ -47,11 +47,22 @@
         </el-input>
       </div>
 
-      <div class="list-box">
+      <div class="list-box" v-if="false">
         <HVirtualListNew
           :dataList="items"
           :itemHeight="60"
-          :containerHeight="300"
+          :containerHeight="600"
+          :defaultSelectedKey="selectedKey"
+          @on-select="handleChose"
+          @on-detail="handleDetail"
+          itemCanClick
+        />
+      </div>
+      <!-- 自适应父级容器高度测试 -->
+      <div class="list-box2" ref="listBoxRef" v-if="true">
+        <HVirtualListNew2
+          :dataList="items"
+          :itemHeight="60"
           :defaultSelectedKey="selectedKey"
           @on-select="handleChose"
           @on-detail="handleDetail"
@@ -68,23 +79,24 @@
 
 <script>
 import HVirtualList from "@/components/HVirtualList.vue";
-import HVirtualListNew from "@/components/HVirtualList_new.vue";
+import HVirtualListNew from "@/components/HVirtualList_new copy.vue";
+import HVirtualListNew2 from "@/components/HVirtualList_new.vue";
 export default {
   name: "VirtualListDemo",
-  components: { HVirtualList, HVirtualListNew },
+  components: { HVirtualList, HVirtualListNew, HVirtualListNew2 },
   data() {
     return {
       items: [],
       keyword: "",
       selectedKey: "",
-      defaultItems: Array.from({ length: 20 }, (_, i) => {
+      defaultItems: Array.from({ length: 50000 }, (_, i) => {
         return {
           uuid: `uuid-${i}`,
           name: `数据 ${i}`,
           time: `2024-03-18`
         };
       }),
-      items: Array.from({ length: 20 }, (_, i) => {
+      items: Array.from({ length: 50000 }, (_, i) => {
         return {
           uuid: `uuid-${i}`,
           name: `数据 ${i}`,
@@ -104,8 +116,28 @@ export default {
           name: `数据2页 ${i}`,
           time: `2024-03-18`
         };
-      })
+      }),
+      listHeight: 0, //虚拟列表父级容器高度
+      resizeObserver: null
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      const el = this.$refs.listBoxRef;
+      if (el) {
+        this.resizeObserver = new ResizeObserver(() => {
+          this.listHeight = el.clientHeight;
+        });
+        this.resizeObserver.observe(el);
+        this.listHeight = el.clientHeight;
+        console.log("父容器高度 ...", el.clientHeight);
+      }
+    });
+  },
+  beforeDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   },
   methods: {
     keywordChange(value) {
@@ -141,6 +173,7 @@ export default {
 .virtual-list-demo__container {
   display: flex;
   gap: 20px;
+  height: 100%;
 }
 
 .section {
@@ -187,6 +220,12 @@ export default {
 }
 
 .list-box {
+  margin-top: 20px;
+  padding: 0 5px;
+  height: calc(100% - 100px);
+  overflow: hidden;
+}
+.list-box2 {
   margin-top: 20px;
   padding: 0 5px;
   height: calc(100% - 100px);

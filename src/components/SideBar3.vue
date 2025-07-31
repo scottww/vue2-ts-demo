@@ -95,7 +95,10 @@ export default {
         },
         {
           name: "Ant Design 自定义",
-          children: [{ id: 37, text: "aTag 自定义", path: "/aTag" }]
+          children: [
+            { id: 37, text: "aTag 自定义", path: "/aTag" },
+            { id: 38, text: "aSpin 自定义", path: "/customSpin" }
+          ]
         },
         {
           name: "UI",
@@ -157,6 +160,7 @@ export default {
         // { id: 35, text: "Map3 测试3", path: "/Map3" },
         // { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" },
         // { id: 37, text: "aTag 自定义", path: "/aTag" },
+        // { id: 38, text: "aSpin 自定义", path: "/customSpin"
       ]
     };
   },

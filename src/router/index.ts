@@ -49,10 +49,21 @@ const routes: Array<RouteConfig> = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(
-            /* webpackChunkName: "VirtualList" */ "../views/VirtualList.vue"
+            /* webpackChunkName: "VirtualList" */ "../views/virtualList/index.vue"
           ),
         meta: {
           title: "VirtualList 虚拟列表"
+        }
+      },
+      {
+        path: "/scrollLoad",
+        name: "scrollLoad",
+        component: () =>
+          import(
+            /* webpackChunkName: "ScrollLoad" */ "../views/scrollLoad/index.vue"
+          ),
+        meta: {
+          title: "scrollLoad 滚动加载"
         }
       },
       {
@@ -353,9 +364,7 @@ const routes: Array<RouteConfig> = [
         path: "/map2",
         name: "map2",
         component: () =>
-          import(
-            /* webpackChunkName: "MAP2" */ "../views/map2D/my-map.vue"
-          ),
+          import(/* webpackChunkName: "MAP2" */ "../views/map2D/my-map.vue"),
         meta: {
           title: "MAP2 测试"
         }
@@ -364,9 +373,7 @@ const routes: Array<RouteConfig> = [
         path: "/map3",
         name: "map3",
         component: () =>
-          import(
-            /* webpackChunkName: "MAP3" */ "../views/map2D/map3.vue"
-          ),
+          import(/* webpackChunkName: "MAP3" */ "../views/map2D/map3.vue"),
         meta: {
           title: "MAP3 测试"
         }
@@ -666,9 +673,7 @@ const routes: Array<RouteConfig> = [
         path: "/aTag",
         name: "aTag",
         component: () =>
-          import(
-            /* webpackChunkName: "ATag" */ "../views/aTag/index.vue"
-          ),
+          import(/* webpackChunkName: "ATag" */ "../views/aTag/index.vue"),
         meta: {
           title: "aTag 自定义"
         }
@@ -682,6 +687,17 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "loadingTest"
+        }
+      },
+      {
+        path: "/customSpin",
+        name: "customSpin",
+        component: () =>
+          import(
+            /* webpackChunkName: "CustomSpin" */ "../views/customASpin/index.vue"
+          ),
+        meta: {
+          title: "aSpin 自定义"
         }
       }
     ]

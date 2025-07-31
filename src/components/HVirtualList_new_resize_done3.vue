@@ -1,3 +1,4 @@
+<!-- HVirtualList_new_resize_done2的加强版，引入了节流滚动，避免频繁 slice，GUP加速，提前优化 layout，预加载更多数据，减少闪现 -->
 <template>
   <div class="virtual-scroll__container" ref="containerRef">
     <div

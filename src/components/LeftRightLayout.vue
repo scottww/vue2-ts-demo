@@ -93,7 +93,8 @@ $width: 240px;
   /* overflow: hidden; */
   overflow-y: auto;
   padding: 20px;
-  height: calc(100% - 20px);
+  // height: calc(100% - 20px);
+  height: calc(100% - 120px);
   margin: 20px;
   background-color: #fff;
   border-radius: 4px;

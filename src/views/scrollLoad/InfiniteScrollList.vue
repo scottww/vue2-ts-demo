@@ -6,18 +6,12 @@
       @scroll="onScroll"
       :style="containerStyle"
     >
-      <div
-        :style="`transform: translateY(${translateY}px)`"
-        class="itemContainer"
-      >
+      <div class="itemContainer">
         <div
-          v-for="(item, index) in displayData"
+          v-for="(item, index) in dataList"
           :key="item.uuid"
           class="item"
-          :class="{
-            active: item.uuid === selectedId,
-            'is-click': itemCanClick
-          }"
+          :class="{ active: item.uuid === selectedId, 'is-click': itemCanClick }"
           :style="{ height: `${itemHeight}px` }"
           @click="onItemClick(item, index)"
         >
@@ -46,21 +40,24 @@
             >
           </div>
         </div>
+
         <div
-          v-if="showNextPage"
+          v-if="hasMore && !loadingMore"
           class="load-next-page"
-          @click="onNextPageClick"
+          @click="triggerNextPage"
         >
-          下一页
+          加载更多
+        </div>
+        <div v-else-if="loadingMore" class="loading-more">
+          加载中...
         </div>
       </div>
     </div>
-    <div v-if="list.length === 0" class="no-data">暂无数据</div>
+    <div v-if="dataList.length === 0" class="no-data">暂无数据</div>
   </div>
 </template>
 
 <script>
-const BUFFER_COUNT = 10; // 缓冲条数
 export default {
   name: "HVirtualListNew",
   props: {
@@ -70,7 +67,8 @@ export default {
     },
     defaultSelectedKey: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     itemHeight: {
       type: Number,
@@ -82,21 +80,23 @@ export default {
     },
     containerHeight: {
       type: Number,
-      required: false // 可选传入
+      required: false
+    },
+    hasMore: {
+      type: Boolean,
+      default: false
+    },
+    loadingMore: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      scrollTop: 0,
-      ticking: false, // 新增
-      selectedId: null,
-      list: [],
+      selectedId: this.defaultSelectedKey,
       internalHeight: 350,
-      resizeObserver: null,
-      // 加入缓存逻辑
-      lastStart: 0,
-      lastEnd: 0,
-      cachedData: []
+      ticking: false,
+      resizeObserver: null
     };
   },
   computed: {
@@ -108,50 +108,18 @@ export default {
         height: this.effectiveHeight + "px",
         maxHeight: this.effectiveHeight + "px"
       };
-    },
-    itemCount() {
-      // return Math.ceil(this.effectiveHeight / this.itemHeight) + 2; //改为+2让滚动更丝滑
-      return Math.ceil(this.effectiveHeight / this.itemHeight) + BUFFER_COUNT;
-    },
-    start() {
-      return Math.floor(this.scrollTop / this.itemHeight);
-    },
-    end() {
-      return this.start + this.itemCount;
-    },
-    displayData() {
-      // return this.list.slice(this.start, this.end);
-      // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
-        this.cachedData = this.list.slice(this.start, this.end);
-        this.lastStart = this.start;
-        this.lastEnd = this.end;
-      }
-      return this.cachedData;
-    },
-    translateY() {
-      return this.start * this.itemHeight;
-    },
-    showNextPage() {
-      return false && this.list.length > 0;
     }
   },
   mounted() {
-    this.selectedId = this.defaultSelectedKey;
-    this.list = [...this.dataList];
     if (!this.containerHeight) {
       this.$nextTick(() => {
         const container = this.$refs.containerRef;
         if (container) {
           this.resizeObserver = new ResizeObserver(() => {
             this.internalHeight = container.clientHeight || 350;
-            console.log("组件内部高度 ...", this.internalHeight);
           });
           this.resizeObserver.observe(container);
           this.internalHeight = container.clientHeight || 350;
-          console.log("初始化高度 ...", this.internalHeight);
-        } else {
-          console.warn("containerRef 没找到");
         }
       });
     }
@@ -164,52 +132,47 @@ export default {
   },
   methods: {
     onScroll() {
-      // this.scrollTop = this.$refs.listRef.scrollTop;
-      // const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
-      // if (scrollTop + clientHeight >= scrollHeight - 10) {
-      //   console.log("滚动到底部");
-      // }
       const listRef = this.$refs.listRef;
       if (!this.ticking) {
         this.ticking = true;
-        requestAnimationFrame(() => {
-          this.scrollTop = listRef.scrollTop;
+        window.requestAnimationFrame(() => {
+          const { scrollTop, scrollHeight, clientHeight } = listRef;
           this.ticking = false;
+          if (scrollTop + clientHeight >= scrollHeight - 60) {
+            this.triggerNextPage();
+          }
         });
       }
     },
-    onSelect(item, index) {
+    triggerNextPage() {
+      if (this.hasMore && !this.loadingMore) {
+        this.$emit("to-next");
+      }
+    },
+    onSelect(item) {
       this.selectedId = item.uuid;
       this.$emit("on-select", item);
     },
-    onDetail(item, index) {
+    onDetail(item) {
       this.$emit("on-detail", item);
     },
-    onItemClick(item, index) {
+    onItemClick(item) {
       if (!this.itemCanClick) return;
-      this.onSelect(item, index);
+      this.onSelect(item);
     },
     removeSpanTags(str) {
       return str.replace(/<span[^>]*>(.*?)<\/span>/g, "$1");
-    },
-    onNextPageClick() {
-      this.$emit("to-next");
     }
   },
   watch: {
-    defaultSelectedKey(newV) {
-      this.selectedId = newV;
-    },
-    dataList(newV) {
-      this.list = [...newV];
-      this.scrollTop = 0;
-      // this.$forceUpdate();
+    defaultSelectedKey(newVal) {
+      this.selectedId = newVal;
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .virtual-scroll__container {
   position: relative;
   overflow: hidden;
@@ -220,9 +183,7 @@ export default {
   overflow-y: auto;
   width: 100%;
 }
-
 .itemContainer {
-  height: 100%;
   transform: translateZ(0);
   will-change: transform;
 }
@@ -317,5 +278,11 @@ export default {
 }
 .load-next-page:hover {
   opacity: 0.7;
+}
+.loading-more {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #999;
 }
 </style>

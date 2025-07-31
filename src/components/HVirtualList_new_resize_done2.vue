@@ -1,3 +1,4 @@
+<!-- 支持外部传入动态高度 或者 不传组件内部自计算不同分辨了高度 -->
 <template>
   <div class="virtual-scroll__container" ref="containerRef">
     <div
@@ -60,7 +61,6 @@
 </template>
 
 <script>
-const BUFFER_COUNT = 10; // 缓冲条数
 export default {
   name: "HVirtualListNew",
   props: {
@@ -88,15 +88,10 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      ticking: false, // 新增
       selectedId: null,
       list: [],
       internalHeight: 350,
-      resizeObserver: null,
-      // 加入缓存逻辑
-      lastStart: 0,
-      lastEnd: 0,
-      cachedData: []
+      resizeObserver: null
     };
   },
   computed: {
@@ -110,8 +105,7 @@ export default {
       };
     },
     itemCount() {
-      // return Math.ceil(this.effectiveHeight / this.itemHeight) + 2; //改为+2让滚动更丝滑
-      return Math.ceil(this.effectiveHeight / this.itemHeight) + BUFFER_COUNT;
+      return Math.ceil(this.effectiveHeight / this.itemHeight) + 1;
     },
     start() {
       return Math.floor(this.scrollTop / this.itemHeight);
@@ -120,14 +114,7 @@ export default {
       return this.start + this.itemCount;
     },
     displayData() {
-      // return this.list.slice(this.start, this.end);
-      // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
-        this.cachedData = this.list.slice(this.start, this.end);
-        this.lastStart = this.start;
-        this.lastEnd = this.end;
-      }
-      return this.cachedData;
+      return this.list.slice(this.start, this.end);
     },
     translateY() {
       return this.start * this.itemHeight;
@@ -164,18 +151,10 @@ export default {
   },
   methods: {
     onScroll() {
-      // this.scrollTop = this.$refs.listRef.scrollTop;
-      // const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
-      // if (scrollTop + clientHeight >= scrollHeight - 10) {
-      //   console.log("滚动到底部");
-      // }
-      const listRef = this.$refs.listRef;
-      if (!this.ticking) {
-        this.ticking = true;
-        requestAnimationFrame(() => {
-          this.scrollTop = listRef.scrollTop;
-          this.ticking = false;
-        });
+      this.scrollTop = this.$refs.listRef.scrollTop;
+      const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        console.log("滚动到底部");
       }
     },
     onSelect(item, index) {
@@ -203,7 +182,7 @@ export default {
     dataList(newV) {
       this.list = [...newV];
       this.scrollTop = 0;
-      // this.$forceUpdate();
+      this.$forceUpdate();
     }
   }
 };
@@ -223,8 +202,6 @@ export default {
 
 .itemContainer {
   height: 100%;
-  transform: translateZ(0);
-  will-change: transform;
 }
 .item {
   display: flex;

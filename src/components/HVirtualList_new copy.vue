@@ -1,10 +1,11 @@
+<!-- 高分辨率下 撑不满高度 底部仍然有空白 -->
 <template>
-  <div class="virtual-scroll__container" ref="containerRef">
+  <div class="virtual-scroll__container">
     <div
       class="virtual-scroll-list"
       ref="listRef"
       @scroll="onScroll"
-      :style="containerStyle"
+      :style="containerH"
     >
       <div
         :style="`transform: translateY(${translateY}px)`"
@@ -30,7 +31,7 @@
             <span
               class="item-btn"
               v-if="!itemCanClick && item.uuid"
-              @click.stop="onSelect(item, index)"
+              @click="onSelect(item, index)"
               >选择</span
             >
           </div>
@@ -41,7 +42,7 @@
             <span
               class="item-btn"
               v-if="!itemCanClick"
-              @click.stop="onDetail(item, index)"
+              @click="onDetail(item, index)"
               >详情</span
             >
           </div>
@@ -60,9 +61,8 @@
 </template>
 
 <script>
-const BUFFER_COUNT = 10; // 缓冲条数
 export default {
-  name: "HVirtualListNew",
+  name: "VirtualList",
   props: {
     dataList: {
       type: Array,
@@ -71,139 +71,118 @@ export default {
     defaultSelectedKey: {
       type: String,
       required: true
-    },
+    }, //默认选中某项，值为item的唯一标识，比如id
     itemHeight: {
       type: Number,
-      default: 60
-    },
-    itemCanClick: {
-      type: Boolean,
-      default: false
+      default: 60 // 每项高度
     },
     containerHeight: {
       type: Number,
-      required: false // 可选传入
+      default: 300 // 容器高度
+    },
+    itemCanClick: {
+      type: Boolean,
+      default: false // 是否启用item点击事件
     }
   },
   data() {
     return {
       scrollTop: 0,
-      ticking: false, // 新增
       selectedId: null,
-      list: [],
-      internalHeight: 350,
-      resizeObserver: null,
-      // 加入缓存逻辑
-      lastStart: 0,
-      lastEnd: 0,
-      cachedData: []
+      hasPrev: true, // 是否上一页按钮
+      hasNextPage: false, // 是否下一页按钮
+      hasReset: true, // 是否重置按钮
+      list: []
     };
   },
   computed: {
-    effectiveHeight() {
-      return this.containerHeight || this.internalHeight;
+    listHeight() {
+      return this.list.length * this.itemHeight;
     },
-    containerStyle() {
+    containerH({ containerHeight }) {
       return {
-        height: this.effectiveHeight + "px",
-        maxHeight: this.effectiveHeight + "px"
+        "--height": `${containerHeight}px`
       };
     },
     itemCount() {
-      // return Math.ceil(this.effectiveHeight / this.itemHeight) + 2; //改为+2让滚动更丝滑
-      return Math.ceil(this.effectiveHeight / this.itemHeight) + BUFFER_COUNT;
+      return Math.ceil(this.containerHeight / this.itemHeight) + 1;
+      // return Math.ceil(this.containerHeight / this.itemHeight);
     },
     start() {
       return Math.floor(this.scrollTop / this.itemHeight);
     },
     end() {
       return this.start + this.itemCount;
+      // return Math.min(this.start + this.itemCount, this.dataList.length);
     },
     displayData() {
-      // return this.list.slice(this.start, this.end);
-      // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
-        this.cachedData = this.list.slice(this.start, this.end);
-        this.lastStart = this.start;
-        this.lastEnd = this.end;
-      }
-      return this.cachedData;
+      return this.list.slice(this.start, this.end);
     },
     translateY() {
       return this.start * this.itemHeight;
     },
     showNextPage() {
-      return false && this.list.length > 0;
+      return this.hasNextPage && this.list.length > 0;
     }
   },
   mounted() {
     this.selectedId = this.defaultSelectedKey;
     this.list = [...this.dataList];
-    if (!this.containerHeight) {
-      this.$nextTick(() => {
-        const container = this.$refs.containerRef;
-        if (container) {
-          this.resizeObserver = new ResizeObserver(() => {
-            this.internalHeight = container.clientHeight || 350;
-            console.log("组件内部高度 ...", this.internalHeight);
-          });
-          this.resizeObserver.observe(container);
-          this.internalHeight = container.clientHeight || 350;
-          console.log("初始化高度 ...", this.internalHeight);
-        } else {
-          console.warn("containerRef 没找到");
-        }
-      });
-    }
-  },
-  beforeDestroy() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
   },
   methods: {
     onScroll() {
-      // this.scrollTop = this.$refs.listRef.scrollTop;
-      // const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
-      // if (scrollTop + clientHeight >= scrollHeight - 10) {
-      //   console.log("滚动到底部");
-      // }
-      const listRef = this.$refs.listRef;
-      if (!this.ticking) {
-        this.ticking = true;
-        requestAnimationFrame(() => {
-          this.scrollTop = listRef.scrollTop;
-          this.ticking = false;
-        });
+      this.scrollTop = this.$refs.listRef.scrollTop;
+
+      // 判断是否滚动到底部（10px 以内误差）
+      const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        // this.hasNextPage = true;
+        console.log("滚到头了 ....");
+        // this.$emit("load-more"); // 触发父组件的加载方法
+        // this.$forceUpdate(); // 强制更新，确保 Vue 重新渲染
       }
     },
+    // onScroll() {
+    //   if (this.scrollTimeout) cancelAnimationFrame(this.scrollTimeout);
+    //   this.scrollTimeout = requestAnimationFrame(() => {
+    //     this.scrollTop = this.$refs.listRef.scrollTop;
+    //   });
+    // },
     onSelect(item, index) {
+      console.log("onSelect ...", item, index);
       this.selectedId = item.uuid;
       this.$emit("on-select", item);
     },
     onDetail(item, index) {
+      console.log("onDetail ...", item, index);
+      // this.selectedId = item.uuid;
       this.$emit("on-detail", item);
     },
     onItemClick(item, index) {
+      console.log("onItemClick ...", item, index);
       if (!this.itemCanClick) return;
       this.onSelect(item, index);
     },
-    removeSpanTags(str) {
-      return str.replace(/<span[^>]*>(.*?)<\/span>/g, "$1");
+    // 筛选之后，使用的span包裹，显示title时，去掉span标签
+    removeSpanTags(inputString) {
+      // 正则匹配 <span> 标签及其内容
+      return inputString.replace(/<span[^>]*>(.*?)<\/span>/g, "$1");
     },
     onNextPageClick() {
       this.$emit("to-next");
     }
   },
   watch: {
-    defaultSelectedKey(newV) {
+    defaultSelectedKey(newV, oldV) {
+      console.log("defaultSelectedKey watch ...", newV, oldV);
+      if (newV === oldV) return;
       this.selectedId = newV;
     },
-    dataList(newV) {
+    dataList(newV, oldV) {
+      console.log('items watch ...', newV, oldV);
       this.list = [...newV];
       this.scrollTop = 0;
-      // this.$forceUpdate();
+      this.$forceUpdate();
     }
   }
 };
@@ -213,37 +192,48 @@ export default {
 .virtual-scroll__container {
   position: relative;
   overflow: hidden;
-  height: 100%;
 }
 .virtual-scroll-list {
   position: relative;
   overflow-y: auto;
-  width: 100%;
+  height: var(--height);
+  /* border: 1px solid #ddd; */
+  max-height: var(--height); /* 确保内容不超过父容器的高度 */
+  width: 100%; /* 或者根据需要设置 */
 }
 
 .itemContainer {
   height: 100%;
-  transform: translateZ(0);
-  will-change: transform;
 }
+
+/* 列表项样式 */
 .item {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* border: 1px solid #4c84ff; */
   border: 1px solid #d8e3ff;
   padding: 10px;
   background: #f7f9ff;
   margin-bottom: 10px;
 }
+
 .item.active {
-  border-color: #4c84ff;
+  border: 1px solid #4c84ff;
 }
+
 .item__top,
 .item__down {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* padding: 0 8px; */
 }
+.item__top span,
+.item__down span {
+  cursor: default;
+}
+
 .item .item-name {
   flex: 7;
   width: 200px;
@@ -264,35 +254,59 @@ export default {
   opacity: 1;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
+
 .item .item-btn:hover {
-  opacity: 0.7;
+  opacity: 0.7; /* 透明度调整 */
 }
+
+/* 省略号文本 */
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.virtual-scroll-list::-webkit-scrollbar {
-  width: 8px;
+
+/* 美化滚动条 */
+/* .virtual-scroll-list::-webkit-scrollbar {
+  width: 6px;
 }
 .virtual-scroll-list::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 10px;
-  border: 2px solid #fff;
-}
-.virtual-scroll-list::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
 }
 .virtual-scroll-list::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-  border-radius: 10px;
+} */
+
+/* 针对 Webkit 浏览器（Chrome/Safari） */
+.virtual-scroll-list::-webkit-scrollbar {
+  width: 8px; /* 设置滚动条宽度 */
 }
+
+.virtual-scroll-list::-webkit-scrollbar-thumb {
+  background-color: #888; /* 滚动条的颜色 */
+
+  border-radius: 10px; /* 滚动条圆角 */
+  border: 2px solid #fff; /* 滚动条与轨道的分隔 */
+}
+
+.virtual-scroll-list::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* 悬浮时的颜色 */
+}
+
+.virtual-scroll-list::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* 滚动条轨道背景色 */
+  border-radius: 10px; /* 滚动条轨道圆角 */
+}
+
 .virtual-scroll-list::-webkit-scrollbar-track:hover {
-  background-color: #e0e0e0;
+  background-color: #e0e0e0; /* 悬浮时的轨道颜色 */
 }
+
 .virtual-scroll-list::-webkit-scrollbar-button {
-  display: none;
+  display: none; /* 隐藏箭头按钮 */
 }
+
 .no-data {
   display: flex;
   justify-content: center;
@@ -302,10 +316,12 @@ export default {
 .is-click {
   cursor: pointer;
 }
+
 .is-click > .item__top span,
 .item__down span {
   cursor: pointer;
 }
+
 .load-next-page {
   text-align: center;
   padding: 10px;
