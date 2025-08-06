@@ -699,6 +699,18 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "aSpin 自定义"
         }
+      },
+      {
+        path: "/bigScreenLayout",
+        name: "bigScreenLayout",
+        component: () =>
+          import(
+            /* webpackChunkName: "BigScreenLayout" */ "../views/bigScreenLayout/index.vue"
+          ),
+        meta: {
+          title: "bigScreenLayout 大屏适配",
+          isFull: true
+        }
       }
     ]
   },

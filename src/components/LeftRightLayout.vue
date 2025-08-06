@@ -1,11 +1,20 @@
 <template>
   <div class="app-wrapper">
-    <div class="app__sidebar" :class="{ isFull: isFull, isHide: !isOpen }">
-      <SideBar @on-change="onChange" />
+    <!-- <div class="app__header" v-if="!isFull">
+      <AppHeader />
+    </div> -->
+
+    <div v-if="!isFull">
+      <div class="app__sidebar" :class="{ isHide: !isOpen }">
+        <SideBar @on-change="onChange" />
+      </div>
     </div>
+
     <div class="app__main" ref="main">
-      <div class="breadcrumb-container">
-        <h-breadcrumb />
+      <div v-if="!isFull">
+        <div class="breadcrumb-container">
+          <h-breadcrumb />
+        </div>
       </div>
 
       <div class="container">
@@ -16,10 +25,12 @@
 </template>
 
 <script>
+import AppHeader from "@/components/Header.vue";
 import SideBar from "@/components/SideBar3.vue";
 import HBreadcrumb from "@/components/h-ui/breadcrumb";
 export default {
   components: {
+    AppHeader,
     SideBar,
     HBreadcrumb
   },
@@ -28,6 +39,9 @@ export default {
       isOpen: true,
       isFull: false
     };
+  },
+  created() {
+    this.isFull = this.$route.meta.isFull || false;
   },
   methods: {
     onChange(v) {
@@ -65,14 +79,14 @@ $width: 240px;
   transition: width 0.3s ease;
 }
 
-.app__sidebar.isHide {
-  width: 0;
-  /* left: -200px; */
-}
+// .app__sidebar.isHide {
+//   width: 0;
+//   /* left: -200px; */
+// }
 
-.app__sidebar.isFull {
-  display: none;
-}
+// .app__sidebar.isFull {
+//   display: none;
+// }
 
 .app__main {
   flex: 1;
@@ -98,5 +112,11 @@ $width: 240px;
   margin: 20px;
   background-color: #fff;
   border-radius: 4px;
+}
+.isHide {
+  width: 0;
+}
+.isFull {
+  display: none;
 }
 </style>

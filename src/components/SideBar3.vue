@@ -111,7 +111,12 @@ export default {
               path: "/backgroundClip"
             },
             { id: 13, text: "Radio 单选框", path: "/radio" },
-            { id: 26, text: "Table 样式", path: "/tableStyle" }
+            { id: 26, text: "Table 样式", path: "/tableStyle" },
+            {
+              id: 39,
+              text: "bigScreenLayout 大屏适配",
+              path: "/bigScreenLayout"
+            }
           ]
         },
         {
@@ -161,6 +166,7 @@ export default {
         // { id: 36, text: "MultiSelectDropdown 多选下拉框", path: "/multiSelectDropdown" },
         // { id: 37, text: "aTag 自定义", path: "/aTag" },
         // { id: 38, text: "aSpin 自定义", path: "/customSpin"
+        // { id: 39, text: "bigScreenLayout 大屏适配", path: "/bigScreenLayout"
       ]
     };
   },
