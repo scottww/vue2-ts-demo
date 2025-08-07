@@ -705,7 +705,7 @@ const routes: Array<RouteConfig> = [
         name: "bigScreenLayout",
         component: () =>
           import(
-            /* webpackChunkName: "BigScreenLayout" */ "../views/bigScreenLayout/index.vue"
+            /* webpackChunkName: "BigScreenLayout" */ "../views/bigScreen4/index.vue"
           ),
         meta: {
           title: "bigScreenLayout 大屏适配",

@@ -68,6 +68,7 @@ $width: 240px;
   display: flex;
   flex-direction: row;
   height: 100%;
+  overflow: hidden;
 }
 
 .app__sidebar {
@@ -77,6 +78,9 @@ $width: 240px;
   /* #e5e6eb */
   border-right: 1px solid #e5e6eb;
   transition: width 0.3s ease;
+  
+  height: calc(100vh - 60px);
+  overflow-y: auto; // 让内容可滚动
 }
 
 // .app__sidebar.isHide {
