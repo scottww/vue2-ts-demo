@@ -64,7 +64,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .txt-reader {
   padding: 20px;
   font-family: "Segoe UI", Roboto, sans-serif;

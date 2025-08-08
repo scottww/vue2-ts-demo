@@ -711,6 +711,17 @@ const routes: Array<RouteConfig> = [
           title: "bigScreenLayout 大屏适配",
           isFull: true
         }
+      },
+      {
+        path: "/ue",
+        name: "ue",
+        component: () =>
+          import(
+            /* webpackChunkName: "UE" */ "../views/ue/index.vue"
+          ),
+        meta: {
+          title: "ue"
+        }
       }
     ]
   },

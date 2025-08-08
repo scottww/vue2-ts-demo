@@ -7,7 +7,6 @@
         :is="getComponent(mod.type)"
         :title="mod.title"
         class="panel"
-        :class="mod.size || 'medium'"
       />
     </div>
     <div class="right-panel">
@@ -17,49 +16,48 @@
         :is="getComponent(mod.type)"
         :title="mod.title"
         class="panel"
-        :class="mod.size || 'medium'"
       />
     </div>
   </div>
 </template>
 
 <script>
-import PanelA from "../../components/PanelA.vue";
-import PanelB from "../../components/PanelB.vue";
-import PanelC from "../../components/PanelC.vue";
-import EmergencySupport from "../../components/EmergencySupport.vue";
+import PanelA from '../../components/PanelA.vue'
+import PanelB from '../../components/PanelB.vue'
+import PanelC from '../../components/PanelC.vue'
 
 export default {
   data() {
     return {
       leftPanels: [
-        { type: "a", title: "天气情况2", size: "large" },
-        { type: "b", title: "摄像监控2", size: "medium" }
+        { type: 'a', title: '天气情况' },
+        { type: 'b', title: '摄像监控' },
+        { type: 'c', title: '数据统计' }
       ],
       rightPanels: [
-        { type: "c", title: "告警信息2", size: "medium" },
-        { type: "a", title: "任务信息2", size: "medium" }
+        { type: 'a', title: '告警信息' },
+        { type: 'b', title: '任务信息' },
+        { type: 'c', title: '风险分析' },
+        { type: 'a', title: '设备运行' }
       ]
-    };
+    }
   },
   methods: {
     getComponent(type) {
       const map = {
-        a: "PanelA",
-        b: "PanelB",
-        c: "PanelC",
-        EmergencySupport: "EmergencySupport"
-      };
-      return map[type] || "PanelA";
+        a: 'PanelA',
+        b: 'PanelB',
+        c: 'PanelC'
+      }
+      return map[type] || 'PanelA'
     }
   },
   components: {
     PanelA,
     PanelB,
-    PanelC,
-    EmergencySupport
+    PanelC
   }
-};
+}
 </script>
 
 <style scoped>
@@ -74,34 +72,18 @@ export default {
   padding: 0 40px;
   z-index: 2;
 }
-
-.left-panel,
-.right-panel {
+.left-panel, .right-panel {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 400px;
 }
-
-/* 通用面板样式 */
 .panel {
   background: rgba(50, 50, 50, 0.8);
   border-radius: 8px;
   padding: 16px;
   color: #fff;
-  flex-shrink: 0;
-}
-
-/* 不同尺寸的面板高度 */
-.panel.small {
-  height: 120px;
-}
-
-.panel.medium {
   height: 160px;
 }
-
-.panel.large {
-  height: 320px;
-}
 </style>
+

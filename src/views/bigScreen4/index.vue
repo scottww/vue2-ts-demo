@@ -78,7 +78,9 @@ export default {
   methods: {
     detectScreenMode() {
       const width = window.innerWidth
-      this.isWideScreen = width >= 4000
+      console.log('width ...', width);
+      //TODO 调试
+      this.isWideScreen = true || width >= 4000;
       this.pages = this.isWideScreen
         ? [
             { name: '首页', component: 'WidePage1' },

@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts">
-// 使用 vue-property-decorator 的写法
-import { Component, Prop, Vue } from "vue-property-decorator";
+//使用 vue-property-decorator 的写法
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   name: "HCarousel"
@@ -24,45 +24,31 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class HCarousel extends Vue {
   @Prop({
     type: Array,
-    default: () => []
+    default: []
   })
   public data!: Array<number> | Array<string>;
-
   @Prop({
     type: Boolean,
     default: false
   })
-  readonly autoplay!: boolean;
-
+  readonly autoplay!: string;
+  public speed!: string;
   private currentIndex = 0;
-
-  private timer: number | null = null;
-
-  // 计算属性，直接返回 props 中的 data
-  get images() {
-    return this.data;
-  }
+  private images: Array<number> | Array<string> = this.data;
+  private timer = 0;
 
   mounted() {
-    if (this.autoplay) {
-      this.startCarousel();
-    }
+    console.log("mounted");
+    this.startCarousel();
   }
 
   startCarousel() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    this.timer = window.setInterval(() => {
+    this.timer = setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     }, 3000); // 每隔3秒自动切换
   }
-
   beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
+    if (this.timer !== 0) clearInterval(this.timer);
   }
 }
 </script>
