@@ -9,13 +9,14 @@
     <div class="panel-body">
       <!-- 上部：图片 + 描述 -->
       <div class="top">
-        <div class="left">
-          <img v-if="image" :src="image" alt="图片" class="panel-img" />
-          <slot v-else name="image">暂无图片</slot>
-        </div>
-        <div class="right">
-          <p class="description">{{ description }}</p>
-        </div>
+        <ThreeColumnLayout
+          v-for="(item, index) in dataList"
+          :key="index"
+          :img-src="item.icon"
+          :period="item.period"
+          :value="item.value"
+          :unit="item.unit"
+        />
       </div>
 
       <!-- 中部统计 -->
@@ -38,40 +39,17 @@
           </div>
         </div>
       </div>
-
-      <!-- 底部时间轴 -->
-      <div class="down2">
-        <slot name="timeline">
-          <!-- 默认占位 -->
-          <!-- <div v-for="(event, idx) in timeline" :key="idx" class="timeline-item">
-            {{ event }}
-          </div> -->
-          <el-timeline>
-            <el-timeline-item
-              v-for="(item, index) in TIMELINE_DATA"
-              :key="index"
-              :timestamp="item.time"
-              placement="top"
-              class="custom-node"
-            >
-              <el-card>
-                <p class="timeline-item">
-                  <img src="@/assets/bigScreen/order.png" class="icon" />
-                  {{ item.value }}
-                </p>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </slot>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { TIMELINE_DATA } from "./ProjectSituationData.js";
+import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import waterRain from "@/assets/bigScreen/waterRain.png";
 export default {
-  name: "ProjectSituation",
+  name: "WeatherForecast",
+  components: { ThreeColumnLayout },
   props: {
     title: { type: String, default: "工程情况" },
     image: { type: String, default: "" },
@@ -82,7 +60,13 @@ export default {
   },
   data() {
     return {
-      TIMELINE_DATA
+      TIMELINE_DATA,
+      waterRain,
+      dataList: [
+        { period: "近一小时", value: "10.0", unit: "mm", icon: waterRain },
+        { period: "近三小时", value: "28.3", unit: "mm", icon: waterRain },
+        { period: "近六小时", value: "43.5", unit: "mm", icon: waterRain }
+      ]
     };
   }
 };
@@ -99,31 +83,13 @@ export default {
 
 .panel-header {
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-weight: bold;
   font-size: 16px;
-  margin-bottom: 10px;
-
-  /* 新增背景图 */
+  height: 99px;
   background-image: url("../../../assets/bigScreen/title_bg.png");
-  background-size: contain;
-  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
-  width: 100%;
-
-  height: 94px;
-
-  /* 文字颜色 */
   color: #fff;
-
-  /* 内边距，避免文字紧贴边缘 */
-  /* padding: 10px 40px; */
-
-  /* 如果需要半透明遮罩提升文字对比度，可以加个背景色叠加 */
-  /* background-color: rgba(0, 0, 0, 0.3); */
 }
 
 .panel-header span {
@@ -144,7 +110,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  margin-top: 0px;
+  margin-top: 20px;
   padding: 0 10px;
 }
 
@@ -221,27 +187,9 @@ export default {
   margin-left: 12px;
 }
 
-.down2 {
-  margin-top: 10px;
-}
-
-.timeline-item {
-  font-size: 12px;
-  color: #66ccff;
-  margin-bottom: 4px;
-}
-
 p.description {
   margin-bottom: 0;
   text-indent: 2em;
-}
-
-::v-deep .el-timeline-item__tail {
-  border-left: 4px solid #175092;
-}
-::v-deep .el-timeline-item__timestamp {
-  color: #fff;
-  font-size: 18px;
 }
 ::v-deep .el-card {
   background: linear-gradient(90deg, #09527f 0%);
@@ -250,43 +198,5 @@ p.description {
 }
 ::v-deep .el-card__body {
   padding: 10px;
-}
-.timeline-item {
-  color: #fff;
-}
-/* .timeline-item {
-  display: flex;
-  align-items: center;
-}
-.timeline-item .icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
-} */
-.timeline-item {
-  display: flex; /* 左图右文字 */
-  align-items: flex-start; /* 顶部对齐 */
-}
-
-.timeline-item .icon {
-  width: 14px; /* 图标大小与文字一致 */
-  height: 14px;
-  margin-right: 6px;
-  flex-shrink: 0; /* 防止压缩 */
-}
-
-.timeline-item .text {
-  flex: 1;
-  line-height: 1.5; /* 行高调一下，让图标与文字协调 */
-}
-
-/* 覆盖圆点样式为 png 图标 */
-.custom-node ::v-deep .el-timeline-item__node {
-  background: url("../../../assets/bigScreen/node.png") no-repeat center/contain;
-  border: none;
-  width: 20px;
-  height: 20px;
-  left: -5px;
-  top: -6px;
 }
 </style>

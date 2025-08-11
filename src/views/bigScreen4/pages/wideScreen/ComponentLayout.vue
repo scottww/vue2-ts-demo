@@ -90,6 +90,8 @@ import FloodForecast from "../../components/FloodForecast.vue";
 import FloodControlDispatch from "../../components/FloodControlDispatch.vue";
 import RiskHazard from "../../components/RiskHazard.vue";
 import ProjectSituation from "../../components/ProjectSituation.vue";
+import WaterRainInformation from "../../components/WaterRainInformation.vue";
+import WeatherForecast from "../../components/WeatherForecast.vue";
 
 export default {
   components: {
@@ -100,7 +102,9 @@ export default {
     FloodForecast,
     FloodControlDispatch,
     RiskHazard,
-    ProjectSituation
+    ProjectSituation,
+    WaterRainInformation,
+    WeatherForecast
   },
   props: {
     layout: String,
@@ -116,7 +120,9 @@ export default {
         FloodForecast: FloodForecast,
         FloodControlDispatch: FloodControlDispatch,
         RiskHazard: RiskHazard,
-        ProjectSituation: ProjectSituation
+        ProjectSituation: ProjectSituation,
+        WaterRainInformation: WaterRainInformation,
+        WeatherForecast: WeatherForecast
       };
       return map[type] || PanelA;
     }
@@ -183,7 +189,7 @@ export default {
 }
 
 .right-side {
-  flex: 2; /* 右边大面板 */
+  flex: 1; /* 右边大面板 */
 }
 
 .half-vertical {

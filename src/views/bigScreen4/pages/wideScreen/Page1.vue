@@ -29,6 +29,8 @@ import FloodForecast from "../../components/FloodForecast.vue";
 import FloodControlDispatch from "../../components/FloodControlDispatch.vue";
 import RiskHazard from "../../components/RiskHazard.vue";
 import ProjectSituation from "../../components/ProjectSituation.vue";
+import WaterRainInformation from "../../components/WaterRainInformation.vue";
+import WeatherForecast from "../../components/WeatherForecast.vue";
 
 // ✅ 子组件封装布局渲染逻辑
 import ComponentLayout from "./ComponentLayout.vue";
@@ -43,7 +45,9 @@ export default {
     FloodForecast,
     FloodControlDispatch,
     RiskHazard,
-    ProjectSituation
+    ProjectSituation,
+    WaterRainInformation,
+    WeatherForecast
   },
   data() {
     return {
@@ -71,9 +75,11 @@ export default {
           api: "/api/project/situation", // 后端接口
           height: 940
         },
+        { col: "left", type: "WaterRainInformation", title: "水雨情信息", height: 431.1 },
+        { col: "left", type: "WeatherForecast", title: "天气预报", height: 431.1 },
         // { col: "left", type: "c", title: "统计分析1", height: 940 },
-        { col: "left", type: "a", title: "天气情况1", height: 431.1 },
-        { col: "left", type: "b", title: "摄像监控1", height: 483 },
+        // { col: "left", type: "a", title: "天气情况1", height: 431.1 },
+        // { col: "left", type: "b", title: "摄像监控1", height: 431.1 },
 
         {
           col: "right",
@@ -130,7 +136,9 @@ export default {
         FloodForecast: FloodForecast,
         FloodControlDispatch: FloodControlDispatch,
         RiskHazard: RiskHazard,
-        ProjectSituation: ProjectSituation
+        ProjectSituation: ProjectSituation,
+        WaterRainInformation: WaterRainInformation,
+        WeatherForecast:WeatherForecast
       };
       return map[type] || PanelA;
     }
@@ -153,8 +161,8 @@ export default {
 .left-panel,
 .right-panel {
   /* width: 651px; */
-  /* width: 1320px; */
-  width: 1920px;
+  width: 1320px;
+  /* width: 1920px; */
   height: 100%;
   display: flex;
   flex-direction: column;

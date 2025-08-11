@@ -15,17 +15,14 @@
       <div class="header-bar">
         <div class="header-title">xxx驾驶舱</div>
         <div class="header-nav">
-          <div class="nav-content">
-            <button
-              type="text"
-              v-for="(page, idx) in pages"
-              :key="page.name"
-              :class="{ active: currentPage === idx }"
-              @click="currentPage = idx"
-            >
-              {{ page.name }}
-            </button>
-          </div>
+          <button
+            v-for="(page, idx) in pages"
+            :key="page.name"
+            :class="{ active: currentPage === idx }"
+            @click="currentPage = idx"
+          >
+            {{ page.name }}
+          </button>
         </div>
       </div>
 
@@ -144,7 +141,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("~@/assets/bigScreen/bg2.png") no-repeat center center;
+  background: url("~@/assets/bigScreen/bg.png") no-repeat center center;
   background-size: cover;
   z-index: 1;
 }
@@ -165,56 +162,59 @@ export default {
 
 .header-bar {
   position: absolute;
+  /* top: 20px; */
   width: 100%;
-  height: 209px;
-  background: url("~@/assets/bigScreen/header_bg2.png") no-repeat center center;
-  background-size: cover;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+.header-title0 {
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 .header-title {
-  position: absolute;
-  top: 32px;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 330px;
+  background: url("~@/assets/bigScreen/header_bg.png") no-repeat center
+    center;
+  background-size: cover;
+
+  /* 文字居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   font-size: 36px;
   color: #fff;
 }
 
 .header-nav {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 970px;
-  height: 126px;
-  background: url("~@/assets/bigScreen/nav_bg2.png") no-repeat center center;
+  height: 135px;
+  flex: 1; /* 剩余高度填充 */
+  background: url("~@/assets/bigScreen/nav_bg.png") no-repeat center center;
   background-size: cover;
-}
-
-.nav-content {
-  position: relative;
-  top: 50px;
 
   display: flex;
-  justify-content: center;
-  gap: 0;
+  align-items: center; /* 竖直居中 */
+  justify-content: center; /* 水平居中 */
+
+  gap: 20px;
 }
 
+.header-nav0 {
+  display: flex;
+  gap: 20px;
+}
 .header-nav button {
-  width: 170px;
-  height: 62px;
-  background: none;      /* 默认无背景 */
-  border: none;          /* 无边框 */
-  color: #D4E4FD;        /* 默认文字颜色 */
+  padding: 6px 20px;
   font-size: 18px;
   cursor: pointer;
-  transition: color 0.3s;
 }
-
-.nav-content button.active {
-  background: url("~@/assets/bigScreen/btn_active.png") no-repeat center center;
-  background-size: cover;
+.header-nav .active {
+  background: #0af;
   color: #fff;
+  border-radius: 4px;
 }
 </style>
