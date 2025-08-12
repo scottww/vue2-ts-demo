@@ -6,6 +6,7 @@
         :layout="layoutModes.left"
         :panels="leftPanelList"
         :getComponent="getPanelComponent"
+        @site-change="handleSiteChange"
       />
     </div>
 
@@ -63,7 +64,8 @@ export default {
           props: {
             title: "工程情况",
             image: require("@/assets/bigScreen/thumbnail.png"),
-            description: "这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述。",
+            description:
+              "这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述。",
             topStats: ["闸门5孔", "泵组6台"],
             downStats: [
               { label: "机组累计运行总台时", value: "71703", unit: "h" },
@@ -75,8 +77,29 @@ export default {
           api: "/api/project/situation", // 后端接口
           height: 940
         },
-        { col: "left", type: "WaterRainInformation", title: "水雨情信息", height: 431.1 },
-        { col: "left", type: "WeatherForecast", title: "天气预报", height: 431.1 },
+        {
+          col: "left",
+          type: "WaterRainInformation",
+          title: "水雨情信息",
+          height: 431.1,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择站点",
+            modelValue: "site1", // 默认值
+            options: [
+              { label: "站点名称1", value: "site1" },
+              { label: "站点名称2", value: "site2" },
+              { label: "站点名称3", value: "site3" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
+        },
+        {
+          col: "left",
+          type: "WeatherForecast",
+          title: "天气预报",
+          height: 431.1
+        },
         // { col: "left", type: "c", title: "统计分析1", height: 940 },
         // { col: "left", type: "a", title: "天气情况1", height: 431.1 },
         // { col: "left", type: "b", title: "摄像监控1", height: 431.1 },
@@ -138,9 +161,12 @@ export default {
         RiskHazard: RiskHazard,
         ProjectSituation: ProjectSituation,
         WaterRainInformation: WaterRainInformation,
-        WeatherForecast:WeatherForecast
+        WeatherForecast: WeatherForecast
       };
       return map[type] || PanelA;
+    },
+    handleSiteChange(newSite) {
+      console.log('父组件收到选中站点：', newSite);
     }
   }
 };
@@ -155,7 +181,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
-  z-index: 2;
+  z-index: 11;
 }
 
 .left-panel,

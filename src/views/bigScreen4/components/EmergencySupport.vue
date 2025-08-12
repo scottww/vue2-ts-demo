@@ -1,54 +1,82 @@
 <template>
   <div class="panel">
+    <!-- 标题带背景图 -->
     <div class="panel-header">
       <span>{{ title }}</span>
-      <span class="panel-year">{{ year }}年</span>
+      <!-- <slot name="header-extra"></slot> -->
+      <div class="header-extra" v-if="headerExtra">
+        <CustomSelect
+          v-if="headerExtra.type === 'customSelect'"
+          v-model="headerExtra.modelValue"
+          :options="headerExtra.options"
+          :placeholder="headerExtra.placeholder"
+          @input="handleSelectChange"
+        />
+        <!-- 其它headerExtra类型... -->
+      </div>
     </div>
+
     <div class="panel-body">
-      <div ref="chart" style="width: 100%; height: 200px"></div>
+      <!-- 上部：图片 + 描述 -->
+      <div class="top">
+        <ThreeColumnLayout
+          v-for="(item, index) in dataListTest"
+          :key="index"
+          :img-src="item.icon"
+          :period="item.period"
+          :value="item.value"
+          :unit="item.unit"
+          :width="54"
+          :height="54"
+        />
+      </div>
+
+      <!-- 中部统计 -->
+      <div class="main">
+        <NormalBarChart></NormalBarChart>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import * as echarts from "echarts";
-
+import { TIMELINE_DATA } from "./ProjectSituationData.js";
+import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import person from "@/assets/bigScreen/person.png";
+import NormalBarChart from "./NormalBarChart.vue";
+import CustomSelect from "./CustomSelect.vue";
 export default {
   name: "EmergencySupport",
+  components: { ThreeColumnLayout, NormalBarChart, CustomSelect },
   props: {
-    title: { type: String, default: "抢险支撑" },
-    year: { type: Number, default: new Date().getFullYear() },
-    data: { type: Object, default: () => ({}) }
+    title: { type: String, default: "工程情况" },
+    headerExtra: { type: Object, default: null },
+    dataList: { type: Array, default: () => [] }
   },
-  mounted() {
-    this.initChart();
+  data() {
+    return {
+      TIMELINE_DATA,
+      person,
+      dataListTest: [
+        { period: "当年统计", value: "26", unit: "次", icon: person },
+        { period: "去年统计", value: "37", unit: "次", icon: person },
+        { period: "前年统计", value: "39", unit: "次", icon: person }
+      ]
+    };
   },
   methods: {
-    initChart() {
-      const chart = echarts.init(this.$refs.chart);
-      chart.setOption({
-        tooltip: {},
-        xAxis: {
-          type: "category",
-          data: ["1月", "2月", "3月", "4月", "5月"],
-          axisLine: { lineStyle: { color: "#66ccff" } }
-        },
-        yAxis: {
-          type: "value",
-          axisLine: { lineStyle: { color: "#66ccff" } }
-        },
-        series: [
-          {
-            type: "bar",
-            data: [5, 8, 6, 10, 7],
-            itemStyle: { color: "#3399ff" }
-          }
-        ]
-      });
+    handleSelectChange(val) {
+      // 先调用配置里的 onChange 函数（如果有）
+      if (this.headerExtra && typeof this.headerExtra.onChange === "function") {
+        this.headerExtra.onChange(val);
+      }
+      // 再发事件给上层，方便事件冒泡传递
+      this.$emit("site-change", val);
     }
   }
 };
 </script>
+
 <style scoped>
 .panel {
   background: rgba(0, 76, 153, 0.2);
@@ -59,24 +87,53 @@ export default {
 }
 
 .panel-header {
+  font-weight: bold;
+  font-size: 16px;
+  height: 62px;
+  background-image: url("../../../assets/bigScreen/title_bg2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 10px;
+  /* padding: 0 50px; */
+  padding: 0 0 0 50px;
 }
 
-.panel-year {
-  font-size: 14px;
-  color: #66ccff;
+.panel-header span {
+  position: relative;
+  left: 0px;
+  /* top: -20px; */
+}
+
+.header-extra {
+  /* 右侧容器 */
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 0px;
+  /* top: -20px; */
 }
 
 .panel-body {
   height: calc(100% - 40px);
-
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  margin-top: 0;
+  padding: 0 10px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 0 10px;
+  height: 64px;
+}
+.main {
+  height: calc(100% - 64px);
 }
 </style>

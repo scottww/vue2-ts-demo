@@ -37,6 +37,7 @@
             :is="getComponent(panels[0].type)"
             class="panel full-height"
             :title="panels[0].title"
+            @site-change="$emit('site-change', $event)"
           />
         </div>
         <div class="right-side">
@@ -46,6 +47,7 @@
             :is="getComponent(mod.type)"
             class="panel half-vertical"
             :title="mod.title"
+            :header-extra="mod.headerExtra"
           />
         </div>
       </div>
