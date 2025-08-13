@@ -210,20 +210,22 @@ export default {
             top: "5%",
             style: {
               text: "v",
-              fill: "#3BC8D4",
-              fontSize: 14,
-              fontWeight: "bold"
+              fill: "#fff",
+              fontSize: 12,
+              opacity: 0.6
+              // fontWeight: "bold"
             }
           },
           {
             type: "text",
-            right: "5%", // 右上角靠右点
+            right: "0%", // 右上角靠右点
             top: "5%",
             style: {
               text: "累计雨量(mm)",
-              fill: "#3D92FF",
-              fontSize: 14,
-              fontWeight: "bold",
+              fill: "#fff",
+              fontSize: 12,
+              opacity: 0.6,
+              // fontWeight: "bold",
               align: "right"
             }
           }

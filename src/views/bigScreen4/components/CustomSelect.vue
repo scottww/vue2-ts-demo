@@ -87,6 +87,7 @@ export default {
   transform: skewX(-20deg);
   color: #ffffff;
   user-select: none;
+  font-style: italic;
 }
 
 /* 文字反斜回来，让文字不倾斜 */

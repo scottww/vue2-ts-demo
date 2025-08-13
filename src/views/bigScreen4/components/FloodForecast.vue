@@ -1,74 +1,63 @@
 <template>
   <div class="panel">
-    <div class="panel-header">
+    <!-- 标题带背景图 -->
+    <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <span class="panel-year">{{ year }}年</span>
+      <div class="header-extra" v-if="headerExtra">
+        <CustomSelect
+          v-if="headerExtra.type === 'customSelect'"
+          v-model="headerExtra.modelValue"
+          :options="headerExtra.options"
+          :placeholder="headerExtra.placeholder"
+          @input="handleSelectChange"
+        />
+        <!-- 其它headerExtra类型... -->
+      </div>
     </div>
+
     <div class="panel-body">
-      <div ref="chart" style="width:100%;height:200px;"></div>
+      <FloodForecastChart />
     </div>
   </div>
 </template>
 
 <script>
-import * as echarts from "echarts";
-
+import { TIMELINE_DATA } from "./ProjectSituationData.js";
+import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import waterRain from "@/assets/bigScreen/waterRain.png";
+import CustomSelect from "./CustomSelect.vue";
+import FloodForecastChart from "./FloodForecastChart.vue";
 export default {
-  name: "HongShuiYuBao",
+  name: "RiskHazard",
+  components: { ThreeColumnLayout, CustomSelect, FloodForecastChart },
   props: {
-    title: { type: String, default: "洪水预报" },
-    year: { type: Number, default: new Date().getFullYear() }
+    title: { type: String, default: "风险隐患" },
+    headerExtra: { type: Object, default: null }
   },
-  mounted() {
-    this.initChart();
+  data() {
+    return {
+      TIMELINE_DATA,
+      waterRain,
+      dataList: [
+        { period: "近一小时", value: "10.0", unit: "mm", icon: waterRain },
+        { period: "近三小时", value: "28.3", unit: "mm", icon: waterRain },
+        { period: "近六小时", value: "43.5", unit: "mm", icon: waterRain }
+      ]
+    };
   },
   methods: {
-    initChart() {
-      const chart = echarts.init(this.$refs.chart);
-      chart.setOption({
-        tooltip: { trigger: "axis" },
-        legend: {
-          data: ["降雨量", "流量"],
-          textStyle: { color: "#fff" }
-        },
-        xAxis: {
-          type: "category",
-          data: ["12:00", "13:00", "14:00", "15:00", "16:00"],
-          axisLine: { lineStyle: { color: "#66ccff" } }
-        },
-        yAxis: [
-          {
-            type: "value",
-            name: "降雨量(mm)",
-            axisLine: { lineStyle: { color: "#66ccff" } }
-          },
-          {
-            type: "value",
-            name: "流量(m³/s)",
-            axisLine: { lineStyle: { color: "#66ccff" } }
-          }
-        ],
-        series: [
-          {
-            name: "降雨量",
-            type: "bar",
-            data: [0.8, 0.6, 1.2, 1.5, 0.7],
-            yAxisIndex: 0,
-            itemStyle: { color: "#33ccff" }
-          },
-          {
-            name: "流量",
-            type: "line",
-            data: [1.2, 1.5, 2.0, 1.8, 1.4],
-            yAxisIndex: 1,
-            itemStyle: { color: "#ffcc00" }
-          }
-        ]
-      });
+    handleSelectChange(val) {
+      // 先调用配置里的 onChange 函数（如果有）
+      if (this.headerExtra && typeof this.headerExtra.onChange === "function") {
+        this.headerExtra.onChange(val);
+      }
+      // 再发事件给上层，方便事件冒泡传递
+      this.$emit("site-change", val);
     }
   }
 };
 </script>
+
 <style scoped>
 .panel {
   background: rgba(0, 76, 153, 0.2);
@@ -79,24 +68,53 @@ export default {
 }
 
 .panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-weight: bold;
   font-size: 16px;
-  margin-bottom: 10px;
+  height: 62px;
+  background-image: url("../../../assets/bigScreen/title_bg2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
 }
 
-.panel-year {
-  font-size: 14px;
-  color: #66ccff;
+.panel-header span {
+  position: relative;
+  left: 0px;
+}
+
+.header-extra {
+  /* 右侧容器 */
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 0px;
 }
 
 .panel-body {
-  height: calc(100% - 40px);
-
+  height: calc(100% - 62px);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  margin-top: 0;
+  padding: 0 10px;
+}
+
+.flex-h-v {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 0 0 50px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 0 10px;
+  height: 64px;
+}
+
+.main {
+  height: calc(100% - 64px);
 }
 </style>

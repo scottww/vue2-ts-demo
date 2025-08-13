@@ -1,7 +1,7 @@
 <template>
   <div class="panel">
     <!-- 标题带背景图 -->
-    <div class="panel-header">
+    <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
       <!-- <slot name="header-extra"></slot> -->
       <div class="header-extra" v-if="headerExtra">
@@ -94,12 +94,6 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* padding: 0 50px; */
-  padding: 0 0 0 50px;
 }
 
 .panel-header span {
@@ -118,12 +112,20 @@ export default {
 }
 
 .panel-body {
-  height: calc(100% - 40px);
+  height: calc(100% - 62px);
   display: flex;
   flex-direction: column;
   margin-top: 0;
   padding: 0 10px;
 }
+
+.flex-h-v {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 50px;
+}
+
 
 .top {
   display: flex;

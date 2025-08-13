@@ -66,6 +66,8 @@
           :is="getComponent(mod.type)"
           class="panel half"
           :title="mod.title"
+          :style="{ height: mod.height + 'px' }"
+          :header-extra="mod.headerExtra"
         /></div
     ></template>
 
@@ -208,7 +210,7 @@ export default {
   gap: 16px;
   width: 100%;
   /* 让每行平分父容器高度（如果父容器是 100% 高的话）*/
-  height: 50%;
+  /* height: 50%; */
   box-sizing: border-box;
 }
 

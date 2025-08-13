@@ -9,7 +9,12 @@
         :class="{
           loaded: !loading
         }"
-      ></div>
+      >
+        <!-- 测试背景遮挡 -->
+        <!-- <div class="btn-box">
+          <el-button @click="handleBtnClick">click me</el-button>
+        </div> -->
+      </div>
 
       <!-- 顶部导航栏 -->
       <div class="header-bar">
@@ -48,6 +53,19 @@ import NormalPage4 from "./pages/normalScreen/Page4.vue";
 import NormalPage5 from "./pages/normalScreen/Page5.vue";
 
 export default {
+  components: {
+    WidePage1,
+    WidePage2,
+    WidePage3,
+    WidePage4,
+    WidePage5,
+
+    NormalPage1,
+    NormalPage2,
+    NormalPage3,
+    NormalPage4,
+    NormalPage5
+  },
   data() {
     return {
       loading: false,
@@ -109,20 +127,10 @@ export default {
             { name: "防汛预案", component: "NormalPage4" },
             { name: "数据分析", component: "NormalPage5" }
           ];
+    },
+    handleBtnClick() {
+      console.log("handleBtnClick ...");
     }
-  },
-  components: {
-    WidePage1,
-    WidePage2,
-    WidePage3,
-    WidePage4,
-    WidePage5,
-
-    NormalPage1,
-    NormalPage2,
-    NormalPage3,
-    NormalPage4,
-    NormalPage5
   }
 };
 </script>
@@ -147,6 +155,7 @@ export default {
   background: url("~@/assets/bigScreen/bg2.png") no-repeat center center;
   background-size: cover;
   z-index: 1;
+  pointer-events: none;
 }
 
 .ue-container {
@@ -156,7 +165,6 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 0;
-  pointer-events: none;
   opacity: 0;
 }
 .ue-container.loaded {
@@ -164,12 +172,32 @@ export default {
 }
 
 .header-bar {
-  position: absolute;
+  /* position: absolute;
   width: 100%;
   height: 209px;
   background: url("~@/assets/bigScreen/header_bg2.png") no-repeat center center;
   background-size: cover;
   z-index: 10;
+  pointer-events: none; */
+
+  position: absolute;
+  width: 100%;
+  /* height: 209px; */
+  height: 154px;
+  z-index: 10;
+}
+
+.header-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("~@/assets/bigScreen/header_bg3.png") no-repeat center center;
+  background-size: cover;
+  z-index: -1;
+  pointer-events: none;  /* 背景不挡事件 */
 }
 
 .header-title {
@@ -190,6 +218,7 @@ export default {
   height: 126px;
   background: url("~@/assets/bigScreen/nav_bg2.png") no-repeat center center;
   background-size: cover;
+  z-index: 11;
 }
 
 .nav-content {
@@ -204,9 +233,9 @@ export default {
 .header-nav button {
   width: 170px;
   height: 62px;
-  background: none;      /* 默认无背景 */
-  border: none;          /* 无边框 */
-  color: #D4E4FD;        /* 默认文字颜色 */
+  background: none; /* 默认无背景 */
+  border: none; /* 无边框 */
+  color: #d4e4fd; /* 默认文字颜色 */
   font-size: 18px;
   cursor: pointer;
   transition: color 0.3s;
@@ -216,5 +245,13 @@ export default {
   background: url("~@/assets/bigScreen/btn_active.png") no-repeat center center;
   background-size: cover;
   color: #fff;
+}
+
+.btn-box {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  top: 50%;
 }
 </style>

@@ -16,6 +16,7 @@
         :layout="layoutModes.right"
         :panels="rightPanelList"
         :getComponent="getPanelComponent"
+        @site-change="handleSiteChange"
       />
     </div>
   </div>
@@ -107,14 +108,38 @@ export default {
         {
           col: "right",
           type: "EmergencySupport",
-          title: "抢险支撑",
-          height: 430.12
+          title: "抢险支持",
+          height: 430.12,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择年份",
+            modelValue: "2025", // 默认值
+            options: [
+              { label: "2025年", value: "2025" },
+              { label: "2024年", value: "2024" },
+              { label: "2023年", value: "2023" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         },
         {
           col: "right",
           type: "FloodForecast",
           title: "洪水预报",
-          height: 430.12
+          height: 430.12,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择站点",
+            modelValue: "12", // 默认值
+            options: [
+              { label: "未来12h", value: "12" },
+              { label: "未来24h", value: "24" },
+              { label: "未来36h", value: "36" },
+              { label: "未来72h", value: "72" },
+              { label: "历史记录", value: "history" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         },
         {
           col: "right",
@@ -126,7 +151,18 @@ export default {
           col: "right",
           type: "RiskHazard",
           title: "风险隐患",
-          height: 482
+          height: 482,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择年份",
+            modelValue: "2025", // 默认值
+            options: [
+              { label: "2025年", value: "2025" },
+              { label: "2024年", value: "2024" },
+              { label: "2023年", value: "2023" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         }
         // { col: "right", type: "c", title: "告警信息1", height: 434 },
         // { col: "right", type: "a", title: "任务信息1", height: 483 }
@@ -166,7 +202,7 @@ export default {
       return map[type] || PanelA;
     },
     handleSiteChange(newSite) {
-      console.log('父组件收到选中站点：', newSite);
+      console.log("父组件收到选中站点：", newSite);
     }
   }
 };
@@ -181,7 +217,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
-  z-index: 11;
+  z-index: 9;
 }
 
 .left-panel,
