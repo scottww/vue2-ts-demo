@@ -67,7 +67,21 @@ export default {
             image: require("@/assets/bigScreen/thumbnail.png"),
             description:
               "这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述。",
-            topStats: ["闸门5孔", "泵组6台"],
+            // topStats: ["闸门5孔", "泵组6台"],
+            topStats: [
+              {
+                type: '闸门',
+                unit: "孔",
+                value: "5",
+                icon: require("@/assets/bigScreen/gate.png")
+              },
+              {
+                type: '泵组',
+                unit: "台",
+                value: "6",
+                icon: require("@/assets/bigScreen/pump.png")
+              }
+            ],
             downStats: [
               { label: "机组累计运行总台时", value: "71703", unit: "h" },
               { label: "机组累计总抽水量", value: "46.46 ", unit: "亿m³" },
@@ -144,8 +158,19 @@ export default {
         {
           col: "right",
           type: "FloodControlDispatch",
-          title: "洪水调度",
-          height: 482
+          title: "防洪调度",
+          height: 482,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择年份",
+            modelValue: "2025", // 默认值
+            options: [
+              { label: "2025年", value: "2025" },
+              { label: "2024年", value: "2024" },
+              { label: "2023年", value: "2023" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         },
         {
           col: "right",

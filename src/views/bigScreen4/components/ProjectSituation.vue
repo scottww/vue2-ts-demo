@@ -1,9 +1,18 @@
 <template>
   <div class="panel">
     <!-- 标题带背景图 -->
-    <div class="panel-header">
+    <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <slot name="header-extra"></slot>
+      <div class="header-extra" v-if="headerExtra">
+        <CustomSelect
+          v-if="headerExtra.type === 'customSelect'"
+          v-model="headerExtra.modelValue"
+          :options="headerExtra.options"
+          :placeholder="headerExtra.placeholder"
+          @input="handleSelectChange"
+        />
+        <!-- 其它headerExtra类型... -->
+      </div>
     </div>
 
     <div class="panel-body">
@@ -21,8 +30,28 @@
       <!-- 中部统计 -->
       <div class="center">
         <div class="top">
-          <div class="left" v-for="(item, idx) in topStats" :key="idx">
-            {{ item }}
+          <div
+            class="top-item"
+            v-for="(item, idx) in topStats"
+            :key="idx"
+            :style="{ backgroundImage: `url(${item.icon})`, height: '51px' }"
+          >
+            <!-- <img
+              v-if="item.icon"
+              :src="item.icon"
+              alt="图片"
+              class="item-img"
+            />
+            <div>
+              <div class="type">闸门</div>
+              <div class="value">{{ item.value }}</div>
+              <div class="unit">{{ item.unit }}</div>
+            </div> -->
+            <div class="top-item__text">
+              <div class="type">{{ item.type }}</div>
+              <div class="value">{{ item.value }}</div>
+              <div class="unit">{{ item.unit }}</div>
+            </div>
           </div>
         </div>
         <div class="down">
@@ -70,8 +99,10 @@
 
 <script>
 import { TIMELINE_DATA } from "./ProjectSituationData.js";
+import CustomSelect from "./CustomSelect.vue";
 export default {
   name: "ProjectSituation",
+  components: { CustomSelect },
   props: {
     title: { type: String, default: "工程情况" },
     image: { type: String, default: "" },
@@ -98,54 +129,86 @@ export default {
 }
 
 .panel-header {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-weight: bold;
   font-size: 16px;
-  margin-bottom: 10px;
-
-  /* 新增背景图 */
-  background-image: url("../../../assets/bigScreen/title_bg.png");
-  background-size: contain;
-  background-position: center;
+  height: 62px;
+  background-image: url("../../../assets/bigScreen/title_bg2.png");
+  background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
-  width: 100%;
-
-  height: 94px;
-
-  /* 文字颜色 */
   color: #fff;
-
-  /* 内边距，避免文字紧贴边缘 */
-  /* padding: 10px 40px; */
-
-  /* 如果需要半透明遮罩提升文字对比度，可以加个背景色叠加 */
-  /* background-color: rgba(0, 0, 0, 0.3); */
 }
 
 .panel-header span {
-  position: absolute;
-  left: 50px;
-  top: 14px;
+  position: relative;
+  left: 0px;
+}
+
+.header-extra {
+  /* 右侧容器 */
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 0px;
 }
 
 .panel-body {
-  height: calc(100% - 40px);
+  height: calc(100% - 62px);
   display: flex;
   flex-direction: column;
-  margin-top: -46px;
+  margin-top: 0;
   padding: 0 10px;
+}
+
+.flex-h-v {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 50px;
 }
 
 .top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   margin-top: 0px;
   padding: 0 10px;
+}
+
+.top-item {
+  flex: 1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  height: 100px; /* 高度按你的设计改 */
+  display: flex;
+  align-items: center;
+}
+
+.top-item__text {
+  margin: 0 auto;
+  padding-right: 15px;
+  text-align: right;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.type {
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.value {
+  font-size: 26px;
+  color: #33ccff;
+}
+
+.unit {
+  font-size: 18px;
+  color: #ffffff;
 }
 
 .left {
@@ -225,6 +288,7 @@ export default {
   margin-top: 10px;
 }
 
+/* 时间线定制 */
 .timeline-item {
   font-size: 12px;
   color: #66ccff;
