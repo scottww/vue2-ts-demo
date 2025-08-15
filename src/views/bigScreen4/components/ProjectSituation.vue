@@ -105,6 +105,7 @@ export default {
   components: { CustomSelect },
   props: {
     title: { type: String, default: "工程情况" },
+    headerExtra: { type: Object, default: null },
     image: { type: String, default: "" },
     description: { type: String, default: "" },
     topStats: { type: Array, default: () => [] }, // ["闸门5孔", "泵组6台"]

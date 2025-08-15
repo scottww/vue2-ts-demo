@@ -1,7 +1,7 @@
 <template>
   <div class="panel">
     <!-- 标题带背景图 -->
-    <div class="panel-header">
+    <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
       <slot name="header-extra"></slot>
     </div>
@@ -85,25 +85,31 @@ export default {
   position: relative;
   font-weight: bold;
   font-size: 16px;
-  height: 99px;
-  background-image: url("../../../assets/bigScreen/title_bg.png");
+  height: 62px;
+  background-image: url("../../../assets/bigScreen/title_bg2.png");
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
 }
 
 .panel-header span {
-  position: absolute;
-  left: 50px;
-  top: 14px;
+  position: relative;
+  left: 0;
 }
 
 .panel-body {
-  height: calc(100% - 40px);
+  height: calc(100% - 62px);
   display: flex;
   flex-direction: column;
-  margin-top: -46px;
+  margin-top: 0;
   padding: 0 10px;
+}
+
+.flex-h-v {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 50px;
 }
 
 .top {

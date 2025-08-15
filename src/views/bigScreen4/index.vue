@@ -35,7 +35,12 @@
       </div>
 
       <!-- 动态页面加载 -->
-      <component :is="pages[currentPage].component" />
+      <component v-if="pages.length" :is="pages[currentPage].component" />
+
+      <!-- 图层控制 -->
+      <div class="layer-control-container">
+        <layer-control @layerChange="handleLayerChange" />
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +56,8 @@ import NormalPage2 from "./pages/normalScreen/Page2.vue";
 import NormalPage3 from "./pages/normalScreen/Page3.vue";
 import NormalPage4 from "./pages/normalScreen/Page4.vue";
 import NormalPage5 from "./pages/normalScreen/Page5.vue";
-
+// 图层控制
+import LayerControl from "./common/LayerControl.vue";
 export default {
   components: {
     WidePage1,
@@ -64,7 +70,8 @@ export default {
     NormalPage2,
     NormalPage3,
     NormalPage4,
-    NormalPage5
+    NormalPage5,
+    LayerControl
   },
   data() {
     return {
@@ -99,8 +106,11 @@ export default {
       };
     }
   },
-  mounted() {
+  created() {
     this.detectScreenMode();
+  },
+  mounted() {
+    // this.detectScreenMode();
     window.addEventListener("resize", this.detectScreenMode);
   },
   beforeDestroy() {
@@ -130,6 +140,10 @@ export default {
     },
     handleBtnClick() {
       console.log("handleBtnClick ...");
+    },
+    handleLayerChange(layer) {
+      console.log("图层变化:", layer);
+      // 这里可以添加实际的图层显示/隐藏逻辑
     }
   }
 };
@@ -171,6 +185,13 @@ export default {
   opacity: 1;
 }
 
+.layer-control-container {
+  position: absolute;
+  left: 24%;
+  bottom: 5%;
+  z-index: 11;
+}
+
 .header-bar {
   /* position: absolute;
   width: 100%;
@@ -197,7 +218,7 @@ export default {
   background: url("~@/assets/bigScreen/header_bg3.png") no-repeat center center;
   background-size: cover;
   z-index: -1;
-  pointer-events: none;  /* 背景不挡事件 */
+  pointer-events: none; /* 背景不挡事件 */
 }
 
 .header-title {
