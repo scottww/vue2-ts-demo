@@ -102,7 +102,7 @@ export default {
             placeholder: "请选择站点",
             modelValue: "site1", // 默认值
             options: [
-              { label: "站点名称1", value: "site1" },
+              { label: "站点名称站点名称1", value: "site1" },
               { label: "站点名称2", value: "site2" },
               { label: "站点名称3", value: "site3" }
             ],

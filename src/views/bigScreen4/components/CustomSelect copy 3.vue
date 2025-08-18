@@ -1,22 +1,17 @@
-<!-- 针对选择的项文字有长有短的情况，优化 -->
 <template>
-  <div class="custom-select" ref="selectRef">
-    <!-- 选中值 -->
-    <div class="selected-value" @click="toggleDropdown" ref="selectedValueRef">
+  <div class="custom-select" @click="toggleDropdown" ref="selectRef">
+    <div class="selected-value">
       <span class="diamond">
-        <span class="text">{{ selectedLabel || placeholder }}</span>
+        <span>{{ selectedLabel || placeholder }}</span>
         <span class="arrow" :class="{ open: isOpen }">▼</span>
       </span>
     </div>
-
-    <!-- 下拉菜单 -->
-    <ul v-if="isOpen" class="dropdown-menu" ref="dropdownMenu">
-      <li
-        v-for="option in options"
-        :key="option.value"
+    <ul v-if="isOpen" class="dropdown-menu">
+      <li 
+        v-for="option in options" 
+        :key="option.value" 
         @click.stop="selectOption(option)"
         :class="{ active: option.value == selectedValue }"
-        :title="option.label"
       >
         {{ option.label }}
       </li>
@@ -30,12 +25,11 @@ export default {
   props: {
     options: { type: Array, required: true },
     placeholder: { type: String, default: "请选择" },
-    value: [String, Number],
-    maxDropdownWidth: { type: Number, default: 300 }, // 下拉菜单最大宽度
+    value: [String, Number]
   },
   data() {
     return {
-      isOpen: false,
+      isOpen: false
     };
   },
   computed: {
@@ -45,14 +39,11 @@ export default {
     selectedLabel() {
       const selected = this.options.find(opt => opt.value == this.value);
       return selected ? selected.label : "";
-    },
+    }
   },
   methods: {
     toggleDropdown() {
       this.isOpen = !this.isOpen;
-      this.$nextTick(() => {
-        if (this.isOpen) this.adjustDropdownWidth();
-      });
     },
     selectOption(option) {
       this.$emit("input", option.value);
@@ -62,72 +53,57 @@ export default {
       if (!this.$refs.selectRef.contains(e.target)) {
         this.isOpen = false;
       }
-    },
-    adjustDropdownWidth() {
-      const selectedWidth = this.$refs.selectedValueRef.offsetWidth;
-      const menu = this.$refs.dropdownMenu;
-      const width = Math.min(selectedWidth, this.maxDropdownWidth);
-      menu.style.width = width + "px";
-    },
+    }
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);
   },
   beforeDestroy() {
     document.removeEventListener("click", this.handleClickOutside);
-  },
+  }
 };
 </script>
 
 <style scoped>
 .custom-select {
-  display: inline-block;
-  max-width: 100%;
   position: relative;
+  /* width: 180px; */
+  border-radius: 4px;
   cursor: pointer;
   user-select: none;
   color: #ffffff;
 }
 
-/* 选中值区域 */
 .selected-value {
-  display: inline-block;
-  max-width: 100%;
+  padding: 6px 10px;
 }
 
-/* 菱形背景 */
+/* 选中值的菱形背景 */
 .diamond {
-  display: inline-block;
-  background: #1890ff;
+  display: inline-flex;
+  align-items: center;
   padding: 4px 10px;
+  background: #1890ff;
   transform: skewX(-20deg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #ffffff;
+  user-select: none;
   font-style: italic;
-  color: #fff;
 }
 
-/* 文字反斜回来 */
-.diamond .text {
-  display: inline-block;
+/* 文字反斜回来，让文字不倾斜 */
+.diamond > span:first-child {
   transform: skewX(20deg);
-  max-width: 100%;
-  vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 0 4px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
-/* 箭头 */
+/* 箭头也反斜，保证形状 */
 .arrow {
-  display: inline-block;
-  transform: skewX(20deg);
-  margin-left: 6px;
-  font-size: 12px;
   transition: transform 0.2s ease;
+  font-size: 12px;
+  transform: skewX(20deg);
 }
+
 .arrow.open {
   transform: skewX(20deg) rotate(180deg);
 }
@@ -137,8 +113,7 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 100%; /* 默认宽度至少和选中值一样 */
-  max-width: 300px; /* 最大宽度 */
+  width: 100%;
   background: #082658;
   border: 1px solid #1890ff;
   border-top: none;
@@ -146,17 +121,17 @@ export default {
   overflow-y: auto;
   z-index: 100;
   color: #ffffff;
-  white-space: nowrap;
 }
 
 .dropdown-menu li {
   padding: 6px 10px;
   cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.dropdown-menu li:hover,
+.dropdown-menu li:hover {
+  background: #1890ff;
+}
+
 .dropdown-menu li.active {
   background: #1890ff;
 }

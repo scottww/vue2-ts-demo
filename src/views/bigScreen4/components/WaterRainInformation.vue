@@ -42,7 +42,7 @@ import { TIMELINE_DATA } from "./ProjectSituationData.js";
 import ThreeColumnLayout from "./ThreeColumnLayout.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import WaterRainChart from "./WaterRainChart.vue";
-import CustomSelect from "./CustomSelect.vue";
+import CustomSelect from "./CustomSelectVue2Vue3.vue";
 export default {
   name: "WaterRainInformation",
   components: { ThreeColumnLayout, WaterRainChart, CustomSelect },
@@ -104,7 +104,8 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
-  left: 0px;
+  right: 12px;
+  top: 3px;
 }
 
 .panel-body {

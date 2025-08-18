@@ -37,9 +37,17 @@
       <!-- 动态页面加载 -->
       <component v-if="pages.length" :is="pages[currentPage].component" />
 
-      <!-- 图层控制 -->
+      <!-- 左侧图层控制 -->
       <div class="layer-control-container">
         <layer-control @layerChange="handleLayerChange" />
+      </div>
+
+      <!-- 右侧功能面板 -->
+      <div class="function-panel-container">
+        <function-panel
+          @functionChange="handleFunctionChange"
+          @weatherChange="handleWeatherChange"
+        />
       </div>
     </div>
   </div>
@@ -58,6 +66,7 @@ import NormalPage4 from "./pages/normalScreen/Page4.vue";
 import NormalPage5 from "./pages/normalScreen/Page5.vue";
 // 图层控制
 import LayerControl from "./common/LayerControl.vue";
+import FunctionPanel from "./common/functionPanel/index.vue";
 export default {
   components: {
     WidePage1,
@@ -71,7 +80,8 @@ export default {
     NormalPage3,
     NormalPage4,
     NormalPage5,
-    LayerControl
+    LayerControl,
+    FunctionPanel
   },
   data() {
     return {
@@ -144,6 +154,14 @@ export default {
     handleLayerChange(layer) {
       console.log("图层变化:", layer);
       // 这里可以添加实际的图层显示/隐藏逻辑
+    },
+    handleFunctionChange(functionName) {
+      console.log("功能变更:", functionName);
+      // 这里可以添加实际的功能逻辑
+    },
+    handleWeatherChange(weatherType) {
+      console.log("天气变更:", weatherType);
+      // 这里可以添加实际的天气效果逻辑
     }
   }
 };
@@ -185,11 +203,29 @@ export default {
   opacity: 1;
 }
 
+/* 图层控制面板 */
 .layer-control-container {
   position: absolute;
   left: 24%;
   bottom: 5%;
   z-index: 11;
+}
+
+/* 功能面板 */
+.function-panel-container {
+  position: absolute;
+  right: 24%;
+  bottom: 5%;
+  z-index: 11;
+}
+
+/* 导航栏 */
+.header-bar {
+  position: absolute;
+  width: 100%;
+  height: 209px;
+  background: url("~@/assets/bigScreen/header_bg2.png") no-repeat center center;
+  background-size: cover;
 }
 
 .header-bar {
