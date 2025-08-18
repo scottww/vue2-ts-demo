@@ -8,8 +8,9 @@
           placeholder="请输入关键字"
           v-model="searchKeyword"
           class="search-input"
+          @keyup.enter="onSearch"
         />
-        <div class="search-icon"></div>
+        <div class="search-icon" @click="onSearch"></div>
       </div>
     </div>
 
@@ -37,13 +38,13 @@ export default {
   data() {
     return {
       searchKeyword: "",
+      selectedNode: "",
       isOpen: {
         l1: true,
         workingBridge: false,
         highwayBridge: false,
         pumpGroup: false
       },
-      selectedNode: "",
       treeData: {
         l1: {
           name: "L1层",
@@ -81,71 +82,64 @@ export default {
   computed: {
     filteredTree() {
       const keyword = this.searchKeyword.trim();
-      if (!keyword) {
-        // 如果没有搜索，返回原始树，并还原默认展开状态
-        this.isOpen = {
-          l1: true,
-          workingBridge: false,
-          highwayBridge: false,
-          pumpGroup: false
-        };
-        return this.treeData;
-      }
+      if (!keyword) return this.treeData;
 
       const highlight = (name) =>
-        name.includes(keyword)
-          ? name.replace(
-              new RegExp(keyword, "g"),
-              `<span style="color:#ff0">${keyword}</span>`
-            )
-          : name;
+        name.replace(
+          new RegExp(keyword, "gi"),
+          (match) => `<span style="color:#ff0">${match}</span>`
+        );
 
-      const newIsOpen = {};
+      const filterNode = (node, parentKeys = []) => {
+        let matched = node.name.includes(keyword);
+        const newNode = { ...node, highlightName: highlight(node.name) };
 
-      const filterNode = (node, key) => {
-        const { name, children } = node;
-        let newNode = { ...node, highlightName: highlight(name) };
-
-        if (children) {
+        if (node.children) {
           const newChildren = {};
-          for (const childKey in children) {
-            const child = filterNode(children[childKey], childKey);
-            if (child) newChildren[childKey] = child;
+          for (const key in node.children) {
+            const child = filterNode(node.children[key], [...parentKeys, node.key]);
+            if (child) {
+              newChildren[key] = child;
+              matched = true;
+            }
           }
-          if (Object.keys(newChildren).length) {
-            newNode.children = newChildren;
-            newIsOpen[key] = true; // 子节点匹配，父节点展开
-            return newNode;
-          }
+          if (Object.keys(newChildren).length) newNode.children = newChildren;
+          else delete newNode.children;
         }
 
-        return name.includes(keyword) ? newNode : null;
+        if (matched) {
+          // 展开所有父节点
+          parentKeys.forEach((k) => this.$set(this.isOpen, k, true));
+          return newNode;
+        }
+
+        return null;
       };
 
       const result = {};
       for (const key in this.treeData) {
-        const node = filterNode(this.treeData[key], key);
-        if (node) result[key] = node;
+        const node = { ...this.treeData[key], key };
+        const filtered = filterNode(node, []);
+        if (filtered) result[key] = filtered;
       }
-
-      // 更新展开状态
-      this.isOpen = { ...this.isOpen, ...newIsOpen };
-
       return result;
     }
   },
-
   methods: {
     handleNodeSelect(nodeKey) {
       this.selectedNode = nodeKey;
       this.$emit("nodeSelect", nodeKey);
+    },
+    onSearch() {
+      // 搜索时触发计算属性重新过滤并展开
+      this.filteredTree; 
     }
   }
 };
 </script>
 
 <style scoped>
-/* 这里保持你之前的全部样式 */
+/* 保留原有样式 */
 .structure-panel-container {
   width: 100%;
   height: 100%;

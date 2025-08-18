@@ -1,11 +1,7 @@
 <template>
   <div class="tree-node">
-    <div
-      class="node-header"
-      @click="toggleNode(nodeKey)"
-      :class="{ leaf: !hasChildren }"
-    >
-      <div class="node-icon" v-if="hasChildren">{{ isOpen[nodeKey] ? "▼" : "▶" }}</div>
+    <div class="node-header" @click="toggleNode(nodeKey)" :class="{ leaf: !hasChildren }">
+      <div class="node-icon" v-if="hasChildren">{{ isOpen[nodeKey] ? '▼' : '▶' }}</div>
       <div class="folder-icon" v-if="hasChildren"></div>
       <div class="file-icon" v-else></div>
       <span
@@ -16,13 +12,15 @@
     </div>
 
     <div class="node-children" v-if="hasChildren && isOpen[nodeKey]">
-      <tree-node
+      <TreeNode
         v-for="(childNode, key) in node.children"
         :key="key"
         :node="childNode"
         :node-key="key"
-        :selected-node.sync="selectedNode"
-        :is-open.sync="isOpen"
+        :selected-node="selectedNode"
+        :is-open="isOpen"
+        @update:selected-node="(val) => $emit('update:selected-node', val)"
+        @update:is-open="(val) => $emit('update:is-open', val)"
         @nodeSelect="$emit('nodeSelect', $event)"
       />
     </div>
@@ -30,28 +28,42 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 export default {
-  name: "TreeNode",
+  name: 'TreeNode',
   props: {
     node: { type: Object, required: true },
     nodeKey: { type: String, required: true },
     selectedNode: { type: String, required: true },
-    isOpen: { type: Object, required: true }
+    isOpen: { type: Object, required: true },
   },
-  computed: {
-    hasChildren() {
-      return this.node.children && Object.keys(this.node.children).length > 0;
+  setup(props, { emit }) {
+    const hasChildren = computed(
+      () => props.node.children && Object.keys(props.node.children).length > 0
+    )
+
+    const toggleNode = (key) => {
+      if (hasChildren.value) {
+        props.isOpen[key] = !props.isOpen[key] // Vue 3 响应式可以直接修改
+        emit('update:is-open', props.isOpen)
+      }
+    }
+
+    const selectNode = (key) => {
+      emit('update:selected-node', key)
+      emit('nodeSelect', key)
+    }
+
+    return {
+      hasChildren,
+      toggleNode,
+      selectNode,
     }
   },
-  methods: {
-    toggleNode(key) {
-      if (this.hasChildren) this.$set(this.isOpen, key, !this.isOpen[key]);
-    },
-    selectNode(key) {
-      this.$emit("nodeSelect", key);
-    }
-  }
-};
+  components: {
+    TreeNode: () => import('./TreeNode.vue'), // 递归组件
+  },
+}
 </script>
 
 <style scoped>
@@ -84,24 +96,23 @@ export default {
   width: 21px;
   height: 15px;
   margin-right: 5px;
-  background-image: url("~@/assets/bigScreen/functionPanel/folder_icon.png");
+  background-image: url('@/assets/bigScreen/functionPanel/folder_icon.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-/* 不显示leaf节点图标 */
 .file-icon1 {
   width: 21px;
   height: 15px;
   margin-right: 5px;
-  background-image: url("~@/assets/bigScreen/functionPanel/file_icon.png");
+  background-image: url('@/assets/bigScreen/functionPanel/file_icon.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .node-name {
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .node-children {
