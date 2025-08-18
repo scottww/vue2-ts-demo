@@ -1,43 +1,24 @@
 <template>
   <div class="weather-panel-container">
+    <!-- <div class="weather-title">天气</div> -->
     <div class="weather-list">
-      <div
-        class="weather-item"
-        :class="{ active: value === 'sunny' }"
-        @click="handleWeatherClick('sunny')"
-      >
+      <div class="weather-item active" @click="handleWeatherClick('sunny')">
         <div class="weather-icon sunny"></div>
         <span class="weather-name">晴天</span>
       </div>
-      <div
-        class="weather-item"
-        :class="{ active: value === 'rainy' }"
-        @click="handleWeatherClick('rainy')"
-      >
+      <div class="weather-item" @click="handleWeatherClick('rainy')">
         <div class="weather-icon rainy"></div>
         <span class="weather-name">雨天</span>
       </div>
-      <div
-        class="weather-item"
-        :class="{ active: value === 'cloudy' }"
-        @click="handleWeatherClick('cloudy')"
-      >
+      <div class="weather-item" @click="handleWeatherClick('cloudy')">
         <div class="weather-icon cloudy"></div>
         <span class="weather-name">阴天</span>
       </div>
-      <div
-        class="weather-item"
-        :class="{ active: value === 'partlyCloudy' }"
-        @click="handleWeatherClick('partlyCloudy')"
-      >
+      <div class="weather-item" @click="handleWeatherClick('partlyCloudy')">
         <div class="weather-icon partly-cloudy"></div>
         <span class="weather-name">多云</span>
       </div>
-      <div
-        class="weather-item"
-        :class="{ active: value === 'snowy' }"
-        @click="handleWeatherClick('snowy')"
-      >
+      <div class="weather-item" @click="handleWeatherClick('snowy')">
         <div class="weather-icon snowy"></div>
         <span class="weather-name">下雪</span>
       </div>
@@ -47,18 +28,16 @@
 
 <script>
 export default {
-  name: "WeatherPanel",
-  props: {
-    value: {
-      // v-model 的绑定值
-      type: String,
-      default: "sunny"
-    }
+  name: 'WeatherPanel',
+  data() {
+    return {
+      activeWeather: 'sunny'
+    };
   },
   methods: {
     handleWeatherClick(weatherType) {
-      this.$emit("input", weatherType); // 支持 v-model 双向绑定
-      this.$emit("weatherChange", weatherType); // 保留原来的事件
+      this.activeWeather = weatherType;
+      this.$emit('weatherChange', weatherType);
     }
   }
 };
@@ -85,7 +64,7 @@ export default {
 .weather-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 /* 天气项样式 */
@@ -97,7 +76,6 @@ export default {
   padding: 8px 4px;
   /* background: rgba(10, 50, 100, 0.5); */
   border-radius: 6px;
-  border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -105,7 +83,7 @@ export default {
 /* 激活的天气项 */
 .weather-item.active {
   /* background: rgba(50, 150, 255, 0.3); */
-  background: #0f7ec6;
+  background: #0F7EC6;
   border: 1px solid rgba(100, 200, 255, 0.5);
 }
 
@@ -121,23 +99,23 @@ export default {
 
 /* 各种天气图标 */
 .sunny {
-  background-image: url("~@/assets/bigScreen/functionPanel/sunny.png");
+  background-image: url('~@/assets/bigScreen/functionPanel/sunny.png');
 }
 
 .rainy {
-  background-image: url("~@/assets/bigScreen/functionPanel/rainy.png");
+  background-image: url('~@/assets/bigScreen/functionPanel/rainy.png');
 }
 
 .cloudy {
-  background-image: url("~@/assets/bigScreen/functionPanel/cloudy.png");
+  background-image: url('~@/assets/bigScreen/functionPanel/cloudy.png');
 }
 
 .partly-cloudy {
-  background-image: url("~@/assets/bigScreen/functionPanel/partly_cloudy.png");
+  background-image: url('~@/assets/bigScreen/functionPanel/partly_cloudy.png');
 }
 
 .snowy {
-  background-image: url("~@/assets/bigScreen/functionPanel/snowy.png");
+  background-image: url('~@/assets/bigScreen/functionPanel/snowy.png');
 }
 
 /* 天气名称样式 */

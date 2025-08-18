@@ -1,8 +1,21 @@
 <template>
-  <div class="weather-function-container">
+  <div class="function-container">
     <!-- 左侧气象面板 - 默认隐藏 -->
     <div class="weather-panel" :class="{ show: isWeatherPanelVisible }">
-      <WeatherPanel @weatherChange="handleWeatherChange" />
+      <WeatherPanel
+        v-model="activeWeather"
+        @weatherChange="handleWeatherChange"
+      />
+    </div>
+
+    <!-- 视角切换 -->
+    <div class="view-panel" :class="{ show: isViewPanelVisible }">
+      <ViewPanel v-model="activeView" @viewChange="handleViewChange" />
+    </div>
+
+    <!-- 构建信息 -->
+    <div class="structure-panel" :class="{ show: isStructurePanelVisible }">
+      <StructurePanel @nodeSelect="handleNodeSelect" />
     </div>
 
     <!-- 主内容区域 -->
@@ -62,17 +75,24 @@
 
 <script>
 import WeatherPanel from "./WeatherPanel.vue";
+import ViewPanel from "./ViewPanel.vue";
+import StructurePanel from "./StructurePanel.vue";
 
 export default {
   name: "WeatherAndFunctionPanel",
   components: {
-    WeatherPanel
+    WeatherPanel,
+    ViewPanel,
+    StructurePanel
   },
   data() {
     return {
-      isWeatherPanelVisible: true, // 初始状态为显示
+      isWeatherPanelVisible: true,
       activeFunction: "weatherSimulation", // 当前激活的功能
       activeWeather: "sunny", // 当前选中的天气
+      isViewPanelVisible: false,
+      activeView: "defaultView", // 当前选中的视角
+      isStructurePanelVisible: false, // 构建信息面板
       isCollapsed: false
     };
   },
@@ -83,25 +103,49 @@ export default {
       // 更新激活的功能
       this.activeFunction = functionName;
 
-      // 只有点击气象模拟时显示左侧面板，其他情况隐藏
+      // 根据不同功能显示不同面板
       if (functionName === "weatherSimulation") {
         this.isWeatherPanelVisible = true;
+        this.isViewPanelVisible = false;
+        this.isStructurePanelVisible = false;
+      } else if (functionName === "viewSwitch") {
+        this.isWeatherPanelVisible = false;
+        this.isViewPanelVisible = true;
+        this.isStructurePanelVisible = false;
+      } else if (functionName === "componentInfo") {
+        this.isWeatherPanelVisible = false;
+        this.isViewPanelVisible = false;
+        this.isStructurePanelVisible = true;
       } else {
         this.isWeatherPanelVisible = false;
+        this.isViewPanelVisible = false;
+        this.isStructurePanelVisible = false;
       }
 
       // 触发功能变更事件
       this.$emit("functionChange", functionName);
     },
-    // 处理天气变更
+    toggleCollapse() {
+      this.isCollapsed = !this.isCollapsed;
+      // this.$emit('collapse-change', this.isCollapsed);
+    },
+    // 处理气象变更
     handleWeatherChange(weatherType) {
       console.log("handleWeatherChange ...", weatherType);
       this.activeWeather = weatherType;
       this.$emit("weatherChange", weatherType);
     },
-    toggleCollapse() {
-      this.isCollapsed = !this.isCollapsed;
-      // this.$emit('collapse-change', this.isCollapsed);
+    // 处理视角变更
+    handleViewChange(viewType) {
+      console.log("handleViewChange ...", viewType);
+      this.activeView = viewType;
+      // 在这里切换场景视角
+    },
+    // 处理结构节点选择
+    handleNodeSelect(nodeName) {
+      console.log("Selected node:", nodeName);
+      // 这里可以添加节点选择后的逻辑
+      this.$emit("nodeSelect", nodeName);
     }
   }
 };
@@ -110,7 +154,7 @@ export default {
 <style scoped>
 /* 保持原有样式不变 */
 /* 主容器样式 */
-.weather-function-container {
+.function-container {
   display: flex;
   height: 100%;
   width: 100%;
@@ -127,14 +171,59 @@ export default {
   background-position: center;
   margin-right: 20px;
   transition: all 0.3s ease;
-  opacity: 0;
+  /* opacity: 0; */
+  display: none;
   transform: translateX(-20px);
   pointer-events: none;
 }
 
 /* 显示气象面板 */
 .weather-panel.show {
-  opacity: 1;
+  /* opacity: 1; */
+  display: block;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.view-panel {
+  width: 137px;
+  /* height: 294px; */
+  aspect-ratio: 137 / 294; /* 保持原始比例 */
+  background-image: url("~@/assets/bigScreen/functionPanel/view_panel_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+  /* opacity: 0; */
+  display: none;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.view-panel.show {
+  display: block;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* 构建信息面板 */
+.structure-panel {
+  width: 200px;
+  aspect-ratio: 137 / 294;
+  background-image: url("~@/assets/bigScreen/functionPanel/view_panel_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+  display: none;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.structure-panel.show {
+  display: block;
   transform: translateX(0);
   pointer-events: auto;
 }
