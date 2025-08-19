@@ -1,5 +1,5 @@
 <template>
-  <div class="three-column-layout">
+  <div class="image-label-value-layout">
     <img
       class="left-image"
       :src="imgSrc"
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "ThreeColumnLayout",
+  name: "ImageLabelValue",
   props: {
     imgSrc: {
       type: String,
@@ -34,7 +34,7 @@ export default {
     },
     unit: {
       type: String,
-      default: ''
+      default: ""
     },
     width: {
       type: Number,
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.three-column-layout {
+.image-label-value-layout {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -70,7 +70,7 @@ export default {
 .top-text {
   font-size: 14px;
   font-weight: 600;
-  color: #eeeeff ;
+  color: #eeeeff;
 }
 
 .bottom-text {
@@ -80,11 +80,11 @@ export default {
   margin-right: 4px;
   font-size: 22px;
   font-weight: 500;
-  color: #3DBDFF;
+  color: #3dbdff;
 }
 
 .unit {
   font-size: 14px;
-  color: #3DBDFF;
+  color: #3dbdff;
 }
 </style>

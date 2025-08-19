@@ -23,6 +23,7 @@
             class="panel"
             :title="panels[2].title"
             :style="{ height: panels[2].height + 'px' }"
+            :header-extra="panels[2].headerExtra"
           />
         </div>
       </div>
@@ -97,6 +98,10 @@ import ProjectSituation from "../../components/ProjectSituation.vue";
 import WaterRainInformation from "../../components/WaterRainInformation.vue";
 import WeatherForecast from "../../components/WeatherForecast.vue";
 
+import EquipmentStatisticsManagement from "../../components/pumpGateMananement/EquipmentStatisticsManagement.vue";
+import PumpRunHistory from "../../components/pumpGateMananement/PumpRunHistory.vue";
+import GateRealTimeMonitor from "../../components/pumpGateMananement/GateRealTimeMonitor.vue";
+
 export default {
   components: {
     PanelA,
@@ -108,7 +113,10 @@ export default {
     RiskHazard,
     ProjectSituation,
     WaterRainInformation,
-    WeatherForecast
+    WeatherForecast,
+    EquipmentStatisticsManagement,
+    PumpRunHistory,
+    GateRealTimeMonitor
   },
   props: {
     layout: String,
@@ -126,7 +134,10 @@ export default {
         RiskHazard: RiskHazard,
         ProjectSituation: ProjectSituation,
         WaterRainInformation: WaterRainInformation,
-        WeatherForecast: WeatherForecast
+        WeatherForecast: WeatherForecast,
+        EquipmentStatisticsManagement: EquipmentStatisticsManagement,
+        PumpRunHistory: PumpRunHistory,
+        GateRealTimeMonitor: GateRealTimeMonitor
       };
       return map[type] || PanelA;
     }

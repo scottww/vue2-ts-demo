@@ -23,13 +23,13 @@
 
 <script>
 import { TIMELINE_DATA } from "./ProjectSituationData.js";
-import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import ImageLabelValue from "./ImageLabelValue.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import CustomSelect from "./CustomSelect.vue";
 import FloodForecastChart from "./FloodForecastChart.vue";
 export default {
   name: "RiskHazard",
-  components: { ThreeColumnLayout, CustomSelect, FloodForecastChart },
+  components: { ImageLabelValue, CustomSelect, FloodForecastChart },
   props: {
     title: { type: String, default: "风险隐患" },
     headerExtra: { type: Object, default: null }

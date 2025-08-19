@@ -58,13 +58,13 @@
 
 <script>
 import { TIMELINE_DATA } from "./FloodControlDispatchData.js";
-import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import ImageLabelValue from "./ImageLabelValue.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import CustomSelect from "./CustomSelect.vue";
 import FloodControlDispathTotal from './FloodControlDispathTotal.vue';
 export default {
   name: "FloodControlDispatch",
-  components: { ThreeColumnLayout, CustomSelect, FloodControlDispathTotal },
+  components: { ImageLabelValue, CustomSelect, FloodControlDispathTotal },
   props: {
     title: { type: String, default: "防洪调度" },
     headerExtra: { type: Object, default: null }

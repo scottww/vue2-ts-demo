@@ -19,7 +19,7 @@
     <div class="panel-body">
       <!-- 上部：图片 + 描述 -->
       <div class="top">
-        <ThreeColumnLayout
+        <ImageLabelValue
           v-for="(item, index) in dataListTest"
           :key="index"
           :img-src="item.icon"
@@ -39,13 +39,13 @@
 
 <script>
 import { TIMELINE_DATA } from "./ProjectSituationData.js";
-import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import ImageLabelValue from "./ImageLabelValue.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import WaterRainChart from "./WaterRainChart.vue";
 import CustomSelect from "./CustomSelectVue2Vue3.vue";
 export default {
   name: "WaterRainInformation",
-  components: { ThreeColumnLayout, WaterRainChart, CustomSelect },
+  components: { ImageLabelValue, WaterRainChart, CustomSelect },
   props: {
     title: { type: String, default: "工程情况" },
     headerExtra: { type: Object, default: null },

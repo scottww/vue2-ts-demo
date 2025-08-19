@@ -3,7 +3,6 @@
     <!-- 标题带背景图 -->
     <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <!-- <slot name="header-extra"></slot> -->
       <div class="header-extra" v-if="headerExtra">
         <CustomSelect
           v-if="headerExtra.type === 'customSelect'"
@@ -17,50 +16,88 @@
     </div>
 
     <div class="panel-body">
-      <!-- 上部：图片 + 描述 -->
       <div class="top">
+        <DataItem
+          v-for="(item, index) in dataList"
+          :key="index"
+          :img="item.icon"
+          :img-text="item.text"
+          img-text-position="center"
+          :top="{ label: '水位', value: item.waterLevel, unit: 'm' }"
+          :bottom="{ label: '流量', value: item.flow, unit: 'm³/s' }"
+          :top-bg="item.topBg"
+          :bottom-bg="item.bottomBg"
+        />
+      </div>
+      <div class="main">
         <ImageLabelValue
-          v-for="(item, index) in dataListTest"
+          v-for="(item, index) in dataList2"
           :key="index"
           :img-src="item.icon"
           :period="item.period"
           :value="item.value"
           :unit="item.unit"
-          :width="54"
-          :height="54"
         />
-      </div>
-
-      <!-- 中部统计 -->
-      <div class="main">
-        <NormalBarChart></NormalBarChart>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { TIMELINE_DATA } from "./ProjectSituationData.js";
-import ImageLabelValue from "./ImageLabelValue.vue";
-import person from "@/assets/bigScreen/person.png";
-import NormalBarChart from "./NormalBarChart.vue";
-import CustomSelect from "./CustomSelect.vue";
+import itemBg1 from "@/assets/bigScreen/pumpOperation/item_bg1_1.png";
+import itemBg2 from "@/assets/bigScreen/pumpOperation/item_bg2.png";
+import dataRowBg from "@/assets/bigScreen/pumpOperation/data_row_bg.png";
+import CustomSelect from "../CustomSelect.vue";
+import ImageLabelValue from "../ImageLabelValue.vue";
+import DataItem from "./DataItem.vue";
+
 export default {
-  name: "EmergencySupport",
-  components: { ImageLabelValue, NormalBarChart, CustomSelect },
+  name: "GateRealTimeMonitor",
+  components: { CustomSelect, ImageLabelValue, DataItem },
   props: {
-    title: { type: String, default: "工程情况" },
-    headerExtra: { type: Object, default: null },
-    dataList: { type: Array, default: () => [] }
+    title: { type: String, default: "闸门实时监测" },
+    headerExtra: { type: Object, default: null }
   },
   data() {
     return {
-      TIMELINE_DATA,
-      person,
-      dataListTest: [
-        { period: "当年统计", value: "26", unit: "次", icon: person },
-        { period: "去年统计", value: "37", unit: "次", icon: person },
-        { period: "前年统计", value: "39", unit: "次", icon: person }
+      itemBg1,
+      itemBg2,
+      dataRowBg,
+      dataList: [
+        {
+          icon: itemBg1,
+          text: "闸前",
+          waterLevel: "1.62",
+          flow: "13.26",
+          topBg: dataRowBg,
+          bottomBg: dataRowBg
+        },
+        {
+          icon: itemBg1,
+          text: "闸后",
+          waterLevel: "1.82",
+          flow: "15.20",
+          topBg: dataRowBg,
+          bottomBg: dataRowBg
+        }
+      ],
+      dataList2: [
+        {
+          period: "闸门开度",
+          value: "1.25",
+          unit: "m",
+          icon: itemBg2,
+          width: "92",
+          height: "63"
+        },
+        {
+          period: "限制高度",
+          value: "4.0",
+          unit: "m",
+          icon: itemBg2,
+          width: "92",
+          height: "63"
+        }
       ]
     };
   },
@@ -90,7 +127,7 @@ export default {
   font-weight: bold;
   font-size: 16px;
   height: 62px;
-  background-image: url("../../../assets/bigScreen/title_bg2.png");
+  background-image: url("~@/assets/bigScreen/title_bg2.png");
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
@@ -99,7 +136,6 @@ export default {
 .panel-header span {
   position: relative;
   left: 0px;
-  /* top: -20px; */
 }
 
 .header-extra {
@@ -108,7 +144,6 @@ export default {
   align-items: center;
   position: relative;
   left: 0px;
-  /* top: -20px; */
 }
 
 .panel-body {
@@ -126,16 +161,25 @@ export default {
   padding: 0 0 0 50px;
 }
 
-
 .top {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
   margin-top: 20px;
   padding: 0 10px;
-  height: 64px;
+  /* height: 64px; */
+  flex: 1;
+  align-items: center;
 }
-.main {
+
+.main0 {
   height: calc(100% - 64px);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>

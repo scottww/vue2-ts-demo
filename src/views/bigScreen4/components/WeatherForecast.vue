@@ -9,7 +9,7 @@
     <div class="panel-body">
       <!-- 上部：图片 + 描述 -->
       <div class="top">
-        <ThreeColumnLayout
+        <ImageLabelValue
           v-for="(item, index) in dataList"
           :key="index"
           :img-src="item.icon"
@@ -45,11 +45,11 @@
 
 <script>
 import { TIMELINE_DATA } from "./ProjectSituationData.js";
-import ThreeColumnLayout from "./ThreeColumnLayout.vue";
+import ImageLabelValue from "./ImageLabelValue.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 export default {
   name: "WeatherForecast",
-  components: { ThreeColumnLayout },
+  components: { ImageLabelValue },
   props: {
     title: { type: String, default: "工程情况" },
     image: { type: String, default: "" },

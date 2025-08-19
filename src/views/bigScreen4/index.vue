@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       loading: false,
-      currentPage: 0,
+      currentPage: 1,
       isWideScreen: false,
       pages: []
     };
