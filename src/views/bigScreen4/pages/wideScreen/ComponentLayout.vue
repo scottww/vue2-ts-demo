@@ -29,7 +29,7 @@
       </div>
     </template>
 
-    <!-- 左1大右2小 -->
+    <!-- 左1大 + 右2小 -->
     <template v-else-if="layout === '1big-2small'">
       <div class="col-layout">
         <div class="left-side">
@@ -54,6 +54,7 @@
       </div>
     </template>
 
+    <!-- 2x2 -->
     <template v-else-if="layout === '2x2'"
       ><div
         class="row"
@@ -71,6 +72,35 @@
           :header-extra="mod.headerExtra"
         /></div
     ></template>
+
+    <!-- 1x1: 左一个 右一个 -->
+    <template v-else-if="layout === '1x1'">
+      <div class="row">
+        <component
+          v-for="(mod, idx) in panels.slice(0, 2)"
+          :key="mod.type + idx"
+          :is="getComponent(mod.type)"
+          class="panel half"
+          :title="mod.title"
+          :style="{ height: mod.height + 'px' }"
+          :header-extra="mod.headerExtra"
+        />
+      </div>
+    </template>
+
+    <!-- 1: 只有一个 -->
+    <template v-else-if="layout === '1'">
+      <div class="row">
+        <component
+          v-if="panels[0]"
+          :is="getComponent(panels[0].type)"
+          class="panel full"
+          :title="panels[0].title"
+          :style="{ height: panels[0].height + 'px' }"
+          :header-extra="panels[0].headerExtra"
+        />
+      </div>
+    </template>
 
     <template v-else>
       <!-- 默认：纵向堆叠 -->
@@ -106,6 +136,11 @@ import SevenDayWaterOperationTrend from "../../components/pumpGateMananement/Sev
 import AlarmManagement from "../../components/pumpGateMananement/AlarmManagement.vue";
 import VideoMonitor from "../../components/pumpGateMananement/VideoMonitor.vue";
 
+// 报警管理
+import AlarmStatisticPanel from "../../components/AlarmManagement/AlarmStatisticPanel.vue";
+import AlarmDetailPanel from "../../components/AlarmManagement/AlarmDetailPanel.vue";
+import AlarmVideoLinkPanel from "../../components/AlarmManagement/AlarmVideoLinkPanel.vue";
+
 export default {
   components: {
     PanelA,
@@ -124,7 +159,10 @@ export default {
     SevenDayRainfallOperationTrend,
     SevenDayWaterOperationTrend,
     AlarmManagement,
-    VideoMonitor
+    VideoMonitor,
+    AlarmStatisticPanel,
+    AlarmDetailPanel,
+    AlarmVideoLinkPanel
   },
   props: {
     layout: String,
@@ -149,7 +187,10 @@ export default {
         SevenDayRainfallOperationTrend: SevenDayRainfallOperationTrend,
         SevenDayWaterOperationTrend: SevenDayWaterOperationTrend,
         AlarmManagement: AlarmManagement,
-        VideoMonitor: VideoMonitor
+        VideoMonitor: VideoMonitor,
+        AlarmStatisticPanel: AlarmStatisticPanel,
+        AlarmDetailPanel: AlarmDetailPanel,
+        AlarmVideoLinkPanel: AlarmVideoLinkPanel
       };
       return map[type] || PanelA;
     }

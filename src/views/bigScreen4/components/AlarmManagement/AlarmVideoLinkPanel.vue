@@ -3,46 +3,30 @@
     <!-- 标题带背景图 -->
     <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <div class="header-extra" v-if="headerExtra">
-        <CustomSelect
-          v-if="headerExtra.type === 'customSelect'"
-          v-model="headerExtra.modelValue"
-          :options="headerExtra.options"
-          :placeholder="headerExtra.placeholder"
-          @input="handleSelectChange"
-        />
-        <!-- 其它headerExtra类型... -->
-      </div>
+      <div class="header-extra" v-if="headerExtra"></div>
     </div>
 
     <div class="panel-body">
-      <div class="top"></div>
-      <div class="main"></div>
+      <div class="main">
+        <VideoLink />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { TIMELINE_DATA } from "./ProjectSituationData.js";
-import ImageLabelValue from "./ImageLabelValue.vue";
 import waterRain from "@/assets/bigScreen/waterRain.png";
-import CustomSelect from "./CustomSelect.vue";
+import VideoLink from "./VideoLink.vue";
 export default {
-  name: "temp",
-  components: { ImageLabelValue, CustomSelect },
+  name: "AlarmVideoLinkPanel",
+  components: { VideoLink },
   props: {
-    title: { type: String, default: "模板" },
-    headerExtra: { type: Object, default: null },
+    title: { type: String, default: "视频联动报警" },
+    headerExtra: { type: Object, default: null }
   },
   data() {
     return {
-      TIMELINE_DATA,
-      waterRain,
-      dataList: [
-        { period: "近一小时", value: "10.0", unit: "mm", icon: waterRain },
-        { period: "近三小时", value: "28.3", unit: "mm", icon: waterRain },
-        { period: "近六小时", value: "43.5", unit: "mm", icon: waterRain }
-      ]
+      waterRain
     };
   },
   methods: {
@@ -65,6 +49,8 @@ export default {
   border-radius: 6px;
   padding: 12px;
   color: #fff;
+  /* 单独一个面板时 */
+  width: 100%;
 }
 
 .panel-header {
@@ -95,7 +81,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-top: 0;
-  padding: 0 10px;
+  padding: 20px;
 }
 
 .flex-h-v {
@@ -105,16 +91,8 @@ export default {
   padding: 0 0 0 50px;
 }
 
-.top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  padding: 0 10px;
-  height: 64px;
-}
-
 .main {
-  height: calc(100% - 64px);
+  height: 100%;
+  margin: 10px 0;
 }
 </style>

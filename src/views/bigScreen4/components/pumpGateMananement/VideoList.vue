@@ -1,7 +1,7 @@
 <template>
   <div class="video-monitor-container">
     <div class="video-grid">
-      <div v-for="(video, index) in videos" :key="index" class="video-item">
+      <div v-for="(video, index) in videoList" :key="index" class="video-item">
         <div class="video-bg-container">
           <img :src="video.bgImage" alt="视频背景" class="video-bg" />
           <div class="play-button-container" @click="playVideo(index)">
@@ -16,51 +16,51 @@
 </template>
 
 <script>
-import bg from "@/assets/bigScreen/pumpOperation/video_bg.png";
+import bgImg from "@/assets/bigScreen/pumpOperation/video_bg.png";
 import play from "@/assets/bigScreen/pumpOperation/play.png";
 export default {
   name: "VideoMonitor",
   data() {
     return {
-      videos: [
+      videoList: [
         {
           id: 1,
-          bgImage: bg,
+          bgImage: bgImg,
           videoUrl: "path/to/video1.mp4"
         },
         {
           id: 2,
-          bgImage: bg,
+          bgImage: bgImg,
           videoUrl: "path/to/video2.mp4"
         },
         {
           id: 3,
-          bgImage: bg,
+          bgImage: bgImg,
           videoUrl: "path/to/video3.mp4"
         },
         {
           id: 4,
-          bgImage: bg,
+          bgImage: bgImg,
           videoUrl: "path/to/video4.mp4"
         },
         {
-          id: 1,
-          bgImage: bg,
+          id: 5,
+          bgImage: bgImg,
           videoUrl: "path/to/video1.mp4"
         },
         {
-          id: 2,
-          bgImage: bg,
+          id: 6,
+          bgImage: bgImg,
           videoUrl: "path/to/video2.mp4"
         },
         {
-          id: 3,
-          bgImage: bg,
+          id: 7,
+          bgImage: bgImg,
           videoUrl: "path/to/video3.mp4"
         },
         {
-          id: 4,
-          bgImage: bg,
+          id: 8,
+          bgImage: bgImg,
           videoUrl: "path/to/video4.mp4"
         }
       ]
@@ -81,25 +81,6 @@ export default {
 </script>
 
 <style scoped>
-/* 容器样式 */
-.video-monitor-container0 {
-  width: 100%;
-  height: 100%;
-  /* background-color: #0f172a; */
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* 网格布局 */
-.video-grid0 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 20px;
-  width: 100%;
-  height: 100%;
-}
-
 /* 容器样式 */
 .video-monitor-container {
   width: 100%;

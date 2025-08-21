@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: "AlarmManagementTable",
+  name: "AlarmDetailTable",
   props: {
     columns: { type: Array, required: true },
     data: { type: Array, required: true },
@@ -102,8 +102,8 @@ export default {
 
 /* 自定义滚动条样式 */
 .table-body-wrapper::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 4px;
+  height: 4px;
 }
 
 .table-body-wrapper::-webkit-scrollbar-track {
@@ -178,15 +178,15 @@ export default {
 .table-btn {
   background: none;
   border: none;
-  color: #1890ff;
+  color: #33ccff;
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s;
   padding: 2px 0;
-  border-bottom: 1px solid #1890ff;
+  border-bottom: 1px solid rgb(51, 204, 255);
 }
 
 .table-btn:hover {
-  color: #40a9ff;
+  color: rgba(51, 204, 255, 0.7);
 }
 </style>
