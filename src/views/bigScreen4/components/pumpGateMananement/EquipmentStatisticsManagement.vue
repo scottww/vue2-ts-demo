@@ -40,7 +40,35 @@
         </div>
 
         <div class="chart">
-          <EquipmentChart></EquipmentChart>
+          <!-- <EquipmentChart></EquipmentChart> -->
+          <pie-3-d
+            :chartData="[
+              {
+                name: '危运',
+                value: 40,
+                number: 120,
+                itemStyle: { color: 'rgba(32,159,237,1)' }
+              },
+              {
+                name: '包车',
+                value: 30,
+                number: 80,
+                itemStyle: { color: 'rgba(255,159,32,1)' }
+              },
+              {
+                name: '班车',
+                value: 20,
+                number: 60,
+                itemStyle: { color: 'rgba(159,255,237,1)' }
+              },
+              {
+                name: '重货',
+                value: 10,
+                number: 10,
+                itemStyle: { color: 'rgba(159,255,32,1)' }
+              }
+            ]"
+          ></pie-3-d>
         </div>
       </div>
       <div class="section">
@@ -65,13 +93,15 @@ import ImageLabelValue from "../ImageLabelValue.vue";
 import CustomSelect from "../CustomSelect.vue";
 import EquipmentChart from "./EquipmentManageChart.vue";
 import EquipmentDetail from "./EquipmentDetail.vue";
+import Pie3D from "./Pie3D.vue";
 export default {
   name: "PumpRunHistory",
   components: {
     ImageLabelValue,
     CustomSelect,
     EquipmentChart,
-    EquipmentDetail
+    EquipmentDetail,
+    Pie3D
   },
   props: {
     title: { type: String, default: "设备统计管理" },

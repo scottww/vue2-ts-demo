@@ -11,8 +11,13 @@
       <el-radio-button label="GateRealTime">测试4</el-radio-button>
       <el-radio-button label="GateRealTime2">测试5</el-radio-button>
       <el-radio-button label="EquipmentDetail">测试6</el-radio-button>
+      <el-radio-button label="Pie3D">测试7</el-radio-button>
+      <el-radio-button label="Chart4">雨量</el-radio-button>
+      <el-radio-button label="WaterLevelChart">水位</el-radio-button>
+      <el-radio-button label="TableDemo">表格</el-radio-button>
+      <el-radio-button label="AlarmTotal">报警总数</el-radio-button>
     </el-radio-group>
-    <div class="main-content">
+    <div class="main-content" :class="tab">
       <component :is="tab"></component>
     </div>
   </div>
@@ -24,7 +29,12 @@ import Risk2 from "./Risk2.vue";
 import Risk3 from "./Risk3.vue";
 import GateRealTime from "./GateRealTime.vue";
 import GateRealTime2 from "./GateRealTime2.vue";
-import EquipmentDetail from './EquipmentDetail.vue'
+import EquipmentDetail from './EquipmentDetail.vue';
+import Pie3D from './Pie3D.vue';
+import Chart4 from './Chart4.vue';
+import WaterLevelChart from "./WaterLevelChart.vue";
+import TableDemo from "./TableDemo.vue";
+import AlarmTotal from "./AlarmTotal.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -32,7 +42,12 @@ export default {
     Risk3,
     GateRealTime,
     GateRealTime2,
-    EquipmentDetail
+    EquipmentDetail,
+    Pie3D,
+    Chart4,
+    WaterLevelChart,
+    TableDemo,
+    AlarmTotal
   },
   data() {
     return {
@@ -54,5 +69,12 @@ export default {
   /* height: 940px; */
   background-color: #0a1e3c;
   background-image: radial-gradient(circle at center, #143a7c, #0a1e3c);
+}
+
+.main-content.Pie3D {
+  position: absolute;
+  width: 670px;
+  background-color: transparent;
+  background-image: none;
 }
 </style>

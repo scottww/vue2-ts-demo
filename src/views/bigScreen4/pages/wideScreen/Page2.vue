@@ -37,6 +37,10 @@ import WeatherForecast from "../../components/WeatherForecast.vue";
 import EquipmentStatisticsManagement from "../../components/pumpGateMananement/EquipmentStatisticsManagement.vue";
 import PumpRunHistory from "../../components/pumpGateMananement/PumpRunHistory.vue";
 import GateRealTimeMonitor from "../../components/pumpGateMananement/GateRealTimeMonitor.vue";
+import SevenDayRainfallOperationTrend from "../../components/pumpGateMananement/SevenDayRainfallOperationTrend.vue";
+import SevenDayWaterOperationTrend from "../../components/pumpGateMananement/SevenDayWaterOperationTrend.vue";
+import AlarmManagement from "../../components/pumpGateMananement/AlarmManagement.vue";
+import VideoMonitor from "../../components/pumpGateMananement/VideoMonitor.vue";
 
 // ✅ 子组件封装布局渲染逻辑
 import ComponentLayout from "./ComponentLayout.vue";
@@ -56,7 +60,11 @@ export default {
     WeatherForecast,
     EquipmentStatisticsManagement,
     PumpRunHistory,
-    GateRealTimeMonitor
+    GateRealTimeMonitor,
+    SevenDayRainfallOperationTrend,
+    SevenDayWaterOperationTrend,
+    AlarmManagement,
+    VideoMonitor
   },
   data() {
     return {
@@ -127,71 +135,54 @@ export default {
 
         {
           col: "right",
-          type: "EmergencySupport",
-          title: "抢险支持",
-          height: 430.12,
-          headerExtra: {
-            type: "customSelect",
-            placeholder: "请选择年份",
-            modelValue: "2025", // 默认值
-            options: [
-              { label: "2025年", value: "2025" },
-              { label: "2024年", value: "2024" },
-              { label: "2023年", value: "2023" }
-            ],
-            onChange: (val) => console.log("下拉选择", val)
-          }
-        },
-        {
-          col: "right",
-          type: "FloodForecast",
-          title: "洪水预报",
+          type: "SevenDayRainfallOperationTrend",
+          title: "雨情七日运行趋势",
           height: 430.12,
           headerExtra: {
             type: "customSelect",
             placeholder: "请选择站点",
-            modelValue: "12", // 默认值
+            modelValue: "site1", // 默认值
             options: [
-              { label: "未来12h", value: "12" },
-              { label: "未来24h", value: "24" },
-              { label: "未来36h", value: "36" },
-              { label: "未来72h", value: "72" },
-              { label: "历史记录", value: "history" }
+              { label: "站点名称1", value: "site1" },
+              { label: "站点名称2", value: "site2" },
+              { label: "站点名称3", value: "site3" }
             ],
             onChange: (val) => console.log("下拉选择", val)
           }
         },
         {
           col: "right",
-          type: "FloodControlDispatch",
-          title: "防洪调度",
-          height: 482,
+          type: "SevenDayWaterOperationTrend",
+          title: "水情七日运行趋势",
+          height: 430.12,
           headerExtra: {
             type: "customSelect",
-            placeholder: "请选择年份",
-            modelValue: "2025", // 默认值
+            placeholder: "请选择站点",
+            modelValue: "site1", // 默认值
             options: [
-              { label: "2025年", value: "2025" },
-              { label: "2024年", value: "2024" },
-              { label: "2023年", value: "2023" }
+              { label: "站点名称1", value: "site1" },
+              { label: "站点名称2", value: "site2" },
+              { label: "站点名称3", value: "site3" }
             ],
             onChange: (val) => console.log("下拉选择", val)
           }
         },
         {
           col: "right",
-          type: "RiskHazard",
-          title: "风险隐患",
+          type: "VideoMonitor",
+          title: "视频监控",
+          height: 482
+        },
+        {
+          col: "right",
+          type: "AlarmManagement",
+          title: "报警管理",
           height: 482,
           headerExtra: {
             type: "customSelect",
-            placeholder: "请选择年份",
-            modelValue: "2025", // 默认值
-            options: [
-              { label: "2025年", value: "2025" },
-              { label: "2024年", value: "2024" },
-              { label: "2023年", value: "2023" }
-            ],
+            placeholder: "请选择",
+            modelValue: "202508", // 默认值
+            options: [{ label: "2025-08", value: "202508" }],
             onChange: (val) => console.log("下拉选择", val)
           }
         }
@@ -230,7 +221,11 @@ export default {
         WaterRainInformation: WaterRainInformation,
         EquipmentStatisticsManagement: EquipmentStatisticsManagement,
         WeatherForecast: WeatherForecast,
-        GateRealTimeMonitor: GateRealTimeMonitor
+        GateRealTimeMonitor: GateRealTimeMonitor,
+        SevenDayRainfallOperationTrend: SevenDayRainfallOperationTrend,
+        SevenDayWaterOperationTrend: SevenDayWaterOperationTrend,
+        AlarmManagement: AlarmManagement,
+        VideoMonitor: VideoMonitor
       };
       return map[type] || PanelA;
     },

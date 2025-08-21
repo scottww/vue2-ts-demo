@@ -84,6 +84,7 @@ export default {
           {
             type: "value",
             name: "单位: 次",
+            nameGap: 30, // 默认是 15，可以调大
             nameTextStyle: { color: "#a0c4ff" },
             axisLine: { lineStyle: { color: "rgba(100,200,255,0.3)" } },
             axisLabel: { color: "#a0c4ff" },
@@ -96,7 +97,7 @@ export default {
           barWidth: "30%",
           data: item.data,
           itemStyle: item.itemStyle,
-          label: { show: true, position: "top", color: "#fff", fontSize: 12 }
+          label: { show: true, position: "top", color: "#fff", fontSize: 14 }
         }))
       };
 

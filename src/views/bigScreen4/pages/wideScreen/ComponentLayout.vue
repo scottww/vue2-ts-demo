@@ -101,6 +101,10 @@ import WeatherForecast from "../../components/WeatherForecast.vue";
 import EquipmentStatisticsManagement from "../../components/pumpGateMananement/EquipmentStatisticsManagement.vue";
 import PumpRunHistory from "../../components/pumpGateMananement/PumpRunHistory.vue";
 import GateRealTimeMonitor from "../../components/pumpGateMananement/GateRealTimeMonitor.vue";
+import SevenDayRainfallOperationTrend from "../../components/pumpGateMananement/SevenDayRainfallOperationTrend.vue";
+import SevenDayWaterOperationTrend from "../../components/pumpGateMananement/SevenDayWaterOperationTrend.vue";
+import AlarmManagement from "../../components/pumpGateMananement/AlarmManagement.vue";
+import VideoMonitor from "../../components/pumpGateMananement/VideoMonitor.vue";
 
 export default {
   components: {
@@ -116,7 +120,11 @@ export default {
     WeatherForecast,
     EquipmentStatisticsManagement,
     PumpRunHistory,
-    GateRealTimeMonitor
+    GateRealTimeMonitor,
+    SevenDayRainfallOperationTrend,
+    SevenDayWaterOperationTrend,
+    AlarmManagement,
+    VideoMonitor
   },
   props: {
     layout: String,
@@ -137,7 +145,11 @@ export default {
         WeatherForecast: WeatherForecast,
         EquipmentStatisticsManagement: EquipmentStatisticsManagement,
         PumpRunHistory: PumpRunHistory,
-        GateRealTimeMonitor: GateRealTimeMonitor
+        GateRealTimeMonitor: GateRealTimeMonitor,
+        SevenDayRainfallOperationTrend: SevenDayRainfallOperationTrend,
+        SevenDayWaterOperationTrend: SevenDayWaterOperationTrend,
+        AlarmManagement: AlarmManagement,
+        VideoMonitor: VideoMonitor
       };
       return map[type] || PanelA;
     }

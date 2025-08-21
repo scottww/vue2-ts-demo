@@ -1,6 +1,13 @@
 <template>
-  <div class="chart-container">
-    <div ref="chartRef" class="echarts-chart"></div>
+  <div class="equipment-manage-container">
+    <div class="main-content">
+      <!-- 左侧2.5D环形图 -->
+      <div class="left-section">
+        <div class="chart-container">
+          <div ref="chartRef" class="echarts-chart"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,7 +48,7 @@ export default {
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
-          textStyle: { color: "#000" }
+          textStyle: { color: "#fff" }
         },
         legend: {
           orient: "vertical",
@@ -97,6 +104,47 @@ export default {
 </script>
 
 <style scoped>
+.equipment-manage-container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #0f2c59, #1c4587);
+  padding: 20px;
+  box-sizing: border-box;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 波浪背景效果 */
+.equipment-manage-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='wave' width='100' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0,10 Q25,20 50,10 T100,10' fill='none' stroke='rgba(54, 207, 201, 0.1)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23wave)'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.main-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .chart-container {
   width: 100%;
   height: 100%;
@@ -106,10 +154,8 @@ export default {
 }
 
 .echarts-chart {
-  /* width: 400px;
-  height: 400px; */
-  width: 100%;
-  height: 100%;
+  width: 400px;
+  height: 400px;
 }
 
 .right-section {
