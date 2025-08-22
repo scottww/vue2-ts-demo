@@ -52,30 +52,47 @@ export default {
         {
           col: "left",
           type: "AlarmStatisticPanel",
-          props: {
-            title: "报警统计"
-          },
-          height: 940
+          height: 940,
+          title: "报警统计",
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择",
+            modelValue: "2025", // 默认值
+            options: [
+              { label: "2025", value: "2025" },
+              { label: "2024", value: "2024" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         },
         {
           col: "left",
           type: "AlarmDetailPanel",
-          title: "报警详情",
-          height: 940
-        },
-        {
-          col: "right",
-          type: "AlarmVideoLinkPanel",
-          title: "视频联动报警",
           height: 940,
+          title: "报警详情",
           headerExtra: {
             type: "customSelect",
             placeholder: "请选择",
             modelValue: "2025-08", // 默认值
             options: [
               { label: "2025-08", value: "2025-08" },
-              { label: "2025-07", value: "2025-07" },
-              { label: "2025-06", value: "2025-06" },
+              { label: "2025-07", value: "2025-07" }
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
+        },
+        {
+          col: "right",
+          type: "AlarmVideoLinkPanel",
+          height: 940,
+          title: "视频联动报警",
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择",
+            modelValue: "2025-08", // 默认值
+            options: [
+              { label: "2025-08", value: "2025-08" },
+              { label: "2025-07", value: "2025-07" }
             ],
             onChange: (val) => console.log("下拉选择", val)
           }

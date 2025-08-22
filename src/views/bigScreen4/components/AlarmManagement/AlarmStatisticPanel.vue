@@ -3,7 +3,15 @@
     <!-- 标题带背景图 -->
     <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <div class="header-extra" v-if="headerExtra"></div>
+      <div class="header-extra" v-if="headerExtra">
+        <CustomSelect
+          v-if="headerExtra.type === 'customSelect'"
+          v-model="headerExtra.modelValue"
+          :options="headerExtra.options"
+          :placeholder="headerExtra.placeholder"
+          @input="handleSelectChange"
+        />
+      </div>
     </div>
 
     <div class="panel-body flex-h-v">
@@ -39,11 +47,12 @@ import subTitleImg from "@/assets/bigScreen/pumpOperation/subTitle_bg.png";
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import MainContainer from "./MainContainer.vue";
 import BarChart from "./BarChart.vue";
+import CustomSelect from "../CustomSelect.vue";
 export default {
   name: "AlarmStatisticPanel",
-  components: { MainContainer, BarChart },
+  components: { MainContainer, BarChart, CustomSelect },
   props: {
-    title: { type: String, default: "风险隐患" },
+    title: { type: String, default: "报警统计" },
     headerExtra: { type: Object, default: null }
   },
   data() {

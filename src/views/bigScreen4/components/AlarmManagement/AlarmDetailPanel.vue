@@ -68,7 +68,7 @@ export default {
     AlarmTable
   },
   props: {
-    title: { type: String, default: "报警管理" },
+    title: { type: String, default: "报警详情" },
     headerExtra: { type: Object, default: null }
   },
   data() {
