@@ -3,7 +3,15 @@
     <!-- 标题带背景图 -->
     <div class="panel-header flex-h-v">
       <span>{{ title }}</span>
-      <div class="header-extra" v-if="headerExtra"></div>
+      <div class="header-extra" v-if="headerExtra">
+        <CustomSelect
+          v-if="headerExtra.type === 'customSelect'"
+          v-model="headerExtra.modelValue"
+          :options="headerExtra.options"
+          :placeholder="headerExtra.placeholder"
+          @input="handleSelectChange"
+        />
+      </div>
     </div>
 
     <div class="panel-body">
@@ -17,9 +25,10 @@
 <script>
 import waterRain from "@/assets/bigScreen/waterRain.png";
 import VideoLink from "./VideoLink.vue";
+import CustomSelect from "../CustomSelect.vue";
 export default {
   name: "AlarmVideoLinkPanel",
-  components: { VideoLink },
+  components: { VideoLink, CustomSelect },
   props: {
     title: { type: String, default: "视频联动报警" },
     headerExtra: { type: Object, default: null }
@@ -57,7 +66,7 @@ export default {
   font-weight: bold;
   font-size: 16px;
   height: 62px;
-  background-image: url("~@/assets/bigScreen/title_bg2.png");
+  background-image: url("~@/assets/bigScreen/alarmManagement/panel_title_bg.png");
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;

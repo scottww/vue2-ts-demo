@@ -67,7 +67,18 @@ export default {
           col: "right",
           type: "AlarmVideoLinkPanel",
           title: "视频联动报警",
-          height: 940
+          height: 940,
+          headerExtra: {
+            type: "customSelect",
+            placeholder: "请选择",
+            modelValue: "2025-08", // 默认值
+            options: [
+              { label: "2025-08", value: "2025-08" },
+              { label: "2025-07", value: "2025-07" },
+              { label: "2025-06", value: "2025-06" },
+            ],
+            onChange: (val) => console.log("下拉选择", val)
+          }
         }
       ]
     };

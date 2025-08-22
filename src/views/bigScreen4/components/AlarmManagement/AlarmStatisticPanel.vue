@@ -164,7 +164,7 @@ export default {
 
 .img-text {
   position: absolute; /* 绝对定位到图片上 */
-  left: 13%;
+  left: 8%;
   top: 23%;
   color: #fff;
   font-size: 16px;
