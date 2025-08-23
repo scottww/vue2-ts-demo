@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div v-if="list.length === 0" class="no-data">暂无数据</div>
+    <div v-if="displayData.length === 0" class="no-data">暂无数据</div>
   </div>
 </template>
 
@@ -82,18 +82,17 @@ export default {
     },
     containerHeight: {
       type: Number,
-      required: false // 可选传入
+      required: false // 可选
     }
   },
   data() {
     return {
       scrollTop: 0,
-      ticking: false, // 新增
+      ticking: false,
       selectedId: null,
       list: [],
       internalHeight: 350,
       resizeObserver: null,
-      // 加入缓存逻辑
       lastStart: 0,
       lastEnd: 0,
       cachedData: []
@@ -110,7 +109,6 @@ export default {
       };
     },
     itemCount() {
-      // return Math.ceil(this.effectiveHeight / this.itemHeight) + 2; //改为+2让滚动更丝滑
       return Math.ceil(this.effectiveHeight / this.itemHeight) + BUFFER_COUNT;
     },
     start() {
@@ -119,14 +117,38 @@ export default {
     end() {
       return this.start + this.itemCount;
     },
-    displayData() {
-      // return this.list.slice(this.start, this.end);
-      // 加入缓存逻辑
-      if (this.start !== this.lastStart || this.end !== this.lastEnd) {
+    displayData0() {
+      if (
+        this.start !== this.lastStart ||
+        this.end !== this.lastEnd ||
+        this.cachedData.length === 0 // 加这一句，首次刷新也生效
+      ) {
         this.cachedData = this.list.slice(this.start, this.end);
         this.lastStart = this.start;
         this.lastEnd = this.end;
       }
+      return this.cachedData;
+    },
+    displayData() {
+      // list 为空，清空缓存
+      if (!this.list || this.list.length === 0) {
+        this.cachedData = [];
+        this.lastStart = 0;
+        this.lastEnd = 0;
+        return [];
+      }
+
+      // 按 start/end 切片
+      if (
+        this.start !== this.lastStart ||
+        this.end !== this.lastEnd ||
+        this.cachedData.length === 0
+      ) {
+        this.cachedData = this.list.slice(this.start, this.end);
+        this.lastStart = this.start;
+        this.lastEnd = this.end;
+      }
+
       return this.cachedData;
     },
     translateY() {
@@ -164,11 +186,6 @@ export default {
   },
   methods: {
     onScroll() {
-      // this.scrollTop = this.$refs.listRef.scrollTop;
-      // const { scrollTop, scrollHeight, clientHeight } = this.$refs.listRef;
-      // if (scrollTop + clientHeight >= scrollHeight - 10) {
-      //   console.log("滚动到底部");
-      // }
       const listRef = this.$refs.listRef;
       if (!this.ticking) {
         this.ticking = true;
@@ -200,16 +217,40 @@ export default {
     defaultSelectedKey(newV) {
       this.selectedId = newV;
     },
+    dataList0(newV) {
+      this.list = [...newV];
+      this.scrollTop = 0;
+
+      // 强制刷新缓存，让 displayData 重新计算
+      this.lastStart = -1;
+      this.lastEnd = -1;
+
+      // 将滚动条重置到顶部
+      this.$nextTick(() => {
+        const listRef = this.$refs.listRef;
+        if (listRef) listRef.scrollTop = 0;
+      });
+    },
     dataList(newV) {
       this.list = [...newV];
       this.scrollTop = 0;
-      // this.$forceUpdate();
+
+      // 清缓存
+      this.lastStart = -1;
+      this.lastEnd = -1;
+      this.cachedData = [];
+
+      // 重置滚动条
+      this.$nextTick(() => {
+        const listRef = this.$refs.listRef;
+        if (listRef) listRef.scrollTop = 0;
+      });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .virtual-scroll__container {
   position: relative;
   overflow: hidden;
@@ -293,11 +334,25 @@ export default {
 .virtual-scroll-list::-webkit-scrollbar-button {
   display: none;
 }
-.no-data {
+.no-data0 {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #666;
+}
+.no-data {
+  position: absolute; /* 脱离文档流 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* 占满容器高度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+  font-size: 14px;
+  /* background: #f7f9ff; */
+  z-index: 1;
 }
 .is-click {
   cursor: pointer;

@@ -733,6 +733,17 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "test"
         }
+      },
+      {
+        path: "/importData",
+        name: "importData",
+        component: () =>
+          import(
+            /* webpackChunkName: "ImportData" */ "../views/importData/index.vue"
+          ),
+        meta: {
+          title: "importData"
+        }
       }
     ]
   },

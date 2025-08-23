@@ -141,6 +141,12 @@ import AlarmStatisticPanel from "../../components/AlarmManagement/AlarmStatistic
 import AlarmDetailPanel from "../../components/AlarmManagement/AlarmDetailPanel.vue";
 import AlarmVideoLinkPanel from "../../components/AlarmManagement/AlarmVideoLinkPanel.vue";
 
+// 工程运管
+import DataMonitoringPanel from "../../components/ProjectOperationManagement/DataMonitoringPanel.vue";
+import InspectionMaintenancePanel from "../../components/ProjectOperationManagement/InspectionMaintenancePanel.vue";
+import SafetyMonitoringPanel from "../../components/ProjectOperationManagement/SafetyMonitoringPanel.vue";
+import SchedulingManagementPanel from "../../components/ProjectOperationManagement/SchedulingManagementPanel.vue";
+
 export default {
   components: {
     PanelA,
@@ -162,7 +168,11 @@ export default {
     VideoMonitor,
     AlarmStatisticPanel,
     AlarmDetailPanel,
-    AlarmVideoLinkPanel
+    AlarmVideoLinkPanel,
+    DataMonitoringPanel,
+    InspectionMaintenancePanel,
+    SafetyMonitoringPanel,
+    SchedulingManagementPanel
   },
   props: {
     layout: String,
@@ -190,7 +200,12 @@ export default {
         VideoMonitor: VideoMonitor,
         AlarmStatisticPanel: AlarmStatisticPanel,
         AlarmDetailPanel: AlarmDetailPanel,
-        AlarmVideoLinkPanel: AlarmVideoLinkPanel
+        AlarmVideoLinkPanel: AlarmVideoLinkPanel,
+        DataMonitoringPanel: DataMonitoringPanel,
+        InspectionMaintenancePanel: InspectionMaintenancePanel,
+        SafetyMonitoringPanel: SafetyMonitoringPanel,
+        SchedulingManagementPanel: SchedulingManagementPanel,
+
       };
       return map[type] || PanelA;
     }
