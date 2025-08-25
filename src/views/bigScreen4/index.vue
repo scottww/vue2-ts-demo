@@ -134,18 +134,18 @@ export default {
       this.isWideScreen = true || width >= 4000;
       this.pages = this.isWideScreen
         ? [
-            { name: "首页", component: "WidePage1" },
-            { name: "工程管理", component: "WidePage2" },
-            { name: "监测管理", component: "WidePage3" },
-            { name: "防汛预案", component: "WidePage4" },
-            { name: "数据分析", component: "WidePage5" }
+            { name: "闸泵运行", component: "WidePage2" },
+            { name: "工程运管", component: "WidePage3" },
+            { name: "一张图", component: "WidePage1" },
+            { name: "调度管理", component: "WidePage4" },
+            { name: "报警管理", component: "WidePage5" }
           ]
         : [
-            { name: "首页", component: "NormalPage1" },
-            { name: "工程管理", component: "NormalPage2" },
-            { name: "监测管理", component: "NormalPage3" },
-            { name: "防汛预案", component: "NormalPage4" },
-            { name: "数据分析", component: "NormalPage5" }
+            { name: "闸泵运行", component: "NormalPage2" },
+            { name: "工程运管", component: "NormalPage3" },
+            { name: "一张图", component: "NormalPage1" },
+            { name: "调度管理", component: "NormalPage4" },
+            { name: "报警管理", component: "NormalPage5" }
           ];
     },
     handleBtnClick() {

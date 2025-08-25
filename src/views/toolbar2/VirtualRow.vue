@@ -8,7 +8,7 @@
       cursor: 'pointer',
       backgroundColor: backgroundColor
     }"
-    @click="$emit('row-click', source)"
+    @click="handleClick"
     @mouseenter="hover = true"
     @mouseleave="hover = false"
   >
@@ -67,7 +67,8 @@ export default {
     source: { type: Object, required: true },
     columns: { type: Array, required: true },
     columnWidths: { type: Array, required: true },
-    rowHeight: { type: Number, required: true }
+    rowHeight: { type: Number, required: true },
+    onRowClick: { type: Function } // 新增行点击事件
   },
   data() {
     return {
@@ -95,6 +96,12 @@ export default {
       return value === null || value === undefined || value === ""
         ? "--"
         : value;
+    },
+    handleClick() {
+      this.$emit("row-click", this.source);
+      if (this.onRowClick) {
+        this.onRowClick(this.source); // 调用父组件传下来的方法
+      }
     }
   }
 };

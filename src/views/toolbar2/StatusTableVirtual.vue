@@ -33,7 +33,13 @@
             :data-key="'id'"
             :data-sources="tableData"
             :data-component="VirtualRow"
-            :extra-props="{ columns, columnWidths, rowHeight, totalWidth }"
+            :extra-props="{
+              columns,
+              columnWidths,
+              rowHeight,
+              totalWidth,
+              onRowClick: handleRowClick
+            }"
             style="width: 100%; height: 100%"
           />
         </div>
@@ -123,6 +129,11 @@ export default {
       if (this.$refs.header) this.$refs.header.scrollLeft = scrollLeft;
       if (this.$refs.virtualWrapper)
         this.$refs.virtualWrapper.scrollLeft = scrollLeft;
+    },
+
+    handleRowClick(row) {
+      console.log("点击行数据:", row);
+      // 这里做你的逻辑，比如弹窗等
     }
   },
   watch: {
