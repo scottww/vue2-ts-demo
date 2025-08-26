@@ -16,14 +16,19 @@
     </div>
 
     <div class="panel-body">
-      <div class="top">
-        <FloodControlDispathTotal />
+      <div class="top subtitle">
+        <img :src="subTitleImg" alt="png" class="subtitle-bg" />
+        <span class="img-text">最低能耗方案</span>
       </div>
       <div class="main">
-        <div class="timeline-container" ref="timelineContainer">
+        <div
+          class="timeline-container"
+          ref="timelineContainer"
+          v-auto-scroll="{ step: 1 }"
+        >
           <el-timeline>
             <el-timeline-item
-              v-for="(item, index) in [...TIMELINE_DATA, ...TIMELINE_DATA]"
+              v-for="(item, index) in TIMELINE_DATA"
               :key="index"
               :timestamp="item.time"
               placement="top"
@@ -31,19 +36,27 @@
             >
               <el-card>
                 <div class="timeline-item">
-                  <div class="top-panel">
+                  <!-- <div class="top-panel">
                     <img src="@/assets/bigScreen/order.png" class="icon" />
                     <span class="item-name">{{ item.name }}</span>
-                  </div>
+                  </div> -->
                   <div class="down-panel">
                     <div>
-                      <span class="item-label"> 泵组断面: </span>
+                      <img src="@/assets/bigScreen/order.png" class="icon" />
+                      <span class="item-label"> 总流量(m³/h): </span>
                       <span class="item-status">{{ item.status }}</span>
                     </div>
                     <div>
-                      <!-- 枢纽下泄流量(m3/s): {{ item.value }} -->
-                      <span class="item-label"> 枢纽下泄流量(m3/s): </span>
+                      <span class="item-label"> 总扬程(m): </span>
                       <span class="item-value">{{ item.value }}</span>
+                    </div>
+                    <div>
+                      <span class="item-label"> 总压力(MPa): </span>
+                      <span class="item-status">{{ item.pressure }}</span>
+                    </div>
+                    <div>
+                      <span class="item-label"> 总功率(kw): </span>
+                      <span class="item-value">{{ item.power }}</span>
                     </div>
                   </div>
                 </div>
@@ -57,31 +70,27 @@
 </template>
 
 <script>
-import { TIMELINE_DATA } from "./FloodControlDispatchData.js";
-import ImageLabelValue from "./ImageLabelValue.vue";
+import { TIMELINE_DATA } from "./IntelligentDispatchPanelData.js";
+import subTitleImg from "@/assets/bigScreen/pumpOperation/subTitle_bg.png";
 import waterRain from "@/assets/bigScreen/waterRain.png";
-import CustomSelect from "./CustomSelect.vue";
-import FloodControlDispathTotal from './FloodControlDispathTotal.vue';
+import CustomSelect from "../CustomSelect.vue";
 export default {
-  name: "FloodControlDispatch",
-  components: { ImageLabelValue, CustomSelect, FloodControlDispathTotal },
+  name: "IntelligentDispatchPanel",
+  components: { CustomSelect },
   props: {
-    title: { type: String, default: "防洪调度" },
+    title: { type: String, default: "智能调度" },
     headerExtra: { type: Object, default: null }
   },
   data() {
     return {
       TIMELINE_DATA,
       waterRain,
-      dataList: [
-        { period: "近一小时", value: "10.0", unit: "mm", icon: waterRain },
-        { period: "近三小时", value: "28.3", unit: "mm", icon: waterRain },
-        { period: "近六小时", value: "43.5", unit: "mm", icon: waterRain }
-      ]
+      subTitleImg,
+      timer: null
     };
   },
   mounted() {
-    this.initScroll();
+    // this.initScroll();
   },
   methods: {
     handleSelectChange(val) {
@@ -92,7 +101,7 @@ export default {
       // 再发事件给上层，方便事件冒泡传递
       this.$emit("site-change", val);
     },
-    initScroll() {
+    initScroll0() {
       const timeline = this.$refs.timelineContainer;
       setInterval(() => {
         timeline.scrollTop += 1; // 每次滚动 1px
@@ -100,6 +109,28 @@ export default {
           timeline.scrollTop = 0;
         }
       }, 30);
+    },
+    initScroll() {
+      const timeline = this.$refs.timelineContainer;
+      const step = 1; // 每次滚动的像素
+      const speed = 30; // 滚动速度
+
+      const move = () => {
+        if (timeline.scrollTop >= timeline.scrollHeight / 2) {
+          // 滚到一半内容就回到顶部，制造无缝循环
+          timeline.scrollTop = 0;
+        } else {
+          timeline.scrollTop += step;
+        }
+      };
+
+      this.timer = setInterval(move, speed);
+
+      // 鼠标移入暂停，移出继续
+      timeline.addEventListener("mouseenter", () => clearInterval(this.timer));
+      timeline.addEventListener("mouseleave", () => {
+        this.timer = setInterval(move, speed);
+      });
     }
   }
 };
@@ -153,17 +184,34 @@ export default {
 }
 
 .top {
-  display: flex;
-  justify-content: space-between;
-  /* margin-bottom: 20px; */
-  /* margin-top: 10px; */
-  /* padding: 0 10px; */
-  height: 170px;
+  height: 64px;
 }
 
 .main {
-  height: calc(100% - 200px);
+  height: calc(100% - 64px);
   margin-top: 10px;
+}
+
+/* 子标题 */
+.top.subtitle {
+  position: relative; /* 容器设相对定位 */
+  height: 64px; /* 和图片高度一致 */
+}
+
+.subtitle-bg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.img-text {
+  position: absolute; /* 绝对定位到图片上 */
+  left: 8%;
+  top: 23%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none; /* 不影响鼠标事件 */
 }
 
 /* 时间线定制 */
@@ -202,7 +250,7 @@ p.description {
   flex-direction: column;
 }
 
-.timeline-item .icon {
+.timeline-item1 .icon {
   width: 14px; /* 图标大小与文字一致 */
   height: 14px;
   margin-right: 6px;
@@ -229,35 +277,80 @@ p.description {
   align-items: center;
   flex: 1;
 }
-.down-panel {
+.down-panel1 {
   flex: 1;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 20px;
 }
+.down-panel1 > div {
+  width: 48%; /* 一行两个 */
+  display: flex;
+  margin-bottom: 10px; /* 行间距 */
+}
 
-.item-label {
+.item-label1 {
   font-size: 16px;
   color: #fff;
   line-height: 16px;
 }
-.item-name {
+.item-name1 {
   font-size: 16px;
   color: #03f4fd;
   line-height: 16px;
   /* text-decoration-line: underline; */
 }
-.item-status {
+.item-status1 {
   font-size: 16px;
   color: #03f4fd;
   line-height: 16px;
   margin-left: 11px;
 }
-.item-value {
+.item-value1 {
   font-size: 16px;
   color: #03f4fd;
   line-height: 16px;
   margin-left: 11px;
+}
+
+.down-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  /* background-color: #1e40af; */
+  padding: 4px 10px;
+  border-radius: 8px;
+  color: white;
+  /* width: fit-content; */
+  width: 100%;
+}
+
+.panel-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  vertical-align: text-bottom;
+  display: inline-block;
+}
+
+.item-label {
+  margin-right: 8px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.item-status,
+.item-value {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
 }
 
 /* 自动滚动 */

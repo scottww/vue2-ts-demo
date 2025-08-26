@@ -62,21 +62,22 @@ export default {
         {
           col: "left",
           type: "ProjectSituation",
+          title: "工程情况",
+          height: 940,
           props: {
-            title: "工程情况",
             image: require("@/assets/bigScreen/thumbnail.png"),
             description:
               "这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述这是一个工程描述。",
             // topStats: ["闸门5孔", "泵组6台"],
             topStats: [
               {
-                type: '闸门',
+                type: "闸门",
                 unit: "孔",
                 value: "5",
                 icon: require("@/assets/bigScreen/gate.png")
               },
               {
-                type: '泵组',
+                type: "泵组",
                 unit: "台",
                 value: "6",
                 icon: require("@/assets/bigScreen/pump.png")
@@ -89,8 +90,7 @@ export default {
             ],
             timeline: ["2025-08-01 工程启动", "2025-08-02 闸门检修"]
           },
-          api: "/api/project/situation", // 后端接口
-          height: 940
+          api: "/api/project/situation" // 后端接口
         },
         {
           col: "left",

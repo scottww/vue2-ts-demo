@@ -1,8 +1,9 @@
 import Vue from "vue";
+// import createApp from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import 'ant-design-vue/dist/antd.css';
+import "ant-design-vue/dist/antd.css";
 import "./styles";
 // // 引用
 // import ECharts from "vue-echarts";
@@ -22,21 +23,29 @@ import "./styles";
 // import 'ant-design-vue/lib/date-picker/style/css'; // 加载 CSS
 // import 'ant-design-vue/lib/date-picker/style';         // 加载 LESS
 
-import '@/assets/mySvg/Glyphter.css';
+import "@/assets/mySvg/Glyphter.css";
 
-import antDesignVue from 'ant-design-vue';
+import antDesignVue from "ant-design-vue";
 Vue.use(antDesignVue);
 
-import LoadingPlugin from '@/plugins/loading.js';
+import LoadingPlugin from "@/plugins/loading.js";
 Vue.use(LoadingPlugin);
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
 // import ElTableVirtualScroll from 'el-table-virtual-scroll';
 // Vue.use(ElTableVirtualScroll);
 
+import autoScroll from "@/directives/autoScroll.js";
+//Vue 2 全局指令注册
+Vue.directive("auto-scroll", autoScroll);
+
+//vue3
+// const app = createApp(App);
+// 注册全局指令
+// app.directive("auto-scroll", autoScroll);
 
 Vue.config.productionTip = false;
 

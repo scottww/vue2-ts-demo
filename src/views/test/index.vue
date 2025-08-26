@@ -16,6 +16,7 @@
       <el-radio-button label="WaterLevelChart">水位</el-radio-button>
       <el-radio-button label="TableDemo">表格</el-radio-button>
       <el-radio-button label="AlarmTotal">报警总数</el-radio-button>
+      <el-radio-button label="IconTable">IconTable</el-radio-button>
     </el-radio-group>
     <div class="main-content" :class="tab">
       <component :is="tab"></component>
@@ -35,6 +36,7 @@ import Chart4 from './Chart4.vue';
 import WaterLevelChart from "./WaterLevelChart.vue";
 import TableDemo from "./TableDemo.vue";
 import AlarmTotal from "./AlarmTotal.vue";
+import IconTable from "./IconTable.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -47,7 +49,8 @@ export default {
     Chart4,
     WaterLevelChart,
     TableDemo,
-    AlarmTotal
+    AlarmTotal,
+    IconTable
   },
   data() {
     return {
@@ -76,5 +79,9 @@ export default {
   width: 670px;
   background-color: transparent;
   background-image: none;
+}
+
+.main-content.IconTable {
+  width: auto;
 }
 </style>

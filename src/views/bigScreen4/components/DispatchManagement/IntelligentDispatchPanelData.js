@@ -1,0 +1,74 @@
+export const TIMELINE_DATA = [
+  {
+    id: 1,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 2,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 3,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 4,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 1,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 2,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 3,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  },
+  {
+    id: 4,
+    time: "2025/06/14 09:45:54",
+    name: "调度令名称名称",
+    status: "--",
+    value: "--",
+    pressure: '--',
+    power: '--'
+  }
+];

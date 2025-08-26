@@ -12,6 +12,8 @@
             class="panel"
             :title="mod.title"
             :style="{ height: mod.height + 'px' }"
+            :header-extra="mod.headerExtra"
+            @site-change="$emit('site-change', $event)"
           />
         </div>
 
@@ -24,6 +26,7 @@
             :title="panels[2].title"
             :style="{ height: panels[2].height + 'px' }"
             :header-extra="panels[2].headerExtra"
+            @site-change="$emit('site-change', $event)"
           />
         </div>
       </div>
@@ -38,6 +41,7 @@
             :is="getComponent(panels[0].type)"
             class="panel full-height"
             :title="panels[0].title"
+            :header-extra="panels[0].headerExtra"
             @site-change="$emit('site-change', $event)"
           />
         </div>
@@ -49,6 +53,7 @@
             class="panel half-vertical"
             :title="mod.title"
             :header-extra="mod.headerExtra"
+            @site-change="$emit('site-change', $event)"
           />
         </div>
       </div>
@@ -147,6 +152,14 @@ import InspectionMaintenancePanel from "../../components/ProjectOperationManagem
 import SafetyMonitoringPanel from "../../components/ProjectOperationManagement/SafetyMonitoringPanel.vue";
 import SchedulingManagementPanel from "../../components/ProjectOperationManagement/SchedulingManagementPanel.vue";
 
+//调度管理
+import IntelligentDispatchPanel from "../../components/DispatchManagement/IntelligentDispatchPanel.vue";
+import OperationPlanPanel from "../../components/DispatchManagement/OperationPlanPanel.vue";
+import SchedulingManagementPanel2 from "../../components/DispatchManagement/ScheduleManagementPanel.vue";
+import AlarmFaultManagementPanel from "../../components/DispatchManagement/AlarmFaultManagementPanel.vue";
+import EmergencyCommandDispatchPanel from "../../components/DispatchManagement/EmergencyCommandDispatchPanel.vue";
+import RemoteMonitoringControlSimulationPanel from "../../components/DispatchManagement/RemoteMonitoringControlSimulationPanel.vue";
+
 export default {
   components: {
     PanelA,
@@ -172,7 +185,13 @@ export default {
     DataMonitoringPanel,
     InspectionMaintenancePanel,
     SafetyMonitoringPanel,
-    SchedulingManagementPanel
+    SchedulingManagementPanel,
+    IntelligentDispatchPanel,
+    OperationPlanPanel,
+    SchedulingManagementPanel2,
+    AlarmFaultManagementPanel,
+    EmergencyCommandDispatchPanel,
+    RemoteMonitoringControlSimulationPanel
   },
   props: {
     layout: String,
@@ -205,7 +224,12 @@ export default {
         InspectionMaintenancePanel: InspectionMaintenancePanel,
         SafetyMonitoringPanel: SafetyMonitoringPanel,
         SchedulingManagementPanel: SchedulingManagementPanel,
-
+        IntelligentDispatchPanel,
+        OperationPlanPanel,
+        SchedulingManagementPanel2,
+        AlarmFaultManagementPanel,
+        EmergencyCommandDispatchPanel,
+        RemoteMonitoringControlSimulationPanel
       };
       return map[type] || PanelA;
     }
