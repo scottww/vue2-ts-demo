@@ -272,7 +272,8 @@ export default {
 }
 
 .control-button {
-  background: linear-gradient(45deg, #4a90e2, #6495ed);
+  /* background: linear-gradient(45deg, #4a90e2, #6495ed); */
+  background: linear-gradient(to bottom, #44c2ff 0%, #215efc 100%);
   color: white;
   border: none;
   /* padding: 10px 20px; */
@@ -288,7 +289,7 @@ export default {
 }
 
 .control-button:hover {
-  background: linear-gradient(45deg, #357abd, #4a90e2);
+  /* background: linear-gradient(45deg, #357abd, #4a90e2); */
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
 }

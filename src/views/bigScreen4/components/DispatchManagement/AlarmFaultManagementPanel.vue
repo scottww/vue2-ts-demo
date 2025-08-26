@@ -17,7 +17,14 @@
 
     <div class="panel-body">
       <div class="top top-bg">
-        <AlarmTotal />
+        <AlarmFaultTotal
+          :statuses="[
+            { label: '已解除', count: 30, color: '#4ade80' },
+            { label: '未解除', count: 1, color: '#f87171' }
+          ]"
+          totalLabel="报警总数"
+          unit="条"
+        />
       </div>
       <div class="table">
         <alarm-table
@@ -55,14 +62,14 @@ import warningImg from "@/assets/bigScreen/pumpOperation/warning.png";
 import resolvedImg from "@/assets/bigScreen/pumpOperation/resolved.png";
 import ImageLabelValue from "../ImageLabelValue.vue";
 import CustomSelect from "../CustomSelect.vue";
-import AlarmTotal from "../AlarmManagement/AlarmDetailTotal.vue";
+import AlarmFaultTotal from "./AlarmFaultTotal.vue";
 import AlarmTable from "../AlarmManagement/AlarmDetailTable.vue";
 export default {
   name: "OperationPlanPanel",
   components: {
     ImageLabelValue,
     CustomSelect,
-    AlarmTotal,
+    AlarmFaultTotal,
     AlarmTable
   },
   props: {
@@ -103,44 +110,40 @@ export default {
       columns: [
         {
           prop: "type",
-          label: "执行状态",
+          label: "报警类型",
           width: 150,
           formatter: (val) => this.formatterValue(val)
         },
-        { prop: "planName", label: "计划名称" },
-        { prop: "time", label: "接收时间", width: 120 },
+        { prop: "time", label: "报警时间", width: 120 },
+        { prop: "device", label: "报警设备", width: 120 },
+        { prop: "content", label: "报警内容" },
+
         { prop: "action", label: "操作", width: 100 }
       ],
       tableList: [
         {
           id: 1,
           level: "warning",
-          type: "【未执行】",
-          planName: "2025年7月运行计划",
-          time: "07-04 14:30"
+          type: "【设备报警】",
+          time: "07-04 14:30",
+          device: "上游水位",
+          content: "设备数据无法获取"
         },
         {
           id: 2,
           level: "info",
-          device: "【未执行】",
-          type: "【未执行】",
-          planName: "2025年7月运行计划",
-          time: "07-04 14:30"
+          type: "【设备报警】",
+          time: "07-04 14:30",
+          device: "上游水位",
+          content: "设备数据无法获取"
         },
         {
           id: 3,
           level: "info",
-          device: "【未执行】",
-          type: "【未执行】",
-          planName: "2025年7月运行计划",
-          time: "07-04 14:30"
-        },
-        {
-          id: 4,
-          tlevel: "info",
-          type: "【未执行】",
-          planName: "2025年7月运行计划",
-          time: "07-04 14:30"
+          type: "【设备报警】",
+          time: "07-04 14:30",
+          device: "上游水位",
+          content: "设备数据无法获取"
         }
       ],
       panelHeight: 940
