@@ -25,6 +25,10 @@
       >
       <el-radio-button label="CssDemo">CssDemo</el-radio-button>
       <!-- <el-radio-button label="ForceGraph">ForceGraph</el-radio-button> -->
+
+      <el-radio-button label="DispatchStatistics"
+        >DispatchStatistics</el-radio-button
+      >
     </el-radio-group>
     <div class="main-content" :class="tab">
       <component :is="tab"></component>
@@ -48,6 +52,7 @@ import IconTable from "./IconTable.vue";
 import MonitoringIndicators from "./MonitoringIndicators.vue";
 import MonitoringIndicators2 from "./MonitoringIndicators2.vue";
 import CssDemo from "./CssDemo.vue";
+import DispatchStatistics from "./DispatchStatistics.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -64,7 +69,8 @@ export default {
     IconTable,
     MonitoringIndicators,
     MonitoringIndicators2,
-    CssDemo
+    CssDemo,
+    DispatchStatistics
   },
   data() {
     return {
@@ -110,5 +116,9 @@ export default {
 
 .main-content.CssDemo {
   width: auto;
+}
+
+.main-content.DispatchStatistics {
+  height: 240px;
 }
 </style>

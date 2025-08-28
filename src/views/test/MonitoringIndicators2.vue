@@ -88,7 +88,7 @@ export default {
   cursor: pointer;
   padding: 10px 30px;
   transition: all 0.3s ease;
-  background-image: url("~@/assets/bigScreen/ProjectOperationManagement/组 7268.png");
+  background-image: url("~@/assets/bigScreen/ProjectOperationManagement/item_bg2.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -99,7 +99,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-    url("~@/assets/bigScreen/ProjectOperationManagement/组 7268.png");
+    url("~@/assets/bigScreen/ProjectOperationManagement/item_bg2.png");
 }
 
 .metric-card__label {
