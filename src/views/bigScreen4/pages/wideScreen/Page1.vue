@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import PanelA from "../../components/PanelA.vue";
-import PanelB from "../../components/PanelB.vue";
-import PanelC from "../../components/PanelC.vue";
+import PanelA from "../../components/temp.vue";
+import PanelB from "../../components/temp.vue";
+import PanelC from "../../components/temp.vue";
 import EmergencySupport from "../../components/EmergencySupport.vue";
 import FloodForecast from "../../components/FloodForecast.vue";
 import FloodControlDispatch from "../../components/FloodControlDispatch.vue";

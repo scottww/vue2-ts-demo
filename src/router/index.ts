@@ -11,11 +11,23 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Dashboard,
-    redirect: "/guide",
+    redirect: "/navPage",
     meta: {
       title: "首页"
     },
     children: [
+      {
+        path: "/navPage",
+        name: "NavPage",
+        component: () =>
+          import(
+            /* webpackChunkName: "NavPage" */ "../views/NavPage.vue"
+          ),
+        meta: {
+          title: "NavPage 功能总览",
+          isFull: true
+        }
+      },
       {
         path: "/guide",
         name: "QuickGuide",

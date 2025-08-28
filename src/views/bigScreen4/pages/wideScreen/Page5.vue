@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import PanelA from "../../components/PanelA.vue";
-import PanelB from "../../components/PanelB.vue";
-import PanelC from "../../components/PanelC.vue";
+import PanelA from "../../components/temp.vue";
+import PanelB from "../../components/temp.vue";
+import PanelC from "../../components/temp.vue";
 import AlarmStatisticPanel from "../../components/AlarmManagement/AlarmStatisticPanel.vue";
 import AlarmDetailPanel from "../../components/AlarmManagement/AlarmDetailPanel.vue";
 import AlarmVideoLinkPanel from "../../components/AlarmManagement/AlarmVideoLinkPanel.vue";

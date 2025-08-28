@@ -144,6 +144,14 @@ export default {
           time: "07-04 14:30",
           device: "上游水位",
           content: "设备数据无法获取"
+        },
+        {
+          id: 4,
+          level: "info",
+          type: "【设备报警】",
+          time: "07-04 14:30",
+          device: "上游水位",
+          content: "设备数据无法获取"
         }
       ],
       panelHeight: 940

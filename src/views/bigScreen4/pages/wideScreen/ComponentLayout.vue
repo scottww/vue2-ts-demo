@@ -2,29 +2,27 @@
   <div class="layout-wrapper">
     <!-- 左2小 + 右1大 -->
     <template v-if="layout === '2small-1big'">
-      <div class="horizontal-layout">
+      <div class="col-layout">
         <!-- 左边两块小 -->
-        <div class="left-small-panels">
+        <div class="left-side">
           <component
             v-for="(mod, idx) in panels.slice(0, 2)"
             :key="mod.type + idx"
             :is="getComponent(mod.type)"
-            class="panel"
+            class="panel half-vertical"
             :title="mod.title"
-            :style="{ height: mod.height + 'px' }"
             :header-extra="mod.headerExtra"
             @site-change="$emit('site-change', $event)"
           />
         </div>
 
         <!-- 右边一块大 -->
-        <div class="right-big-panel">
+        <div class="right-side">
           <component
-            v-if="panels[2]"
+            v-bind="panels[2].props"
             :is="getComponent(panels[2].type)"
-            class="panel"
+            class="panel full-height"
             :title="panels[2].title"
-            :style="{ height: panels[2].height + 'px' }"
             :header-extra="panels[2].headerExtra"
             @site-change="$emit('site-change', $event)"
           />
@@ -122,43 +120,43 @@
 </template>
 
 <script>
-import PanelA from "../../components/PanelA.vue";
-import PanelB from "../../components/PanelB.vue";
-import PanelC from "../../components/PanelC.vue";
-import EmergencySupport from "../../components/EmergencySupport.vue";
-import FloodForecast from "../../components/FloodForecast.vue";
-import FloodControlDispatch from "../../components/FloodControlDispatch.vue";
-import RiskHazard from "../../components/RiskHazard.vue";
-import ProjectSituation from "../../components/ProjectSituation.vue";
-import WaterRainInformation from "../../components/WaterRainInformation.vue";
-import WeatherForecast from "../../components/WeatherForecast.vue";
+import PanelA from '../../components/temp.vue'
+import PanelB from '../../components/temp.vue'
+import PanelC from '../../components/temp.vue'
+import EmergencySupport from '../../components/EmergencySupport.vue'
+import FloodForecast from '../../components/FloodForecast.vue'
+import FloodControlDispatch from '../../components/FloodControlDispatch.vue'
+import RiskHazard from '../../components/RiskHazard.vue'
+import ProjectSituation from '../../components/ProjectSituation.vue'
+import WaterRainInformation from '../../components/WaterRainInformation.vue'
+import WeatherForecast from '../../components/WeatherForecast.vue'
 
-import EquipmentStatisticsManagement from "../../components/pumpGateMananement/EquipmentStatisticsManagement.vue";
-import PumpRunHistory from "../../components/pumpGateMananement/PumpRunHistory.vue";
-import GateRealTimeMonitor from "../../components/pumpGateMananement/GateRealTimeMonitor.vue";
-import SevenDayRainfallOperationTrend from "../../components/pumpGateMananement/SevenDayRainfallOperationTrend.vue";
-import SevenDayWaterOperationTrend from "../../components/pumpGateMananement/SevenDayWaterOperationTrend.vue";
-import AlarmManagement from "../../components/pumpGateMananement/AlarmManagement.vue";
-import VideoMonitor from "../../components/pumpGateMananement/VideoMonitor.vue";
+import EquipmentStatisticsManagement from '../../components/pumpGateMananement/EquipmentStatisticsManagement.vue'
+import PumpRunHistory from '../../components/pumpGateMananement/PumpRunHistory.vue'
+import GateRealTimeMonitor from '../../components/pumpGateMananement/GateRealTimeMonitor.vue'
+import SevenDayRainfallOperationTrend from '../../components/pumpGateMananement/SevenDayRainfallOperationTrend.vue'
+import SevenDayWaterOperationTrend from '../../components/pumpGateMananement/SevenDayWaterOperationTrend.vue'
+import AlarmManagement from '../../components/pumpGateMananement/AlarmManagement.vue'
+import VideoMonitor from '../../components/pumpGateMananement/VideoMonitor.vue'
 
 // 报警管理
-import AlarmStatisticPanel from "../../components/AlarmManagement/AlarmStatisticPanel.vue";
-import AlarmDetailPanel from "../../components/AlarmManagement/AlarmDetailPanel.vue";
-import AlarmVideoLinkPanel from "../../components/AlarmManagement/AlarmVideoLinkPanel.vue";
+import AlarmStatisticPanel from '../../components/AlarmManagement/AlarmStatisticPanel.vue'
+import AlarmDetailPanel from '../../components/AlarmManagement/AlarmDetailPanel.vue'
+import AlarmVideoLinkPanel from '../../components/AlarmManagement/AlarmVideoLinkPanel.vue'
 
 // 工程运管
-import DataMonitoringPanel from "../../components/ProjectOperationManagement/DataMonitoringPanel.vue";
-import InspectionMaintenancePanel from "../../components/ProjectOperationManagement/InspectionMaintenancePanel.vue";
-import SafetyMonitoringPanel from "../../components/ProjectOperationManagement/SafetyMonitoringPanel.vue";
-import SchedulingManagementPanel from "../../components/ProjectOperationManagement/SchedulingManagementPanel.vue";
+import DataMonitoringPanel from '../../components/ProjectOperationManagement/DataMonitoringPanel.vue'
+import InspectionMaintenancePanel from '../../components/ProjectOperationManagement/InspectionMaintenancePanel.vue'
+import SafetyMonitoringPanel from '../../components/ProjectOperationManagement/SafetyMonitoringPanel.vue'
+import SchedulingManagementPanel from '../../components/ProjectOperationManagement/SchedulingManagementPanel.vue'
 
 //调度管理
-import IntelligentDispatchPanel from "../../components/DispatchManagement/IntelligentDispatchPanel.vue";
-import OperationPlanPanel from "../../components/DispatchManagement/OperationPlanPanel.vue";
-import SchedulingManagementPanel2 from "../../components/DispatchManagement/ScheduleManagementPanel.vue";
-import AlarmFaultManagementPanel from "../../components/DispatchManagement/AlarmFaultManagementPanel.vue";
-import EmergencyCommandDispatchPanel from "../../components/DispatchManagement/EmergencyCommandDispatchPanel.vue";
-import RemoteMonitoringControlSimulationPanel from "../../components/DispatchManagement/RemoteMonitoringControlSimulationPanel.vue";
+import IntelligentDispatchPanel from '../../components/DispatchManagement/IntelligentDispatchPanel.vue'
+import OperationPlanPanel from '../../components/DispatchManagement/OperationPlanPanel.vue'
+import SchedulingManagementPanel2 from '../../components/DispatchManagement/ScheduleManagementPanel.vue'
+import AlarmFaultManagementPanel from '../../components/DispatchManagement/AlarmFaultManagementPanel.vue'
+import EmergencyCommandDispatchPanel from '../../components/DispatchManagement/EmergencyCommandDispatchPanel.vue'
+import RemoteMonitoringControlSimulationPanel from '../../components/DispatchManagement/RemoteMonitoringControlSimulationPanel.vue'
 
 export default {
   components: {
@@ -191,11 +189,11 @@ export default {
     SchedulingManagementPanel2,
     AlarmFaultManagementPanel,
     EmergencyCommandDispatchPanel,
-    RemoteMonitoringControlSimulationPanel
+    RemoteMonitoringControlSimulationPanel,
   },
   props: {
     layout: String,
-    panels: Array
+    panels: Array,
   },
   methods: {
     getComponent(type) {
@@ -229,12 +227,12 @@ export default {
         SchedulingManagementPanel2,
         AlarmFaultManagementPanel,
         EmergencyCommandDispatchPanel,
-        RemoteMonitoringControlSimulationPanel
-      };
-      return map[type] || PanelA;
-    }
-  }
-};
+        RemoteMonitoringControlSimulationPanel,
+      }
+      return map[type] || PanelA
+    },
+  },
+}
 </script>
 
 <style scoped>

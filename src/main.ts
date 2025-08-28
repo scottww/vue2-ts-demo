@@ -42,6 +42,10 @@ import autoScroll from "@/directives/autoScroll.js";
 //Vue 2 全局指令注册
 Vue.directive("auto-scroll", autoScroll);
 
+// 引入字体
+// 阿里妈妈数黑体
+import "@/assets/fonts/index.css";
+
 //vue3
 // const app = createApp(App);
 // 注册全局指令

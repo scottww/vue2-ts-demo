@@ -99,20 +99,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-}
-
-/* 图片容器样式 */
-.map-image-wrapper1 {
-  position: relative;
-  overflow: hidden;
-}
-
-/* 地图图片样式 */
-.map-image1 {
-  width: 613px;
-  height: 336px;
-  display: block;
-  object-fit: cover;
+  height: 100%;
 }
 
 .map-image-wrapper {
@@ -122,7 +109,8 @@ export default {
   overflow: hidden;
   /* box-shadow: 0 0 20px rgba(100, 149, 237, 0.3); */
   width: 100%;
-  height: 260px;
+  /* height: 260px; */
+  height: calc(100% - 50px);
 }
 
 .map-image {

@@ -1,7 +1,7 @@
 <template>
   <div class="alarm-table-container">
     <!-- 表头固定 -->
-    <div class="table-header-wrapper" v-if="showHeader">
+    <div class="table-header-wrapper">
       <table class="alarm-table">
         <thead>
           <tr class="table-header">
@@ -34,7 +34,7 @@
               :title="getCellTitle(row, col)"
             >
               <!-- 自定义列 -->
-              <template v-if="$slots[col.prop]">
+              <template v-if="$scopedSlots[col.prop]">
                 <slot :name="col.prop" :row="row" :value="row[col.prop]"></slot>
               </template>
 
@@ -52,38 +52,37 @@
 
 <script>
 export default {
-  name: 'AlarmDetailTable',
+  name: "AlarmDetailTable",
   props: {
     columns: { type: Array, required: true },
     data: { type: Array, required: true },
-    bodyHeight: { type: [String, Number], default: 300 }, // 可配置滚动高度
-    showHeader: { type: Boolean, default: true }, // 🔥 新增配置
+    bodyHeight: { type: [String, Number], default: 300 } // 可配置滚动高度
   },
   methods: {
     formatWidth(width) {
-      if (!width) return 'auto'
-      return typeof width === 'number' ? width + 'px' : width
+      if (!width) return "auto";
+      return typeof width === "number" ? width + "px" : width;
     },
     formatCell(row, col) {
-      if (col.formatter && typeof col.formatter === 'function') {
-        return col.formatter(row[col.prop], row)
+      if (col.formatter && typeof col.formatter === "function") {
+        return col.formatter(row[col.prop], row);
       }
-      return row[col.prop] !== null && row[col.prop] !== undefined && row[col.prop] !== ''
+      return row[col.prop] !== null &&
+        row[col.prop] !== undefined &&
+        row[col.prop] !== ""
         ? row[col.prop]
-        : '--'
+        : "--";
     },
     getCellTitle(row, col) {
-      const value = this.formatCell(row, col)
-      return value !== undefined && value !== null ? String(value) : ''
-    },
-  },
-}
+      const value = this.formatCell(row, col);
+      return value !== undefined && value !== null ? String(value) : "";
+    }
+  }
+};
 </script>
-
 
 <style scoped>
 .alarm-table-container {
-  height: 100%;
   width: 100%;
   /* background: linear-gradient(to bottom, #0f2c59, #1c4587); */
   padding: 10px;
@@ -162,7 +161,7 @@ export default {
   gap: 5px;
 }
 
-::v-deep(.custom-icon) {
+.custom-icon {
   width: 16px;
   height: 16px;
   object-fit: contain;
@@ -171,13 +170,12 @@ export default {
 }
 
 /* 按钮样式 */
-::v-deep(.action-buttons) {
+.action-buttons {
   display: flex;
   gap: 10px;
 }
 
-/* 插槽中时 */
-::v-deep(.table-btn) {
+.table-btn {
   background: none;
   border: none;
   color: #33ccff;
@@ -188,7 +186,7 @@ export default {
   border-bottom: 1px solid rgb(51, 204, 255);
 }
 
-::v-deep(.table-btn:hover) {
+.table-btn:hover {
   color: rgba(51, 204, 255, 0.7);
 }
 </style>

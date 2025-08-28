@@ -22,6 +22,10 @@ export default {
       isOpen2: true,
       items: [
         {
+          name: "功能总览",
+          children: [{ id: -1, text: "NavPage 功能总览", path: "/navPage" }]
+        },
+        {
           name: "引导类",
           children: [{ id: 0, text: "Guide 快速向导", path: "/guide" }]
         },

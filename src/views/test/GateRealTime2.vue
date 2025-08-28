@@ -2,7 +2,7 @@
   <div class="panel">
     <!-- 标题带背景图 -->
     <div class="panel-header flex-h-v">
-      <span>{{ title }}</span>
+      <span class="gradient-text">{{ title }}</span>
     </div>
 
     <div class="panel-body">
@@ -44,7 +44,7 @@ export default {
   name: "RiskHazard",
   components: { ImageLabelValue, DataItem },
   props: {
-    title: { type: String, default: "风险隐患" },
+    title: { type: String, default: "面板标题" },
     headerExtra: { type: Object, default: null }
   },
   data() {
@@ -126,6 +126,53 @@ export default {
 .panel-header span {
   position: relative;
   left: 0px;
+  /* font-family: syst;
+  font-weight: 800;
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 2px 0px 9px #003f85;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+  background: linear-gradient(to bottom, #9cd2ff, #ffffff); */
+}
+
+.gradient-text1 {
+  font-family: syst;
+  font-weight: 800;
+  font-size: 40px;
+
+  font-size: 22px;
+  color: #ffffff;
+  text-align: left;
+  font-style: normal;
+  text-transform: none;
+
+  /* 背景渐变 */
+  /* background: radial-gradient(circle, #79c5ff 0%, #ffffff 60%, #ffffff 100%); */
+  background: radial-gradient(0deg, #fff,#79c5ff);
+
+  /* 关键：让背景裁剪到文字 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 阴影仍然生效 */
+  /* text-shadow: 2px 0px 9px #003f85; */
+}
+
+.gradient-text {
+  font-family: syst;
+  /* font-weight: 800; */
+  font-size: 20px;
+  color: #ffffff;
+
+  /* 背景渐变，从上到下 */
+  /* background: linear-gradient(to bottom, #79C5FF, #FFFFFF); */
+  background: linear-gradient(to bottom, #fff,#79c5ff);
+
+  /* 关键属性，让文字显示背景渐变 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header-extra {
@@ -165,7 +212,6 @@ export default {
 } */
 
 /* ---------- top 区域 ---------- */
-
 
 /* ---------- main 区域 ---------- */
 .main {
