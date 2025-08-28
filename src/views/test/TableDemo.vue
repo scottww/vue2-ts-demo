@@ -1,6 +1,10 @@
 <template>
   <div class="table-demo">
-    <alarm-table :columns="columns" :data="alarmData" :bodyHeight="200">
+    <alarm-table
+      :columns="columns"
+      :data="alarmData"
+      :bodyHeight="250"
+    >
       <!-- 自定义 type 列 -->
       <template slot="type" slot-scope="{ row }">
         <span class="cell-icon">
@@ -134,4 +138,25 @@ export default {
 </script>
 
 <style scoped>
+.scrollable {
+  width: 100%;
+  height: 200px;
+  overflow: auto; /* 使内容区滚动 */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+thead th {
+  background-color: #f4f4f4;
+}
 </style>

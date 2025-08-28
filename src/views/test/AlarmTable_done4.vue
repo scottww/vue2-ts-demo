@@ -1,3 +1,4 @@
+<!-- 最终版，带滚动条 -->
 <template>
   <div class="alarm-table-container">
     <!-- 表头固定 -->
@@ -34,7 +35,7 @@
               :title="getCellTitle(row, col)"
             >
               <!-- 自定义列 -->
-              <template v-if="$slots[col.prop]">
+              <template v-if="$scopedSlots[col.prop]">
                 <slot :name="col.prop" :row="row" :value="row[col.prop]"></slot>
               </template>
 
@@ -94,17 +95,10 @@ export default {
   overflow: hidden;
 }
 
-.table-header th {
-  position: sticky;
-  top: 0;
-  background-color: #1c4587;
-  z-index: 1;
-}
-
 /* 表体滚动 */
 .table-body-wrapper {
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: auto; /* 横向自适应 */
 }
 
 /* 自定义滚动条样式 */
@@ -149,6 +143,7 @@ export default {
 .table-header th {
   font-weight: bold;
   font-size: 16px;
+  /* padding: 12px 15px; */
   padding: 10px 10px;
 }
 
@@ -158,5 +153,41 @@ export default {
   box-shadow: inset 3px 0px 7px 0px #009cff;
   border-radius: 2px;
   height: 45px;
+}
+
+/* 图标与文字对齐 */
+.cell-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.custom-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 按钮样式 */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.table-btn {
+  background: none;
+  border: none;
+  color: #1890ff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s;
+  padding: 2px 0;
+  border-bottom: 1px solid #1890ff;
+}
+
+.table-btn:hover {
+  color: #40a9ff;
 }
 </style>

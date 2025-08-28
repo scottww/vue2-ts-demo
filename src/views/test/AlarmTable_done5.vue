@@ -34,7 +34,7 @@
               :title="getCellTitle(row, col)"
             >
               <!-- 自定义列 -->
-              <template v-if="$slots[col.prop]">
+              <template v-if="$scopedSlots[col.prop]">
                 <slot :name="col.prop" :row="row" :value="row[col.prop]"></slot>
               </template>
 

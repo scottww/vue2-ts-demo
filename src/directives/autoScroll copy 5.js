@@ -3,19 +3,17 @@ export default {
     const step = binding.value?.step || 1;
     let isPaused = false;
 
-    // 使用 el 本身作为滚动容器，如果存在滚动条才会生效
-    const scrollEl = el;
+    // 找到 el-table 的内容容器，如果不是表格就用 el 本身
+    const bodyWrapper = el.querySelector(".el-table__body-wrapper");
+    const scrollEl = bodyWrapper || el;
 
     let animationId;
 
     const animate = () => {
       if (!isPaused) {
-        // 让滚动容器向下滚动
         scrollEl.scrollTop += step;
-        
-        // 如果滚动到达底部，回到顶部
         if (scrollEl.scrollTop + scrollEl.clientHeight >= scrollEl.scrollHeight) {
-          scrollEl.scrollTop = 0;
+          scrollEl.scrollTop = 0; // 回到顶部
         }
       }
       animationId = requestAnimationFrame(animate);
@@ -23,15 +21,13 @@ export default {
 
     animate();
 
-    // 鼠标进入暂停滚动，离开恢复滚动
     scrollEl.addEventListener("mouseenter", () => (isPaused = true));
     scrollEl.addEventListener("mouseleave", () => (isPaused = false));
 
-    // 销毁时取消动画帧
     scrollEl._autoScrollDestroy = () => cancelAnimationFrame(animationId);
   },
   unbind(el) {
-    // 在解绑时取消动画
-    el._autoScrollDestroy?.();
+    const bodyWrapper = el.querySelector(".el-table__body-wrapper");
+    (bodyWrapper || el)._autoScrollDestroy?.();
   }
 };
