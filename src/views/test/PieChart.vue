@@ -89,15 +89,16 @@ export default {
         tooltip: { trigger: "item" },
         title: {
           text: `{b|事件总数}\n{a|${sum.toFixed(2)}}`,
-          left: "24%",
-          top: "45%",
+          left: "50%",
+          top: "50%",
           textStyle: {
             rich: {
               b: { color: "#fff", fontSize: 14, padding: 10 },
               a: { color: "#fff", fontSize: 32, fontWeight: 700 }
             }
           },
-          textAlign: "center"
+          textAlign: "center",
+          textVerticalAlign: "middle"
         },
         legend: { show: false },
         series: [
@@ -105,7 +106,7 @@ export default {
             type: "pie",
             zlevel: 3,
             radius: ["25%", "35%"],
-            center: ["25%", "50%"],
+            center: ["50%", "50%"],
             itemStyle: {
               normal: {
                 color: (params) => colorList2[params.dataIndex]
@@ -119,7 +120,7 @@ export default {
             zlevel: 1,
             silent: true,
             radius: ["38%", "40%"],
-            center: ["25%", "50%"],
+            center: ["50%", "50%"],
             itemStyle: {
               normal: {
                 color: (params) => colorList1[params.dataIndex]
@@ -131,7 +132,7 @@ export default {
           {
             type: "pie",
             radius: ["44%", "44.2%"],
-            center: ["25%", "50%"],
+            center: ["50%", "50%"],
             hoverAnimation: false,
             itemStyle: {
               normal: {
@@ -146,7 +147,7 @@ export default {
           {
             type: "pie",
             radius: ["44%", "44.5%"],
-            center: ["25%", "50%"],
+            center: ["50%", "50%"],
             hoverAnimation: false,
             color: [
               "rgba(255, 255, 255, 0.5)",

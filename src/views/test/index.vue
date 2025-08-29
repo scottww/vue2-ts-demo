@@ -31,7 +31,10 @@
       >
 
       <el-radio-button label="WeatherChart">WeatherChart</el-radio-button>
-      
+      <el-radio-button label="HourlyWeatherChart"
+        >WeatherChart带箭头</el-radio-button
+      >
+
       <el-radio-button label="ForceGraphChart">ForceGraphChart</el-radio-button>
       <el-radio-button label="PieChart">PieChart</el-radio-button>
     </el-radio-group>
@@ -59,9 +62,10 @@ import MonitoringIndicators2 from "./MonitoringIndicators2.vue";
 import CssDemo from "./CssDemo.vue";
 import DispatchStatistics from "./DispatchStatistics.vue";
 import WeatherChart from "./WeatherChart.vue";
+import HourlyWeatherChart from "./HourlyWeatherChart.vue";
 // echarts
-import ForceGraphChart from './ForceGraphChart.vue'
-import PieChart  from './PieChart.vue'
+import ForceGraphChart from "./ForceGraphChart.vue";
+import PieChart from "./PieChart.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -81,6 +85,7 @@ export default {
     CssDemo,
     DispatchStatistics,
     WeatherChart,
+    HourlyWeatherChart,
     ForceGraphChart,
     PieChart
   },
@@ -136,6 +141,11 @@ export default {
 
 .main-content.WeatherChart {
   /* width: 800px; */
+}
+
+.main-content.PieChart {
+  width: 400px;
+  height: 400px;
 }
 
 .main-content.ForceGraphChart {
