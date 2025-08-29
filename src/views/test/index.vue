@@ -29,6 +29,10 @@
       <el-radio-button label="DispatchStatistics"
         >DispatchStatistics</el-radio-button
       >
+
+      <el-radio-button label="WeatherChart">WeatherChart</el-radio-button>
+      
+      <el-radio-button label="ForceGraphChart">ForceGraphChart</el-radio-button>
     </el-radio-group>
     <div class="main-content" :class="tab">
       <component :is="tab"></component>
@@ -53,6 +57,8 @@ import MonitoringIndicators from "./MonitoringIndicators.vue";
 import MonitoringIndicators2 from "./MonitoringIndicators2.vue";
 import CssDemo from "./CssDemo.vue";
 import DispatchStatistics from "./DispatchStatistics.vue";
+import WeatherChart from "./WeatherChart.vue";
+import ForceGraphChart from './ForceGraphChart.vue'
 export default {
   components: {
     RiskHazardComponentVue,
@@ -70,7 +76,9 @@ export default {
     MonitoringIndicators,
     MonitoringIndicators2,
     CssDemo,
-    DispatchStatistics
+    DispatchStatistics,
+    WeatherChart,
+    ForceGraphChart
   },
   data() {
     return {
@@ -120,5 +128,16 @@ export default {
 
 .main-content.DispatchStatistics {
   height: 240px;
+}
+
+.main-content.WeatherChart {
+  /* width: 800px;
+  height: 240px; */
+}
+
+.main-content.ForceGraphChart {
+  width: 1280px;
+  height: 800px;
+  background: none;
 }
 </style>
