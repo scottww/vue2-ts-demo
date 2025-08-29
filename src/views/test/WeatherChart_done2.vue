@@ -53,24 +53,22 @@ export default {
         icon: item.icon || "sunny"
       }));
     },
-    // 图标基准 Y 坐标（最高温度 + 一定间距）
-    iconBaseY() {
-      const highTemps = this.displayData.map((d) => d.highTemp);
-      return Math.max(...highTemps) + 8;
-    },
+    // 修复数据结构 - 使用ECharts支持的格式：[x值, y值, 自定义数据]
     weatherIconData() {
+      const yPos = this.iconYPosition;
       return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY, // ✅ 固定在一条水平线上
-        { index, iconType: item.icon }
+        index, // x轴位置（与日期索引对应）
+        yPos, // y轴位置（固定在顶部）
+        {
+          // 自定义数据，存放我们需要的信息
+          index: index,
+          iconType: item.icon
+        }
       ]);
     },
-    weatherLabelData() {
-      return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY + 6, // ✅ 图标再往上 6 个单位
-        { day: item.day }
-      ]);
+    iconYPosition() {
+      const highTemps = this.displayData.map((d) => d.highTemp);
+      return Math.max(...highTemps) + 10;
     }
   },
   mounted() {
@@ -135,10 +133,7 @@ export default {
         xAxis: {
           type: "category",
           data: days,
-          axisLine: {
-            show: false,
-            lineStyle: { color: "rgba(147,197,253,0.3)" }
-          },
+          axisLine: { show: false, lineStyle: { color: "rgba(147,197,253,0.3)" } },
           axisLabel: { show: false, color: "#93c5fd" },
           axisTick: { show: false },
           boundaryGap: false
@@ -194,28 +189,60 @@ export default {
           {
             name: "天气",
             type: "scatter",
+            // 使用修复后的三维数组格式
             data: this.weatherIconData,
+            // 从自定义数据中获取信息
             symbol: function (params) {
-              const { iconType } = params[2] || {};
+              // ECharts中自定义数据存放在params.data[2]
+              const customData = params[2] || {};
+              const index = customData.index;
+              const iconType = customData.iconType;
+
+              console.log("当前图标参数:", {
+                params: params,
+                customData: customData,
+                index: index,
+                iconType: iconType
+              });
+
+              if (index === undefined || !iconType) {
+                console.warn(`天气图标数据异常:`, params);
+                return "circle";
+              }
+
               const imgPath = this.icons[iconType];
-              return imgPath ? `image://${imgPath}` : "circle";
+              if (!imgPath) {
+                console.warn(`未找到图标: ${iconType}`);
+                return "circle";
+              }
+
+              return `image://${imgPath}`;
             }.bind(this),
+            // symbolSize: 100,
             symbolSize: [58, 64],
             tooltip: { show: false },
-            z: 3
+            z: 3,
+            animationDuration: 800
           },
+          // ✅ 新增一个 scatter 专门显示“周几”
           {
             name: "日期标签",
             type: "scatter",
-            data: this.weatherLabelData,
+            data: this.displayData.map((item, index) => [
+              index,
+              item.highTemp + 2, // 跟图标同一高度
+              { day: item.day }
+            ]),
             symbolSize: 0, // 不显示点
             label: {
               show: true,
-              position: "top",
-              distance: 0,
+              position: "top", // 在图标上方
+              distance: 10, // 距离图标的间距
               color: "#fff",
               fontSize: 14,
-              formatter: (params) => params.data[2].day
+              formatter: function (params) {
+                return params.data[2].day; // 显示“周几”
+              }
             },
             tooltip: { show: false },
             z: 4

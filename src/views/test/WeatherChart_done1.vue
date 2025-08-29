@@ -53,24 +53,17 @@ export default {
         icon: item.icon || "sunny"
       }));
     },
-    // 图标基准 Y 坐标（最高温度 + 一定间距）
-    iconBaseY() {
-      const highTemps = this.displayData.map((d) => d.highTemp);
-      return Math.max(...highTemps) + 8;
-    },
+    // 直接用当天的最高温度 + 2 来确定 Y 坐标
     weatherIconData() {
       return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY, // ✅ 固定在一条水平线上
+        index, // x 轴位置
+        item.highTemp + 4, // y 轴位置（高温点上方 2 单位）
         { index, iconType: item.icon }
       ]);
     },
-    weatherLabelData() {
-      return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY + 6, // ✅ 图标再往上 6 个单位
-        { day: item.day }
-      ]);
+    iconYPosition() {
+      const highTemps = this.displayData.map((d) => d.highTemp);
+      return Math.max(...highTemps) + 4;
     }
   },
   mounted() {
@@ -110,8 +103,6 @@ export default {
       const days = data.map((d) => d.day);
       const highTemps = data.map((d) => d.highTemp);
       const lowTemps = data.map((d) => d.lowTemp);
-      const maxTemp = Math.max(...highTemps);
-      const minTemp = Math.min(...lowTemps);
 
       return {
         backgroundColor: "transparent",
@@ -135,20 +126,16 @@ export default {
         xAxis: {
           type: "category",
           data: days,
-          axisLine: {
-            show: false,
-            lineStyle: { color: "rgba(147,197,253,0.3)" }
-          },
-          axisLabel: { show: false, color: "#93c5fd" },
+          axisLine: { lineStyle: { color: "rgba(147,197,253,0.3)" } },
+          axisLabel: { color: "#93c5fd" },
           axisTick: { show: false },
           boundaryGap: false
         },
         yAxis: {
           type: "value",
           show: false,
-          min: minTemp - 2,
-          max: this.iconYPosition + 1,
-          interval: 5
+          min: Math.min(...lowTemps) - 2,
+          max: Math.max(...highTemps) + 6 // 给图标留点空间
         },
         series: [
           {
@@ -200,25 +187,10 @@ export default {
               const imgPath = this.icons[iconType];
               return imgPath ? `image://${imgPath}` : "circle";
             }.bind(this),
-            symbolSize: [58, 64],
+            symbolSize: 40,
             tooltip: { show: false },
-            z: 3
-          },
-          {
-            name: "日期标签",
-            type: "scatter",
-            data: this.weatherLabelData,
-            symbolSize: 0, // 不显示点
-            label: {
-              show: true,
-              position: "top",
-              distance: 0,
-              color: "#fff",
-              fontSize: 14,
-              formatter: (params) => params.data[2].day
-            },
-            tooltip: { show: false },
-            z: 4
+            z: 3,
+            animationDuration: 800
           }
         ]
       };

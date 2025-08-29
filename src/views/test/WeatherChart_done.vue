@@ -45,32 +45,29 @@ export default {
       if (!this.weatherData.length) {
         return this.defaultWeatherData;
       }
-
-      return this.weatherData.map((item) => ({
+      
+      return this.weatherData.map(item => ({
         day: item.day || "未知",
         highTemp: item.highTemp || 0,
         lowTemp: item.lowTemp || 0,
         icon: item.icon || "sunny"
       }));
     },
-    // 图标基准 Y 坐标（最高温度 + 一定间距）
-    iconBaseY() {
-      const highTemps = this.displayData.map((d) => d.highTemp);
-      return Math.max(...highTemps) + 8;
-    },
+    // 修复数据结构 - 使用ECharts支持的格式：[x值, y值, 自定义数据]
     weatherIconData() {
+      const yPos = this.iconYPosition;
       return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY, // ✅ 固定在一条水平线上
-        { index, iconType: item.icon }
+        index,  // x轴位置（与日期索引对应）
+        yPos,   // y轴位置（固定在顶部）
+        {       // 自定义数据，存放我们需要的信息
+          index: index,
+          iconType: item.icon
+        }
       ]);
     },
-    weatherLabelData() {
-      return this.displayData.map((item, index) => [
-        index,
-        this.iconBaseY + 6, // ✅ 图标再往上 6 个单位
-        { day: item.day }
-      ]);
+    iconYPosition() {
+      const highTemps = this.displayData.map(d => d.highTemp);
+      return Math.max(...highTemps) + 4;
     }
   },
   mounted() {
@@ -84,7 +81,7 @@ export default {
   },
   methods: {
     checkImageLoad() {
-      Object.values(this.icons).forEach((imgSrc) => {
+      Object.values(this.icons).forEach(imgSrc => {
         const img = new Image();
         img.src = imgSrc;
         img.onerror = () => {
@@ -92,34 +89,34 @@ export default {
         };
       });
     },
-
+    
     initChart() {
       this.chartInstance = echarts.init(this.$refs.chartRef);
       this.updateChart();
     },
-
+    
     updateChart() {
       console.log("当前显示数据:", this.displayData);
       console.log("天气图标数据:", this.weatherIconData);
       const option = this.getChartOption();
       this.chartInstance.setOption(option);
     },
-
+    
     getChartOption() {
       const data = this.displayData;
-      const days = data.map((d) => d.day);
-      const highTemps = data.map((d) => d.highTemp);
-      const lowTemps = data.map((d) => d.lowTemp);
+      const days = data.map(d => d.day);
+      const highTemps = data.map(d => d.highTemp);
+      const lowTemps = data.map(d => d.lowTemp);
       const maxTemp = Math.max(...highTemps);
       const minTemp = Math.min(...lowTemps);
-
+      
       return {
         backgroundColor: "transparent",
         grid: {
-          top: "15%",
-          right: "5%",
-          bottom: "15%",
-          left: "5%",
+          top: '15%',
+          right: '5%',
+          bottom: '15%',
+          left: '5%',
           containLabel: true
         },
         tooltip: {
@@ -128,18 +125,15 @@ export default {
           textStyle: { color: "#fff" },
           formatter: (params) => {
             let str = params[0].name + "<br/>";
-            params.forEach((p) => (str += `${p.seriesName}: ${p.value}°<br/>`));
+            params.forEach(p => str += `${p.seriesName}: ${p.value}°<br/>`);
             return str;
           }
         },
         xAxis: {
           type: "category",
           data: days,
-          axisLine: {
-            show: false,
-            lineStyle: { color: "rgba(147,197,253,0.3)" }
-          },
-          axisLabel: { show: false, color: "#93c5fd" },
+          axisLine: { lineStyle: { color: "rgba(147,197,253,0.3)" } },
+          axisLabel: { color: "#93c5fd" },
           axisTick: { show: false },
           boundaryGap: false
         },
@@ -194,36 +188,44 @@ export default {
           {
             name: "天气",
             type: "scatter",
+            // 使用修复后的三维数组格式
             data: this.weatherIconData,
-            symbol: function (params) {
-              const { iconType } = params[2] || {};
+            // 从自定义数据中获取信息
+            symbol: function(params) {
+              // ECharts中自定义数据存放在params.data[2]
+              const customData = params[2] || {};
+              const index = customData.index;
+              const iconType = customData.iconType;
+              
+              console.log("当前图标参数:", {
+                params: params,
+                customData: customData,
+                index: index,
+                iconType: iconType
+              });
+              
+              if (index === undefined || !iconType) {
+                console.warn(`天气图标数据异常:`, params);
+                return 'circle';
+              }
+              
               const imgPath = this.icons[iconType];
-              return imgPath ? `image://${imgPath}` : "circle";
+              if (!imgPath) {
+                console.warn(`未找到图标: ${iconType}`);
+                return 'circle';
+              }
+              
+              return `image://${imgPath}`;
             }.bind(this),
-            symbolSize: [58, 64],
+            symbolSize: 40,
             tooltip: { show: false },
-            z: 3
-          },
-          {
-            name: "日期标签",
-            type: "scatter",
-            data: this.weatherLabelData,
-            symbolSize: 0, // 不显示点
-            label: {
-              show: true,
-              position: "top",
-              distance: 0,
-              color: "#fff",
-              fontSize: 14,
-              formatter: (params) => params.data[2].day
-            },
-            tooltip: { show: false },
-            z: 4
+            z: 3,
+            animationDuration: 800
           }
         ]
       };
     },
-
+    
     resizeChart() {
       if (this.chartInstance) this.chartInstance.resize();
     }
