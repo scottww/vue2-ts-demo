@@ -118,6 +118,11 @@ export default {
   background-image: none;
 }
 
+.main-content.AlarmTotal{
+  width: auto;
+}
+
+
 .main-content.IconTable {
   width: auto;
 }

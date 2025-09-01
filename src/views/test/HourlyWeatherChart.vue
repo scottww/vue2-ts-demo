@@ -122,7 +122,7 @@ export default {
         backgroundColor: "rgba(4, 26, 73, 0.8)",
         grid: {
           top: "15%",
-          right: "5%",
+          right: "10%",
           bottom: "0%",
           left: "5%",
           containLabel: true
