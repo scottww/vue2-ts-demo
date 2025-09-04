@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "syst-heavy";       /* 自定义字体名 */
-  src: url('~@/assets/fonts/syst/SOURCEHANSANSCN-HEAVY.TTF') format('truetype');
+  font-family: "SYHT";       /* 自定义字体名 */
+  src: url('~@/assets/fonts/syht/SOURCEHANSANSCN-HEAVY.TTF') format('truetype');
   /* src: url('@/assets/fonts/myFont.woff2') format('woff2'),
   url('@/assets/fonts/myFont.woff') format('woff'),
   url('@/assets/fonts/myFont.ttf') format('truetype'); */
@@ -11,5 +11,5 @@
 
 /* 可选：设置全局字体 */
 /* body {
-  font-family: "syst-heavy", Arial, sans-serif;
+  font-family: "SYHT", Arial, sans-serif;
 } */

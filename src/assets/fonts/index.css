@@ -1,7 +1,7 @@
 /* 引入各个字体的 CSS */
 /* 阿里妈妈数黑体 */
-@import './sht/font.css';
-/* 思源宋体 */
-@import './syst/font.css';
+@import './almmsht/font.css';
+/* 思源黑体 */
+@import './syht/font.css';
 /* 庞门正道 */
 @import './pmzd/font.css';
