@@ -38,6 +38,8 @@
       <el-radio-button label="ForceGraphChart">ForceGraphChart</el-radio-button>
       <el-radio-button label="PieChart">PieChart</el-radio-button>
       <el-radio-button label="RainChart">RainChart</el-radio-button>
+
+      <el-radio-button label="KnowledgeGraphChart">知识图谱</el-radio-button>
     </el-radio-group>
     <div class="main-content" :class="tab">
       <component :is="tab"></component>
@@ -68,6 +70,7 @@ import HourlyWeatherChart from "./HourlyWeatherChart.vue";
 import ForceGraphChart from "./ForceGraphChart.vue";
 import PieChart from "./PieChart.vue";
 import RainChart from "./RainChart.vue";
+import KnowledgeGraphChart from "./KnowledgeGraphChart.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -90,7 +93,8 @@ export default {
     HourlyWeatherChart,
     ForceGraphChart,
     PieChart,
-    RainChart
+    RainChart,
+    KnowledgeGraphChart
   },
   data() {
     return {
@@ -121,10 +125,9 @@ export default {
   background-image: none;
 }
 
-.main-content.AlarmTotal{
+.main-content.AlarmTotal {
   width: auto;
 }
-
 
 .main-content.IconTable {
   width: auto;
