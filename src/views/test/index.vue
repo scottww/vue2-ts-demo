@@ -1,46 +1,16 @@
 <template>
   <div class="test-demo">
-    <el-radio-group
-      v-model="tab"
-      @tab-click="tabClick"
-      style="margin-bottom: 30px"
-    >
-      <el-radio-button label="RiskHazardComponentVue">测试1</el-radio-button>
-      <el-radio-button label="Risk2">测试2</el-radio-button>
-      <el-radio-button label="Risk3">测试3</el-radio-button>
-      <el-radio-button label="GateRealTime">测试4</el-radio-button>
-      <el-radio-button label="GateRealTime2">测试5</el-radio-button>
-      <el-radio-button label="EquipmentDetail">测试6</el-radio-button>
-      <el-radio-button label="Pie3D">测试7</el-radio-button>
-      <el-radio-button label="Chart4">雨量</el-radio-button>
-      <el-radio-button label="WaterLevelChart">水位Chart</el-radio-button>
-      <el-radio-button label="TableDemo">表格</el-radio-button>
-      <el-radio-button label="AlarmTotal">报警总数</el-radio-button>
-      <el-radio-button label="IconTable">IconTable</el-radio-button>
-      <el-radio-button label="MonitoringIndicators"
-        >MonitoringIndicators</el-radio-button
+    <div class="tab-group">
+      <div
+        v-for="item in tabs"
+        :key="item.label"
+        :class="['tab-btn', { active: tab === item.label }]"
+        @click="tab = item.label"
       >
-      <el-radio-button label="MonitoringIndicators2"
-        >MonitoringIndicators2</el-radio-button
-      >
-      <el-radio-button label="CssDemo">CssDemo</el-radio-button>
-      <!-- <el-radio-button label="ForceGraph">ForceGraph</el-radio-button> -->
+        {{ item.name }}
+      </div>
+    </div>
 
-      <el-radio-button label="DispatchStatistics"
-        >DispatchStatistics</el-radio-button
-      >
-
-      <el-radio-button label="WeatherChart">WeatherChart</el-radio-button>
-      <el-radio-button label="HourlyWeatherChart"
-        >WeatherChart带箭头</el-radio-button
-      >
-
-      <el-radio-button label="ForceGraphChart">ForceGraphChart</el-radio-button>
-      <el-radio-button label="PieChart">PieChart</el-radio-button>
-      <el-radio-button label="RainChart">RainChart</el-radio-button>
-
-      <el-radio-button label="KnowledgeGraphChart">知识图谱</el-radio-button>
-    </el-radio-group>
     <div class="main-content" :class="tab">
       <component :is="tab"></component>
     </div>
@@ -55,6 +25,8 @@ import GateRealTime from "./GateRealTime.vue";
 import GateRealTime2 from "./GateRealTime2.vue";
 import EquipmentDetail from "./EquipmentDetail.vue";
 import Pie3D from "./Pie3D.vue";
+import Pie3D2 from "./Pie3D2.vue";
+import Pie3D3 from "./Pie3D3.vue";
 import Chart4 from "./Chart4.vue";
 import WaterLevelChart from "./WaterLevelChart.vue";
 import TableDemo from "./TableDemo.vue";
@@ -69,8 +41,12 @@ import HourlyWeatherChart from "./HourlyWeatherChart.vue";
 // echarts
 import ForceGraphChart from "./ForceGraphChart.vue";
 import PieChart from "./PieChart.vue";
+import PieChart2 from "./PieChart2.vue";
 import RainChart from "./RainChart.vue";
+import HourlyRainChart from "./HourlyRainChart.vue";
 import KnowledgeGraphChart from "./KnowledgeGraphChart.vue";
+
+import CustomTable from "./CustomTable.vue";
 export default {
   components: {
     RiskHazardComponentVue,
@@ -80,6 +56,8 @@ export default {
     GateRealTime2,
     EquipmentDetail,
     Pie3D,
+    Pie3D2,
+    Pie3D3,
     Chart4,
     WaterLevelChart,
     TableDemo,
@@ -93,12 +71,44 @@ export default {
     HourlyWeatherChart,
     ForceGraphChart,
     PieChart,
+    PieChart2,
     RainChart,
-    KnowledgeGraphChart
+    HourlyRainChart,
+    KnowledgeGraphChart,
+    CustomTable
   },
   data() {
     return {
-      tab: "RiskHazardComponentVue"
+      tab: "RiskHazardComponentVue",
+      tabs: [
+        { label: "RiskHazardComponentVue", name: "测试1" },
+        { label: "Risk2", name: "测试2" },
+        { label: "Risk3", name: "测试3" },
+        { label: "GateRealTime", name: "测试4" },
+        { label: "GateRealTime2", name: "panel2" },
+        { label: "EquipmentDetail", name: "设备详情" },
+        { label: "Pie3D", name: "3D饼图" },
+        { label: "Pie3D2", name: "3D饼图2" },
+        { label: "Pie3D3", name: "3D饼图3" },
+        { label: "Chart4", name: "雨量" },
+        { label: "WaterLevelChart", name: "水位Chart" },
+        { label: "TableDemo", name: "表格" },
+        { label: "AlarmTotal", name: "报警总数" },
+        { label: "IconTable", name: "IconTable" },
+        { label: "MonitoringIndicators", name: "MonitoringIndicators" },
+        { label: "MonitoringIndicators2", name: "MonitoringIndicators2" },
+        { label: "CssDemo", name: "CssDemo" },
+        { label: "DispatchStatistics", name: "DispatchStatistics" },
+        { label: "WeatherChart", name: "WeatherChart" },
+        { label: "HourlyWeatherChart", name: "HourlyWeatherChart带箭头" },
+        { label: "ForceGraphChart", name: "ForceGraphChart" },
+        { label: "KnowledgeGraphChart", name: "知识图谱" },
+        { label: "PieChart", name: "PieChart" },
+        { label: "PieChart2", name: "PieChart2" },
+        { label: "RainChart", name: "RainChart" },
+        { label: "HourlyRainChart", name: "HourlyRainChart带箭头" },
+        { label: "CustomTable", name: "CustomTable" }
+      ]
     };
   },
   methods: {
@@ -109,7 +119,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main-content {
   position: absolute;
   width: 670px;
@@ -118,9 +128,49 @@ export default {
   background-image: radial-gradient(circle at center, #143a7c, #0a1e3c);
 }
 
+.tab-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 6px 18px;
+  border-radius: 4px;
+  border: 1px solid #3a4a6a;
+  background: #0a1e3c;
+  color: #cdd6f4;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+
+  &:hover {
+    background: #1a2b4a;
+    color: #fff;
+    border-color: #4e91ff;
+    box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #4e91ff, #6bb8ff);
+    color: #fff;
+    border: 1px solid #4e91ff;
+    box-shadow: 0 2px 6px rgba(64, 158, 255, 0.5);
+  }
+}
+
 .main-content.Pie3D {
   position: absolute;
   width: 670px;
+  background-color: transparent;
+  background-image: none;
+}
+
+.main-content.Pie3D3 {
+  position: absolute;
+  width: 800px;
   background-color: transparent;
   background-image: none;
 }
@@ -162,6 +212,11 @@ export default {
 .main-content.ForceGraphChart {
   width: 1280px;
   height: 800px;
+  background: none;
+}
+
+.main-content.CustomTable {
+  width: auto;
   background: none;
 }
 </style>
