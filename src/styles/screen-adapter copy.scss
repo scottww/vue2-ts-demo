@@ -1,0 +1,95 @@
+// $rem-baseline: 13px !default; // rem 默认基准
+// $scaleWidth: 1920px !default; // UI 设计基准宽度
+// $scaleHeight: 1080px !default; // UI 设计基准高度
+
+// html {
+//   font-size: $rem-baseline;
+
+//   @media only screen and (max-width: 1600px) and (min-width: 1441px) {
+//     font-size: 13px;
+//   }
+
+//   @media only screen and (max-width: 1441px) and (min-width: 1371px) {
+//     font-size: 12px;
+//   }
+
+//   @media only screen and (max-width: 1371px) {
+//     font-size: 10px;
+//   }
+// }
+
+// // rem 函数
+// @function rem($px) {
+//   @return $px / $rem-baseline * 1rem;
+// }
+
+// // UI 按照百分比缩放
+// @function VW($px) {
+//   @return $px / $scaleWidth * 100vw;
+// }
+
+// @function VH($px) {
+//   @return $px / $scaleHeight * 100vh;
+// }
+$rem-baseline: 14px !default; // rem 默认基准
+$scaleWidth: 1920px !default; // UI 设计基准宽度
+$scaleHeight: 1080px !default; // UI 设计基准高度
+
+// html {
+//   font-size: $rem-baseline;
+
+//   @media only screen and (max-width: 1600px) and (min-width: 1441px) {
+//     font-size: 14px;
+//   }
+
+//   @media only screen and (max-width: 1441px) and (min-width: 1371px) {
+//     font-size: 12px;
+//   }
+
+//   @media only screen and (max-width: 1371px) {
+//     font-size: 10px;
+//   }
+// }
+
+html {
+  font-size: $rem-baseline;
+
+  @media only screen and (max-width: 1600px) and (min-width: 1441px) {
+    font-size: 13px;
+  }
+
+  @media only screen and (max-width: 1441px) and (min-width: 1371px) {
+    font-size: 12px;
+  }
+
+  @media only screen and (max-width: 1371px) {
+    font-size: 10px;
+  }
+  // 新增对2560×1440分辨率的适配
+  @media only screen and (max-width: 2560px) and (min-width: 1601px) {
+    font-size: calc(#{$rem-baseline} * 1.375); // 14px * 1.375 = 19.25px, 根据需求可调整比例
+  }
+
+  // 新增对3840×2160分辨率的适配
+  @media only screen and (min-width: 2561px) {
+    font-size: calc(#{$rem-baseline} * 2); // 14px * 2 = 28px, 根据需求可调整比例
+  }
+  // 新增对3960宽度尺寸的适配
+  @media only screen and (min-width: 3841px) {
+    font-size: calc(#{$rem-baseline} * 2.2); // 14px * 2.2 = 30.8px, 根据需求可调整比例
+  }
+}
+
+// rem 函数
+@function rem($px) {
+  @return $px / $rem-baseline * 1rem;
+}
+
+// UI 按照百分比缩放
+@function VW($px) {
+  @return $px / $scaleWidth * 100vw;
+}
+
+@function VH($px) {
+  @return $px / $scaleHeight * 100vh;
+}

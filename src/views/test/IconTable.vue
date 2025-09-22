@@ -213,6 +213,10 @@ export default {
 .icon-table-container >>> .el-table__inner-wrapper {
   border: none !important;
 }
+/* 底部白线 */
+.icon-table-container ::v-deep .el-table__inner-wrapper:before {
+  background-color: transparent;
+}
 
 /* 确保表格没有滚动条样式影响 */
 .icon-table-container >>> .el-table__body-wrapper::-webkit-scrollbar-track {

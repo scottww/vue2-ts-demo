@@ -29,6 +29,7 @@ import Pie3D2 from "./Pie3D2.vue";
 import Pie3D3 from "./Pie3D3.vue";
 import Chart4 from "./Chart4.vue";
 import WaterLevelChart from "./WaterLevelChart.vue";
+import WaterRainChart from "./WaterRainChart.vue";
 import TableDemo from "./TableDemo.vue";
 import AlarmTotal from "./AlarmTotal.vue";
 import IconTable from "./IconTable.vue";
@@ -45,6 +46,11 @@ import PieChart2 from "./PieChart2.vue";
 import RainChart from "./RainChart.vue";
 import HourlyRainChart from "./HourlyRainChart.vue";
 import KnowledgeGraphChart from "./KnowledgeGraphChart.vue";
+import ImagePreviewer from "./ImagePreviewer.vue";
+import ScheduleTable from "./ScheduleTable.vue";
+import MultiplicationTable from "./MultiplicationTable.vue";
+import MathFormulaTable from "./MathFormulaTable.vue";
+
 
 import CustomTable from "./CustomTable.vue";
 export default {
@@ -60,6 +66,7 @@ export default {
     Pie3D3,
     Chart4,
     WaterLevelChart,
+    WaterRainChart,
     TableDemo,
     AlarmTotal,
     IconTable,
@@ -75,7 +82,11 @@ export default {
     RainChart,
     HourlyRainChart,
     KnowledgeGraphChart,
-    CustomTable
+    CustomTable,
+    ImagePreviewer,
+    ScheduleTable,
+    MultiplicationTable,
+    MathFormulaTable
   },
   data() {
     return {
@@ -92,6 +103,7 @@ export default {
         { label: "Pie3D3", name: "3D饼图3" },
         { label: "Chart4", name: "雨量" },
         { label: "WaterLevelChart", name: "水位Chart" },
+        { label: "WaterRainChart", name: "水位雨量Chart" },
         { label: "TableDemo", name: "表格" },
         { label: "AlarmTotal", name: "报警总数" },
         { label: "IconTable", name: "IconTable" },
@@ -107,7 +119,11 @@ export default {
         { label: "PieChart2", name: "PieChart2" },
         { label: "RainChart", name: "RainChart" },
         { label: "HourlyRainChart", name: "HourlyRainChart带箭头" },
-        { label: "CustomTable", name: "CustomTable" }
+        { label: "CustomTable", name: "CustomTable" },
+        { label: "ImagePreviewer", name: "ImagePreviewer" },
+        { label: "ScheduleTable", name: "ScheduleTable" },
+        { label: "MultiplicationTable", name: "MultiplicationTable" },
+        { label: "MathFormulaTable", name: "MathFormulaTable" }
       ]
     };
   },
@@ -218,5 +234,32 @@ export default {
 .main-content.CustomTable {
   width: auto;
   background: none;
+}
+
+.main-content.ImagePreviewer {
+  width: 800px;
+  height: 800px;
+  background: none;
+}
+
+.main-content.ScheduleTable {
+  width: auto;
+  height: 800px;
+  background: none;
+  position: relative;
+}
+
+.main-content.MultiplicationTable {
+  // width: auto;
+  // height: 800px;
+  // background: none;
+  // position: relative;
+}
+
+.main-content.MathFormulaTable {
+  width: 600px;
+  height: 800px;
+  background: none;
+  position: relative;
 }
 </style>

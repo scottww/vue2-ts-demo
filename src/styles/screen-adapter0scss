@@ -1,0 +1,55 @@
+// =========================================
+// 配置
+// =========================================
+$rem-baseline: 14px !default; 
+$scaleWidth: 3960px !default;
+$scaleHeight: 1080px !default;
+
+// rem 换算
+@function rem($px) {
+  @return $px / $rem-baseline * 1rem;
+}
+
+// 宽高百分比换算
+@function VW($px) {
+  @return $px / $scaleWidth * 100vw;
+}
+@function VH($px) {
+  @return $px / $scaleHeight * 100vh;
+}
+
+// =========================================
+// 示例样式
+// =========================================
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20);
+  padding: rem(40);
+
+  .block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: rem(8);
+    color: #fff;
+    font-weight: bold;
+  }
+
+  // rem 示例
+  .block-rem {
+    width: rem(400);    // 固定宽度
+    height: rem(200);   // 固定高度
+    font-size: rem(24); // 字体跟随 html font-size 缩放
+    background: #3b82f6;
+  }
+
+  // vw/vh 示例
+  .block-vwvh {
+    width: VW(800);     // 相对屏幕宽度
+    height: VH(300);    // 相对屏幕高度
+    font-size: VW(32);  // 字体随屏幕等比缩放
+    background: #10b981;
+  }
+}

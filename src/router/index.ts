@@ -756,6 +756,29 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "importData"
         }
+      },
+      {
+        path: "/drawTool",
+        name: "drawTool",
+        component: () =>
+          import(
+            /* webpackChunkName: "DrawTool" */ "../views/drawTool/index.vue"
+          ),
+        meta: {
+          title: "drawTool"
+        }
+      },
+      {
+        path: "/formula",
+        name: "formula",
+        component: () =>
+          import(
+            /* webpackChunkName: "Formula" */ "../views/formula/index.vue"
+          ),
+        meta: {
+          title: "formula",
+          isFull: true
+        }
       }
     ]
   },

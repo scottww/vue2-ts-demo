@@ -5,33 +5,33 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from "echarts";
 
 export default {
-  name: 'WaterLevelChart',
+  name: "WaterLevelChart",
   data() {
     return {
       chartInstance: null,
       // 模拟水位数据
       waterLevelData: [
-        { date: '07-10', realTime: 1.2, warning: 7.0, guarantee: 10.0 },
-        { date: '07-11', realTime: 1.8, warning: 7.0, guarantee: 10.0 },
-        { date: '07-12', realTime: 2.5, warning: 7.0, guarantee: 10.0 },
-        { date: '07-13', realTime: 3.2, warning: 7.0, guarantee: 10.0 },
-        { date: '07-14', realTime: 3.8, warning: 7.0, guarantee: 10.0 },
-        { date: '07-15', realTime: 4.2, warning: 7.0, guarantee: 10.0 },
-        { date: '07-16', realTime: 4.5, warning: 7.0, guarantee: 10.0 },
+        { date: "07-10", realTime: 1.2, warning: 7.0, guarantee: 10.0 },
+        { date: "07-11", realTime: 1.8, warning: 7.0, guarantee: 10.0 },
+        { date: "07-12", realTime: 2.5, warning: 7.0, guarantee: 10.0 },
+        { date: "07-13", realTime: 3.2, warning: 7.0, guarantee: 10.0 },
+        { date: "07-14", realTime: 3.8, warning: 7.0, guarantee: 10.0 },
+        { date: "07-15", realTime: 4.2, warning: 7.0, guarantee: 10.0 },
+        { date: "07-16", realTime: 4.5, warning: 7.0, guarantee: 10.0 }
       ]
     };
   },
   computed: {
     // 提取X轴日期
     dates() {
-      return this.waterLevelData.map(item => item.date);
+      return this.waterLevelData.map((item) => item.date);
     },
     // 提取实时水位数据
     realTimeData() {
-      return this.waterLevelData.map(item => item.realTime);
+      return this.waterLevelData.map((item) => item.realTime);
     },
     // 提取警戒水位数据（常量）
     warningData() {
@@ -50,146 +50,158 @@ export default {
 
         const option = {
           tooltip: {
-            trigger: 'axis',
+            trigger: "axis",
             axisPointer: {
-              type: 'cross',
+              type: "cross",
               label: {
-                backgroundColor: '#6a7985'
+                backgroundColor: "#6a7985"
               }
             },
-            formatter: function(params) {
+            formatter: function (params) {
               let result = `${params[0].name}<br/>`;
-              params.forEach(param => {
+              params.forEach((param) => {
                 result += `${param.marker} ${param.seriesName}: ${param.value} m<br/>`;
               });
               return result;
             }
           },
           legend: {
-            data: ['实时水位', '警戒水位', '保证水位'],
+            data: ["实时水位", "警戒水位", "保证水位"],
             textStyle: {
-              color: '#fff'
+              color: "#fff"
             },
             top: 10
           },
           grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
             containLabel: true
           },
           xAxis: [
             {
-              type: 'category',
+              type: "category",
               boundaryGap: false,
               data: this.dates,
               axisLine: {
                 lineStyle: {
-                  color: 'rgba(255, 255, 255, 0.3)'
+                  color: "rgba(255, 255, 255, 0.3)"
                 }
               },
               axisLabel: {
-                color: 'rgba(255, 255, 255, 0.7)'
+                color: "rgba(255, 255, 255, 0.7)"
               },
               splitLine: {
                 lineStyle: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: "rgba(255, 255, 255, 0.1)"
                 }
               }
             }
           ],
           yAxis: [
             {
-              type: 'value',
-              name: '水位: m',
+              type: "value",
+              name: "水位: m",
               nameTextStyle: {
-                color: 'rgba(255, 255, 255, 0.7)'
+                color: "rgba(255, 255, 255, 0.7)"
               },
               min: 0,
               max: 10,
               interval: 2,
               axisLine: {
                 lineStyle: {
-                  color: 'rgba(255, 255, 255, 0.3)'
+                  color: "rgba(255, 255, 255, 0.3)"
                 }
               },
               axisLabel: {
-                color: 'rgba(255, 255, 255, 0.7)',
-                formatter: '{value}'
+                color: "rgba(255, 255, 255, 0.7)",
+                formatter: "{value}"
               },
               splitLine: {
                 lineStyle: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: "rgba(255, 255, 255, 0.1)"
                 }
               }
             }
           ],
           series: [
             {
-              name: '实时水位',
-              type: 'line',
+              name: "实时水位",
+              type: "line",
               data: this.realTimeData,
-              symbol: 'circle',
+              symbol: "circle",
               symbolSize: 6,
-              itemStyle: {
-                color: '#36CFC9'
-              },
               lineStyle: {
                 width: 3,
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: '#36CFC9' },
-                  { offset: 1, color: '#1890FF' }
+                  { offset: 0, color: "#36CFC9" },
+                  { offset: 1, color: "#1890FF" }
                 ])
+              },
+              itemStyle: {
+                color: "#36CFC9", // 内圈色
+                borderColor: "#fff", // 外圈色
+                borderWidth: 1
               },
               areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: 'rgba(54, 207, 201, 0.3)' },
-                  { offset: 1, color: 'rgba(24, 144, 255, 0.1)' }
+                  { offset: 0, color: "rgba(54, 207, 201, 0.3)" },
+                  { offset: 1, color: "rgba(24, 144, 255, 0.1)" }
                 ])
               },
               emphasis: {
-                focus: 'series'
+                focus: "series"
               }
             },
             {
-              name: '警戒水位',
-              type: 'line',
+              name: "警戒水位",
+              type: "line",
               data: this.warningData,
-              symbol: 'none',
+              symbol: "none",
               lineStyle: {
                 width: 2,
-                type: 'solid',
-                color: '#FF7A45'
+                type: "solid",
+                color: "#FF7A45"
+              },
+              itemStyle: {
+                color: "#FF7A45", // 内圈蓝色
+                borderColor: "#fff", // 外圈白色
+                borderWidth: 1
               },
               emphasis: {
-                focus: 'series'
+                focus: "series"
               }
             },
             {
-              name: '保证水位',
-              type: 'line',
+              name: "保证水位",
+              type: "line",
               data: this.guaranteeData,
-              symbol: 'none',
+              symbol: "none",
               lineStyle: {
                 width: 2,
-                type: 'dashed',
-                color: '#F5222D'
+                type: "dashed",
+                color: "#F5222D"
+              },
+              itemStyle: {
+                color: "#F5222D", // 内圈蓝色
+                borderColor: "#fff", // 外圈白色
+                borderWidth: 1
               },
               emphasis: {
-                focus: 'series'
+                focus: "series"
               }
             }
           ],
           // 背景设置
           backgroundColor: {
-            type: 'linear',
+            type: "linear",
             x: 0,
             y: 0,
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(10, 32, 60, 0.9)' },
-              { offset: 1, color: 'rgba(10, 18, 30, 0.9)' }
+              { offset: 0, color: "rgba(10, 32, 60, 0.9)" },
+              { offset: 1, color: "rgba(10, 18, 30, 0.9)" }
             ]
           }
         };
@@ -206,10 +218,10 @@ export default {
   },
   mounted() {
     this.initChart();
-    window.addEventListener('resize', this.resizeChart);
+    window.addEventListener("resize", this.resizeChart);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.resizeChart);
+    window.removeEventListener("resize", this.resizeChart);
     if (this.chartInstance) {
       this.chartInstance.dispose();
       this.chartInstance = null;
@@ -234,13 +246,16 @@ export default {
 
 /* 波浪背景效果 */
 .water-level-chart-container::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(rgba(54, 207, 201, 0.1) 1px, transparent 1px);
+  background-image: radial-gradient(
+    rgba(54, 207, 201, 0.1) 1px,
+    transparent 1px
+  );
   background-size: 20px 20px;
   z-index: -1;
   opacity: 0.5;

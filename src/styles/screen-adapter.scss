@@ -1,0 +1,58 @@
+// 基础配置变量 - 针对特定分辨率优化
+$rem-baseline: 14px !default; // 基准字体大小（1920px宽度下使用）
+$scaleWidth: 1920px !default; // 基础UI设计宽度
+$scaleHeight: 1080px !default; // 基础UI设计高度
+
+// 特定分辨率配置 - 精确匹配需求的分辨率
+$resolutions: (
+  1370px: 10px,   // 小于1371px的小屏幕
+  1440px: 12px,   // 1371px-1440px
+  1600px: 13px,   // 1441px-1600px
+  1920px: 14px,   // 1601px-1920px（基础设计分辨率）
+  2560px: 18px,   // 1921px-2560px
+  3840px: 25px,   // 2561px-3840px
+  3960px: 28px,   // 3841px-3960px（特定需求分辨率）
+  5940px: 42px    // 3961px-5940px（特定需求分辨率）
+);
+
+// HTML 根元素样式 - 按特定分辨率阶梯适配
+html {
+  // 默认字体大小（大于5940px的超宽屏）
+  font-size: 48px;
+
+  // 从最大到最小的分辨率适配
+  @each $width, $size in $resolutions {
+    @media (max-width: $width) {
+      font-size: $size;
+    }
+  }
+}
+
+// 单位转换工具函数
+@function rem($px) {
+  // 基于基准值计算 rem，确保在各分辨率下比例一致
+  @return $px / $rem-baseline * 1rem;
+}
+
+@function VW($px) {
+  @return $px / $scaleWidth * 100vw;
+}
+
+@function VH($px) {
+  @return $px / $scaleHeight * 100vh;
+}
+
+// 针对超宽屏的限制函数
+@function VW-limited($px, $max-width: 5940px) {
+  // 计算基于设计稿的vw值
+  $vw-value: $px / $scaleWidth * 100vw;
+  // 计算在最大宽度下的实际像素值，作为上限
+  $max-value: $px / $scaleWidth * $max-width;
+  @return min($vw-value, $max-value);
+}
+
+// 针对1080p高度的专用转换函数
+@function VH-1080($px) {
+  // 专为1080高度设计的转换，保持垂直比例一致
+  @return $px / 1080 * 100vh;
+}
