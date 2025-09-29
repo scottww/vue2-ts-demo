@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'DIN'; /* 自定义字体名 */
+  src: url('~@/assets/fonts/din/DIN-BOLD.OTF') format('opentype');
+  /* url('@/assets/fonts/myFont.woff2') format('woff2'),
+  url('@/assets/fonts/myFont.woff') format('woff'),
+  url('@/assets/fonts/myFont.ttf') format('truetype'); */
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 可选：设置全局字体 */
+/* body {
+  font-family: "DIN", Arial, sans-serif;
+} */

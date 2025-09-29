@@ -64,16 +64,16 @@ module.exports = {
     host: "localhost", // 开发服务器主机
     port: 8080, // 开发服务器端口
     https: false, // 是否启用 HTTPS
-    proxy: {
-      // 配置代理
-      "/api": {
-        target: "http://your-api-server.com", // 代理目标地址
-        changeOrigin: true, // 是否跨域
-        pathRewrite: {
-          "^/api": "" // 重写路径
-        }
-      }
-    },
+    // proxy: {
+    //   // 配置代理
+    //   "/api": {
+    //     target: "http://your-api-server.com", // 代理目标地址
+    //     changeOrigin: true, // 是否跨域
+    //     pathRewrite: {
+    //       "^/api": "" // 重写路径
+    //     }
+    //   }
+    // },
     // 解决某些系统或环境中新建文件不被 webpack-dev-server 热更新的问题
     watchOptions: {
       poll: 1000, // 每秒检查一次文件是否有变化

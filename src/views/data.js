@@ -82,7 +82,8 @@ export const menus = [
     name: "Tool 工具",
     children: [
       { id: 40, text: "Draw 绘图工具", path: "/drawTool" },
-      { id: 23, text: "URL 编码/解码", path: "/urlTransform" }
+      { id: 23, text: "URL 编码/解码", path: "/urlTransform" },
+      { id: 41, text: "Todolist 代办事项", path: "/todolist" }
     ]
   },
   {

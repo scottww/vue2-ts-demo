@@ -1,3 +1,8 @@
+// main.js
+if (process.env.NODE_ENV === "development") {
+  require("./mock") // 确保路径正确
+}
+
 import Vue from "vue";
 // import createApp from "vue";
 import App from "./App.vue";
@@ -38,8 +43,8 @@ Vue.use(ElementUI);
 // import ElTableVirtualScroll from 'el-table-virtual-scroll';
 // Vue.use(ElTableVirtualScroll);
 
-import autoScroll from "@/directives/autoScroll.js";
 //Vue 2 全局指令注册
+import autoScroll from "@/directives/autoScroll.js";
 Vue.directive("auto-scroll", autoScroll);
 
 // 引入字体

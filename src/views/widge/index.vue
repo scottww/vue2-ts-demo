@@ -33,6 +33,10 @@ export default class HWidgeDemo extends Vue {
     {
       url: "https://cssgrid-generator.netlify.app/",
       label: "cssgrid-generator"
+    },
+    {
+      url: "https://tinypng.com/",
+      label: "图像压缩"
     }
   ];
 
@@ -68,6 +72,11 @@ export default class HWidgeDemo extends Vue {
     {
       label: "Google AI",
       url: "https://aistudio.google.com/"
+    },
+    
+    {
+      label: "ModelScope",
+      url: "https://modelscope.cn/studios/"
     },
   ];
 

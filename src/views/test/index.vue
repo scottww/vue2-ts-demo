@@ -12,7 +12,23 @@
     </div>
 
     <div class="main-content" :class="tab">
-      <component :is="tab"></component>
+      <template v-if="tab === 'Selector'">
+        <Selector
+          v-model="forecastTime"
+          :options="timeOptions"
+          label="预报时间："
+          @save="handleSave"
+        >
+          <template #extra>
+            <button class="save-button" @click="handleSave(forecastTime)">
+              保存方案
+            </button>
+          </template>
+        </Selector>
+      </template>
+      <template v-else>
+        <component :is="tab"></component>
+      </template>
     </div>
   </div>
 </template>
@@ -50,7 +66,9 @@ import ImagePreviewer from "./ImagePreviewer.vue";
 import ScheduleTable from "./ScheduleTable.vue";
 import MultiplicationTable from "./MultiplicationTable.vue";
 import MathFormulaTable from "./MathFormulaTable.vue";
-
+import Selector from "./Selector.vue";
+import MyButton from "./MyButton.vue";
+import ImageZoom from "./ImageZoom.vue";
 
 import CustomTable from "./CustomTable.vue";
 export default {
@@ -86,7 +104,10 @@ export default {
     ImagePreviewer,
     ScheduleTable,
     MultiplicationTable,
-    MathFormulaTable
+    MathFormulaTable,
+    Selector,
+    MyButton,
+    ImageZoom
   },
   data() {
     return {
@@ -123,13 +144,26 @@ export default {
         { label: "ImagePreviewer", name: "ImagePreviewer" },
         { label: "ScheduleTable", name: "ScheduleTable" },
         { label: "MultiplicationTable", name: "MultiplicationTable" },
-        { label: "MathFormulaTable", name: "MathFormulaTable" }
+        { label: "MathFormulaTable", name: "MathFormulaTable" },
+        { label: "Selector", name: "Selector", custom: true },
+        {label: "MyButton", name: "MyButton" },
+        {label: "ImageZoom", name: "ImageZoom" },
+      ],
+      forecastTime: "12h",
+      timeOptions: [
+        { value: "6h", text: "未来6小时" },
+        { value: "12h", text: "未来12小时" },
+        { value: "24h", text: "未来24小时" },
+        { value: "36h", text: "未来36小时" }
       ]
     };
   },
   methods: {
     tabClick(tab) {
       console.log(tab);
+    },
+    handleSave(val) {
+      console.log("保存方案：", val);
     }
   }
 };
@@ -261,5 +295,10 @@ export default {
   height: 800px;
   background: none;
   position: relative;
+}
+
+.main-content.Selector {
+  background: none;
+  padding: 20px;
 }
 </style>

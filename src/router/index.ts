@@ -11,20 +11,20 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Dashboard,
-    redirect: "/navPage",
+    redirect: "/NavSearch",
     meta: {
       title: "首页"
     },
     children: [
       {
-        path: "/navPage",
-        name: "NavPage",
+        path: "/navSearch",
+        name: "NavSearch",
         component: () =>
           import(
-            /* webpackChunkName: "NavPage" */ "../views/NavPage.vue"
+            /* webpackChunkName: "NavSearch" */ "../views/NavSearch.vue"
           ),
         meta: {
-          title: "NavPage 功能总览",
+          title: "NavSearch 导航搜索",
           isFull: true
         }
       },
@@ -777,6 +777,66 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "formula",
+          isFull: true
+        }
+      },
+      {
+        path: "/fonts",
+        name: "fonts",
+        component: () =>
+          import(
+            /* webpackChunkName: "Fonts" */ "../views/fonts/index.vue"
+          ),
+        meta: {
+          title: "fonts",
+          isFull: true
+        }
+      },
+      {
+        path: "/photos",
+        name: "photos",
+        component: () =>
+          import(
+            /* webpackChunkName: "Photos" */ "../views/photos/index.vue"
+          ),
+        meta: {
+          title: "photos",
+          isFull: true
+        }
+      },
+      {
+        path: "/imagePreview",
+        name: "imagePreview",
+        component: () =>
+          import(
+            /* webpackChunkName: "ImagePreview" */ "../views/imagePreview/index.vue"
+          ),
+        meta: {
+          title: "imagePreview",
+          isFull: true
+        }
+      },
+      {
+        path: "/mock",
+        name: "mock",
+        component: () =>
+          import(
+            /* webpackChunkName: "Mock" */ "../views/mock/index.vue"
+          ),
+        meta: {
+          title: "mock",
+          isFull: true
+        }
+      },
+      {
+        path: "/todolist",
+        name: "todolist",
+        component: () =>
+          import(
+            /* webpackChunkName: "Todolist" */ "../views/todolist/index.vue"
+          ),
+        meta: {
+          title: "Todolist 代办事项",
           isFull: true
         }
       }
