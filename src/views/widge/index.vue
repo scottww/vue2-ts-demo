@@ -2,6 +2,7 @@
   <div class="h-widge-demo">
     <h-widge title="常用网站" :data="dataList"></h-widge>
     <h-widge title="AI" :data="aiList"></h-widge>
+    <h-widge title="Music" :data="musicList"></h-widge>
   </div>
 </template>
 
@@ -15,7 +16,7 @@ import HWidge from "@/components/h-ui/widge";
   components: { HWidge }
 })
 export default class HWidgeDemo extends Vue {
-  message = "This is an example for HWidgeDemo.";
+  message = "This is a demo of HWidge.";
 
   dataList = [
     {
@@ -73,11 +74,26 @@ export default class HWidgeDemo extends Vue {
       label: "Google AI",
       url: "https://aistudio.google.com/"
     },
-    
     {
       label: "ModelScope",
       url: "https://modelscope.cn/studios/"
-    },
+    }
+  ];
+
+  musicList = [
+    { label: "Ultimate Guitar", url: "https://www.ultimate-guitar.com/" },
+    { label: "Songsterr", url: "https://www.songsterr.com/" },
+    { label: "GTP 中文网", url: "http://gtp.cn/" },
+    { label: "虫虫吉他", url: "https://www.ccguitar.cn/" },
+    { label: "精品吉他谱", url: "https://www.jptab.com/" },
+    { label: "吉他派", url: "https://www.jitapai.com//" },
+    { label: "Chordify", url: "https://chordify.net/" },
+    { label: "Flat 音乐制谱", url: "https://flat.io/" },
+    { label: "BandLab 在线编曲", url: "https://www.bandlab.com/" },
+    { label: "Guitar Tricks", url: "https://www.guitartricks.com/" },
+    { label: "Guitar Pro", url: "https://www.guitar-pro.com/" },
+    { label: "Guitar Tuna", url: "https://www.guitartuna.com/" },
+    { label: "Power Drum Kit", url: "https://www.powerdrumkit.com/" }
   ];
 
   // mounted() {
@@ -86,4 +102,12 @@ export default class HWidgeDemo extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.h-widge-demo {
+  max-height: 100vh; /* 或者具体高度 */
+  overflow-y: auto; /* 超出高度出现竖向滚动条 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+</style>

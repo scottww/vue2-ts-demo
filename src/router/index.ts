@@ -39,7 +39,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "QuickGuide" */ "../views/QuickGuide.vue"
           ),
         meta: {
-          title: "Guide 快速向导"
+          title: "Guide 快速向导",
         }
       },
       {
@@ -149,7 +149,8 @@ const routes: Array<RouteConfig> = [
         component: () =>
           import(/* webpackChunkName: "Widge" */ "../views/widge/index.vue"),
         meta: {
-          title: "Widge 常用网站"
+          title: "Widge 常用网站",
+          isFull: true
         }
       },
       {

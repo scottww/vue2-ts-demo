@@ -10,11 +10,10 @@
       </div> -->
       <div
         class="tags-item"
-        style="float: left"
         v-for="(item, index) in data"
         :key="`tag-${index}`"
       >
-        <a :href="item.url" target="_blank" :title="item.label">{{
+        <a :href="item.url" target="_blank" :title="item.url">{{
           item.label
         }}</a>
       </div>
@@ -52,13 +51,13 @@ export default class HWidge extends Vue {
 <style lang="scss" scoped>
 $main-color: #6bc3e6;
 .h-widge {
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
   clear: both;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   background: #fff;
   box-shadow: 0 5px 10px 0 rgba(146, 146, 146, 0.1);
-  padding: 27px;
+  padding: 20px 20px;
 
   h3 {
     font-size: 18px;
@@ -66,8 +65,8 @@ $main-color: #6bc3e6;
     font-weight: 400;
     margin: 0;
     text-transform: uppercase;
-    padding-bottom: 18px;
-    margin-bottom: 28px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
     &:after {
       content: "";
@@ -81,16 +80,22 @@ $main-color: #6bc3e6;
   }
 
   &__tags {
+    display: flex;
+    flex-wrap: wrap; // 自动换行
+    gap: 4px; // 标签之间的间距（可调）
+    align-items: flex-start;
+    overflow: auto; /* 超出宽度横向滑动 */
+    -webkit-overflow-scrolling: touch;
     .tags-item a {
       // 字符 大写 显示
-      text-transform: uppercase; 
+      // text-transform: uppercase;
       transition: all 0.3s ease;
       display: inline-block;
       vertical-align: top;
       font-size: 13px;
       line-height: 20px;
       padding: 4px 15px;
-      margin: 0 8px 8px 0;
+      // margin: 0 8px 8px 0;
       border: 1px solid #e0e0e0;
       border-radius: 2px;
       color: rgba(0, 0, 0, 0.44);
@@ -101,11 +106,11 @@ $main-color: #6bc3e6;
         border-color: $main-color;
       }
     }
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+    // a {
+    //   color: inherit;
+    //   text-decoration: none;
+    //   transition: all 0.3s ease;
+    // }
   }
 }
 </style>
