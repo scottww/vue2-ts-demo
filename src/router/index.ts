@@ -840,6 +840,30 @@ const routes: Array<RouteConfig> = [
           title: "Todolist 代办事项",
           isFull: true
         }
+      },
+      {
+        path: "/playControl",
+        name: "playControl",
+        component: () =>
+          import(
+            /* webpackChunkName: "PlayControl" */ "../views/playControl/index.vue"
+          ),
+        meta: {
+          title: "PlayControl 播放控制",
+          isFull: true
+        }
+      },
+      {
+        path: "/guitar",
+        name: "guitar",
+        component: () =>
+          import(
+            /* webpackChunkName: "Guitar" */ "../views/guitar/index.vue"
+          ),
+        meta: {
+          title: "Guitar 音阶指板",
+          isFull: true
+        }
       }
     ]
   },
