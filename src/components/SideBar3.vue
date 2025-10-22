@@ -22,8 +22,8 @@ export default {
       isOpen2: true,
       items: [
         {
-          name: "功能总览",
-          children: [{ id: -1, text: "NavPage 功能总览", path: "/navPage" }]
+          name: "导航搜索",
+          children: [{ id: -1, text: "NavSearch 导航搜索", path: "/navSearch" }]
         },
         {
           name: "引导类",

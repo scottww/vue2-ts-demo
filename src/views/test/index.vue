@@ -69,8 +69,10 @@ import MathFormulaTable from "./MathFormulaTable.vue";
 import Selector from "./Selector.vue";
 import MyButton from "./MyButton.vue";
 import ImageZoom from "./ImageZoom.vue";
+import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
 
 import CustomTable from "./CustomTable.vue";
+
 export default {
   components: {
     RiskHazardComponentVue,
@@ -107,7 +109,8 @@ export default {
     MathFormulaTable,
     Selector,
     MyButton,
-    ImageZoom
+    ImageZoom,
+    IconButtonGroupDemo
   },
   data() {
     return {
@@ -148,6 +151,7 @@ export default {
         { label: "Selector", name: "Selector", custom: true },
         {label: "MyButton", name: "MyButton" },
         {label: "ImageZoom", name: "ImageZoom" },
+        {label: "IconButtonGroupDemo", name: "IconButtonGroupDemo" },
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -299,6 +303,12 @@ export default {
 
 .main-content.Selector {
   background: none;
+  padding: 20px;
+}
+
+.main-content.IconButtonGroupDemo {
+  background: none;
+  height: 800px;
   padding: 20px;
 }
 </style>
