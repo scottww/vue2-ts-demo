@@ -56,6 +56,24 @@ module.exports = {
       include: path.resolve(__dirname, "node_modules/ol"), // 修改为 ol 目录
       use: "babel-loader"
     });
+
+    // 处理 sql.js 的现代 JS
+    config.module.rules.push({
+      test: /sql-wasm\.js$/,
+      include: path.resolve(__dirname, "node_modules/sql.js/dist"),
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env"]
+        }
+      }
+    });
+
+    // 如果要加载 wasm 文件
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "webassembly/experimental"
+    });
   },
 
   // 开发服务器配置

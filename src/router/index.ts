@@ -864,6 +864,18 @@ const routes: Array<RouteConfig> = [
           title: "Guitar 音阶指板",
           isFull: true
         }
+      },
+      {
+        path: "/localDB",
+        name: "localDB",
+        component: () =>
+          import(
+            /* webpackChunkName: "LocalDB" */ "../views/localDB/index.vue"
+          ),
+        meta: {
+          title: "localDB 本地存储",
+          isFull: true
+        }
       }
     ]
   },
