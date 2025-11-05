@@ -392,6 +392,24 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/map4",
+        name: "map4",
+        component: () =>
+          import(/* webpackChunkName: "MAP4" */ "../views/map2D/map4.vue"),
+        meta: {
+          title: "map4 测试"
+        }
+      },
+      {
+        path: "/map5",
+        name: "map5",
+        component: () =>
+          import(/* webpackChunkName: "MAP5" */ "../views/map2D/map5.vue"),
+        meta: {
+          title: "map5 测试"
+        }
+      },
+      {
         path: "/cesium",
         name: "Cesium",
         component: () =>
@@ -874,6 +892,18 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "localDB 本地存储",
+          isFull: true
+        }
+      },
+      {
+        path: "/SQLiteDB",
+        name: "SQLiteDB",
+        component: () =>
+          import(
+            /* webpackChunkName: "SQLiteDB" */ "../views/SQLiteDB/index.vue"
+          ),
+        meta: {
+          title: "SQLite 数据库",
           isFull: true
         }
       }

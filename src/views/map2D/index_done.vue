@@ -1844,7 +1844,7 @@ export default {
   top: 10px;
   right: 10px;
   display: flex;
-  border-radius: 15px;
+  // border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.14);
   z-index: 98;

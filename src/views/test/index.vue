@@ -51,6 +51,8 @@ import AlarmTotal from "./AlarmTotal.vue";
 import IconTable from "./IconTable.vue";
 import MonitoringIndicators from "./MonitoringIndicators.vue";
 import MonitoringIndicators2 from "./MonitoringIndicators2.vue";
+import MonitoringIndicators3 from "./MonitoringIndicators3.vue";
+import MonitoringIndicators4 from "./MonitoringIndicators4.vue";
 import CssDemo from "./CssDemo.vue";
 import DispatchStatistics from "./DispatchStatistics.vue";
 import WeatherChart from "./WeatherChart.vue";
@@ -92,6 +94,8 @@ export default {
     IconTable,
     MonitoringIndicators,
     MonitoringIndicators2,
+    MonitoringIndicators3,
+    MonitoringIndicators4,
     CssDemo,
     DispatchStatistics,
     WeatherChart,
@@ -133,6 +137,8 @@ export default {
         { label: "IconTable", name: "IconTable" },
         { label: "MonitoringIndicators", name: "MonitoringIndicators" },
         { label: "MonitoringIndicators2", name: "MonitoringIndicators2" },
+        { label: "MonitoringIndicators3", name: "MonitoringIndicators3" },
+        { label: "MonitoringIndicators4", name: "MonitoringIndicators4 虚拟滚动" },
         { label: "CssDemo", name: "CssDemo" },
         { label: "DispatchStatistics", name: "DispatchStatistics" },
         { label: "WeatherChart", name: "WeatherChart" },
@@ -244,6 +250,10 @@ export default {
 .main-content.MonitoringIndicators2 {
   /* width: auto; */
   width: 800px;
+}
+
+.main-content.MonitoringIndicators4 {
+  width: auto;
 }
 
 .main-content.CssDemo {

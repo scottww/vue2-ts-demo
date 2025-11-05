@@ -18,6 +18,52 @@ module.exports = {
   // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码
   lintOnSave: process.env.NODE_ENV !== "production",
 
+  // CSS 配置（px → rem）不区分环境
+  css: {
+    loaderOptions: {
+      postcss: {
+        postcssOptions: {
+          plugins: [
+            require('postcss-pxtorem')({
+              rootValue: 16, // 设计稿宽度 / 16 (比如设计稿宽度是 375)
+              propList: ['*'], // 需要转换的属性，* 表示全部
+              unitPrecision: 5, // 转换后小数位数
+              selectorBlackList: ['.ignore', '.no-rem'], // 忽略转换的类
+              replace: true,
+              mediaQuery: false, // 是否允许媒体查询里转换 px
+              minPixelValue: 2 // 小于等于 2px 不转换
+            })
+          ]
+        }
+      }
+    }
+  },
+
+  // CSS 配置（px → rem）区分环境
+  // css: {
+  //   loaderOptions: {
+  //     postcss: {
+  //       postcssOptions: {
+  //         plugins: [
+  //           ...(process.env.NODE_ENV === "production"
+  //             ? [
+  //                 require("postcss-pxtorem")({
+  //                   rootValue: 16, // 1rem = 16px，设计稿宽度 / 16 (比如设计稿宽度是 375) 可根据设计稿调整
+  //                   propList: ["*"], // 需要转换的属性，* 表示全部
+  //                   unitPrecision: 5, // 转换后小数位数
+  //                   // replace: true,
+  //                   // mediaQuery: false, // 是否允许媒体查询里转换 px
+  //                   minPixelValue: 2, // 小于等于 2px 不转换
+  //                   selectorBlackList: [".ignore", ".no-rem"], // 忽略类名
+  //                 }),
+  //               ]
+  //             : []),
+  //         ],
+  //       },
+  //     },
+  //   },
+  // },
+
   // 配置 Webpack
   configureWebpack: (config) => {
     // 设置模式
@@ -80,7 +126,7 @@ module.exports = {
   devServer: {
     open: true, // 启动后自动打开浏览器
     host: "localhost", // 开发服务器主机
-    port: 8080, // 开发服务器端口
+    port: 8089, // 开发服务器端口
     https: false, // 是否启用 HTTPS
     // proxy: {
     //   // 配置代理
