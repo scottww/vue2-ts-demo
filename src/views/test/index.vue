@@ -72,6 +72,7 @@ import Selector from "./Selector.vue";
 import MyButton from "./MyButton.vue";
 import ImageZoom from "./ImageZoom.vue";
 import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
+import InspectionTotal from './InspectionTotal.vue';
 
 import CustomTable from "./CustomTable.vue";
 
@@ -114,7 +115,8 @@ export default {
     Selector,
     MyButton,
     ImageZoom,
-    IconButtonGroupDemo
+    IconButtonGroupDemo,
+    InspectionTotal
   },
   data() {
     return {
@@ -158,6 +160,7 @@ export default {
         {label: "MyButton", name: "MyButton" },
         {label: "ImageZoom", name: "ImageZoom" },
         {label: "IconButtonGroupDemo", name: "IconButtonGroupDemo" },
+        {label: "InspectionTotal", name: "InspectionTotal" },
       ],
       forecastTime: "12h",
       timeOptions: [
