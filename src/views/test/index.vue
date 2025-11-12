@@ -64,6 +64,7 @@ import PieChart2 from "./PieChart2.vue";
 import RainChart from "./RainChart.vue";
 import HourlyRainChart from "./HourlyRainChart.vue";
 import KnowledgeGraphChart from "./KnowledgeGraphChart.vue";
+import CustomTable from "./CustomTable.vue";
 import ImagePreviewer from "./ImagePreviewer.vue";
 import ScheduleTable from "./ScheduleTable.vue";
 import MultiplicationTable from "./MultiplicationTable.vue";
@@ -73,8 +74,10 @@ import MyButton from "./MyButton.vue";
 import ImageZoom from "./ImageZoom.vue";
 import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
 import InspectionTotal from './InspectionTotal.vue';
+import SwitchButtonDemo from './SwitchButtonDemo.vue';
 
-import CustomTable from "./CustomTable.vue";
+//优化增强版
+import CustomSelect from './CustomSelectDemo.vue';
 
 export default {
   components: {
@@ -116,7 +119,9 @@ export default {
     MyButton,
     ImageZoom,
     IconButtonGroupDemo,
-    InspectionTotal
+    InspectionTotal,
+    SwitchButtonDemo,
+    CustomSelect
   },
   data() {
     return {
@@ -161,6 +166,8 @@ export default {
         {label: "ImageZoom", name: "ImageZoom" },
         {label: "IconButtonGroupDemo", name: "IconButtonGroupDemo" },
         {label: "InspectionTotal", name: "InspectionTotal" },
+        {label: "SwitchButtonDemo", name: "SwitchButton" },
+        {label: "CustomSelect", name: "CustomSelectDemo" },
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -322,6 +329,17 @@ export default {
 .main-content.IconButtonGroupDemo {
   background: none;
   height: 800px;
+  padding: 20px;
+}
+
+.main-content.SwitchButtonDemo {
+  width: auto;
+  padding: 20px;
+}
+
+.main-content.CustomSelect {
+  width: auto;
+  height: 200px;
   padding: 20px;
 }
 </style>
