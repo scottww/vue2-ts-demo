@@ -65,7 +65,7 @@ const RULES = [
 
 /** 判断是否属于用户可控数据 */
 function isUserControlled(value) {
-  return USER_INPUT_PATTERNS.some(pattern => pattern.test(value));
+  return USER_INPUT_PATTERNS.some((pattern) => pattern.test(value));
 }
 
 /** 递归扫描目录 */
@@ -92,7 +92,7 @@ function scanFile(filePath, results) {
   const content = fs.readFileSync(filePath, "utf8");
   const lines = content.split("\n");
 
-  RULES.forEach(rule => {
+  RULES.forEach((rule) => {
     let match;
     while ((match = rule.pattern.exec(content)) !== null) {
       const rawMatch = match[0];
@@ -127,20 +127,35 @@ function scanFile(filePath, results) {
   });
 }
 
-/** 生成 HTML 报告 */
+/** 生成 HTML 报告（带颜色区分） */
 function generateHtml(results) {
   const rows = results
-    .map(
-      r => `
+    .map((r) => {
+      let textColor = "";
+      switch (r.level) {
+        case "HIGH":
+          textColor = "#e60000"; // 红色文字
+          break;
+        case "MEDIUM":
+          textColor = "#e65c00"; // 橙色文字
+          break;
+        case "LOW":
+          textColor = "#0066cc"; // 蓝色文字
+          break;
+        default:
+          textColor = "#000000"; // 黑色文字
+      }
+
+      return `
       <tr>
-        <td>${r.level}</td>
+        <td style="color: ${textColor};"><strong>${r.level}</strong></td>
         <td>${r.file}</td>
         <td>${r.line}</td>
         <td>${r.match.replace(/</g, "&lt;")}</td>
         <td>${r.message}</td>
       </tr>
-    `
-    )
+    `;
+    })
     .join("");
 
   return `
@@ -151,7 +166,7 @@ function generateHtml(results) {
       <style>
         body { font-family: Arial; padding: 20px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 12px; border: 1px solid #ccc; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
         th { background: #eee; }
         tr:nth-child(even) { background: #fafafa; }
       </style>
@@ -161,7 +176,7 @@ function generateHtml(results) {
       <p>共检测到 <strong>${results.length}</strong> 项可能的安全风险。</p>
       <table>
         <tr>
-          <th>风险等级</th>
+          <th style="width: 120px;">风险等级</th>
           <th>文件</th>
           <th>行号</th>
           <th>代码</th>
@@ -172,6 +187,7 @@ function generateHtml(results) {
     </body>
   </html>`;
 }
+
 
 /** 主流程 */
 function main() {
