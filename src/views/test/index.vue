@@ -76,6 +76,7 @@ import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
 import InspectionTotal from './InspectionTotal.vue';
 import SwitchButtonDemo from './SwitchButtonDemo.vue';
 import LngLatInputDemo from  './LngLatInputDemo.vue';
+import DompurifyDemo from  './dompurify/DompurifyDemo.vue';
 
 //优化增强版
 import CustomSelect from './CustomSelectDemo.vue';
@@ -123,7 +124,8 @@ export default {
     InspectionTotal,
     SwitchButtonDemo,
     CustomSelect,
-    LngLatInputDemo
+    LngLatInputDemo,
+    DompurifyDemo
   },
   data() {
     return {
@@ -170,7 +172,8 @@ export default {
         {label: "InspectionTotal", name: "InspectionTotal" },
         {label: "SwitchButtonDemo", name: "SwitchButton" },
         {label: "CustomSelect", name: "CustomSelectDemo" },
-        {label: "LngLatInputDemo", name: "LngLatInputDemo" }
+        {label: "LngLatInputDemo", name: "LngLatInputDemo" },
+        {label: "DompurifyDemo", name: "DompurifyDemo" }
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -347,6 +350,11 @@ export default {
 }
 
 .main-content.LngLatInputDemo {
+  width: auto;
+  background: none;
+}
+
+.main-content.DompurifyDemo {
   width: auto;
   background: none;
 }

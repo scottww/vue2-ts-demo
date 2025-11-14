@@ -46,6 +46,9 @@ Vue.use(ElementUI);
 //Vue 2 全局指令注册
 import autoScroll from "@/directives/autoScroll.js";
 Vue.directive("auto-scroll", autoScroll);
+import "@/directives/safeHtml.js"; 
+import safeAttr from "@/directives/safeAttr.js";
+Vue.directive("safe-attr", safeAttr);
 
 // 引入字体
 // 阿里妈妈数黑体

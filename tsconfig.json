@@ -13,7 +13,7 @@
     "baseUrl": ".",
     "allowJs": true,
     "experimentalDecorators": true,
-    "types": ["webpack-env"],
+    "types": ["webpack-env", "node"],
     "paths": {
       "@/*": ["src/*"]
     },
