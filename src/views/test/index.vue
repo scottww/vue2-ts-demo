@@ -75,6 +75,7 @@ import ImageZoom from "./ImageZoom.vue";
 import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
 import InspectionTotal from './InspectionTotal.vue';
 import SwitchButtonDemo from './SwitchButtonDemo.vue';
+import LngLatInputDemo from  './LngLatInputDemo.vue';
 
 //优化增强版
 import CustomSelect from './CustomSelectDemo.vue';
@@ -121,7 +122,8 @@ export default {
     IconButtonGroupDemo,
     InspectionTotal,
     SwitchButtonDemo,
-    CustomSelect
+    CustomSelect,
+    LngLatInputDemo
   },
   data() {
     return {
@@ -168,6 +170,7 @@ export default {
         {label: "InspectionTotal", name: "InspectionTotal" },
         {label: "SwitchButtonDemo", name: "SwitchButton" },
         {label: "CustomSelect", name: "CustomSelectDemo" },
+        {label: "LngLatInputDemo", name: "LngLatInputDemo" }
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -341,5 +344,10 @@ export default {
   width: auto;
   height: 200px;
   padding: 20px;
+}
+
+.main-content.LngLatInputDemo {
+  width: auto;
+  background: none;
 }
 </style>
