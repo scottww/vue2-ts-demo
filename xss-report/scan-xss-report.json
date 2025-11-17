@@ -1,968 +1,1154 @@
 [
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new copy 2.vue",
     "line": 22,
+    "column": 723,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new copy.vue",
-    "line": 29,
+    "line": 28,
+    "column": 782,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new.vue",
     "line": 28,
+    "column": 805,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new_resize_done.vue",
-    "line": 29,
+    "line": 28,
+    "column": 786,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new_resize_done2.vue",
-    "line": 29,
+    "line": 28,
+    "column": 805,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\components\\HVirtualList_new_resize_done3.vue",
-    "line": 29,
+    "line": 28,
+    "column": 805,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\autoScroll copy 3.js",
     "line": 10,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "wrapper.innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\autoScroll copy 4.js",
     "line": 16,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "wrapper.innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\safeHtml.js",
-    "line": 9,
-    "match": "v-html=\"html\"",
-    "level": "HIGH",
-    "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\safeHtml.js",
-    "line": 10,
-    "match": ".innerHTML =",
-    "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\safeHtml.js",
-    "line": 10,
-    "match": ".innerHTML =",
-    "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
-  },
-  {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\safeHtml.js",
     "line": 14,
-    "match": ".innerHTML =",
-    "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "column": 4,
+    "match": "el.innerHTML = DOMPurify.sanitize(binding.value || '');",
+    "level": "LOW",
+    "message": "innerHTML 已通过 DOMPurify.sanitize 处理，相对安全"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\directives\\safeHtml.js",
     "line": 17,
-    "match": ".innerHTML =",
-    "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "column": 4,
+    "match": "el.innerHTML = DOMPurify.sanitize(binding.value || '');",
+    "level": "LOW",
+    "message": "innerHTML 已通过 DOMPurify.sanitize 处理，相对安全"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool copy 3.js",
     "line": 79,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool copy 3.js",
     "line": 91,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "div.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool.js",
     "line": 53,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "this.liveTipOverlay.getElement().innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool.js",
     "line": 89,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool_base.js",
     "line": 60,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool_base.js",
     "line": 72,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "div.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool_done.js",
     "line": 53,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "this.liveTipOverlay.getElement().innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\MeasureTool_done.js",
     "line": 89,
-    "match": ".innerHTML =",
+    "column": 4,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\PopupManager.js",
     "line": 42,
-    "match": ".innerHTML =",
+    "column": 6,
+    "match": "this.container.innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\PopupManager.js",
     "line": 44,
-    "match": ".innerHTML =",
+    "column": 6,
+    "match": "this.container.innerHTML = '';",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\PopupManager_0.ts",
     "line": 47,
-    "match": ".innerHTML =",
+    "column": 6,
+    "match": "this.container.innerHTML = content;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\utils\\map\\mapUtils\\features\\PopupManager_0.ts",
     "line": 49,
-    "match": ".innerHTML =",
+    "column": 6,
+    "match": "this.container.innerHTML = '';",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen2\\index.vue",
     "line": 23,
+    "column": 591,
     "match": "<component\r\n        v-for=\"(mod, index) in pages[currentPage].leftPanel\"\r\n        :key=\"mod.type + index\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen2\\index.vue",
     "line": 34,
+    "column": 870,
     "match": "<component\r\n        v-for=\"(mod, index) in pages[currentPage].rightPanel\"\r\n        :key=\"mod.type + index\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen3\\index copy.vue",
     "line": 17,
+    "column": 468,
     "match": "<component :is=\"pages[currentPage].component\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen3\\index.vue",
     "line": 18,
+    "column": 574,
     "match": "<component :is=\"pages[currentPage].component\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen3\\pages\\Page1.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen3\\pages\\Page1.vue",
     "line": 13,
+    "column": 310,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\common\\functionPanel\\TreeNode.vue",
     "line": 13,
+    "column": 387,
     "match": "v-html=\"node.highlightName || node.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\common\\functionPanel\\TreeNodeVue3.vue",
     "line": 9,
+    "column": 360,
     "match": "v-html=\"node.highlightName || node.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\index copy 2.vue",
     "line": 30,
+    "column": 831,
     "match": "<component :is=\"pages[currentPage].component\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\index copy.vue",
     "line": 30,
+    "column": 831,
     "match": "<component :is=\"pages[currentPage].component\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\index.vue",
     "line": 38,
+    "column": 1085,
     "match": "<component v-if=\"pages.length\" :is=\"pages[currentPage].component\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1 copy 3.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1 copy 3.vue",
     "line": 13,
+    "column": 310,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1 copy.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1 copy.vue",
     "line": 13,
+    "column": 310,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :class=\"mod.size || 'medium'\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\normalScreen\\Page1.vue",
     "line": 14,
+    "column": 349,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :class=\"mod.size || 'medium'\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 6,
+    "column": 136,
     "match": "<component\r\n          v-for=\"(mod, idx) in panels.slice(0, 2)\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent1(mod.type)\"\r\n          class=\"panel half\"\r\n          :title=\"mod.title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 15,
+    "column": 393,
     "match": "<component\r\n          :is=\"getComponent1(panels[2].type)\"\r\n          class=\"panel full\"\r\n          :title=\"panels[2].title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 25,
+    "column": 649,
     "match": "<component\r\n          :is=\"getComponent1(panels[0].type)\"\r\n          class=\"panel full\"\r\n          :title=\"panels[0].title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 32,
+    "column": 833,
     "match": "<component\r\n          v-for=\"(mod, idx) in panels.slice(1)\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent1(mod.type)\"\r\n          class=\"panel half\"\r\n          :title=\"mod.title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 44,
+    "column": 1193,
     "match": "<component\r\n          v-for=\"(mod, idx) in panels.slice((rowIdx - 1) * 2, rowIdx * 2)\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent1(mod.type)\"\r\n          class=\"panel half\"\r\n          :title=\"mod.title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout copy.vue",
     "line": 57,
+    "column": 1591,
     "match": "<component\r\n          :is=\"getComponent1(mod.type)\"\r\n          class=\"panel full\"\r\n          :title=\"mod.title\"\r\n          :style=\"{ height: mod.height + 'px' }\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 8,
+    "column": 205,
     "match": "<component\r\n            v-for=\"(mod, idx) in panels.slice(0, 2)\"\r\n            :key=\"mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            class=\"panel half-vertical\"\r\n            :title=\"mod.title\"\r\n            :header-extra=\"mod.headerExtra\"\r\n            @site-change=\"$emit('site-change', $event)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 21,
+    "column": 623,
     "match": "<component\r\n            v-bind=\"panels[2].props\"\r\n            :is=\"getComponent(panels[2].type)\"\r\n            class=\"panel full-height\"\r\n            :title=\"panels[2].title\"\r\n            :header-extra=\"panels[2].headerExtra\"\r\n            @site-change=\"$emit('site-change', $event)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 37,
+    "column": 1121,
     "match": "<component\r\n            v-bind=\"panels[0].props\"\r\n            :is=\"getComponent(panels[0].type)\"\r\n            class=\"panel full-height\"\r\n            :title=\"panels[0].title\"\r\n            :header-extra=\"panels[0].headerExtra\"\r\n            @site-change=\"$emit('site-change', $event)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 47,
+    "column": 1478,
     "match": "<component\r\n            v-for=\"(mod, idx) in panels.slice(1)\"\r\n            :key=\"mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            class=\"panel half-vertical\"\r\n            :title=\"mod.title\"\r\n            :header-extra=\"mod.headerExtra\"\r\n            @site-change=\"$emit('site-change', $event)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 68,
+    "column": 2095,
     "match": "<component\r\n          v-for=\"(mod, idx) in panels.slice((rowIdx - 1) * 2, rowIdx * 2)\"\r\n          :key=\"mod.type + '-' + idx\"\r\n          :is=\"getComponent(mod.type)\"\r\n          class=\"panel half\"\r\n          :title=\"mod.title\"\r\n          :style=\"{ height: mod.height + 'px' }\"\r\n          :header-extra=\"mod.headerExtra\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 82,
+    "column": 2557,
     "match": "<component\r\n          v-for=\"(mod, idx) in panels.slice(0, 2)\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent(mod.type)\"\r\n          class=\"panel half\"\r\n          :title=\"mod.title\"\r\n          :style=\"{ height: mod.height + 'px' }\"\r\n          :header-extra=\"mod.headerExtra\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 97,
+    "column": 2990,
     "match": "<component\r\n          v-if=\"panels[0]\"\r\n          :is=\"getComponent(panels[0].type)\"\r\n          class=\"panel full\"\r\n          :title=\"panels[0].title\"\r\n          :style=\"{ height: panels[0].height + 'px' }\"\r\n          :header-extra=\"panels[0].headerExtra\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\ComponentLayout.vue",
     "line": 111,
+    "column": 3423,
     "match": "<component\r\n          :is=\"getComponent(mod.type)\"\r\n          class=\"panel full\"\r\n          :title=\"mod.title\"\r\n          :style=\"{ height: mod.height + 'px' }\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 2.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"{ height: mod.height + 'px' }\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 2.vue",
     "line": 14,
+    "column": 358,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"{ height: mod.height + 'px' }\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 3.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanelList\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"{ height: mod.height + 'px' }\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 3.vue",
     "line": 14,
+    "column": 361,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanelList\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"{ height: mod.height + 'px' }\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 4.vue",
     "line": 5,
+    "column": 133,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanelList\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"getPanelStyle(mod)\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 4.vue",
     "line": 17,
+    "column": 486,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanelList\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"getPanelStyle(mod)\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 5.vue",
     "line": 9,
+    "column": 226,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanelList\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"getPanelStyle(mod, layoutModes.left)\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 5.vue",
     "line": 25,
+    "column": 692,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanelList\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n        :style=\"getPanelStyle(mod, layoutModes.right)\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 6.vue",
     "line": 11,
+    "column": 295,
     "match": "<component\r\n            v-for=\"(mod, idx) in group\"\r\n            :key=\"'left-' + mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            :title=\"mod.title\"\r\n            class=\"panel\"\r\n            :style=\"getPanelStyle(mod)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy 6.vue",
     "line": 31,
+    "column": 866,
     "match": "<component\r\n            v-for=\"(mod, idx) in group\"\r\n            :key=\"'right-' + mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            :title=\"mod.title\"\r\n            class=\"panel\"\r\n            :style=\"getPanelStyle(mod)\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy.vue",
     "line": 4,
+    "column": 67,
     "match": "<component\r\n        v-for=\"(mod, idx) in leftPanels\"\r\n        :key=\"'left-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreen4\\pages\\wideScreen\\Page1 copy.vue",
     "line": 13,
+    "column": 310,
     "match": "<component\r\n        v-for=\"(mod, idx) in rightPanels\"\r\n        :key=\"'right-' + mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n        class=\"panel\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\BigScreenLayout0.vue",
     "line": 8,
+    "column": 212,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.leftPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\BigScreenLayout0.vue",
     "line": 25,
+    "column": 677,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.rightPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy 2.vue",
     "line": 9,
+    "column": 194,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.leftPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy 2.vue",
     "line": 23,
+    "column": 556,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.rightPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy 3.vue",
     "line": 10,
+    "column": 260,
     "match": "<component\r\n          v-for=\"(mod, idx) in config.leftPanel.modules\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent(mod.type)\"\r\n          :title=\"mod.title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy 3.vue",
     "line": 24,
+    "column": 648,
     "match": "<component\r\n          v-for=\"(mod, idx) in config.rightPanel.modules\"\r\n          :key=\"mod.type + idx\"\r\n          :is=\"getComponent(mod.type)\"\r\n          :title=\"mod.title\"\r\n        />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy.vue",
     "line": 8,
+    "column": 212,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.leftPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index copy.vue",
     "line": 25,
+    "column": 677,
     "match": "<component\r\n        v-for=\"(mod, idx) in config.rightPanel.modules\"\r\n        :key=\"mod.type + idx\"\r\n        :is=\"getComponent(mod.type)\"\r\n        :title=\"mod.title\"\r\n      />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index.vue",
     "line": 11,
+    "column": 308,
     "match": "<component\r\n            v-for=\"(mod, idx) in config.leftPanel.modules\"\r\n            :key=\"mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            :title=\"mod.title\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\bigScreenLayout\\index.vue",
     "line": 34,
+    "column": 948,
     "match": "<component\r\n            v-for=\"(mod, idx) in config.rightPanel.modules\"\r\n            :key=\"mod.type + idx\"\r\n            :is=\"getComponent(mod.type)\"\r\n            :title=\"mod.title\"\r\n          />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\cesium\\index.vue",
-    "line": 105,
-    "match": ".innerHTML =",
+    "line": 97,
+    "column": 8,
+    "match": "this.$refs.info.innerHTML = pickedObject.id.description._value;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\color\\index.vue",
     "line": 9,
+    "column": 198,
     "match": "<component :is=\"'HGrid'\" :data=\"colors\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\customPopup\\index0.vue",
-    "line": 147,
-    "match": ".innerHTML =",
+    "line": 137,
+    "column": 10,
+    "match": "this.measureTooltipElement.innerHTML = output || \"\";",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\dynamicForm\\DynamicForm.vue",
     "line": 16,
+    "column": 306,
     "match": "<component\r\n        :is=\"getComponent(item.type)\"\r\n        v-model=\"formData[item.prop]\"\r\n        v-bind=\"item.attrs\"\r\n        v-on=\"item.events\"\r\n        :type=\"item.type === 'textarea' ? 'textarea' : undefined\"\r\n      >",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\loadReadFile\\index.vue",
     "line": 9,
+    "column": 259,
     "match": "v-html=\"fileContent\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 477,
-    "match": ".innerHTML =",
+    "line": 432,
+    "column": 10,
+    "match": "this.distanceOverlay.getElement().innerHTML = output;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 620,
-    "match": ".innerHTML =",
+    "line": 575,
+    "column": 8,
+    "match": "label.innerHTML = `${labelText.value} ${labelText.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 783,
-    "match": ".innerHTML =",
+    "line": 738,
+    "column": 8,
+    "match": "label.innerHTML = `${labelText.value} ${labelText.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 1131,
-    "match": ".innerHTML =",
+    "line": 1086,
+    "column": 8,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 1313,
-    "match": ".innerHTML =",
+    "line": 1268,
+    "column": 8,
+    "match": "label.innerHTML = text;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index.vue",
-    "line": 2106,
-    "match": ".innerHTML =",
+    "line": 2061,
+    "column": 6,
+    "match": "label.innerHTML = `${area.value} ${area.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index_done.vue",
-    "line": 448,
-    "match": ".innerHTML =",
+    "line": 303,
+    "column": 8,
+    "match": "label.innerHTML = `${labelText.value} ${labelText.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index_done.vue",
-    "line": 996,
-    "match": ".innerHTML =",
+    "line": 851,
+    "column": 6,
+    "match": "label.innerHTML = `${area.value} ${area.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\map2D\\index_done.vue",
-    "line": 1095,
-    "match": ".innerHTML =",
+    "line": 950,
+    "column": 8,
+    "match": "label.innerHTML = `${area.value} ${area.unit}`;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavPage_done.vue",
     "line": 32,
+    "column": 768,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavPage_done2.vue",
     "line": 31,
+    "column": 762,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavPage_done3.vue",
     "line": 31,
+    "column": 764,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavPage_final.vue",
     "line": 31,
+    "column": 855,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavSearch.vue",
     "line": 31,
+    "column": 762,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\NavSearch_final_bak.vue",
     "line": 31,
+    "column": 762,
     "match": "v-html=\"highlightText(child.text)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfLinkViewer.vue",
-    "line": 4,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfPreview.vue",
-    "line": 3,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfViewerDialog copy 2.vue",
-    "line": 3,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfViewerDialog.vue",
-    "line": 3,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfViewerDialogBase.vue",
-    "line": 3,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfViewerDialog_不带页码.vue",
-    "line": 4,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
-    "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\pdfPreview\\PdfViewerDialog_显示大纲_页码跳转.vue",
-    "line": 3,
-    "match": "href=\"javascript:",
-    "level": "HIGH",
-    "message": "检测到 javascript: 协议，可被利用执行 XSS 攻击。"
-  },
-  {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\scrollLoad\\InfiniteScrollList.vue",
     "line": 22,
+    "column": 689,
     "match": "v-html=\"item.name\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\dompurify\\DompurifyDemo copy.vue",
     "line": 4,
+    "column": 52,
     "match": "v-html=\"rawHtml\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\dompurify\\DompurifyDemo copy.vue",
     "line": 9,
+    "column": 182,
     "match": "v-html=\"safeHtml\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\dompurify\\SafeHtml.vue",
     "line": 6,
+    "column": 91,
     "match": "v-html=\"cleanHtml\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\dompurify\\SafePlayground.vue",
     "line": 8,
+    "column": 128,
     "match": "v-html=\"input\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\index copy 2.vue",
     "line": 111,
+    "column": 3727,
     "match": "<component :is=\"tab\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\index copy 3.vue",
     "line": 21,
+    "column": 478,
     "match": "<component :is=\"tab\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\index copy 4.vue",
     "line": 48,
+    "column": 2030,
     "match": "<component :is=\"tab\">",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\index copy.vue",
     "line": 48,
+    "column": 2030,
     "match": "<component :is=\"tab\">",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\test\\index.vue",
     "line": 30,
+    "column": 743,
     "match": "<component :is=\"tab\">",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar\\MapControl.vue",
     "line": 10,
+    "column": 195,
     "match": "<component\r\n        :is=\"isSvg(item.icon) ? 'SvgImage' : 'img'\"\r\n        :src=\"item.icon\"\r\n        :size=\"20\"\r\n        color=\"#666\"\r\n        hoverColor=\"#1890ff\"\r\n        alt=\"\"\r\n      />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar\\ToolButton.vue",
     "line": 9,
+    "column": 158,
     "match": "<component\r\n      :is=\"isSvg ? 'SvgImage' : 'img'\"\r\n      :src=\"icon\"\r\n      :size=\"size\"\r\n      v-bind=\"isSvg ? svgProps : {}\"\r\n      class=\"tool-icon\"\r\n    />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\MapLayerDropdown.vue",
     "line": 12,
+    "column": 312,
     "match": "<component\r\n        v-if=\"item.component\"\r\n        :is=\"item.component\"\r\n        v-bind=\"item.componentProps\"\r\n        :isHover=\"hoverIndex === index || item.value === selected\"\r\n      />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\MapTopControl copy 2.vue",
     "line": 17,
+    "column": 665,
     "match": "<component\r\n          :is=\"item.dropdown\"\r\n          v-bind=\"item.props || {}\"\r\n          @change=\"handleChange\"\r\n          @select=\"handleSelect\"\r\n          @tool=\"handleTool\"\r\n        />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\MapTopControl copy.vue",
     "line": 14,
+    "column": 404,
     "match": "<component\r\n          :is=\"item.dropdown\"\r\n          @close=\"closeDropdown\"\r\n          @change=\"handleChange\"\r\n          @select=\"handleSelect\"\r\n          @tool=\"handleTool\"\r\n        />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\MapTopControl.vue",
     "line": 17,
+    "column": 618,
     "match": "<component\r\n          :is=\"item.dropdown\"\r\n          v-bind=\"item.props || {}\"\r\n          @change=\"handleChange\"\r\n          @select=\"handleSelect\"\r\n          @tool=\"handleTool\"\r\n          @close=\"toggleDropdown\"\r\n        />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\SmartIcon.vue",
     "line": 3,
+    "column": 92,
     "match": "<component\r\n      :is=\"isSvg ? 'SvgImage' : 'PngHoverIcon'\"\r\n      v-bind=\"finalProps\"\r\n    />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\SmartIcon_noCss.vue",
-    "line": 27,
+    "line": 2,
+    "column": 4,
     "match": "<component :is=\"isSvg ? 'SvgImage' : 'PngHoverIcon'\" v-bind=\"finalProps\" />",
-    "level": "LOW",
-    "message": "动态组件 :is 检测到，但未来自用户输入（相对安全）。最好仍采用白名单。"
+    "level": "MEDIUM",
+    "message": "动态组件 :is 未在白名单中，建议添加白名单。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\SvgImage copy.vue",
     "line": 6,
+    "column": 97,
     "match": "v-html=\"content\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\SvgImage.vue",
     "line": 5,
+    "column": 96,
     "match": "v-html=\"content\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\SvgImage_base.vue",
     "line": 2,
+    "column": 49,
     "match": "v-html=\"content\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\ToolDropdown.vue",
     "line": 22,
+    "column": 593,
     "match": "v-html=\"item.icon\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "dynamic-is",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\toolbar2\\ToolDropdown.vue",
     "line": 13,
+    "column": 331,
     "match": "<component\r\n          v-if=\"item.component\"\r\n          :is=\"item.component\"\r\n          v-bind=\"{\r\n            ...(item.componentProps || {}),\r\n            isHover: hoverIndex === index\r\n          }\"\r\n          class=\"tool-icon\"\r\n        />",
     "level": "HIGH",
-    "message": "动态组件 :is 来自用户输入（高危）。请使用白名单过滤组件名称。"
+    "message": "动态组件 :is 来自用户输入（高危），请使用白名单过滤组件名称。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\index copy 2.vue",
     "line": 12,
+    "column": 331,
     "match": "v-html=\"highlightKeywords(para)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\index copy 3.vue",
     "line": 18,
+    "column": 597,
     "match": "v-html=\"html\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\index copy 4.vue",
     "line": 20,
+    "column": 576,
     "match": "v-html=\"html\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\index copy 5.vue",
     "line": 30,
+    "column": 970,
     "match": "v-html=\"html\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\index.vue",
     "line": 37,
+    "column": 1025,
     "match": "v-html=\"html\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "v-html",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\txtRender\\indexBase.vue",
     "line": 12,
+    "column": 331,
     "match": "v-html=\"highlightKeywords(para)\"",
     "level": "HIGH",
     "message": "使用 v-html 存在 XSS 风险，请使用 v-safe-html 或 DOMPurify 处理。"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\xz\\index.vue",
-    "line": 70,
-    "match": ".innerHTML =",
+    "line": 21,
+    "column": 6,
+    "match": "document.body.innerHTML = printContent;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\xz\\index.vue",
-    "line": 75,
-    "match": ".innerHTML =",
+    "line": 26,
+    "column": 6,
+    "match": "document.body.innerHTML = originalContent;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\xz\\weekPlan\\suggestion.vue",
-    "line": 70,
-    "match": ".innerHTML =",
+    "line": 49,
+    "column": 6,
+    "match": "document.body.innerHTML = printContent;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   },
   {
+    "ruleId": "innerHTML",
     "file": "F:\\MyProject\\vue2-ts-demo\\src\\views\\xz\\weekPlan\\suggestion.vue",
-    "line": 75,
-    "match": ".innerHTML =",
+    "line": 54,
+    "column": 6,
+    "match": "document.body.innerHTML = originalContent;",
     "level": "HIGH",
-    "message": "直接使用 innerHTML 存在高危 XSS 风险，必须加 DOMPurify。"
+    "message": "直接使用 innerHTML 存在高危 XSS 风险"
   }
 ]
