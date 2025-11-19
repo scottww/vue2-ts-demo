@@ -906,6 +906,18 @@ const routes: Array<RouteConfig> = [
           title: "SQLite 数据库",
           isFull: true
         }
+      },
+      {
+        path: "/geo-convert",
+        name: "geo-convert",
+        component: () =>
+          import(
+            /* webpackChunkName: "GeoConvert" */ "../views/geoConvert/index.vue"
+          ),
+        meta: {
+          title: "geo-convert 数据转换",
+          isFull: true
+        }
       }
     ]
   },
