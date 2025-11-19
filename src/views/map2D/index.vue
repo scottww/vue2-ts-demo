@@ -50,9 +50,7 @@ import PointLayerManager from "@/utils/map/PointLayerManager";
 import { PopupManager, PointManager, MeasureTool } from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
-const warnIcon_svg = require("@/assets/mapIcon/warn_icon1.svg");
-const warnIcon11 = require("@/assets/mapIcon/warn_icon1.png");
-const warnIcon2 = require("@/assets/mapIcon/预警2.png");
+const warnIcon2 = require("@/assets/mapIcon/warn_icon2.png");
 
 import Map from "ol/Map";
 import View from "ol/View";

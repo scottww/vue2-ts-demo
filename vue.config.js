@@ -19,25 +19,25 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV !== "production",
 
   // CSS 配置（px → rem）不区分环境
-  css: {
-    loaderOptions: {
-      postcss: {
-        postcssOptions: {
-          plugins: [
-            require('postcss-pxtorem')({
-              rootValue: 16, // 设计稿宽度 / 16 (比如设计稿宽度是 375)
-              propList: ['*'], // 需要转换的属性，* 表示全部
-              unitPrecision: 5, // 转换后小数位数
-              selectorBlackList: ['.ignore', '.no-rem'], // 忽略转换的类
-              replace: true,
-              mediaQuery: false, // 是否允许媒体查询里转换 px
-              minPixelValue: 2 // 小于等于 2px 不转换
-            })
-          ]
-        }
-      }
-    }
-  },
+  // css: {
+  //   loaderOptions: {
+  //     postcss: {
+  //       postcssOptions: {
+  //         plugins: [
+  //           require('postcss-pxtorem')({
+  //             rootValue: 16, // 设计稿宽度 / 16 (比如设计稿宽度是 375)
+  //             propList: ['*'], // 需要转换的属性，* 表示全部
+  //             unitPrecision: 5, // 转换后小数位数
+  //             selectorBlackList: ['.ignore', '.no-rem'], // 忽略转换的类
+  //             replace: true,
+  //             mediaQuery: false, // 是否允许媒体查询里转换 px
+  //             minPixelValue: 2 // 小于等于 2px 不转换
+  //           })
+  //         ]
+  //       }
+  //     }
+  //   }
+  // },
 
   // CSS 配置（px → rem）区分环境
   // css: {
@@ -148,7 +148,6 @@ module.exports = {
   transpileDependencies: ["pdfjs-dist"], // ✅ 让 babel 转译 pdfjs-dist
   // 其他插件配置
   chainWebpack: (config) => {
-    
     // 可以在这里添加更多的 Webpack 配置
     // 例如，添加一个 SVG 加载器
     config.module.rule("svg").exclude.add(resolve("src/icons")).end();

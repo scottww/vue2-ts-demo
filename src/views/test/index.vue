@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="main-content" :class="tab">
+    <div class="main-content" :class="['tab', { 'is-no-bg': tab.noBg }]">
       <template v-if="tab === 'Selector'">
         <Selector
           v-model="forecastTime"
@@ -72,14 +72,14 @@ import MathFormulaTable from "./MathFormulaTable.vue";
 import Selector from "./Selector.vue";
 import MyButton from "./MyButton.vue";
 import ImageZoom from "./ImageZoom.vue";
-import IconButtonGroupDemo from './IconButtonGroupDemo.vue';
-import InspectionTotal from './InspectionTotal.vue';
-import SwitchButtonDemo from './SwitchButtonDemo.vue';
-import LngLatInputDemo from  './LngLatInputDemo.vue';
-import DompurifyDemo from  './dompurify/DompurifyDemo.vue';
-
+import IconButtonGroupDemo from "./IconButtonGroupDemo.vue";
+import InspectionTotal from "./InspectionTotal.vue";
+import SwitchButtonDemo from "./SwitchButtonDemo.vue";
+import LngLatInputDemo from "./LngLatInputDemo.vue";
+import DompurifyDemo from "./dompurify/DompurifyDemo.vue";
 //优化增强版
-import CustomSelect from './CustomSelectDemo.vue';
+import CustomSelect from "./CustomSelectDemo.vue";
+import ButtonGroupPanel from "./ButtonGroupPanel.vue";
 
 export default {
   components: {
@@ -125,7 +125,8 @@ export default {
     SwitchButtonDemo,
     CustomSelect,
     LngLatInputDemo,
-    DompurifyDemo
+    DompurifyDemo,
+    ButtonGroupPanel
   },
   data() {
     return {
@@ -149,7 +150,10 @@ export default {
         { label: "MonitoringIndicators", name: "MonitoringIndicators" },
         { label: "MonitoringIndicators2", name: "MonitoringIndicators2" },
         { label: "MonitoringIndicators3", name: "MonitoringIndicators3" },
-        { label: "MonitoringIndicators4", name: "MonitoringIndicators4 虚拟滚动" },
+        {
+          label: "MonitoringIndicators4",
+          name: "MonitoringIndicators4 虚拟滚动"
+        },
         { label: "CssDemo", name: "CssDemo" },
         { label: "DispatchStatistics", name: "DispatchStatistics" },
         { label: "WeatherChart", name: "WeatherChart" },
@@ -166,14 +170,19 @@ export default {
         { label: "MultiplicationTable", name: "MultiplicationTable" },
         { label: "MathFormulaTable", name: "MathFormulaTable" },
         { label: "Selector", name: "Selector", custom: true },
-        {label: "MyButton", name: "MyButton" },
-        {label: "ImageZoom", name: "ImageZoom" },
-        {label: "IconButtonGroupDemo", name: "IconButtonGroupDemo" },
-        {label: "InspectionTotal", name: "InspectionTotal" },
-        {label: "SwitchButtonDemo", name: "SwitchButton" },
-        {label: "CustomSelect", name: "CustomSelectDemo" },
-        {label: "LngLatInputDemo", name: "LngLatInputDemo" },
-        {label: "DompurifyDemo", name: "DompurifyDemo" }
+        { label: "MyButton", name: "MyButton" },
+        { label: "ImageZoom", name: "ImageZoom" },
+        { label: "IconButtonGroupDemo", name: "IconButtonGroupDemo" },
+        { label: "InspectionTotal", name: "InspectionTotal" },
+        { label: "SwitchButtonDemo", name: "SwitchButton" },
+        { label: "CustomSelect", name: "CustomSelectDemo" },
+        { label: "LngLatInputDemo", name: "LngLatInputDemo" },
+        { label: "DompurifyDemo", name: "DompurifyDemo" },
+        {
+          label: "ButtonGroupPanel",
+          name: "ButtonGroupPanel",
+          noBg: true
+        }
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -355,6 +364,11 @@ export default {
 }
 
 .main-content.DompurifyDemo {
+  width: auto;
+  background: none;
+}
+
+.mian-content.is-no-bg {
   width: auto;
   background: none;
 }
