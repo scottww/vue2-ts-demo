@@ -38,6 +38,10 @@ export default class HWidgeDemo extends Vue {
     {
       url: "https://tinypng.com/",
       label: "图像压缩"
+    },
+    {
+      url: "https://www.toolhelper.cn/",
+      label: "锤子在线工具"
     }
   ];
 

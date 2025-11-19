@@ -18,6 +18,8 @@ import { ref } from 'vue'
 // tip: 这个代码会导致运行项目卡在98%，暂时注释掉
 // import backgroundImg from ''
 
+const backgroundImg = ref('')
+
 // 按钮数组，第一个是功能1，其余是其他类型按钮
 const buttons = ref([
   { label: '功能1', type: 'func1', disabled: false },

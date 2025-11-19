@@ -11,7 +11,10 @@
       </div>
     </div>
 
-    <div class="main-content" :class="['tab', { 'is-no-bg': tab.noBg }]">
+    <div
+      class="main-content"
+      :class="['tab', { 'is-no-bg': currentTab && currentTab.noBg }]"
+    >
       <template v-if="tab === 'Selector'">
         <Selector
           v-model="forecastTime"
@@ -80,6 +83,7 @@ import DompurifyDemo from "./dompurify/DompurifyDemo.vue";
 //优化增强版
 import CustomSelect from "./CustomSelectDemo.vue";
 import ButtonGroupPanel from "./ButtonGroupPanel.vue";
+import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
 
 export default {
   components: {
@@ -126,7 +130,8 @@ export default {
     CustomSelect,
     LngLatInputDemo,
     DompurifyDemo,
-    ButtonGroupPanel
+    ButtonGroupPanel,
+    WaveBackgroundDemo
   },
   data() {
     return {
@@ -180,7 +185,11 @@ export default {
         { label: "DompurifyDemo", name: "DompurifyDemo" },
         {
           label: "ButtonGroupPanel",
-          name: "ButtonGroupPanel",
+          name: "ButtonGroupPanel"
+        },
+        {
+          label: "WaveBackgroundDemo",
+          name: "WaveBackgroundDemo",
           noBg: true
         }
       ],
@@ -192,6 +201,11 @@ export default {
         { value: "36h", text: "未来36小时" }
       ]
     };
+  },
+  computed: {
+    currentTab() {
+      return this.tabs.find((t) => t.label === this.tab);
+    }
   },
   methods: {
     tabClick(tab) {
@@ -368,8 +382,9 @@ export default {
   background: none;
 }
 
-.mian-content.is-no-bg {
+.main-content.is-no-bg {
   width: auto;
-  background: none;
+  background-color: transparent;
+  background-image: none;
 }
 </style>
