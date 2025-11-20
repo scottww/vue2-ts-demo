@@ -392,6 +392,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/map33",
+        name: "map33",
+        component: () =>
+          import(/* webpackChunkName: "MAP33" */ "../utils/map3/views/MapView.vue"),
+        meta: {
+          title: "MAP33 新架构"
+        }
+      },
+      {
         path: "/map4",
         name: "map4",
         component: () =>
