@@ -7,7 +7,14 @@ import XYZ from "ol/source/XYZ";
 import { Feature } from "ol";
 import Point from "ol/geom/Point";
 // import { Icon, Style } from "ol/style";
-import { Circle as CircleStyle, Fill, Stroke, Style, Icon, Text } from 'ol/style';
+import {
+  Circle as CircleStyle,
+  Fill,
+  Stroke,
+  Style,
+  Icon,
+  Text
+} from "ol/style";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import { fromLonLat } from "ol/proj";
@@ -87,9 +94,13 @@ export default class Map2DService extends BaseMapService {
     return tileLayer;
   }
 
-  setCenter(center, zoom) {
+  setCenter(center = [], zoom) {
     this.map.getView().setCenter(center);
     if (zoom) this.map.getView().setZoom(zoom);
+  }
+
+  setZoom(zoom) {
+    this.map.getView().setZoom(zoom);
   }
 
   on(type, handler) {
@@ -271,7 +282,11 @@ export default class Map2DService extends BaseMapService {
       map.removeLayer(layer);
     }
   }
-  getDefaultTextStyle(text = 'My Point', offsetY = -50, fillColor = 'rgba(0,107,255, 0.4)') {
+  getDefaultTextStyle(
+    text = "My Point",
+    offsetY = -50,
+    fillColor = "rgba(0,107,255, 0.4)"
+  ) {
     // const label = new Text({
     //   text,
     //   font: '14px sans-serif', //默认是 '10px sans-serif'
@@ -287,19 +302,19 @@ export default class Map2DService extends BaseMapService {
 
     const label = new Text({
       text,
-      textAlign: 'center',
-      font: '14px PingFangSC-Regular',
+      textAlign: "center",
+      font: "14px PingFangSC-Regular",
       fill: new Fill({
-        color: '#ffffff'
+        color: "#ffffff"
       }),
       offsetY: offsetY, // 文本的垂直偏移量
       padding: [6, 6, 3, 6],
       backgroundStroke: new Stroke({
-        color: 'rgba(0, 0, 0, 0)',
+        color: "rgba(0, 0, 0, 0)",
         width: 1
       }),
       backgroundStroke: new Stroke({
-        color: 'rgba(0, 0, 0, 0)',
+        color: "rgba(0, 0, 0, 0)",
         width: 1
       }),
       backgroundFill: new Fill({

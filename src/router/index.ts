@@ -918,6 +918,18 @@ const routes: Array<RouteConfig> = [
           title: "geo-convert 数据转换",
           isFull: true
         }
+      },
+      {
+        path: "/geoserver",
+        name: "geoserver",
+        component: () =>
+          import(
+            /* webpackChunkName: "Geoserver" */ "../views/geoserver/loadWms.vue"
+          ),
+        meta: {
+          title: "geoserver 图层加载",
+          isFull: true
+        }
       }
     ]
   },

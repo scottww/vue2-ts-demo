@@ -163,17 +163,24 @@ module.exports = {
         symbolId: "icon-[name]"
       })
       .end();
-  }
 
-  // configureWebpack: {
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /PointsLayer.js$/,
-  //         include: path.resolve(__dirname, "node_modules/ol/renderer/webgl"),
-  //         use: "babel-loader"
-  //       }
-  //     ]
-  //   }
-  // }
+    // 使用 ol 7.5.2 版本, 支持可选链操作符
+    // config.module
+    //   .rule("js")
+    //   .test(/\.m?js$/)
+    //   .include.add(path.resolve("node_modules/ol"))
+    //   .end()
+    //   .use("babel-loader")
+    //   .loader("babel-loader")
+    //   .tap((options) => {
+    //     options.presets = [
+    //       ["@babel/preset-env", { targets: { browsers: "last 2 versions" } }]
+    //     ];
+    //     options.plugins = [
+    //       "@babel/plugin-proposal-optional-chaining",
+    //       ["@babel/plugin-proposal-class-properties", { loose: true }]
+    //     ];
+    //     return options;
+      // });
+  }
 };
