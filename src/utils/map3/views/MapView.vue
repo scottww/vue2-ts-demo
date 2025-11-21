@@ -1,12 +1,13 @@
 <template>
-  <div style="display: flex; height: 100vh">
-    <div style="width: 260px; padding: 12px; background: #f8f8f8">
+  <div style="display: flex; height: 100vh; overflow: hidden; position: relative;">
+    <div style="width: 260px; padding: 12px; background: #f8f8f8; z-index: 1000">
       <layer-panel />
     </div>
 
-    <div id="mapContainer" style="flex: 1; height: 100%"></div>
+    <div id="mapContainer"></div>
   </div>
 </template>
+
 
 <script>
 import MapApp from "../map";
@@ -16,6 +17,7 @@ import VectorSource from "ol/source/Vector";
 import { Feature } from "ol";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj"; // 视你的 projection 决定是否使用
+import { defaults as defaultControls, Zoom } from "ol/control";
 import LayerPanel from "../components/LayerPanel.vue";
 import { BASE_MAP } from "../constants";
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
@@ -25,7 +27,8 @@ export default {
   mounted() {
     // 初始化地图，使用 EPSG:4326（与上面代码一致）
     MapApp.init("mapContainer", {
-      core: { center: [120, 30], zoom: 11, projection: "EPSG:4326" }
+      core: { center: [120, 30], zoom: 11, projection: "EPSG:4326" },
+      controls: defaultControls() // 使用默认控件
     });
 
     // 添加底图
@@ -68,3 +71,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#mapContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative; /* 必须加 */
+}
+</style>
