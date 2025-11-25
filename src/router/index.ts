@@ -924,7 +924,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "GeoConvert" */ "../views/geoConvert/index.vue"
           ),
         meta: {
-          title: "geo-convert 数据转换",
+          title: "Geo-convert 数据转换",
           isFull: true
         }
       },
@@ -936,7 +936,19 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "Geoserver" */ "../views/geoserver/loadWms.vue"
           ),
         meta: {
-          title: "geoserver 图层加载",
+          title: "Geoserver 图层加载",
+          isFull: true
+        }
+      },
+      {
+        path: "/geoserver-publish",
+        name: "geoserver-publish",
+        component: () =>
+          import(
+            /* webpackChunkName: "GeoserverPublish" */ "../views/geoserver/publish.vue"
+          ),
+        meta: {
+          title: "GeoserverPublish 图层发布",
           isFull: true
         }
       }

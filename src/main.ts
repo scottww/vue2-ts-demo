@@ -1,6 +1,6 @@
 // main.js
 if (process.env.NODE_ENV === "development") {
-  require("./mock") // 确保路径正确
+  // require("./mock") // 确保路径正确
 }
 
 import Vue from "vue";
