@@ -3,6 +3,7 @@
     <h-widge title="常用网站" :data="dataList"></h-widge>
     <h-widge title="AI" :data="aiList"></h-widge>
     <h-widge title="Music" :data="musicList"></h-widge>
+    <h-widge title="GIS" :data="gisList"></h-widge>
   </div>
 </template>
 
@@ -91,6 +92,7 @@ export default class HWidgeDemo extends Vue {
     { label: "虫虫吉他", url: "https://www.ccguitar.cn/" },
     { label: "精品吉他谱", url: "https://www.jptab.com/" },
     { label: "吉他派", url: "https://www.jitapai.com//" },
+    { label: "有谱么", url: "https://yopu.co/" },
     { label: "Chordify", url: "https://chordify.net/" },
     { label: "Flat 音乐制谱", url: "https://flat.io/" },
     { label: "BandLab 在线编曲", url: "https://www.bandlab.com/" },
@@ -98,6 +100,13 @@ export default class HWidgeDemo extends Vue {
     { label: "Guitar Pro", url: "https://www.guitar-pro.com/" },
     { label: "Guitar Tuna", url: "https://www.guitartuna.com/" },
     { label: "Power Drum Kit", url: "https://www.powerdrumkit.com/" }
+  ];
+
+  gisList = [
+    {
+      label: "Awesome-Openlayers 汇总库",
+      url: "https://github.com/webgeodatavore/awesome-openlayers"
+    }
   ];
 
   // mounted() {
