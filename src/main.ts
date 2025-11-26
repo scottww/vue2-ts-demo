@@ -10,6 +10,7 @@ import router from "./router";
 import store from "./store";
 import "ant-design-vue/dist/antd.css";
 import "./styles";
+import 'ol/ol.css';
 // // 引用
 // import ECharts from "vue-echarts";
 // // 用到的模块要单独引用
