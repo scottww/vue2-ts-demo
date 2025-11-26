@@ -37,12 +37,10 @@ function toPinyinName(str) {
     .replace(/\s+/g, "");
 }
 
-/** 解析 SLD/XML 中的 <Title> 或 <sld:Title>，兼容命名空间 */
 function parseTitleFromSld(sldText) {
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(sldText, "application/xml");
-    // 尝试常见标签
     const candidates = [
       doc.getElementsByTagName("Title"),
       doc.getElementsByTagName("sld:Title"),
@@ -54,15 +52,12 @@ function parseTitleFromSld(sldText) {
         if (txt) return txt;
       }
     }
-    // 额外尝试：有些 style xml 使用 <title>
     const t2 = doc.getElementsByTagName("title");
     if (t2 && t2.length) {
       const txt = t2[0].textContent && t2[0].textContent.trim();
       if (txt) return txt;
     }
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) {}
   return null;
 }
 
@@ -76,10 +71,9 @@ export default {
       geoserverUrl: "http://localhost:8888/geoserver",
       auth: { username: "admin", password: "geoserver" },
       status: "",
-
       styleList: [],
       selectedStyle: null,
-      shpCharset: "UTF-8" // 新增：上传 Shapefile 的编码
+      shpCharset: "UTF-8"
     };
   },
   created() {
@@ -87,64 +81,33 @@ export default {
     this.loadStyles().catch(() => {});
   },
   methods: {
-    /** 把样式绑定到 layer（设置 title 和 defaultStyle） */
-    async setLayerTitleAndStyle(styleName) {
-      const layerUrl = `${this.geoserverUrl}/rest/layers/${this.workspace}:${this.datastore}`;
-      const xml = `
-        <layer>
-          <name>${this.datastore}</name>
-          <title>${this.layerTitle}</title>
-          <defaultStyle><name>${styleName}</name></defaultStyle>
-        </layer>
-      `;
-      await axios.put(layerUrl, xml, {
-        headers: { "Content-Type": "text/xml" },
-        auth: this.auth
-      });
+    handleFileUpload(event) {
+      this.file = event.target.files[0];
     },
 
-    /** ------- 样式加载函数（核心改动） ------- */
     async loadStyles() {
       this.status = "加载 GeoServer 样式列表...";
-      const styles = new Map(); // name -> { name, title }
-
-      // 2) 再拉当前 workspace 下的样式（如果存在）
+      const styles = new Map();
+      try {
+        const resGlobal = await axios.get(
+          `${this.geoserverUrl}/rest/styles.json`,
+          { auth: this.auth }
+        );
+        const list = resGlobal.data?.styles?.style || [];
+        for (const s of list) styles.set(s.name, { name: s.name, title: null });
+      } catch (e) {}
       try {
         const resWs = await axios.get(
           `${this.geoserverUrl}/rest/workspaces/${this.workspace}/styles.json`,
-          {
-            auth: this.auth
-          }
+          { auth: this.auth }
         );
         const list2 = resWs.data?.styles?.style || [];
-        for (const s of list2) {
+        for (const s of list2)
           styles.set(`${this.workspace}:${s.name}`, {
             name: `${this.workspace}:${s.name}`,
             title: null
           });
-        }
-      } catch (e) {
-        // workspace 样式可能不存在，不必抛错
-        console.info("或无 workspace 专有样式：", e.message || e);
-      }
-
-      // 1) 先拉全局样式列表（JSON）
-      try {
-        const resGlobal = await axios.get(
-          `${this.geoserverUrl}/rest/styles.json`,
-          {
-            auth: this.auth
-          }
-        );
-        const list = resGlobal.data?.styles?.style || [];
-        for (const s of list) {
-          styles.set(s.name, { name: s.name, title: null });
-        }
-      } catch (e) {
-        console.warn("获取全局样式失败：", e.message || e);
-      }
-
-      // 3) 对每个样式尝试获取它的 SLD 内容 以解析 <Title>（并发但限速）
+      } catch (e) {}
       const names = Array.from(styles.keys());
       const concurrency = 6;
       let idx = 0;
@@ -152,7 +115,6 @@ export default {
         while (idx < names.length) {
           const name = names[idx++];
           try {
-            // 尝试获取 style body (sld). 优先 workspace 样式 URL，再全局
             let sldText = null;
             try {
               const r = await axios.get(
@@ -165,7 +127,6 @@ export default {
               );
               sldText = r.data;
             } catch (e1) {
-              // fallback to global
               try {
                 const r2 = await axios.get(
                   `${this.geoserverUrl}/rest/styles/${name}`,
@@ -176,44 +137,28 @@ export default {
                   }
                 );
                 sldText = r2.data;
-              } catch (e2) {
-                // 无法获取 sld 内容（权限或不存在），忽略
-              }
+              } catch (e2) {}
             }
-
             if (sldText) {
               const title = parseTitleFromSld(sldText);
               if (title) styles.set(name, { name, title });
             }
-          } catch (e) {
-            // 忽略单个样式读取失败
-            console.warn("读取样式失败", name, e.message || e);
-          }
+          } catch (e) {}
         }
       });
-
       await Promise.all(workers);
-
-      // 4) 填充 styleList，优先显示 title（中文）
       this.styleList = Array.from(styles.values()).sort((a, b) =>
         a.name > b.name ? 1 : -1
       );
-
-      if (this.styleList.length > 0 && !this.selectedStyle) {
+      if (this.styleList.length > 0 && !this.selectedStyle)
         this.selectedStyle = this.styleList[0].name;
-      }
       this.status = "";
-    },
-
-    handleFileUpload(event) {
-      this.file = event.target.files[0];
     },
 
     async filterShapefileZip(file) {
       const zip = await JSZip.loadAsync(file);
       const newZip = new JSZip();
       const allowedExt = [".shp", ".shx", ".dbf", ".prj"];
-
       await Promise.all(
         Object.keys(zip.files).map(async (filename) => {
           const ext = filename.slice(filename.lastIndexOf(".")).toLowerCase();
@@ -225,44 +170,7 @@ export default {
           }
         })
       );
-
       return await newZip.generateAsync({ type: "blob" });
-    },
-
-    async uploadShapefile() {
-      if (!this.file) throw new Error("请选择 Shapefile zip 文件");
-      this.status = "处理上传文件...";
-      const filteredZip = await this.filterShapefileZip(this.file);
-
-      this.status = "上传 Shapefile 并创建 datastore...";
-      // 注意 URL 加上 charset 参数
-      const url = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}/file.shp`;
-      await axios.put(url, filteredZip, {
-        headers: { "Content-Type": "application/zip" },
-        // 这个会报错
-        // headers: {
-        //   "Content-Type": `application/zip; charset=${this.shpCharset}`
-        // },
-        auth: this.auth
-      });
-    },
-
-    async setCharset() {
-      // ⚠️ 这里创建 datastore后，再指定编码
-      const datastoreXml = `
-      <dataStore>
-  <name>大浦河2</name>
-  <connectionParameters>
-    <entry key="url">file:/E:/GeoServerData/data/beilun/dapuhe/</entry>
-    <entry key="charset">GB2312</entry>
-  </connectionParameters>
-</dataStore>
-  `;
-      const dsUrl = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}`;
-      await axios.put(dsUrl, datastoreXml, {
-        headers: { "Content-Type": "text/xml" },
-        auth: this.auth
-      });
     },
 
     async createWorkspace() {
@@ -282,23 +190,140 @@ export default {
       }
     },
 
+    async setCharset(filePath, charset) {
+      if (!filePath) throw new Error("请提供 shapefile 服务器路径");
+      if (!charset) charset = "UTF-8";
+      const datastoreXml = `
+<dataStore>
+  <name>${this.datastore}</name>
+  <connectionParameters>
+    <entry key="url">${filePath}</entry>
+    <entry key="charset">${charset}</entry>
+  </connectionParameters>
+</dataStore>
+`;
+      const dsUrl = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}`;
+      await axios.put(dsUrl, datastoreXml, {
+        headers: { "Content-Type": "text/xml" },
+        auth: this.auth
+      });
+    },
+
+    async setCharsetFromDatastore() {
+      // charset: 用户选择的编码，例如 "UTF-8" / "GB2312"
+      const charset = this.shpCharset || "UTF-8";
+
+      // 获取 GeoServer data_dir 根路径（REST API /rest/about/ 可获取 data_dir 绝对路径）
+      let dataDir = "";
+      try {
+        const res = await axios.get(`${this.geoserverUrl}/rest/about/`, {
+          auth: this.auth,
+          headers: { Accept: "application/json" }
+        });
+        dataDir = res.data?.dataDir; // 返回类似 /opt/geoserver/data_dir/
+        if (!dataDir) throw new Error("未获取到 GeoServer data_dir");
+      } catch (e) {
+        throw new Error("获取 GeoServer data_dir 失败：" + (e.message || e));
+      }
+
+      // 拼接 datastore 路径
+      let filePath = dataDir;
+      if (!filePath.endsWith("/")) filePath += "/";
+      filePath += `${this.workspace}/${this.datastore}/`;
+
+      // 生成 datastore XML
+      const datastoreXml = `<dataStore>   <name>${this.datastore}</name>   <connectionParameters>     <entry key="url">file:${filePath}</entry>     <entry key="charset">${charset}</entry>   </connectionParameters> </dataStore>`;
+
+      const dsUrl = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}`;
+      await axios.put(dsUrl, datastoreXml, {
+        headers: { "Content-Type": "text/xml" },
+        auth: this.auth
+      });
+    },
+
+    async uploadShapefile() {
+      if (!this.file) throw new Error("请选择 Shapefile zip 文件");
+      this.status = "处理上传文件...";
+      const filteredZip = await this.filterShapefileZip(this.file);
+      this.status = "上传 Shapefile 并创建 datastore...";
+      const url = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}/file.shp`;
+      await axios.put(url, filteredZip, {
+        headers: { "Content-Type": "application/zip" },
+        auth: this.auth
+      });
+      // 上传完成后动态设置 charset（假设 GeoServer 数据目录可访问）
+      // 服务器路径一般为： GeoServer/ data/ workspace/, 这个根据版本以及安装的路径不同而不同，新版本路径可能是/data_dir/data/workspace/
+      // 本地安装的geoserver带盘符，安装时，设置的数据目录路径是E:\GeoServerData
+      const filePath = `file:/E:/GeoServerData/data/${this.workspace}/${this.datastore}/`;
+      // await this.setCharset(filePath, this.shpCharset);
+    },
+
+    async setLayerTitleAndStyle(styleName) {
+      const layerUrl = `${this.geoserverUrl}/rest/layers/${this.workspace}:${this.datastore}`;
+      const xml = `
+<layer>
+  <name>${this.datastore}</name>
+  <title>${this.layerTitle}</title>
+  <defaultStyle><name>${styleName}</name></defaultStyle>
+</layer>
+`;
+      await axios.put(layerUrl, xml, {
+        headers: { "Content-Type": "text/xml" },
+        auth: this.auth
+      });
+    },
+
+    async uploadShapefileAndSetCharset() {
+      if (!this.file) throw new Error("请选择 Shapefile zip 文件");
+
+      this.status = "处理上传文件...";
+      const filteredZip = await this.filterShapefileZip(this.file);
+
+      this.status = "上传 Shapefile...";
+      // 上传 Shapefile
+      const url = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}/file.shp`;
+      await axios.put(url, filteredZip, {
+        headers: { "Content-Type": "application/zip" },
+        auth: this.auth
+      });
+
+      this.status = "设置 datastore 编码...";
+      // 拼接相对路径，不依赖 /rest/about/
+      const filePath = `data/${this.workspace}/${this.datastore}/`;
+
+      const datastoreXml = `
+        <dataStore>
+          <name>${this.datastore}</name>
+          <connectionParameters>
+            <entry key="url">file:${filePath}</entry>
+            <entry key="charset">${this.shpCharset}</entry>
+          </connectionParameters>
+        </dataStore>
+      `;
+      const dsUrl = `${this.geoserverUrl}/rest/workspaces/${this.workspace}/datastores/${this.datastore}`;
+
+      console.log(`charset ....`, this.datastore, dsUrl, datastoreXml);
+      await axios.put(dsUrl, datastoreXml, {
+        headers: { "Content-Type": "text/xml" },
+        auth: this.auth
+      });
+
+      this.status = "完成";
+    },
+
     async publishLayer() {
       if (!this.file) {
         this.status = "请先选择 Shapefile zip 文件";
         return;
       }
-
       try {
         this.status = "检查并创建工作空间...";
         await this.createWorkspace();
-
-        await this.uploadShapefile();
-
-        await this.setCharset();
-
+        // await this.uploadShapefile();  // 先上传 Shapefile
+        await this.uploadShapefileAndSetCharset();
+        // await this.setCharsetFromDatastore(); // 再动态设置 charset
         this.status = "设置图层标题和默认样式...";
         await this.setLayerTitleAndStyle(this.selectedStyle);
-
         this.status = "图层发布完成";
       } catch (err) {
         console.error(err);
