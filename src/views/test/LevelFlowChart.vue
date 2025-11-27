@@ -85,7 +85,7 @@ export default {
             { name: '预报流量', itemStyle: { color: '#1989FA' } },
             { name: '警戒水位', itemStyle: { color: '#F56C6C' } }
           ],
-          top: 10,
+          top: '5%',
           itemGap: 10,
           textStyle: {
             color: '#fff'
@@ -121,8 +121,8 @@ export default {
         grid: {
           left: "5%",
           right: "5%",
-          top: "15%",
-          bottom: "20%", // 增加底部边距以容纳两行时间标签
+          top: "20%",
+          bottom: "5%", // 增加底部边距以容纳两行时间标签
           containLabel: true
         },
         // X轴配置
@@ -299,11 +299,11 @@ export default {
                     width: 1,
                     type: 'dashed'
                   },
-                  symbol: 'none' // 禁用两端的箭头和标记
+                  // symbol: 'none' // 禁用两端的端点标记
                 }
               ],
               silent: true,
-              symbol: 'none' // 禁用markLine本身的端点标记
+              // symbol: 'none' // 禁用markLine本身的箭头标记
             }
           }
         ]
