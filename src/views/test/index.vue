@@ -13,7 +13,7 @@
 
     <div
       class="main-content"
-      :class="['tab', { 'is-no-bg': currentTab && currentTab.noBg }]"
+      :class="[`${tab}`, { 'is-no-bg': currentTab && currentTab.noBg }]"
     >
       <template v-if="tab === 'Selector'">
         <Selector
