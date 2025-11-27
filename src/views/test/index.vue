@@ -84,6 +84,7 @@ import DompurifyDemo from "./dompurify/DompurifyDemo.vue";
 import CustomSelect from "./CustomSelectDemo.vue";
 import ButtonGroupPanel from "./ButtonGroupPanel.vue";
 import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
+import LevelFlowChart from "./LevelFlowChart.vue";
 
 export default {
   components: {
@@ -131,7 +132,8 @@ export default {
     LngLatInputDemo,
     DompurifyDemo,
     ButtonGroupPanel,
-    WaveBackgroundDemo
+    WaveBackgroundDemo,
+    LevelFlowChart
   },
   data() {
     return {
@@ -191,6 +193,10 @@ export default {
           label: "WaveBackgroundDemo",
           name: "WaveBackgroundDemo",
           noBg: true
+        },
+        {
+          label: "LevelFlowChart",
+          name: "LevelFlowChart",
         }
       ],
       forecastTime: "12h",
@@ -386,5 +392,10 @@ export default {
   width: auto;
   background-color: transparent;
   background-image: none;
+}
+
+.main-content.LevelFlowChart {
+  width: 600px;
+  height: 400px;
 }
 </style>
