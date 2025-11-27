@@ -122,7 +122,7 @@ export default {
           left: "5%",
           right: "5%",
           top: "15%",
-          bottom: "15%",
+          bottom: "20%", // 增加底部边距以容纳两行时间标签
           containLabel: true
         },
         // X轴配置
@@ -135,7 +135,13 @@ export default {
           },
           axisLabel: {
             color: "rgba(255, 255, 255, 0.8)",
-            fontSize: 12
+            fontSize: 12,
+            formatter: function(value) {
+              // 将时间字符串分割为日期和时间两部分
+              const parts = value.split(' ');
+              // 返回包含换行符的字符串，将日期和时间显示为两行
+              return parts[0] + '\n' + parts[1];
+            }
           },
           axisTick: {
             show: false
