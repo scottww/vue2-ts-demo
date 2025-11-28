@@ -82,7 +82,8 @@ module.exports = {
       ...config.resolve, // 保留默认的 resolve 配置
       alias: {
         ...config.resolve.alias, // 保留默认的别名配置
-        "@": resolve("src") // 确保 @ 指向 src 目录
+        "@": resolve("src"), // 确保 @ 指向 src 目录
+        "@styles": resolve("src/styles")
       }
     };
 

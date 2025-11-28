@@ -1,5 +1,5 @@
 <template>
-  <div class="your-container">
+  <div class="LevelFlowChart-demo">
     <LevelFlowChart 
       :chartData="customData" 
     />
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style>
-.your-container {
+.LevelFlowChart-demo {
   width: 100%;
   height: 400px;
 }

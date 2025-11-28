@@ -72,6 +72,7 @@ export default {
 
       // 准备图表配置项
       const option = {
+        color: ["#FEE247", "#36A4FF", "#33E9FF", "#0AF120", "#FF0000"], // 设置颜色
         // 蓝色背景带波浪纹理
         backgroundColor: {
           type: "pattern",
@@ -79,19 +80,27 @@ export default {
           repeat: "repeat"
         },
         // 图例
+        // legend: {
+        //   data: [
+        //     { name: "实时水位", itemStyle: { color: "#FFC300" } },
+        //     { name: "预报水位", itemStyle: { color: "#4A90E2" } },
+        //     { name: "报讯流量", itemStyle: { color: "#67C23A" } },
+        //     { name: "预报流量", itemStyle: { color: "#1989FA" } },
+        //     { name: "警戒水位", itemStyle: { color: "#F56C6C" } }
+        //   ],
+        //   top: "5%",
+        //   itemGap: 10,
+        //   textStyle: {
+        //     color: "#fff"
+        //   }
+        // },
         legend: {
-          data: [
-            { name: "实时水位", itemStyle: { color: "#FFC300" } },
-            { name: "预报水位", itemStyle: { color: "#4A90E2" } },
-            { name: "实时流量", itemStyle: { color: "#67C23A" } },
-            { name: "预报流量", itemStyle: { color: "#1989FA" } },
-            { name: "警戒水位", itemStyle: { color: "#F56C6C" } }
-          ],
+          data: ["实时水位", "预报水位", "实时雨量", "预报雨量", "警戒水位"],
           top: "5%",
+          // itemWidth: 20,
+          // itemHeight: 15,
           itemGap: 10,
-          textStyle: {
-            color: "#fff"
-          }
+          textStyle: { color: "#fff" },
         },
         // 提示框
         tooltip: {
@@ -106,13 +115,14 @@ export default {
           backgroundColor: "rgba(0, 0, 0, 0.7)",
           borderColor: "#4A90E2",
           textStyle: {
-            color: "#fff"
+            color: "#fff",
+            fontSize: 14
           },
           formatter: function (params) {
             let result = params[0].name + "<br/>";
             params.forEach((item) => {
               if (item.value !== null && item.value !== undefined) {
-                const unit = item.seriesName.includes("水位") ? " m" : " m³/s";
+                const unit = item.seriesName.includes("水位") ? " m" : " mm";
                 result +=
                   item.marker +
                   item.seriesName +
@@ -130,7 +140,7 @@ export default {
           left: "5%",
           right: "5%",
           top: "25%",
-          bottom: "5%", // 增加底部边距以容纳两行时间标签
+          bottom: "1%", // 增加底部边距以容纳两行时间标签
           containLabel: true
         },
         // X轴配置
@@ -144,11 +154,11 @@ export default {
         //   axisLabel: {
         //     color: "rgba(255, 255, 255, 0.8)",
         //     fontSize: 12,
-        //     formatter: function (value) {
+        //     formatter: function(value) {
         //       // 将时间字符串分割为日期和时间两部分
-        //       const parts = value.split(" ");
+        //       const parts = value.split(' ');
         //       // 返回包含换行符的字符串，将日期和时间显示为两行
-        //       return parts[0] + "\n" + parts[1];
+        //       return parts[0] + '\n' + parts[1];
         //     }
         //   },
         //   axisTick: {
@@ -175,9 +185,9 @@ export default {
                 dateSeg.length >= 2 ? dateSeg[1].padStart(2, "0") : "";
               const day =
                 dateSeg.length >= 3 ? dateSeg[2].padStart(2, "0") : "";
-              const md = day ? `${day}日` : datePart;
+              const md = month && day ? `${month}-${day}` : datePart;
               const [hour = "", minute = ""] = (timePart || "").split(":");
-              const hm = hour ? `${hour}时` : timePart;
+              const hm = hour && minute ? `${hour}:${minute}` : timePart;
               return `${md}\n${hm}`;
             }
           }
@@ -212,10 +222,10 @@ export default {
               }
             }
           },
-          // 右侧流量轴
+          // 右侧雨量轴
           {
             type: "value",
-            name: "流量(m³/s)",
+            name: "雨量(mm)",
             nameTextStyle: {
               color: "rgba(255, 255, 255, 0.8)",
               // padding: [0, 20, 0, 0]
@@ -245,72 +255,92 @@ export default {
             name: "实时水位",
             type: "line",
             data: data.actualLevel,
-            itemStyle: {
-              color: "#FFC300"
-            },
-            lineStyle: {
-              width: 2
-            },
-            symbol: "circle",
-            symbolSize: 4
+            // itemStyle: {
+            //   color: "#FFC300"
+            // },
+            // lineStyle: {
+            //   width: 2
+            // },
+            // symbol: "none",
+            // symbolSize: 4
+            smooth: true,
+            lineStyle: { width: 2 },
+            itemStyle: { borderColor: '#fff', borderWidth: 1 },
+            symbol: 'none',
           },
           // 预报水位折线图
           {
             name: "预报水位",
             type: "line",
             data: data.forecastLevel,
-            itemStyle: {
-              color: "#4A90E2"
-            },
-            lineStyle: {
-              width: 2
-            },
-            symbol: "circle",
-            symbolSize: 4
+            // itemStyle: {
+            //   color: "#4A90E2"
+            // },
+            // lineStyle: {
+            //   width: 2
+            // },
+            // symbol: "circle",
+            // symbolSize: 4
+            smooth: true,
+            lineStyle: { width: 2 },
+            itemStyle: { borderColor: '#fff', borderWidth: 1 },
+            symbol: 'none',
           },
-          // 实时流量折线图
+          // 实时雨量折线图
           {
-            name: "实时流量",
+            name: "实时雨量",
             type: "line",
             data: data.actualFlow,
             yAxisIndex: 1, // 使用右侧Y轴
-            itemStyle: {
-              color: "#67C23A"
-            },
-            lineStyle: {
-              width: 2
-            },
-            symbol: "circle",
-            symbolSize: 4
+            // itemStyle: {
+            //   color: "#67C23A"
+            // },
+            // lineStyle: {
+            //   width: 2
+            // },
+            // symbol: "circle",
+            // symbolSize: 4
+            smooth: true,
+            lineStyle: { width: 2 },
+            itemStyle: { borderColor: '#fff', borderWidth: 1 },
+            symbol: 'none',
           },
-          // 预报流量折线图
+          // 预报雨量折线图
           {
-            name: "预报流量",
+            name: "预报雨量",
             type: "line",
             data: data.forecastFlow,
             yAxisIndex: 1, // 使用右侧Y轴
-            itemStyle: {
-              color: "#1989FA"
-            },
-            lineStyle: {
-              width: 2
-            },
-            symbol: "circle",
-            symbolSize: 4
+            // itemStyle: {
+            //   color: "#1989FA"
+            // },
+            // lineStyle: {
+            //   width: 2
+            // },
+            // symbol: "circle",
+            // symbolSize: 4
+            smooth: true,
+            lineStyle: { width: 2 },
+            itemStyle: { borderColor: '#fff', borderWidth: 1 },
+            symbol: 'none',
           },
           // 警戒水位线
           {
             name: "警戒水位",
             type: "line",
             data: data.timeData.map(() => data.warningLevel),
-            itemStyle: {
-              color: "#F56C6C"
-            },
-            lineStyle: {
-              width: 2,
-              type: "solid"
-            },
-            symbol: "none"
+            // itemStyle: {
+            //   color: "#F56C6C"
+            // },
+            // lineStyle: {
+            //   width: 2,
+            //   type: "solid"
+            // },
+            // symbol: "none"
+            smooth: true,
+            lineStyle: { width: 2 },
+            itemStyle: { borderColor: '#fff', borderWidth: 1 },
+            symbol: 'none',
           },
           // 当前时间线 - 使用markLine方式实现
           {
@@ -333,12 +363,12 @@ export default {
                     color: "#FF0000",
                     width: 1,
                     type: "dashed"
-                  }
-                  // symbol: 'none' // 禁用两端的端点标记
+                  },
+                  symbol: "none" // 禁用两端的端点标记
                 }
               ],
-              silent: true
-              // symbol: 'none' // 禁用markLine本身的箭头标记
+              silent: true,
+              symbol: "none" // 禁用markLine本身的箭头标记
             }
           }
         ]
@@ -448,6 +478,8 @@ export default {
 .level-flow-chart-container {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .chart-container {

@@ -86,6 +86,8 @@ import ButtonGroupPanel from "./ButtonGroupPanel.vue";
 import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
 import LevelFlowChart from "./LevelFlowChart.vue";
 
+import PanelDemo from "./PanelDemo.vue";
+
 export default {
   components: {
     RiskHazardComponentVue,
@@ -133,7 +135,8 @@ export default {
     DompurifyDemo,
     ButtonGroupPanel,
     WaveBackgroundDemo,
-    LevelFlowChart
+    LevelFlowChart,
+    PanelDemo
   },
   data() {
     return {
@@ -144,6 +147,10 @@ export default {
         { label: "Risk3", name: "测试3" },
         { label: "GateRealTime", name: "测试4" },
         { label: "GateRealTime2", name: "panel2" },
+        {
+          label: "PanelDemo",
+          name: "通用panel",
+        },
         { label: "EquipmentDetail", name: "设备详情" },
         { label: "Pie3D", name: "3D饼图" },
         { label: "Pie3D2", name: "3D饼图2" },
@@ -197,7 +204,8 @@ export default {
         {
           label: "LevelFlowChart",
           name: "LevelFlowChart",
-        }
+        },
+        
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -396,6 +404,11 @@ export default {
 
 .main-content.LevelFlowChart {
   width: 600px;
+  height: 400px;
+}
+
+.main-content.PanelDemo {
+  width: 1000px;
   height: 400px;
 }
 </style>
