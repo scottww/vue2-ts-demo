@@ -8,6 +8,7 @@
 // 导入ECharts
 import * as echarts from "echarts";
 
+import TimeSeriesGenerator from "@/utils/timeSeriesGenerator.js";
 export default {
   name: "LevelFlowChart",
   props: {
@@ -66,9 +67,15 @@ export default {
       this.chart = echarts.init(this.$refs.chartRef, null, {
         renderer: "canvas"
       });
+      const generator = new TimeSeriesGenerator({
+        pastHours: 3,
+        futureHours: 12
+      });
+      const defaultData = generator.generate();
 
       // 合并数据（如果有传入数据则使用，否则使用默认数据）
-      const data = { ...this.defaultData, ...this.chartData };
+      // const data = { ...this.defaultData, ...this.chartData };
+      const data = { ...defaultData, ...this.chartData };
 
       // 准备图表配置项
       const option = {
@@ -188,7 +195,7 @@ export default {
             type: "value",
             name: "水位(m)",
             nameTextStyle: {
-              color: "rgba(255, 255, 255, 0.8)",
+              color: "rgba(255, 255, 255, 0.8)"
               // padding: [0, 0, 0, 20]
             },
             min: 1.0,
@@ -217,7 +224,7 @@ export default {
             type: "value",
             name: "流量(m³/s)",
             nameTextStyle: {
-              color: "rgba(255, 255, 255, 0.8)",
+              color: "rgba(255, 255, 255, 0.8)"
               // padding: [0, 20, 0, 0]
             },
             min: 1.0,
@@ -248,6 +255,7 @@ export default {
             itemStyle: {
               color: "#FFC300"
             },
+            smooth: true,
             lineStyle: {
               width: 2
             },
@@ -262,6 +270,7 @@ export default {
             itemStyle: {
               color: "#4A90E2"
             },
+            smooth: true,
             lineStyle: {
               width: 2
             },
@@ -277,6 +286,7 @@ export default {
             itemStyle: {
               color: "#67C23A"
             },
+            smooth: true,
             lineStyle: {
               width: 2
             },
@@ -292,6 +302,7 @@ export default {
             itemStyle: {
               color: "#1989FA"
             },
+            smooth: true,
             lineStyle: {
               width: 2
             },
@@ -306,6 +317,7 @@ export default {
             itemStyle: {
               color: "#F56C6C"
             },
+            smooth: true,
             lineStyle: {
               width: 2,
               type: "solid"

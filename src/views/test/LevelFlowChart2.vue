@@ -8,6 +8,7 @@
 // 导入ECharts
 import * as echarts from "echarts";
 
+import TimeSeriesGenerator from "@/utils/timeSeriesGenerator.js";
 export default {
   name: "LevelFlowChart",
   props: {
@@ -66,9 +67,15 @@ export default {
       this.chart = echarts.init(this.$refs.chartRef, null, {
         renderer: "canvas"
       });
+      const generator = new TimeSeriesGenerator({
+        pastHours: 3,
+        futureHours: 12
+      });
+      const defaultData = generator.generate();
 
       // 合并数据（如果有传入数据则使用，否则使用默认数据）
-      const data = { ...this.defaultData, ...this.chartData };
+      // const data = { ...this.defaultData, ...this.chartData };
+      const data = { ...defaultData, ...this.chartData };
 
       // 准备图表配置项
       const option = {
