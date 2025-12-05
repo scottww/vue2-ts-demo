@@ -234,11 +234,12 @@ export default {
 
 <style lang="scss" scoped>
 .main-content {
-  position: absolute;
+  // position: absolute;
   width: 670px;
   /* height: 940px; */
   background-color: #0a1e3c;
   background-image: radial-gradient(circle at center, #143a7c, #0a1e3c);
+  
 }
 
 .tab-group {
@@ -408,7 +409,8 @@ export default {
 }
 
 .main-content.PanelDemo {
-  width: 1000px;
+  // width: 1920px;
+  width: 100%;
   height: 400px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="PanelDemo__container">
-    <div class="layout-1x1">
-      <div class="row">
+    <div class="layout-grid">
+      <!-- <div class="row">
         <CommonPanel title="面板标题" class="half">
           <LevelFlowChart />
         </CommonPanel>
@@ -11,6 +11,20 @@
           <LevelFlowChart2 />
         </CommonPanel>
       </div>
+      <div class="row">
+        <CommonPanel title="面板标题" class="half">
+          <LevelFlowChart3 />
+        </CommonPanel>
+      </div> -->
+      <CommonPanel title="面板标题" class="section">
+        <LevelFlowChart />
+      </CommonPanel>
+      <CommonPanel title="面板标题" class="section">
+        <LevelFlowChart2 />
+      </CommonPanel>
+      <CommonPanel title="面板标题" class="section">
+        <LevelFlowChart3 />
+      </CommonPanel>
     </div>
   </div>
 </template>
@@ -19,11 +33,13 @@
 import CommonPanel from "./Panel.vue";
 import LevelFlowChart from "./LevelFlowChart.vue";
 import LevelFlowChart2 from "./LevelFlowChart2.vue";
+import LevelFlowChart3 from "./LevelFlowChart3.vue";
 export default {
   components: {
     CommonPanel,
     LevelFlowChart,
-    LevelFlowChart2
+    LevelFlowChart2,
+    LevelFlowChart3
   }
 };
 </script>
@@ -61,5 +77,16 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.layout-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.layout-grid .section {
+  flex: 1
 }
 </style>

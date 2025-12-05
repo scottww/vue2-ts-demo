@@ -25,6 +25,7 @@ import HCard from "@/components/HCard";
 // import * as echarts from "echarts/dist/echarts.esm";
 import * as echarts from "echarts";
 import { CHART_LIST } from "./data";
+import { generateRainEvapData } from "./generatorFn";
 export default {
   name: "Chart",
   components: { HCard },
@@ -45,6 +46,14 @@ export default {
         this.dataList.forEach((item, index) => {
           const current = `chart${index + 1}`;
           let myChart = echarts.init(this.$refs[current][0]);
+          if (item.name === "折线图") {
+            const { timeData, rainfallData, evaporationData } =
+              generateRainEvapData(200, "hour"); //生成200个点，按小时 | 按天day
+            item.option.xAxis[0].data = timeData.map((str) => str.slice(5, 13));
+            item.option.xAxis[1].data = timeData.map((str) => str.slice(5, 13));
+            item.option.series[0].data = evaporationData;
+            item.option.series[1].data = rainfallData;
+          }
           myChart.setOption(item.option);
           // myChart.resize();
         });
@@ -87,8 +96,9 @@ export default {
 
   .chart {
     width: calc(100% / var(--chart-per-row) - 10px);
-    max-width: calc(100% / var(--chart-per-row) - 10px); // 计算每个 .chart 的宽度
+    max-width: calc(
+      100% / var(--chart-per-row) - 10px
+    ); // 计算每个 .chart 的宽度
   }
-
 }
 </style>

@@ -1,3 +1,9 @@
+import {
+  timeData,
+  rainfallData,
+  evaporationData,
+  temperatureData
+} from "./timeSeriesData.js";
 const PIE_LABEL_LINE_SERIES_DATA = [
   // [
   //   { name: "圣彼得堡来客", value: 5.6 },
@@ -79,29 +85,197 @@ export const CHART_LIST = [
     name: "折线图",
     option: {
       color: ["#0066ff", "#3ad29f", "#b4b4b4"], //#0066ff
+      // backgroundColor: "rgba(0, 0, 0, 0.7)",
+      title: {
+        text: "蒸发量与降水量",
+        left: "center"
+      },
+      // tooltip: {
+      //   trigger: "axis",
+      //   axisPointer: {
+      //     type: "line"
+      //   },
+      //   textStyle: {
+      //     align: "left" //提示的文本对齐
+      //   },
+      //   showContent: true
+      // },
       tooltip: {
         trigger: "axis",
         axisPointer: {
-          type: "line"
+          animation: false
+        }
+      },
+      legend: {
+        data: ["Evaporation", "Rainfall"],
+        top: "10%"
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: "none"
+          },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: "all"
+          }
+        ]
+      },
+      dataZoom: [
+        {
+          show: true,
+          realtime: true,
+          start: 30,
+          end: 70,
+          xAxisIndex: [0, 1],
+          handleSize: "100%", // 加大拖动条手柄，不会被截断
+          handleStyle: {
+            color: "#aaa"
+          },
+          // moveHandleSize: 12,
+
+          // 关键，让两边时间完整显示
+          handleLabel: {
+            // show: true,
+            formatter(value: any) {
+              // value 是 axis 的原数据 index
+              return timeData[value] || "";
+            },
+            color: "#000",
+            fontSize: 12,
+            margin: 6
+          },
+
+          // 让下面区域留多一点空间，不挤
+          bottom: 10,
+          left: '20%',
+          right: '20%',
         },
-        textStyle: {
-          align: "left" //提示的文本对齐
+        {
+          type: "inside",
+          realtime: true,
+          start: 30,
+          end: 70,
+          xAxisIndex: [0, 1],
+          left: 20,
+          right: 20
+        }
+      ],
+      grid: [
+        {
+          left: "12%",
+          right: "12%",
+          height: "20%"
         },
-        showContent: true
-      },
-      xAxis: {
-        type: "category",
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      },
-      yAxis: {
-        type: "value"
-      },
+        {
+          left: "12%",
+          right: "12%",
+          top: "60%",
+          height: "20%"
+        }
+      ],
+      // xAxis: {
+      //   type: "category",
+      //   data: ["2023-12-01", "2023-12-01", "2023-12-01", "2023-12-01", "2023-12-01", "2023-12-01", "2023-12-01"],
+      //   boundaryGap: false,
+      //   axisLine: { lineStyle: { color: "#9dc5e8" } },
+      //   axisTick: { show: true, alignWithLabel: true },
+      //   axisLabel: {
+      //     color: "rgba(0, 0, 0, 0.6)",
+      //     fontSize: 12,
+      //     formatter: "{value}"
+      //   }
+      // },
+      xAxis: [
+        {
+          type: "category",
+          boundaryGap: false,
+          axisLine: { onZero: true },
+          // axisLabel: { margin: 15 },
+          axisPointer: { snap: true },
+          // data: timeData,
+          data: []
+          // axisLabel: {
+          //   formatter: function (value:any) {
+          //     return value.replace(" ", "\n");
+          //   }
+          // }
+        },
+        {
+          gridIndex: 1,
+          type: "category",
+          boundaryGap: false,
+          axisLine: { onZero: true },
+          // axisLabel: { margin: 15 },
+          axisPointer: { snap: true },
+          // data: timeData,
+          data: [],
+          position: "top"
+          // axisLabel: {
+          //   formatter: function (value:any) {
+          //     return value.replace(" ", "\n");
+          //   }
+          // }
+        }
+      ],
+
+      yAxis: [
+        {
+          name: "Evaporation(m³/s)",
+          type: "value",
+          // max: 500,
+          // nameTextStyle: {
+          //   color: "rgba(0, 0, 0, 0.8)",
+          //   padding: [10, 0, 0, 20]
+          // }
+        },
+        {
+          gridIndex: 1,
+          name: "Rainfall(mm)",
+          type: "value",
+          inverse: true,
+        }
+        // type: "value",
+        // name: "次",
+        // nameTextStyle: {
+        //   color: "rgba(0, 0, 0, 0.8)"
+        //   // padding: [0, 0, 0, 20]
+        // },
+        // position: "left",
+        // axisLine: {
+        //   show: true,
+        //   lineStyle: { color: "#9dc5e8" }
+        // },
+        // axisLabel: {
+        //   color: "rgba(0, 0, 0, 0.6)",
+        //   fontSize: 12,
+        //   formatter: "{value}"
+        // },
+        // splitLine: {
+        //   show: true,
+        //   lineStyle: {
+        //     color: "rgba(0, 0, 0, 0.2)",
+        //     type: "dashed"
+        //   }
+        // }
+      ],
       series: [
         {
-          data: [56.5, 82.1, 88.7, 70.1, 53.4, 85.1, 90.1],
+          name: "Evaporation",
+          // data: evaporationData,
+          data: [],
           type: "line",
           // smooth: true,
-          seriesLayoutBy: "row"
+          // seriesLayoutBy: "row",
+          symbolSize: 8,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          gridIndex: 0 // 不写, 默认在第一个 grid
           // emphasis: {
           //   focus: "series"
           // },
@@ -110,22 +284,16 @@ export const CHART_LIST = [
           // }
         },
         {
-          data: [51.1, 51.4, 55.1, 53.3, 73.8, 68.7, 60.1],
+          name: "Rainfall",
+          // data: rainfallData,
+          data: [],
           type: "line",
           // smooth: true,
-          seriesLayoutBy: "row"
-          // emphasis: {
-          //   focus: "series"
-          // },
-          // backgroundStyle: {
-          //   color: "rgba(180, 180, 180, 0.2)"
-          // }
-        },
-        {
-          data: [25.2, 37.1, 41.2, 18, 33.9, 49.1, 50.1],
-          type: "line",
-          // smooth: true,
-          seriesLayoutBy: "row"
+          // seriesLayoutBy: "row",
+          symbolSize: 8,
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          gridIndex: 1
           // emphasis: {
           //   focus: "series"
           // },
