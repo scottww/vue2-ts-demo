@@ -85,6 +85,9 @@ import CustomSelect from "./CustomSelectDemo.vue";
 import ButtonGroupPanel from "./ButtonGroupPanel.vue";
 import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
 import LevelFlowChart from "./LevelFlowChart.vue";
+import CustomDialogDemo from "./CustomDialog/CustomDialogDemo.vue";
+import TimePlayerDemo from "./TimePlayer/TimePlayerDemo.vue";
+
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -136,7 +139,9 @@ export default {
     ButtonGroupPanel,
     WaveBackgroundDemo,
     LevelFlowChart,
-    PanelDemo
+    PanelDemo,
+    CustomDialogDemo,
+    TimePlayerDemo
   },
   data() {
     return {
@@ -204,6 +209,14 @@ export default {
         {
           label: "LevelFlowChart",
           name: "LevelFlowChart",
+        },
+        {
+          label: "CustomDialogDemo",
+          name: "CustomDialogDemo",
+        },
+        {
+          label: "TimePlayerDemo",
+          name: "TimePlayerDemo",
         },
         
       ],

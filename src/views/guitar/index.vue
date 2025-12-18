@@ -1,6 +1,6 @@
 <template>
   <div class="gibson-scale-tool">
-    <div class="controls">
+    <div class="controls" v-if="!degreeTableShow">
       <label
         >Root:
         <select v-model="root">
@@ -30,9 +30,10 @@
       </label>
 
       <button @click="invertOrder = !invertOrder">Invert Strings</button>
+      <button @click="degreeTableShow = !degreeTableShow">Degree table</button>
     </div>
 
-    <div class="fretboard-container">
+    <div class="fretboard-container" v-if="!degreeTableShow">
       <div class="fretboard">
         <!-- 每根弦一行，包括空弦音（0品） -->
         <div
@@ -73,14 +74,20 @@
         ></div>
       </div>
     </div>
+    <div class="degree-tabel-container" v-if="degreeTableShow">
+      <DegreeTable />
+    </div>
   </div>
 </template>
 
 <script>
+import DegreeTable from './degree-table-vue2.vue';
 export default {
+  components: { DegreeTable },
   name: "GibsonFretboard",
   data() {
     return {
+      degreeTableShow: false,
       strings: ["E", "A", "D", "G", "B", "E"],
       noteNamesSharp: [
         "C",
