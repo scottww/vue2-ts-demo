@@ -72,7 +72,7 @@ export default {
 
       mapService.addMarkerByLngLat(this.center, pointMarker);
       this.mapService = mapService;
-      this.map = mapService.getMapInsatance();
+      this.map = mapService.getMapInstance();
 
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);

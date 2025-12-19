@@ -149,7 +149,7 @@ export default {
       // mapService.addMarkerByLngLat([120.3, 30.3], warnIcon2);
 
       this.mapService = mapService;
-      this.map = mapService.getMapInsatance();
+      this.map = mapService.getMapInstance();
 
       // 只控制底图图层，不影响其他业务图层
       this.tileLayerManager = createTileLayerManager(this.map);

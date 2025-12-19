@@ -60,7 +60,7 @@ export default {
       // this.vectorLayer = new VectorLayer({
       //   source: this.vectorSource,
       // });
-      this.map = mapService.getMapInsatance();
+      this.map = mapService.getMapInstance();
 
       // 这张卫星图的地理范围（左下和右上经纬度），如下：
       const extent = [95, -2, 160, 43];
