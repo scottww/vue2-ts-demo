@@ -568,15 +568,26 @@ const routes: Array<RouteConfig> = [
           title: "chatItem 聊天选项"
         }
       },
+      // {
+      //   path: "/baguaChart",
+      //   name: "baguaChart",
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "BaguaChart" */ "../views/baguaChart/index.vue"
+      //     ),
+      //   meta: {
+      //     title: "BaguaChart 八卦图"
+      //   }
+      // },
       {
-        path: "/baguaChart",
-        name: "baguaChart",
+        path: "/bagua",
+        name: "baguaDiagram",
         component: () =>
           import(
-            /* webpackChunkName: "BaguaChart" */ "../views/baguaChart/index.vue"
+            /* webpackChunkName: "BaguaDiagram" */ "../views/baguaChart/BaguaDiagram.vue"
           ),
         meta: {
-          title: "BaguaChart 八卦图"
+          title: "BaguaDiagram 八卦图"
         }
       },
       {
