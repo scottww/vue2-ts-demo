@@ -581,13 +581,13 @@ const routes: Array<RouteConfig> = [
       // },
       {
         path: "/bagua",
-        name: "baguaDiagram",
+        name: "baguaDemo",
         component: () =>
           import(
-            /* webpackChunkName: "BaguaDiagram" */ "../views/baguaChart/BaguaDiagram.vue"
+            /* webpackChunkName: "BaguaDemo" */ "../views/baguaChart/BaguaDemo.vue"
           ),
         meta: {
-          title: "BaguaDiagram 八卦图"
+          title: "Bagua 八卦图"
         }
       },
       {
