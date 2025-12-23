@@ -156,7 +156,7 @@ export class MeasureTool {
     document.removeEventListener('mousedown', this.handleOutsideClick, true);
 
     this.isDrawing = false;
-    this.updateLiveTip("单击确定起点");
+    this.updateLiveTip("");
     this.liveTipOverlay.setPosition(undefined);
   }
 
@@ -337,7 +337,7 @@ export class MeasureTool {
       this.drawingOverlays = [];
       // 移除点击地图外部结束绘制的事件监听
       document.removeEventListener('mousedown', this.handleOutsideClick, true);
-      this.updateLiveTip("单击确定起点");
+      this.updateLiveTip("");
       this.liveTipOverlay.setPosition(undefined);
     });
   }
