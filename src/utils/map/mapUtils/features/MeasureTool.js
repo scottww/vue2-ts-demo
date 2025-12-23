@@ -25,6 +25,20 @@ export class MeasureTool {
         this.liveTipOverlay.setPosition(evt.coordinate);
       }
     });
+
+    // 点击地图外部结束绘制的事件处理函数
+    this.handleOutsideClick = (event) => {
+      if (this.isDrawing) {
+        // 获取地图容器元素
+        const mapElement = this.map.getTargetElement();
+        
+        // 检查点击目标是否在地图容器外部
+        if (!mapElement.contains(event.target)) {
+          // 立即结束绘制
+          this.clearCurrentDrawing();
+        }
+      }
+    };
   }
 
   createLiveTipOverlay() {
@@ -138,14 +152,21 @@ export class MeasureTool {
       this.disabledInteractions = null;
     }
 
+    // 移除点击地图外部结束绘制的事件监听
+    document.removeEventListener('mousedown', this.handleOutsideClick, true);
+
     this.isDrawing = false;
     this.updateLiveTip("单击确定起点");
+    this.liveTipOverlay.setPosition(undefined);
   }
 
   start(type) {
     this.clearCurrentDrawing();
     this.isDrawing = true;
     this.updateLiveTip("单击确定起点");
+
+    // 添加点击地图外部结束绘制的事件监听 - 使用mousedown和事件捕获模式提高可靠性
+    document.addEventListener('mousedown', this.handleOutsideClick, true);
 
     // 暂时禁用可能干扰的交互（如Select和Modify）
     this.disabledInteractions = [];
@@ -314,6 +335,8 @@ export class MeasureTool {
       this.isDrawing = false;
       this.drawingLayer = null;
       this.drawingOverlays = [];
+      // 移除点击地图外部结束绘制的事件监听
+      document.removeEventListener('mousedown', this.handleOutsideClick, true);
       this.updateLiveTip("单击确定起点");
       this.liveTipOverlay.setPosition(undefined);
     });

@@ -20,6 +20,7 @@ import VectorLayer from "ol/layer/Vector";
 import { fromLonLat } from "ol/proj";
 import ImageLayer from "ol/layer/Image";
 import ImageStatic from "ol/source/ImageStatic";
+import { defaults as defaultInteractions } from 'ol/interaction'
 
 export default class Map2DService extends BaseMapService {
   constructor(target, options = {}) {
@@ -43,6 +44,9 @@ export default class Map2DService extends BaseMapService {
         zoom: options.zoom || 11,
         // projection: 'EPSG:3857',
         projection: "EPSG:4326" //默认为EPSG:4326
+      }),
+      interactions: defaultInteractions({
+        doubleClickZoom: false
       })
     });
   }

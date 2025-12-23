@@ -19,7 +19,7 @@
       <button @click="measureLength()">测距（MeasureTool）</button>
       <button @click="measureArea()">测面积（MeasureTool）</button>
     </div>
-    <div ref="mapContainer" class="map-container">
+    <div id="gis-map" ref="mapContainer" class="map-container">
       <div class="map-change-btns">
         <el-button-group>
           <el-button
@@ -126,8 +126,11 @@ export default {
       console.log("init");
       const mapService = createMapService(this.type, this.$refs.mapContainer, {
         zoom: this.zoom
-        // center: this.center
       });
+      // const mapService = createMapService(this.type, 'gis-map', {
+      //   zoom: this.zoom
+      //   // center: this.center
+      // });
       // mapService.addTileLayer("TDT_vec");
 
       // 切换中心
