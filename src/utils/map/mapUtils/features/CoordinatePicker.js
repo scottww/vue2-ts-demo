@@ -158,7 +158,7 @@ export class CoordinatePicker {
       `CoordinatePicker [${this.instanceId}]: 获取坐标列表`,
       this.pickedCoordinates
     );
-    return [...this.pickedCoordinates];
+    return [...this.pickedCoordinates]; //返回副本，防止外部修改
   }
 
   clearCoordinates() {
