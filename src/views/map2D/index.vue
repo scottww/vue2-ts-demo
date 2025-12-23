@@ -18,6 +18,7 @@
       <button @click="addPictureToMap()">图片覆盖物</button>
       <button @click="measureLength()">测距（MeasureTool）</button>
       <button @click="measureArea()">测面积（MeasureTool）</button>
+      <button @click="coordinatesPick()">拾取坐标（CoordinatesPicker）</button>
     </div>
     <div id="gis-map" ref="mapContainer" class="map-container">
       <div class="map-change-btns">
@@ -47,7 +48,12 @@
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
 import PointLayerManager from "@/utils/map/PointLayerManager";
-import { PopupManager, PointManager, MeasureTool } from "@/utils/map/mapUtils";
+import {
+  PopupManager,
+  PointManager,
+  MeasureTool,
+  CoordinatePicker
+} from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
 const warnIcon2 = require("@/assets/mapIcon/warn_icon2.png");
@@ -115,7 +121,8 @@ export default {
       imageLayer: null,
       tileLayerManager: null, //图层管理器
       multiplePoints: null, //批量加点图层
-      measureTool: null //测量工具
+      measureTool: null, //测量工具
+      coordinatePicker: null //坐标拾取工具
     };
   },
   mounted() {
@@ -188,6 +195,8 @@ export default {
       // 初始化测量工具
       const measureTool = new MeasureTool(this.map);
       this.measureTool = measureTool;
+      // 初始化坐标拾取工具
+      this.coordinatePicker = new CoordinatePicker(this.map);
 
       this.initDrawLayer();
       this.initSavedLayer();
@@ -2202,6 +2211,50 @@ export default {
       // this.measureTool.clear();
       this.measureTool.start("Polygon"); // 开始测面 这个是done2的用法
       // this.measureTool.activate("Polygon"); // or Polygon
+    },
+    coordinatesPick0() {
+      // 开始拾取坐标，显示标记点
+      this.coordinatePicker.start(true);
+
+      // 获取拾取的坐标列表
+      const coordinates = this.coordinatePicker.getCoordinates();
+      console.log("coordinatesPick 111...", coordinates);
+
+      // 停止拾取坐标
+      // coordinatePicker.stop();
+    },
+    // simple版使用方式
+    coordinatesPick1() {
+      // 开始拾取坐标
+      this.coordinatePicker.start();
+
+      // 点击地图后，坐标会被记录在控制台中
+      // 示例输出: Picked coordinate: [116.39747028484926, 39.90917752414163]
+
+      // 获取已拾取的坐标列表
+      const coordinates = this.coordinatePicker.getCoordinates();
+      console.log("coordinatesPick 222...", coordinates);
+
+      // 停止拾取坐标
+      // this.coordinatePicker.stop();
+
+      // 清除已拾取的坐标
+      // this.coordinatePicker.clearCoordinates();
+    },
+    coordinatesPick() {
+      // 初始化坐标拾取工具
+      // const picker = new CoordinatePicker(this.map);
+      // 开始拾取坐标
+      this.coordinatePicker.start();
+
+      // 监听每次拾取的坐标
+      this.coordinatePicker.on("picked", (coord) => {
+        console.log("拾取的坐标111: ", coord);
+        if (coord.length) {
+          const [lng, lat] = coord;
+          console.log(`拾取的坐标222：${lng.toFixed(8)}, ${lat.toFixed(8)}`);
+        }
+      });
     }
   }
 };
