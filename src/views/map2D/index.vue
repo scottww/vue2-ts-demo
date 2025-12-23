@@ -2192,11 +2192,13 @@ export default {
     },
     measureLength() {
       // this.measureTool.clear();
-      this.measureTool.start("LineString"); // 开始测距
+      this.measureTool.start("LineString"); // 开始测距 这个是done2的用法
+      // this.measureTool.activate("LineString"); // or Polygon
     },
     measureArea() {
       // this.measureTool.clear();
-      this.measureTool.start("Polygon"); // 开始测面
+      this.measureTool.start("Polygon"); // 开始测面 这个是done2的用法
+      // this.measureTool.activate("Polygon"); // or Polygon
     }
   }
 };

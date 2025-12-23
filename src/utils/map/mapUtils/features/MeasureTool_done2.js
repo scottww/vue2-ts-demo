@@ -12,7 +12,6 @@ export class MeasureTool {
     this.featureGroups = []; // 已完成的测量集合
     this.currentDraw = null;
     this.isDrawing = false;
-    this.disabledInteractions = null; // 存储被暂时禁用的交互
 
     this.drawingLayer = null; // 当前未完成的图层
     this.drawingOverlays = []; // 当前未完成的覆盖物
@@ -127,17 +126,6 @@ export class MeasureTool {
       this.drawingOverlays = [];
     }
 
-    // 恢复之前禁用的交互
-    if (this.disabledInteractions && this.disabledInteractions.length > 0) {
-      this.disabledInteractions.forEach(interaction => {
-        // 检查interaction是否存在，避免undefined错误
-        if (interaction) {
-          this.map.addInteraction(interaction);
-        }
-      });
-      this.disabledInteractions = null;
-    }
-
     this.isDrawing = false;
     this.updateLiveTip("单击确定起点");
   }
@@ -146,20 +134,6 @@ export class MeasureTool {
     this.clearCurrentDrawing();
     this.isDrawing = true;
     this.updateLiveTip("单击确定起点");
-
-    // 暂时禁用可能干扰的交互（如Select和Modify）
-    this.disabledInteractions = [];
-    this.map.getInteractions().forEach(interaction => {
-      // 检查interaction是否存在，避免undefined错误
-      if (!interaction) return;
-      
-      // 检查交互类型名称，避免依赖导入的类
-      const interactionType = interaction.constructor.name;
-      if (interactionType === 'Select' || interactionType === 'Modify') {
-        this.map.removeInteraction(interaction);
-        this.disabledInteractions.push(interaction);
-      }
-    });
 
     const source = new VectorSource();
     const layer = new VectorLayer({
@@ -199,12 +173,9 @@ export class MeasureTool {
         if (coords.length > confirmedPoints) {
           const c = coords[coords.length - 1];
 
-          // 只对LineString类型创建节点覆盖物，Polygon类型在drawend中创建
-          if (type === "LineString") {
-            const nodeOverlay = this.createNodeOverlay(c);
-            this.map.addOverlay(nodeOverlay);
-            overlays.push(nodeOverlay);
-          }
+          const nodeOverlay = this.createNodeOverlay(c);
+          this.map.addOverlay(nodeOverlay);
+          overlays.push(nodeOverlay);
 
           if (confirmedPoints === 0 && type === "LineString") {
             const label = this.createLabelOverlay(c, "起点");
@@ -245,12 +216,25 @@ export class MeasureTool {
           : geom.getCoordinates();
 
       coords.forEach((c, i) => {
-        // 只有多边形才需要在drawend事件中创建节点覆盖物
-        // 线的节点覆盖物和标签已经在drawstart的geom.change事件中创建
-        if (type === "Polygon") {
-          const nodeOverlay = this.createNodeOverlay(c);
-          this.map.addOverlay(nodeOverlay);
-          overlays.push(nodeOverlay);
+        const nodeOverlay = this.createNodeOverlay(c);
+        this.map.addOverlay(nodeOverlay);
+        overlays.push(nodeOverlay);
+
+        if (type === "LineString") {
+          if (i === 0) {
+            const label = this.createLabelOverlay(c, "起点");
+            this.map.addOverlay(label);
+            overlays.push(label);
+          } else {
+            const line = new LineString(coords.slice(0, i + 1));
+            const len = this.formatLength(line);
+            const label = this.createLabelOverlay(
+              c,
+              `${len.value} ${len.unit}`
+            );
+            this.map.addOverlay(label);
+            overlays.push(label);
+          }
         }
       });
 
@@ -261,9 +245,6 @@ export class MeasureTool {
           center,
           `${area.value} ${area.unit}`
         );
-        // 修改标签的定位，使其居中显示在图形上方
-        label.setPositioning("center-center");
-        label.setOffset([0, 0]);
         this.map.addOverlay(label);
         overlays.push(label);
       }
