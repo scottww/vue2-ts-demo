@@ -2278,8 +2278,9 @@ export default {
         status: "1.2m",
         statusColor: "#FF9800",
         borderColor: "#FF9800",
-        icon: "💧", // 水滴图标
-        iconColor: "#FF9800"
+        // icon: "💧", // 水滴图标
+        // iconColor: "#FF9800"
+        icon: require("@/assets/mapIcon/WL_yellow.png")
       });
 
       // 创建蓝色标签（其他站点）
@@ -2288,8 +2289,9 @@ export default {
         status: "1.2m",
         statusColor: "#2196F3",
         borderColor: "#2196F3",
-        icon: "📍", // 定位图标
-        iconColor: "#2196F3"
+        // icon: "📍", // 定位图标
+        // iconColor: "#2196F3"
+        icon: require("@/assets/mapIcon/WL_normal.png")
       });
 
       // 创建绿色标签（正常状态站点）
@@ -2298,8 +2300,9 @@ export default {
         status: "正常",
         statusColor: "#4CAF50",
         borderColor: "#4CAF50",
-        icon: "✓", // 对勾图标
-        iconColor: "#4CAF50"
+        // icon: "✓", // 对勾图标
+        // iconColor: "#4CAF50"
+        icon: require("@/assets/mapIcon/WL_normal.png")
       });
 
       setTimeout(() => {
