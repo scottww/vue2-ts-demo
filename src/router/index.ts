@@ -419,6 +419,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/marker",
+        name: "marker",
+        component: () =>
+          import(/* webpackChunkName: "marker" */ "../views/stationMarker/StationMarker.vue"),
+        meta: {
+          title: "marker 测试"
+        }
+      },
+      {
         path: "/cesium",
         name: "Cesium",
         component: () =>
