@@ -8,3 +8,4 @@ export * from './features/MeasureTool.js';
 // export * from './features/ViewportLoader.js';
 // export * from './features/BoundaryManager.js';
 export * from './features/CoordinatePicker.js';
+export * from './features/SiteMarker.js';

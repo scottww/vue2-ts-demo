@@ -19,6 +19,10 @@
       <button @click="measureLength()">测距（MeasureTool）</button>
       <button @click="measureArea()">测面积（MeasureTool）</button>
       <button @click="coordinatesPick()">拾取坐标（CoordinatesPicker）</button>
+      <button @click="addMarkerPoint()">添加marker（SiteMarker）</button>
+      <button @click="pickPointAndAddMarker()">
+        拾取添加marker（SiteMarker）
+      </button>
     </div>
     <div id="gis-map" ref="mapContainer" class="map-container">
       <div class="map-change-btns">
@@ -52,7 +56,8 @@ import {
   PopupManager,
   PointManager,
   MeasureTool,
-  CoordinatePicker
+  CoordinatePicker,
+  SiteMarker
 } from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
@@ -2255,6 +2260,82 @@ export default {
           console.log(`拾取的坐标222：${lng.toFixed(8)}, ${lat.toFixed(8)}`);
         }
       });
+    },
+    addMarkerPoint() {
+      // 创建站点标记（样式会自动加载）
+      // const coordinate = [120.11, 30.22];
+      // const siteMarker = new SiteMarker(this.map, coordinate, {
+      //   name: "站点名称名称",
+      //   status: "正常",
+      //   statusColor: "#4CAF50"
+      // });
+      // 创建橙色标签（水位站点）
+      const coordinate1 = [120.11, 30.11];
+      const coordinate2 = [120.22, 30.22];
+      const coordinate3 = [120.33, 30.33];
+      const orangeMarker = new SiteMarker(this.map, coordinate1, {
+        name: "水位站点",
+        status: "1.2m",
+        statusColor: "#FF9800",
+        borderColor: "#FF9800",
+        icon: "💧", // 水滴图标
+        iconColor: "#FF9800"
+      });
+
+      // 创建蓝色标签（其他站点）
+      const blueMarker = new SiteMarker(this.map, coordinate2, {
+        name: "监测站点",
+        status: "1.2m",
+        statusColor: "#2196F3",
+        borderColor: "#2196F3",
+        icon: "📍", // 定位图标
+        iconColor: "#2196F3"
+      });
+
+      // 创建绿色标签（正常状态站点）
+      const greenMarker = new SiteMarker(this.map, coordinate3, {
+        name: "正常站点",
+        status: "正常",
+        statusColor: "#4CAF50",
+        borderColor: "#4CAF50",
+        icon: "✓", // 对勾图标
+        iconColor: "#4CAF50"
+      });
+
+      setTimeout(() => {
+        // 移除站点标记
+        // siteMarker.remove();
+      }, 2000);
+    },
+    // 结合坐标拾取器使用
+    pickPointAndAddMarker() {
+      // 创建站点标记
+      // const siteMarker = new SiteMarker(this.map, coordinate, {
+      //   name: "站点名称名称",
+      //   status: "正常",
+      //   statusColor: "#4CAF50"
+      // });
+
+      // 可以与CoordinatePicker结合使用
+      // const picker = new CoordinatePicker(this.map);
+      // 如果多处监听了这个事件，可以添加标识区分，执行对应操作
+      const isPickAndAddMarker = true;
+      this.coordinatePicker.start();
+      this.coordinatePicker.on("picked", (coord) => {
+        console.log("pickPointAndAddMarker 111...");
+        // 在拾取到的坐标位置创建站点标记
+        const newSiteMarker = new SiteMarker(this.map, coord, {
+          name: "新站点",
+          status: "正常",
+          statusColor: "#4CAF50"
+        });
+      });
+
+      // 更新站点信息
+      // siteMarker.updateInfo("更新后的站点名称", "异常", "#F44336");
+
+      // 移除站点标记
+      // siteMarker.remove();
     }
   }
 };
