@@ -87,7 +87,7 @@ import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
 import LevelFlowChart from "./LevelFlowChart.vue";
 import CustomDialogDemo from "./CustomDialog/CustomDialogDemo.vue";
 import TimePlayerDemo from "./TimePlayer/TimePlayerDemo.vue";
-
+import YearPickerDemo from './YearPickerDemo/YearPickerDemo.vue';
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -141,7 +141,8 @@ export default {
     LevelFlowChart,
     PanelDemo,
     CustomDialogDemo,
-    TimePlayerDemo
+    TimePlayerDemo,
+    YearPickerDemo
   },
   data() {
     return {
@@ -217,6 +218,10 @@ export default {
         {
           label: "TimePlayerDemo",
           name: "TimePlayerDemo",
+        },
+        {
+          label: "YearPickerDemo",
+          name: "YearPickerDemo",
         },
         
       ],
