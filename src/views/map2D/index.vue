@@ -57,7 +57,8 @@ import {
   PointManager,
   MeasureTool,
   CoordinatePicker,
-  SiteMarker
+  SiteMarker,
+  MarkerCluster
 } from "@/utils/map/mapUtils";
 
 const pointMarkerIcon = require("@/assets/mapIcon/marker.png");
@@ -127,7 +128,8 @@ export default {
       tileLayerManager: null, //图层管理器
       multiplePoints: null, //批量加点图层
       measureTool: null, //测量工具
-      coordinatePicker: null //坐标拾取工具
+      coordinatePicker: null, //坐标拾取工具
+      markerCluster: null //聚合
     };
   },
   mounted() {
@@ -202,6 +204,14 @@ export default {
       this.measureTool = measureTool;
       // 初始化坐标拾取工具
       this.coordinatePicker = new CoordinatePicker(this.map);
+
+      // 初始化标记聚合
+      this.markerCluster = new MarkerCluster(this.map, {
+        zoomThreshold: 11,
+        clusterIcon: require("@/assets/mapIcon/cluster.png"),
+        iconWidth: 54,
+        iconHeight: 53
+      });
 
       this.initDrawLayer();
       this.initSavedLayer();
@@ -2304,6 +2314,13 @@ export default {
         // iconColor: "#4CAF50"
         icon: require("@/assets/mapIcon/WL_normal.png")
       });
+
+      // 添加标记到聚合
+      if (this.markerCluster) {
+        this.markerCluster.addMarker(orangeMarker);
+        this.markerCluster.addMarker(blueMarker);
+        this.markerCluster.addMarker(greenMarker);
+      }
 
       setTimeout(() => {
         // 移除站点标记
