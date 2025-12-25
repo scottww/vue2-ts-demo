@@ -88,6 +88,8 @@ import LevelFlowChart from "./LevelFlowChart.vue";
 import CustomDialogDemo from "./CustomDialog/CustomDialogDemo.vue";
 import TimePlayerDemo from "./TimePlayer/TimePlayerDemo.vue";
 import YearPickerDemo from './YearPickerDemo/YearPickerDemo.vue';
+import NavButtonDemo from './NavButton/NavButtonDemo.vue';
+import IconButtonGroupNewDemo from './IconButtonGroup/IconButtonGroupDemo.vue';
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -142,7 +144,8 @@ export default {
     PanelDemo,
     CustomDialogDemo,
     TimePlayerDemo,
-    YearPickerDemo
+    YearPickerDemo,
+    IconButtonGroupNewDemo
   },
   data() {
     return {
@@ -222,6 +225,14 @@ export default {
         {
           label: "YearPickerDemo",
           name: "YearPickerDemo",
+        },
+        {
+          label: "NavButtonDemo",
+          name: "NavButtonDemo",
+        },
+        {
+          label: "IconButtonGroupNewDemo",
+          name: "IconButtonGroupNewDemo",
         },
         
       ],
