@@ -53,7 +53,7 @@ export default {
       type: Boolean,
       default: false
     },
-    useId: {
+    useId: { //使用id作为唯一标识
       type: Boolean,
       default: false
     },
@@ -109,6 +109,7 @@ export default {
         return;
       }
 
+      // 再次点击，取消逻辑
       if (this.internalActiveIndex === index) {
         this.internalActiveIndex = -1;
         this.$emit("input", -1);

@@ -3,7 +3,6 @@
     <IconButtonGroup
       v-model="btnActiveIndex"
       :items="btnItems"
-      label-mode="always"
       width="152px"
       height="53px"
       :use-id="false"
@@ -19,7 +18,7 @@ export default {
   components: { IconButtonGroup },
   data() {
     return {
-      btnActiveIndex: -1,
+      btnActiveIndex: -1, // 当前激活的按钮索引
       btnItems: [
         { id: 1, name: "按钮文字1", icon: require('@/assets/IconButtonGroupNew/icon1.png') },
         { id: 2, name: "按钮文字2", icon: require('@/assets/IconButtonGroupNew/icon2.png') },
