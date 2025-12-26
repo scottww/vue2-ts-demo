@@ -442,4 +442,8 @@ export default {
   width: 100%;
   height: 400px;
 }
+
+.main-content.YearPickerDemo {
+  width: auto
+}
 </style>
