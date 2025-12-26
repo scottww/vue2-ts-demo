@@ -256,6 +256,7 @@ export default {
   cursor: pointer;
   position: relative;
   transition: transform 0.25s ease;
+  padding: 6px 0
 }
 
 .year-item:hover {
