@@ -263,7 +263,7 @@ export default {
 }
 
 .year-item.active {
-  transform: translateY(-2px) scale(1.05);
+  /* transform: translateY(-2px) scale(1.05); */
 }
 
 /* 选中背景 */
@@ -289,6 +289,8 @@ export default {
 .year-item.active .year-number {
   font-size: 18px;
   font-weight: bold;
+  transform: translateY(-2px) scale(1.05);
+  color: #ffeb3b;
 }
 
 /* 下方点 */
