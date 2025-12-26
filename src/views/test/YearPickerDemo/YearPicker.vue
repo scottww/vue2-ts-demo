@@ -262,6 +262,10 @@ export default {
   transform: translateY(-2px) scale(1.05);
 }
 
+.year-item.active {
+  transform: translateY(-2px) scale(1.05);
+}
+
 /* 选中背景 */
 .selected-year-bg {
   position: absolute;
@@ -297,6 +301,7 @@ export default {
 
 .year-item.active .year-dot {
   opacity: 1;
+  visibility: hidden;
 }
 
 .year-item:hover .year-number {
