@@ -1,0 +1,56 @@
+export const RECORDS = {
+  "2025-04-03": {
+    players: [
+      {
+        name: "Fa",
+        total: -66,
+        detail: "-83 + 12 + 5",
+        bigGold: 2,
+        smallGold: 1,
+        goldenNine: 0,
+        regularWin: 5,
+        foul: 1,
+      },
+      {
+        name: "Han",
+        total: 9,
+        detail: "-3 + 12",
+        bigGold: 0,
+        smallGold: 1,
+        goldenNine: 1,
+        regularWin: 4,
+        foul: 0,
+      },
+    ],
+    cards: { Fa: 17, Han: 97 },
+    drinks: { Fa: 5, Han: 0 },
+    tableFee: 48,
+  },
+  "2025-04-02": {
+    players: [
+      {
+        name: "Fa",
+        total: -66,
+        detail: "-83 + 12 + 5",
+        bigGold: 2,
+        smallGold: 1,
+        goldenNine: 0,
+        regularWin: 5,
+        foul: 1,
+      },
+      {
+        name: "Han",
+        total: 9,
+        detail: "-3 + 12",
+        bigGold: 0,
+        smallGold: 1,
+        goldenNine: 1,
+        regularWin: 4,
+        foul: 0,
+      },
+    ],
+    cards: { Fa: 17, Han: 97 },
+    drinks: { Fa: 5, Han: 0 },
+    tableFee: 48,
+  },
+};

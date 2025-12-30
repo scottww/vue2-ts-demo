@@ -29,34 +29,45 @@ const createSiteMarkerStyles = () => {
       border: none;
     }
 
-    .site-marker-line {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      background-color: #ddd;
-    }
+    // .site-marker-line {
+    //   position: absolute;
+    //   left: 50%;
+    //   transform: translateX(-50%);
+    //   width: 2px;
+    //   background-color: #ddd;
+    // }
 
     .site-marker-triangle {
+      position: relative;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #ffffff;
+      margin-top: -1px;
+    }
+    
+    .site-marker-triangle::before {
+      content: '';
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      top: -8px;
+      left: -8px;
       width: 0;
       height: 0;
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
-      border-top: 8px solid #ddd;
+      border-top: 8px solid var(--border-color);
     }
 
     .site-marker-label {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
       display: inline-flex;
       align-items: center;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 1);
       border: 1px solid #ddd;
       border-radius: 4px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
       padding: 6px 12px;
       font-size: 14px;
       white-space: nowrap;
@@ -81,7 +92,7 @@ const createSiteMarkerStyles = () => {
 createSiteMarkerStyles();
 
 /* ================== Marker 类 ================== */
-export class SiteMarker {
+export default class SiteMarker {
   constructor(map, coordinate, options = {}) {
     if (!map) return;
 
@@ -138,22 +149,29 @@ export class SiteMarker {
 
     icon.appendChild(iconInner);
 
-    /* line */
-    const line = document.createElement('div');
-    line.className = 'site-marker-line';
-    line.style.bottom = this.iconHeight + 'px';
-    line.style.height = '16px';
-
-    const triangle = document.createElement('div');
-    triangle.className = 'site-marker-triangle';
-    triangle.style.bottom = this.iconHeight + 16 + 'px';
-    triangle.style.borderTopColor = this.borderColor;
+    /* triangle and label container */
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.left = '50%';
+    container.style.transform = 'translateX(-50%)';
+    container.style.bottom = this.iconHeight + 10 + 'px';
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
 
     /* label */
     const label = document.createElement('div');
     label.className = 'site-marker-label';
-    label.style.bottom = this.iconHeight + 24 + 'px';
     label.style.borderColor = this.borderColor;
+    label.style.borderBottomLeftRadius = '0';
+    label.style.borderBottomRightRadius = '0';
+    label.style.borderBottom = 'none'; // 去掉底部边框，与三角形连接
+
+    const triangle = document.createElement('div');
+    triangle.className = 'site-marker-triangle';
+    // 设置伪元素的边框颜色与label边框颜色一致
+    triangle.style.setProperty('--border-color', this.borderColor);
+    triangle.style.marginTop = '-2px'; // 调整重叠量，确保与label完美连接
 
     label.innerHTML = `
       <span class="site-name" style="color:${this.statusColor}">
@@ -163,6 +181,10 @@ export class SiteMarker {
         ${this.status}
       </span>
     `;
+
+    // 将label和三角形添加到容器中（顺序很重要）
+    container.appendChild(label);
+    container.appendChild(triangle);
 
     // 添加点击事件监听
     const clickableElements = [icon, label];
@@ -182,9 +204,8 @@ export class SiteMarker {
     });
 
     anchor.appendChild(icon);
-    anchor.appendChild(line);
-    anchor.appendChild(triangle);
-    anchor.appendChild(label);
+    // anchor.appendChild(line); //不要连接线
+    anchor.appendChild(container);
 
     return anchor;
   }
@@ -219,7 +240,12 @@ export class SiteMarker {
       statusEl.style.color = this.statusColor;
     }
     if (label) label.style.borderColor = this.borderColor;
-    if (triangle) triangle.style.borderTopColor = this.borderColor;
+    if (triangle) {
+      // 保持基础三角形为白色
+      triangle.style.borderTopColor = '#ffffff';
+      // 更新CSS变量以改变伪元素的边框颜色
+      triangle.style.setProperty('--border-color', this.borderColor);
+    }
   }
 
   remove() {

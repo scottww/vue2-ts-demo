@@ -971,7 +971,18 @@ const routes: Array<RouteConfig> = [
           title: "GeoserverPublish 图层发布",
           isFull: true
         }
-      }
+      },
+      {
+        path: "/billiards",
+        name: "billiards",
+        component: () =>
+          import(
+            /* webpackChunkName: "Billiards" */ "../views/billiards/index.vue"
+          ),
+        meta: {
+          title: "Billiards"
+        }
+      },
     ]
   },
   {

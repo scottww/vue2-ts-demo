@@ -29,13 +29,13 @@ const createSiteMarkerStyles = () => {
       border: none;
     }
 
-    .site-marker-line {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      background-color: #ddd;
-    }
+    // .site-marker-line {
+    //   position: absolute;
+    //   left: 50%;
+    //   transform: translateX(-50%);
+    //   width: 2px;
+    //   background-color: #ddd;
+    // }
 
     .site-marker-triangle {
       position: absolute;
@@ -81,7 +81,7 @@ const createSiteMarkerStyles = () => {
 createSiteMarkerStyles();
 
 /* ================== Marker 类 ================== */
-export class SiteMarker {
+export default class SiteMarker {
   constructor(map, coordinate, options = {}) {
     if (!map) return;
 
@@ -146,13 +146,15 @@ export class SiteMarker {
 
     const triangle = document.createElement('div');
     triangle.className = 'site-marker-triangle';
-    triangle.style.bottom = this.iconHeight + 16 + 'px';
+    // triangle.style.bottom = this.iconHeight + 16 + 'px';
+    triangle.style.bottom = this.iconHeight + 4 + 'px';
     triangle.style.borderTopColor = this.borderColor;
 
     /* label */
     const label = document.createElement('div');
     label.className = 'site-marker-label';
-    label.style.bottom = this.iconHeight + 24 + 'px';
+    // label.style.bottom = this.iconHeight + 24 + 'px';
+    label.style.bottom = this.iconHeight + 10 + 'px';
     label.style.borderColor = this.borderColor;
 
     label.innerHTML = `
@@ -182,7 +184,7 @@ export class SiteMarker {
     });
 
     anchor.appendChild(icon);
-    anchor.appendChild(line);
+    // anchor.appendChild(line); //不要连接线
     anchor.appendChild(triangle);
     anchor.appendChild(label);
 

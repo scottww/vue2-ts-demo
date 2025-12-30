@@ -81,7 +81,7 @@ const createSiteMarkerStyles = () => {
 createSiteMarkerStyles();
 
 /* ================== Marker 类 ================== */
-export class SiteMarker {
+export default class SiteMarker {
   constructor(map, coordinate, options = {}) {
     if (!map) return;
 
@@ -96,7 +96,6 @@ export class SiteMarker {
     this.iconWidth = options.iconWidth || 36;
     this.iconHeight = options.iconHeight || 36;
     this.iconOffset = options.iconOffset || [0, 0];
-    this.onClickHandler = null;
 
     // 固定尺寸 = 锚点
     this.anchor = this.createAnchor();
@@ -164,23 +163,6 @@ export class SiteMarker {
       </span>
     `;
 
-    // 添加点击事件监听
-    const clickableElements = [icon, label];
-    clickableElements.forEach(element => {
-      element.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (this.onClickHandler) {
-          this.onClickHandler(e, this, {
-            name: this.name,
-            status: this.status,
-            coordinate: this.coordinate,
-            statusColor: this.statusColor,
-            borderColor: this.borderColor
-          });
-        }
-      });
-    });
-
     anchor.appendChild(icon);
     anchor.appendChild(line);
     anchor.appendChild(triangle);
@@ -193,13 +175,6 @@ export class SiteMarker {
   setPosition(coordinate) {
     this.coordinate = coordinate;
     this.overlay.setPosition(coordinate);
-  }
-
-  onClick(handler) {
-    if (typeof handler === 'function') {
-      this.onClickHandler = handler;
-    }
-    return this;
   }
 
   updateInfo(name, status, statusColor, borderColor) {
