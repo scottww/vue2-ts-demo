@@ -64,6 +64,7 @@ import HourlyWeatherChart from "./HourlyWeatherChart.vue";
 import ForceGraphChart from "./ForceGraphChart.vue";
 import PieChart from "./PieChart.vue";
 import PieChart2 from "./PieChart2.vue";
+import PieChart3Demo from "./PieChart3Demo/PieChart3Demo.vue";
 import RainChart from "./RainChart.vue";
 import HourlyRainChart from "./HourlyRainChart.vue";
 import KnowledgeGraphChart from "./KnowledgeGraphChart.vue";
@@ -122,6 +123,7 @@ export default {
     ForceGraphChart,
     PieChart,
     PieChart2,
+    PieChart3Demo,
     RainChart,
     HourlyRainChart,
     KnowledgeGraphChart,
@@ -187,6 +189,7 @@ export default {
         { label: "KnowledgeGraphChart", name: "知识图谱" },
         { label: "PieChart", name: "PieChart" },
         { label: "PieChart2", name: "PieChart2" },
+        { label: "PieChart3Demo", name: "PieChart3Demo" },
         { label: "RainChart", name: "RainChart" },
         { label: "HourlyRainChart", name: "HourlyRainChart带箭头" },
         { label: "CustomTable", name: "CustomTable" },
