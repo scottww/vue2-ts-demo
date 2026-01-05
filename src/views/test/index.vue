@@ -90,6 +90,7 @@ import TimePlayerDemo from "./TimePlayer/TimePlayerDemo.vue";
 import YearPickerDemo from './YearPickerDemo/YearPickerDemo.vue';
 import NavButtonDemo from './NavButton/NavButtonDemo.vue';
 import IconButtonGroupNewDemo from './IconButtonGroup/IconButtonGroupDemo.vue';
+import Multi3DBarChartDemo from './multi3DBarChartDemo/Multi3DBarChartDemo.vue';
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -145,7 +146,8 @@ export default {
     CustomDialogDemo,
     TimePlayerDemo,
     YearPickerDemo,
-    IconButtonGroupNewDemo
+    IconButtonGroupNewDemo,
+    Multi3DBarChartDemo
   },
   data() {
     return {
@@ -233,6 +235,10 @@ export default {
         {
           label: "IconButtonGroupNewDemo",
           name: "IconButtonGroupNewDemo",
+        },
+        {
+          label: "Multi3DBarChartDemo",
+          name: "Multi3DBarChartDemo",
         },
         
       ],
