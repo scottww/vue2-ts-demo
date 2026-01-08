@@ -21,9 +21,11 @@ export default {
     yAxisUnit: { type: String, default: "(千亩)" },
     yAxisMax: { type: Number, default: 25 },
     barColor: { type: String, default: "#33ccff" },
-    barGradientColor: { type: String, default: "rgba(51,204,255,0.1)" },
+    barGradientColor: { type: String, default: "rgba(51,204,255,0.1)" }
   },
-  data() { return { chart: null }; },
+  data() {
+    return { chart: null };
+  },
   mounted() {
     this.initChart();
     window.addEventListener("resize", this.handleResize);
@@ -33,16 +35,24 @@ export default {
     if (this.chart) this.chart.dispose();
   },
   watch: {
-    data: { handler() { this.updateChart(); }, deep: true }
+    data: {
+      handler() {
+        this.updateChart();
+      },
+      deep: true
+    }
   },
   methods: {
     initChart() {
+      if (this.chart) {
+        this.chart.dispose();
+      }
       this.chart = echarts.init(this.$refs.chartRef);
       this.updateChart();
     },
     updateChart() {
-      const barWidth = 16;       // 主柱宽度
-      const bottomCap = 6;       // 顶部/底部圆头高度
+      const barWidth = 16; // 主柱宽度
+      const bottomCap = 6; // 顶部/底部圆头高度
       const ringSize = [24, 8]; // 底座圈
 
       const option = {
@@ -63,7 +73,7 @@ export default {
           axisLabel: { color: "#fff", fontSize: 12, formatter: "{value}" },
           name: this.yAxisUnit,
           nameLocation: "end",
-          nameTextStyle: { color: "#fff", fontSize: 12, padding: [0, 25, 0, 0] },
+          nameTextStyle: { color: "#fff", fontSize: 12, padding: [0, 25, 0, 0] }
         },
         series: [
           // 顶部圆柱
@@ -71,7 +81,7 @@ export default {
             name: "top",
             type: "pictorialBar",
             symbolSize: [barWidth, bottomCap],
-            symbolOffset: [0, -bottomCap/2],
+            symbolOffset: [0, -bottomCap / 2],
             z: 12,
             itemStyle: { color: this.barColor },
             symbolPosition: "end",
@@ -82,7 +92,7 @@ export default {
             name: "bottom",
             type: "pictorialBar",
             symbolSize: [barWidth, bottomCap],
-            symbolOffset: [0, bottomCap/2],
+            symbolOffset: [0, bottomCap / 2],
             z: 12,
             itemStyle: { color: this.barColor },
             data: this.data
@@ -93,9 +103,14 @@ export default {
             type: "pictorialBar",
             symbol: "circle",
             symbolSize: ringSize,
-            symbolOffset: [0, bottomCap/2 + ringSize[1]/2],
+            symbolOffset: [0, bottomCap / 2 + ringSize[1] / 2],
             z: 11,
-            itemStyle: { color: "transparent", borderColor: this.barColor, borderWidth: 10, opacity: 1 },
+            itemStyle: {
+              color: "transparent",
+              borderColor: this.barColor,
+              borderWidth: 10,
+              opacity: 1
+            },
             data: this.data
           },
           // 渐变柱体
@@ -106,12 +121,12 @@ export default {
             z: 16,
             silent: true,
             itemStyle: {
-              color: new echarts.graphic.LinearGradient(0,0,0,1, [
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 { offset: 1, color: this.barColor },
                 { offset: 0, color: this.barGradientColor }
               ]),
               opacity: 0.8,
-              borderRadius: [4,4,0,0]
+              borderRadius: [4, 4, 0, 0]
             },
             data: this.data
           }
@@ -120,12 +135,21 @@ export default {
 
       this.chart.setOption(option, true);
     },
-    handleResize() { if(this.chart) this.chart.resize(); }
+    handleResize() {
+      if (this.chart) this.chart.resize();
+    }
   }
 };
 </script>
 
 <style scoped>
-.bar-chart-container { position: relative; width: 100%; height: 100%; }
-.chart { width: 100%; height: 100%; }
+.bar-chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.chart {
+  width: 100%;
+  height: 100%;
+}
 </style>
