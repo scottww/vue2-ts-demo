@@ -1,0 +1,23 @@
+@mixin custom-panel-title(
+  $font-family: SHT,
+  $weight: 700,
+  $size: 20px,
+  $style: normal,
+  $start: #9cd2ff,
+  $end: #ffffff,
+  $deg: 0deg
+) {
+  font-family: $font-family;
+  font-weight: $weight;
+  font-size: $size;
+  font-style: $style;
+  background: linear-gradient($deg, $start 0%, $end 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; // 替代 -webkit-text-fill-color
+
+  // Firefox fallback: 使用 mask
+  @supports (-moz-background-clip: text) {
+    -moz-background-clip: text;
+  }
+}

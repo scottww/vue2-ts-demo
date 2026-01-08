@@ -686,6 +686,18 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/gis-monitor",
+        name: "gisMonitor",
+        component: () =>
+          import(
+            /* webpackChunkName: "gisMonitor" */ "../views/gisMonitor/index.vue"
+          ),
+        meta: {
+          title: "gisMonitor 地图监控",
+          isFull: true
+        }
+      },
+      {
         path: "/citySelector",
         name: "citySelector",
         component: () =>

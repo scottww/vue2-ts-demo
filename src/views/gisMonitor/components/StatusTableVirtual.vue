@@ -1,0 +1,305 @@
+<template>
+  <div ref="wrapper" class="status-table-wrapper">
+    <!-- 横向滚动容器 -->
+    <div class="scroll-container" ref="scrollContainer" @scroll="handleScroll">
+      <!-- 表头 -->
+      <div
+        class="table-header"
+        ref="header"
+        :style="{ width: totalWidth + 'px' }"
+      >
+        <div
+          v-for="(col, i) in columns"
+          :key="col.prop || i"
+          class="table-header-cell"
+          :style="{
+            width: columnWidths[i] + 'px',
+            minWidth: columnWidths[i] + 'px',
+            textAlign: col.align || 'center',
+          }"
+        >
+          <!-- <div class="header-label">{{ col.label }}</div> -->
+          <!-- <div class="header-unit" v-if="col.unit">{{ col.unit }}</div> -->
+          <!-- 默认：不换行（同行） -->
+          <template v-if="col.unitInline !== false">
+            <div class="header-inline">
+              <span class="header-label">{{ col.label }}</span>
+              <span class="header-unit" v-if="col.unit">{{ col.unit }}</span>
+            </div>
+          </template>
+
+          <!-- 显式配置为 false：换行 -->
+          <template v-else>
+            <div class="header-label">{{ col.label }}</div>
+            <div class="header-unit" v-if="col.unit">{{ col.unit }}</div>
+          </template>
+        </div>
+      </div>
+
+      <!-- 内容区 -->
+      <div class="virtual-list-wrapper" ref="virtualWrapper">
+        <div class="scroll-body">
+          <virtual-list
+            ref="virtualList"
+            class="virtual-list"
+            :size="rowHeight"
+            :remain="remain"
+            :data-key="'id'"
+            :data-sources="tableData"
+            :data-component="VirtualRow"
+            :extra-props="{
+              columns,
+              columnWidths,
+              rowHeight,
+              totalWidth,
+              onRowClick: handleRowClick,
+            }"
+            style="width: 100%; height: 100%"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="tableData.length === 0" class="empty-placeholder">暂无数据</div>
+  </div>
+</template>
+
+<script>
+import VirtualList from "vue-virtual-scroll-list";
+import VirtualRow from "./VirtualRow.vue";
+
+export default {
+  name: "StatusTableVirtual",
+  components: { VirtualList },
+  props: {
+    tableData: { type: Array, required: true },
+    columns: { type: Array, required: true },
+    rowHeight: { type: Number, default: 38 }, //每一行的高度
+    remain: { type: Number, default: 15 }, //显示的条数
+    bench: { type: Number, default: 10 }, //上下预加载的条数
+  },
+  data() {
+    return {
+      columnWidths: [],
+      VirtualRow,
+    };
+  },
+  computed: {
+    totalWidth() {
+      return this.columnWidths.reduce((sum, w) => sum + w, 0);
+    },
+  },
+  mounted() {
+    this.calcColumnWidths();
+    window.addEventListener("resize", this.calcColumnWidths);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.calcColumnWidths);
+  },
+  methods: {
+    calcColumnWidths() {
+      this.$nextTick(() => {
+        if (!this.columns || this.columns.length === 0) {
+          this.columnWidths = [];
+          return;
+        }
+
+        const containerWidth = this.$refs.wrapper
+          ? this.$refs.wrapper.clientWidth
+          : 600;
+
+        let fixedWidthSum = 0;
+        let flexibleCount = 0;
+
+        this.columns.forEach((col) => {
+          if (col.width) fixedWidthSum += Number(col.width);
+          else flexibleCount++;
+        });
+
+        let remainingWidth = containerWidth - fixedWidthSum;
+        if (remainingWidth < 0) remainingWidth = 0;
+
+        const flexibleWidth =
+          flexibleCount > 0 ? Math.floor(remainingWidth / flexibleCount) : 50;
+
+        // 先算出原始 columnWidths
+        let columnWidths = this.columns.map((col) =>
+          col.width ? Number(col.width) : flexibleWidth
+        );
+
+        // 如果总宽度小于容器宽，自动撑满：给最后一列补宽度
+        const currentTotalWidth = columnWidths.reduce((sum, w) => sum + w, 0);
+        if (currentTotalWidth < containerWidth) {
+          columnWidths[columnWidths.length - 1] +=
+            containerWidth - currentTotalWidth;
+        }
+
+        this.columnWidths = columnWidths;
+      });
+    },
+
+    handleScroll0(e) {
+      const scrollLeft = e.target.scrollLeft;
+      if (this.$refs.header) this.$refs.header.scrollLeft = scrollLeft;
+      if (this.$refs.virtualWrapper)
+        this.$refs.virtualWrapper.scrollLeft = scrollLeft;
+    },
+
+    handleScroll(e) {
+      const scrollLeft = e.target.scrollLeft;
+      if (this.$refs.header) this.$refs.header.scrollLeft = scrollLeft;
+
+      // 同步内容区滚动
+      if (this.$refs.virtualWrapper)
+        this.$refs.virtualWrapper.scrollLeft = scrollLeft;
+
+      // 动态加 margin-right 保证表头宽度和内容区一致
+      if (this.$refs.header) {
+        const scrollBarWidth = e.target.offsetWidth - e.target.clientWidth;
+        this.$refs.header.style.paddingRight = scrollBarWidth + "px";
+      }
+    },
+
+    handleRowClick(row) {
+      console.log("点击行数据:", row);
+      // 这里做你的逻辑
+    },
+  },
+  watch: {
+    columns: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.calcColumnWidths();
+      },
+    },
+  },
+};
+</script>
+
+<style scoped>
+.status-table-wrapper {
+  width: 100%;
+  height: 100%; /* 由外部父组件控制高度 */
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(2, 35, 76, 0.9);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.scroll-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* 表头 */
+.table-header {
+  display: flex;
+  white-space: nowrap;
+  /* border-bottom: 1px solid #0b83f5; */
+  user-select: none;
+  height: 38px; /* 表头高度固定 */
+  flex-shrink: 0;
+}
+
+.table-header-cell {
+  font-weight: bold;
+  background: rgba(2, 35, 76, 0.9);
+  color: #fff;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.2;
+  /* padding: 4px 2px; */
+  padding: 6px 8px;
+  height: 38px; /* 总高度固定为38 */
+  /* margin: 4px; */
+}
+
+.header-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.header-unit {
+  font-size: 12px;
+  /* color: #b0c4de; */
+  line-height: 1.2;
+}
+
+/* 同行模式 */
+.table-header-cell.inline {
+  justify-content: center;
+}
+
+.header-inline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.header-inline .header-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.header-inline .header-unit {
+  font-size: 12px;
+  /* color: #b0c4de; */
+}
+
+/* 内容区外层 */
+.virtual-list-wrapper {
+  flex: 1;
+  overflow: hidden; /* 由 scroll-body 控制滚动 */
+  position: relative;
+}
+
+/* 加这一层控制滚动条 */
+.scroll-body {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 滚动条 */
+.virtual-list::-webkit-scrollbar {
+  width: 8px;
+}
+.virtual-list::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.virtual-list::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 虚拟列表本体 */
+.virtual-list {
+  width: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  user-select: none;
+}
+
+.empty-placeholder {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #aaa;
+  background: #001f3f;
+  font-size: 14px;
+}
+</style>
