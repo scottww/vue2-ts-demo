@@ -664,6 +664,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/smartIcon",
+        name: "smartIcon",
+        component: () =>
+          import(/* webpackChunkName: "smartIcon" */ "../views/smartIcon/index.vue"),
+        meta: {
+          title: "smartIcon 图标"
+        }
+      },
+      {
         path: "/toolbar",
         name: "toolbar",
         component: () =>

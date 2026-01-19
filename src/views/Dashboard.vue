@@ -3,7 +3,7 @@
     <HeaderLayout v-if="!isFull" />
     <LeftRightLayout v-if="!isFull" />
     <router-view v-if="!isFull" />
-    
+
     <!-- 全屏页面直接占满 -->
     <div class="full-page" v-if="isFull">
       <router-view />
@@ -24,6 +24,9 @@ export default {
   computed: {
     isFull() {
       return this.$route.meta.isFull === true;
+    },
+    showHeader() {
+      return this.$route.meta.showHeader === true;
     }
   }
 };

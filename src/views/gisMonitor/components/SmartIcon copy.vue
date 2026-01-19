@@ -18,8 +18,6 @@ export default {
     src: { type: String, required: true },
     hoverSrc: { type: String, default: '' },
     size: { type: [Number, String], default: 16 },
-    width: { type: [Number, String], default: null },
-    height: { type: [Number, String], default: null },
     color: { type: String, default: '#666' },
     hoverColor: { type: String, default: '#1890ff' },
     isHover: { type: Boolean, default: false }
@@ -30,8 +28,6 @@ export default {
     },
     finalProps() {
       const size = this.size;
-      const width = this.width !== null ? this.width : size;
-      const height = this.height !== null ? this.height : size;
       return this.isSvg
         ? {
             src: this.src,
@@ -43,21 +39,16 @@ export default {
         : {
             src: this.src,
             hoverSrc: this.hoverSrc,
-            width,
-            height,
+            width: size,
+            height: size,
             isHover: this.isHover
           };
     },
     wrapperStyle() {
-      const width = this.width !== null 
-        ? typeof this.width === 'number' ? `${this.width}px` : this.width 
-        : typeof this.size === 'number' ? `${this.size}px` : this.size;
-      const height = this.height !== null 
-        ? typeof this.height === 'number' ? `${this.height}px` : this.height 
-        : typeof this.size === 'number' ? `${this.size}px` : this.size;
+      const s = typeof this.size === 'number' ? `${this.size}px` : this.size;
       return {
-        width: width,
-        height: height,
+        width: s,
+        height: s,
         display: 'inline-block',
         verticalAlign: 'middle',
         lineHeight: 1,
