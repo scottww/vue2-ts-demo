@@ -92,6 +92,7 @@ import YearPickerDemo from './YearPickerDemo/YearPickerDemo.vue';
 import NavButtonDemo from './NavButton/NavButtonDemo.vue';
 import IconButtonGroupNewDemo from './IconButtonGroup/IconButtonGroupDemo.vue';
 import Multi3DBarChartDemo from './multi3DBarChartDemo/Multi3DBarChartDemo.vue';
+import BasicInfoPanelDemo from './BasicInfoPanel/BaseInfoPanelDemo.vue';
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -149,7 +150,8 @@ export default {
     TimePlayerDemo,
     YearPickerDemo,
     IconButtonGroupNewDemo,
-    Multi3DBarChartDemo
+    Multi3DBarChartDemo,
+    BasicInfoPanelDemo
   },
   data() {
     return {
@@ -242,6 +244,10 @@ export default {
         {
           label: "Multi3DBarChartDemo",
           name: "Multi3DBarChartDemo",
+        },
+        {
+          label: "BasicInfoPanelDemo",
+          name: "BasicInfoPanelDemo",
         },
         
       ],
@@ -453,6 +459,10 @@ export default {
 }
 
 .main-content.YearPickerDemo {
+  width: auto
+}
+
+.main-content.BasicInfoPanelDemo {
   width: auto
 }
 </style>
