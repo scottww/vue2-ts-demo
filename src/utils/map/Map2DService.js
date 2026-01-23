@@ -401,4 +401,35 @@ export default class Map2DService extends BaseMapService {
 
     return satelliteLayer;
   }
+
+  // 添加边界阴影样式方法(已移至StyleManager.js)
+  getBoundaryShadowStyle({
+    strokeColor = "rgba(26,155,232,0.7)",
+    strokeWidth = 1,
+    fillColor = "rgba(26,155,232,0.3)",
+    shadowColor = "rgba(128, 0, 128, 0.5)",
+    shadowBlur = 10
+  } = {}) {
+    // 创建阴影样式
+    const shadowStyle = new Style({
+      stroke: new Stroke({
+        color: shadowColor,
+        width: strokeWidth + shadowBlur
+      })
+    });
+
+    // 创建主样式
+    const mainStyle = new Style({
+      fill: new Fill({
+        color: fillColor
+      }),
+      stroke: new Stroke({
+        color: strokeColor,
+        width: strokeWidth
+      })
+    });
+
+    // 返回样式数组，先绘制阴影再绘制主样式
+    return [shadowStyle, mainStyle];
+  }
 }

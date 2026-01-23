@@ -135,3 +135,5 @@ export const MOCK_DATA2 = [{
   "areaSize": "3024.46"
 }
 ]
+
+// 安吉县边界(WKT的数据使用文本的方式太大了（JAVA接口除外），卡顿，所以改用geojson文件)

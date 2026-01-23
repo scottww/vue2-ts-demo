@@ -28,6 +28,7 @@
 import { createMapService } from "@/utils/map";
 import { createTileLayerManager } from "@/utils/map/tileLayerManager";
 import { PolylineLayerManager } from "@/utils/map/mapUtils/features/PolylineLayerManager";
+import { PopupManager } from "@/utils/map/mapUtils/features/PopupManager";
 const pointMarker = require("@/assets/mapIcon/marker.png");
 
 import Map from "ol/Map";
@@ -90,6 +91,8 @@ export default {
       this.tileLayerManager = createTileLayerManager(this.map);
       // this.tileLayerManager.switchTo("TDT_vec");
       this.tileLayerManager.switchTo("TDT_vec");
+
+      const popupManager = new PopupManager(this.map);
 
       const polylineLayerManager = new PolylineLayerManager(
         this.map,

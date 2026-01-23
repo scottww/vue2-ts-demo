@@ -79,6 +79,7 @@ import CircleStyle from "ol/style/Circle";
 import Overlay from "ol/Overlay";
 import { getLength, getArea, getCenter } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
+import { WKT, GeoJSON } from "ol/format";
 import HoverMenu from "./tool-bar.vue";
 import { v4 as uuidv4 } from "uuid";
 
@@ -129,7 +130,11 @@ export default {
       multiplePoints: null, //批量加点图层
       measureTool: null, //测量工具
       coordinatePicker: null, //坐标拾取工具
-      markerCluster: null //聚合
+      markerCluster: null, //聚合
+
+      // 边界图层
+      boundaryLayer: null,
+      boundarySource: null
     };
   },
   mounted() {
@@ -215,6 +220,9 @@ export default {
 
       this.initDrawLayer();
       this.initSavedLayer();
+
+      // 初始化边界图层
+      this.drawPolygonToMap();
     },
     //改造前
     addPointToMap0() {
@@ -2356,6 +2364,193 @@ export default {
 
       // 移除站点标记
       // siteMarker.remove();
+    },
+    drawPolygonToMap(area) {
+      // 这种方式的WKT太卡了，不推荐
+      // const { geoStr } = ANJI_BOUNDARY2;
+      console.log(`drawPolygonToMap ...`);
+      fetch("/data/anji.geojson")
+        .then((res) => res.json())
+        .then((geojson) => {
+          // 加到地图
+          console.log(`anji geojson ...`, geojson);
+        });
+
+      // this.drawAreaBoundary0(geoStr, true);
+      this.drawAreaBoundaryGeojson(`/data/anji.geojson`, true);
+    },
+    // 绘制行政区域边界
+    drawAreaBoundary0(geoStr, isFitView = false) {
+      try {
+        // 使用 WKT 格式解析器解析边界数据
+        const wktFormat = new WKT();
+        const feature = wktFormat.readFeature(geoStr, {
+          dataProjection: "EPSG:4326",
+          featureProjection: "EPSG:4326"
+        });
+
+        // 创建边界图层（如果不存在）
+        if (!this.boundaryLayer) {
+          this.boundarySource = new VectorSource();
+          this.boundaryLayer = new VectorLayer({
+            source: this.boundarySource,
+            style: new Style({
+              stroke: new Stroke({
+                color: "#1890ff",
+                width: 2
+              }),
+              fill: new Fill({
+                color: "rgba(24, 144, 255, 0.1)"
+              })
+            }),
+            zIndex: 5
+          });
+          this.map.addLayer(this.boundaryLayer);
+        }
+
+        // 清除之前的边界
+        this.boundarySource.clear();
+
+        // 添加新的边界
+        this.boundarySource.addFeature(feature);
+
+        // 如果需要自动调整视图范围
+        if (isFitView) {
+          const geometry = feature.getGeometry();
+          if (geometry) {
+            // 计算边界的范围
+            const extent = geometry.getExtent();
+            // 调整视图范围，添加一些内边距以确保边界完全显示
+            this.map.getView().fit(extent, {
+              padding: [50, 50, 50, 50],
+              duration: 1000
+            });
+          }
+        }
+
+        console.log("边界绘制成功");
+      } catch (error) {
+        console.error("边界绘制失败:", error);
+      }
+    },
+    async drawAreaBoundaryWKT(wktUrl, isFitView = false) {
+      try {
+        // 1️拉取 WKT 文件
+        const res = await fetch(geoUrl);
+        if (!res.ok) {
+          throw new Error("边界数据加载失败");
+        }
+        const geoStr = await res.text();
+
+        // 2️解析 WKT
+        const wktFormat = new WKT();
+        const feature = wktFormat.readFeature(geoStr, {
+          dataProjection: "EPSG:4326",
+          featureProjection: "EPSG:4326"
+        });
+
+        // 3️初始化图层（只建一次）
+        if (!this.boundaryLayer) {
+          this.boundarySource = new VectorSource();
+
+          const boundaryStyle = this.mapService.getBoundaryShadowStyle({
+            strokeColor: "rgba(26,155,232,0.7)",
+            strokeWidth: 1,
+            fillColor: "rgba(26,155,232,0.3)",
+            shadowColor: "rgba(128, 0, 128, 0.5)",
+            shadowBlur: 10
+          });
+
+          this.boundaryLayer = new VectorLayer({
+            source: this.boundarySource,
+            style: boundaryStyle,
+            zIndex: 5
+          });
+
+          this.map.addLayer(this.boundaryLayer);
+        }
+
+        // 4️更新要素
+        this.boundarySource.clear();
+        this.boundarySource.addFeature(feature);
+
+        // 5️视图自适应
+        if (isFitView) {
+          const geometry = feature.getGeometry();
+          if (geometry) {
+            this.map.getView().fit(geometry.getExtent(), {
+              padding: [50, 50, 50, 50],
+              duration: 1000
+            });
+          }
+        }
+
+        console.log("边界绘制成功");
+      } catch (error) {
+        console.error("边界绘制失败:", error);
+      }
+    },
+    async drawAreaBoundaryGeojson(geoUrl, isFitView = false) {
+      try {
+        // 1️拉取 GeoJSON
+        const res = await fetch(geoUrl);
+        if (!res.ok) {
+          throw new Error("边界数据加载失败");
+        }
+        const geojson = await res.json();
+
+        // 2️解析 GeoJSON
+        const features = new GeoJSON().readFeatures(geojson, {
+          dataProjection: "EPSG:4326",
+          featureProjection: "EPSG:4326"
+        });
+
+        // 3️初始化图层
+        if (!this.boundaryLayer) {
+          this.boundarySource = new VectorSource();
+
+          const boundaryStyle = this.mapService.getBoundaryShadowStyle({
+            strokeColor: "rgba(26,155,232,0.7)",
+            strokeWidth: 1,
+            fillColor: "rgba(26,155,232,0.3)",
+            shadowColor: "rgba(128, 0, 128, 0.5)",
+            shadowBlur: 10
+          });
+
+          const customStyle = this.mapService.getBoundaryShadowStyle({
+            strokeColor: "rgba(24, 144, 255, 0.9)", // AntD 工程蓝
+            strokeWidth: 2,
+            fillColor: "rgba(24, 144, 255, 0.15)",
+            shadowColor: "rgba(24, 144, 255, 0.3)",
+            shadowBlur: 4
+          });
+
+          this.boundaryLayer = new VectorLayer({
+            source: this.boundarySource,
+            style: customStyle,
+            zIndex: 5
+          });
+
+          this.map.addLayer(this.boundaryLayer);
+        }
+
+        // 4️更新要素
+        this.boundarySource.clear();
+        this.boundarySource.addFeatures(features);
+
+        // 5️视图自适应
+        if (isFitView && features.length) {
+          const extent = this.boundarySource.getExtent();
+          this.map.getView().fit(extent, {
+            padding: [50, 50, 50, 50],
+            duration: 1000
+          });
+        }
+
+        console.log("边界绘制成功");
+      } catch (error) {
+        console.error("边界绘制失败:", error);
+      }
     }
   }
 };
