@@ -2517,6 +2517,7 @@ export default {
             shadowBlur: 10
           });
 
+          // 工程蓝
           const customStyle = this.mapService.getBoundaryShadowStyle({
             strokeColor: "rgba(24, 144, 255, 0.9)", // AntD 工程蓝
             strokeWidth: 2,
@@ -2525,9 +2526,27 @@ export default {
             shadowBlur: 4
           });
 
+          // 河流 / 灌区
+          const customStyle2 = this.mapService.getBoundaryShadowStyle({
+            strokeColor: "rgba(0, 153, 204, 0.9)",
+            strokeWidth: 2,
+            fillColor: "rgba(0, 153, 204, 0.18)",
+            shadowColor: "rgba(0, 153, 204, 0.25)",
+            shadowBlur: 3
+          });
+
+          // 阴影效果
+          const customStyle3 = this.mapService.getBoundaryShadowStyle({
+            strokeColor: "rgba(26,155,232,0.85)",
+            strokeWidth: 2,
+            fillColor: "rgba(26,155,232,0.2)",
+            shadowColor: "rgba(26,155,232,0.4)",
+            shadowBlur: 5
+          });
+
           this.boundaryLayer = new VectorLayer({
             source: this.boundarySource,
-            style: customStyle,
+            style: boundaryStyle,
             zIndex: 5
           });
 
