@@ -51,8 +51,7 @@ export default {
       maxRadius: 70,
       numRipples: 4,
       rippleSpeed: 0.8,
-      rotateAngle: 0,
-      stationLayer: null
+      rotateAngle: 0
     };
   },
   mounted() {
@@ -78,39 +77,41 @@ export default {
 
       for (let i = 0; i < 60; i++) {
         const status = statusList[Math.floor(Math.random() * 3)];
-        const lon = lonMin + Math.random() * (lonMax - lonMin);
-        const lat = latMin + Math.random() * (latMax - latMin);
         const f = new Feature({
           status,
-          geometry: new Point(fromLonLat([lon, lat]))
+          geometry: new Point(
+            fromLonLat([
+              lonMin + Math.random() * (lonMax - lonMin),
+              latMin + Math.random() * (latMax - latMin)
+            ])
+          )
         });
         rawSource.addFeature(f);
         this.stats[status]++;
         if (status === "danger") {
           const radii = [];
-          for (let j = 0; j < this.numRipples; j++) {
+          for (let j = 0; j < this.numRipples; j++)
             radii.push((this.maxRadius / this.numRipples) * j);
-          }
-
-          this.rippleLayers.push({ feature: f, radii, flash: false, delay: 0 }); // delay 可以在后面动画里实现错开
+          this.rippleLayers.push({ feature: f, radii });
         }
       }
 
       const clusterSource = new Cluster({ distance: 20, source: rawSource });
+
       const statusColors = {
         normal: "#00ff99",
         warning: "#ffcc00",
         danger: "#ff3333"
       };
 
+      // 注意这里不要用 this，直接用外部变量
       const rippleLayers = this.rippleLayers;
+      let rotateAngle = 0;
 
       const stationLayer = new VectorLayer({
         source: clusterSource,
-        style: (feature) => {
+        style: function (feature) {
           const features = feature.get("features");
-          if (!features || features.length === 0) return;
-
           if (features.length > 1) {
             return new Style({
               image: new CircleStyle({
@@ -130,6 +131,8 @@ export default {
           const baseColor = statusColors[status];
 
           const styles = [];
+
+          // 中心点
           styles.push(
             new Style({
               image: new CircleStyle({
@@ -140,6 +143,7 @@ export default {
             })
           );
 
+          // 告警波纹动画
           if (status === "danger") {
             styles.push(
               new Style({
@@ -150,37 +154,30 @@ export default {
                     width: 2,
                     lineDash: [6, 6]
                   }),
-                  rotation: this.rotateAngle
+                  rotation: rotateAngle
                 })
               })
             );
             const rData = rippleLayers.find((r) => r.feature === f0);
-            if (rData) {
-              rData.radii.forEach((r, idx) => {
-                let alpha = Math.pow(1 - r / this.maxRadius, 2);
-                if (rData.flash) alpha = 1;
-                styles.push(
-                  new Style({
-                    image: new CircleStyle({
-                      radius: r,
-                      stroke: new Stroke({
-                        color: `rgba(255,51,51,${0.8 * alpha})`,
-                        width: 2
-                      }),
-                      fill: new Fill({
-                        color: `rgba(255,51,51,${0.25 * alpha})`
-                      })
-                    })
+            rData.radii.forEach((r) => {
+              const alpha = Math.pow(1 - r / 70, 2);
+              styles.push(
+                new Style({
+                  image: new CircleStyle({
+                    radius: r,
+                    stroke: new Stroke({
+                      color: `rgba(255,51,51,${0.8 * alpha})`,
+                      width: 2
+                    }),
+                    fill: new Fill({ color: `rgba(255,51,51,${0.25 * alpha})` })
                   })
-                );
-              });
-            }
+                })
+              );
+            });
           }
           return styles;
         }
       });
-
-      this.stationLayer = stationLayer;
 
       this.map = new Map({
         target: this.$refs.map,
@@ -194,7 +191,7 @@ export default {
       const overlay = new Overlay({
         element: popup,
         positioning: "bottom-center",
-        offset: [10, -10],
+        offset: [0, -12], // 往上偏移
         stopEvent: false
       });
       this.map.addOverlay(overlay);
@@ -204,40 +201,33 @@ export default {
         if (!feature) return;
         const features = feature.get("features");
         if (features.length === 1) {
-          const f0 = features[0];
-          const status = f0.get("status");
+          const status = features[0].get("status");
           popup.innerHTML = `<div class="popup-box">状态：${status}<br/>时间：${new Date().toLocaleTimeString()}</div>`;
           overlay.setPosition(evt.coordinate);
-
-          // 点击波纹闪烁
-          const rData = rippleLayers.find((r) => r.feature === f0);
-          if (rData) {
-            rData.flash = true;
-            setTimeout(() => {
-              rData.flash = false;
-            }, 400);
-          }
         }
       });
 
       this.map.getView().on("change:resolution", () => {
         this.zoom = this.map.getView().getZoom().toFixed(2);
       });
+
+      // 用闭包控制旋转动画
+      this.stationLayer = stationLayer;
+      this.animate = function () {
+        rotateAngle += 0.05;
+        rippleLayers.forEach((r) =>
+          r.radii.forEach((_, i) => {
+            r.radii[i] += 0.8;
+            if (r.radii[i] > 70) r.radii[i] = 0;
+          })
+        );
+        stationLayer.changed();
+        requestAnimationFrame(this.animate);
+      }.bind(this);
     },
 
     startAnimation() {
-      const animate = () => {
-        this.rotateAngle += 0.05;
-        this.rippleLayers.forEach((r) => {
-          r.radii.forEach((radius, idx) => {
-            r.radii[idx] += this.rippleSpeed;
-            if (r.radii[idx] > this.maxRadius) r.radii[idx] = 0;
-          });
-        });
-        this.stationLayer.changed();
-        requestAnimationFrame(animate);
-      };
-      animate();
+      this.animate();
     },
 
     startStatsAnimation() {
@@ -256,7 +246,7 @@ export default {
   width: 100%;
   height: 100vh;
   position: relative;
-  background: #081525;
+  background: radial-gradient(circle at center, #0b1d33 0%, #081525 100%);
 }
 .map {
   width: 100%;

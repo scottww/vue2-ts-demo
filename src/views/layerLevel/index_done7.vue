@@ -39,6 +39,7 @@ import { fromLonLat } from "ol/proj";
 import { Point } from "ol/geom";
 import Feature from "ol/Feature";
 import { Fill, Stroke, Style, Circle as CircleStyle, Text } from "ol/style";
+import GeoJSON from "ol/format/GeoJSON";
 import Overlay from "ol/Overlay";
 
 export default {
@@ -46,20 +47,26 @@ export default {
     return {
       map: null,
       zoom: 12,
-      stats: { normal: 0, warning: 0, danger: 0 },
       rippleLayers: [],
       maxRadius: 70,
       numRipples: 4,
       rippleSpeed: 0.8,
       rotateAngle: 0,
-      stationLayer: null
+      stats: {
+        normal: 0,
+        warning: 0,
+        danger: 0
+      }
     };
   },
+
   mounted() {
     this.initMap();
     this.startAnimation();
+    // this.startFlyAnimation();
     this.startStatsAnimation();
   },
+
   methods: {
     initMap() {
       const darkLayer = new TileLayer({
@@ -68,55 +75,56 @@ export default {
         })
       });
 
-      // 随机点
       const rawSource = new VectorSource();
       const statusList = ["normal", "warning", "danger"];
+
       const lonMin = 119.95,
-        lonMax = 120.35,
-        latMin = 29.95,
+        lonMax = 120.35;
+      const latMin = 29.95,
         latMax = 30.4;
 
       for (let i = 0; i < 60; i++) {
-        const status = statusList[Math.floor(Math.random() * 3)];
-        const lon = lonMin + Math.random() * (lonMax - lonMin);
-        const lat = latMin + Math.random() * (latMax - latMin);
-        const f = new Feature({
-          status,
-          geometry: new Point(fromLonLat([lon, lat]))
-        });
-        rawSource.addFeature(f);
-        this.stats[status]++;
-        if (status === "danger") {
-          const radii = [];
-          for (let j = 0; j < this.numRipples; j++) {
-            radii.push((this.maxRadius / this.numRipples) * j);
-          }
-
-          this.rippleLayers.push({ feature: f, radii, flash: false, delay: 0 }); // delay 可以在后面动画里实现错开
-        }
+        rawSource.addFeature(
+          new Feature({
+            status: statusList[Math.floor(Math.random() * 3)],
+            geometry: new Point(
+              fromLonLat([
+                lonMin + Math.random() * (lonMax - lonMin),
+                latMin + Math.random() * (latMax - latMin)
+              ])
+            )
+          })
+        );
       }
 
-      const clusterSource = new Cluster({ distance: 20, source: rawSource });
-      const statusColors = {
-        normal: "#00ff99",
-        warning: "#ffcc00",
-        danger: "#ff3333"
-      };
+      const clusterSource = new Cluster({
+        distance: 20,
+        source: rawSource
+      });
 
-      const rippleLayers = this.rippleLayers;
+      // 初始化告警波纹
+      rawSource.getFeatures().forEach((f) => {
+        this.stats[f.get("status")]++;
+        if (f.get("status") === "danger") {
+          const radii = [];
+          for (let i = 0; i < this.numRipples; i++) {
+            radii.push((this.maxRadius / this.numRipples) * i);
+          }
+          this.rippleLayers.push({ feature: f, radii });
+        }
+      });
 
       const stationLayer = new VectorLayer({
         source: clusterSource,
         style: (feature) => {
           const features = feature.get("features");
-          if (!features || features.length === 0) return;
 
           if (features.length > 1) {
             return new Style({
               image: new CircleStyle({
                 radius: 14,
                 fill: new Fill({ color: "#00cfff" }),
-                stroke: new Stroke({ color: "#fff", width: 2 })
+                stroke: new Stroke({ color: "#ffffff", width: 2 })
               }),
               text: new Text({
                 text: features.length.toString(),
@@ -125,11 +133,27 @@ export default {
             });
           }
 
-          const f0 = features[0];
-          const status = f0.get("status");
-          const baseColor = statusColors[status];
+          const status = features[0].get("status");
+
+          const baseColor = {
+            normal: "#00ff99",
+            warning: "#ffcc00",
+            danger: "#ff3333"
+          }[status];
 
           const styles = [];
+
+          // 中心发光底圈
+          styles.push(
+            new Style({
+              image: new CircleStyle({
+                radius: 14,
+                fill: new Fill({ color: "rgba(255,51,51,0.15)" })
+              })
+            })
+          );
+
+          // 中心主点
           styles.push(
             new Style({
               image: new CircleStyle({
@@ -140,6 +164,7 @@ export default {
             })
           );
 
+          // 旋转光环（只对告警）
           if (status === "danger") {
             styles.push(
               new Style({
@@ -154,69 +179,86 @@ export default {
                 })
               })
             );
-            const rData = rippleLayers.find((r) => r.feature === f0);
-            if (rData) {
-              rData.radii.forEach((r, idx) => {
-                let alpha = Math.pow(1 - r / this.maxRadius, 2);
-                if (rData.flash) alpha = 1;
-                styles.push(
-                  new Style({
-                    image: new CircleStyle({
-                      radius: r,
-                      stroke: new Stroke({
-                        color: `rgba(255,51,51,${0.8 * alpha})`,
-                        width: 2
-                      }),
-                      fill: new Fill({
-                        color: `rgba(255,51,51,${0.25 * alpha})`
-                      })
+
+            // 雷达波
+            const rippleData = this.rippleLayers.find(
+              (r) => r.feature === features[0]
+            );
+            rippleData.radii.forEach((r) => {
+              const percent = r / this.maxRadius;
+              const alpha = Math.pow(1 - percent, 2);
+
+              styles.push(
+                new Style({
+                  image: new CircleStyle({
+                    radius: r,
+                    stroke: new Stroke({
+                      color: `rgba(255,51,51,${0.8 * alpha})`,
+                      width: 2
+                    }),
+                    fill: new Fill({
+                      color: `rgba(255,51,51,${0.25 * alpha})`
                     })
                   })
-                );
-              });
-            }
+                })
+              );
+            });
           }
+
           return styles;
         }
       });
 
-      this.stationLayer = stationLayer;
+      // 杭州行政区边界
+      const boundaryLayer = new VectorLayer({
+        source: new VectorSource({
+          url: "/data/hangzhou.json",
+          format: new GeoJSON()
+        }),
+        style: new Style({
+          stroke: new Stroke({
+            color: "#00eaff",
+            width: 2
+          }),
+          fill: new Fill({
+            color: "rgba(0,200,255,0.05)"
+          })
+        })
+      });
 
       this.map = new Map({
         target: this.$refs.map,
-        layers: [darkLayer, stationLayer],
-        view: new View({ center: fromLonLat([120.15, 30.25]), zoom: this.zoom })
+        layers: [darkLayer, boundaryLayer, stationLayer],
+        view: new View({
+          center: fromLonLat([120.15, 30.25]),
+          zoom: this.zoom
+        })
       });
 
-      // 弹窗
       const popup = document.createElement("div");
       popup.className = "popup";
       const overlay = new Overlay({
         element: popup,
         positioning: "bottom-center",
-        offset: [10, -10],
         stopEvent: false
       });
       this.map.addOverlay(overlay);
 
       this.map.on("click", (evt) => {
         const feature = this.map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+
         if (!feature) return;
+
         const features = feature.get("features");
         if (features.length === 1) {
-          const f0 = features[0];
-          const status = f0.get("status");
-          popup.innerHTML = `<div class="popup-box">状态：${status}<br/>时间：${new Date().toLocaleTimeString()}</div>`;
+          const status = features[0].get("status");
+          popup.innerHTML = `
+      <div class="popup-box">
+        状态：${status}<br/>
+        时间：${new Date().toLocaleTimeString()}
+      </div>
+    `;
           overlay.setPosition(evt.coordinate);
-
-          // 点击波纹闪烁
-          const rData = rippleLayers.find((r) => r.feature === f0);
-          if (rData) {
-            rData.flash = true;
-            setTimeout(() => {
-              rData.flash = false;
-            }, 400);
-          }
         }
       });
 
@@ -226,18 +268,53 @@ export default {
     },
 
     startAnimation() {
+      // 根据图层顺序查找
+      // const stationLayer = this.map.getLayers().getArray()[2]; // 站点层是第三层
+      // 根据类型查找
+      const stationLayer = this.map
+        .getLayers()
+        .getArray()
+        .find(
+          (layer) =>
+            layer instanceof VectorLayer && layer.getSource() instanceof Cluster
+        );
+
       const animate = () => {
         this.rotateAngle += 0.05;
+
         this.rippleLayers.forEach((r) => {
-          r.radii.forEach((radius, idx) => {
-            r.radii[idx] += this.rippleSpeed;
-            if (r.radii[idx] > this.maxRadius) r.radii[idx] = 0;
-          });
+          for (let i = 0; i < r.radii.length; i++) {
+            r.radii[i] += this.rippleSpeed;
+            if (r.radii[i] > this.maxRadius) r.radii[i] = 0;
+          }
         });
-        this.stationLayer.changed();
+
+        stationLayer.changed();
         requestAnimationFrame(animate);
       };
+
       animate();
+    },
+
+    startFlyAnimation() {
+      const view = this.map.getView();
+
+      const points = [
+        fromLonLat([120.15, 30.25]),
+        fromLonLat([120.3, 30.2]),
+        fromLonLat([120.05, 30.35])
+      ];
+
+      let index = 0;
+
+      setInterval(() => {
+        view.animate({
+          center: points[index],
+          zoom: 13,
+          duration: 2000
+        });
+        index = (index + 1) % points.length;
+      }, 5000);
     },
 
     startStatsAnimation() {
@@ -255,8 +332,8 @@ export default {
 .screen-container {
   width: 100%;
   height: 100vh;
+  background: radial-gradient(circle at center, #0b1d33 0%, #081525 100%);
   position: relative;
-  background: #081525;
 }
 .map {
   width: 100%;
@@ -295,6 +372,18 @@ export default {
 .danger {
   background: #ff3333;
 }
+
+.popup-box {
+  background: rgba(0, 20, 40, 0.95);
+  padding: 10px 14px;
+  color: #00ffff; /* 亮一些 */
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 0 12px #00eaff;
+  border: 1px solid rgba(0, 255, 255, 0.3); /* 提升可见度 */
+  pointer-events: none;
+}
+
 .right-panel {
   position: absolute;
   top: 20px;
@@ -305,28 +394,13 @@ export default {
   color: #00eaff;
   box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
 }
+
 .panel-title {
   font-size: 18px;
   margin-bottom: 10px;
 }
+
 .stat-item {
   margin-bottom: 6px;
-}
-</style>
-<style>
-.popup {
-  position: absolute;
-  z-index: 9999;
-  pointer-events: none;
-}
-.popup-box {
-  background: rgba(0, 0, 0, 0.85);
-  color: #00ffff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  border: 1px solid rgba(0, 255, 255, 0.5);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
-  white-space: nowrap;
 }
 </style>

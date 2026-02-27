@@ -719,6 +719,18 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/gis-wkt-tool",
+        name: "gisWktTool",
+        component: () =>
+          import(
+            /* webpackChunkName: "gisWktTool" */ "../views/wktTool/index.vue"
+          ),
+        meta: {
+          title: "gisWktTool 格式转换",
+          // isFull: true
+        }
+      },
+      {
         path: "/citySelector",
         name: "citySelector",
         component: () =>
