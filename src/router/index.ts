@@ -707,6 +707,18 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/gis-layer-level",
+        name: "gisLayerLevel",
+        component: () =>
+          import(
+            /* webpackChunkName: "gisLayerLevel" */ "../views/layerLevel/index.vue"
+          ),
+        meta: {
+          title: "gisLayerLevel 图层分级",
+          // isFull: true
+        }
+      },
+      {
         path: "/citySelector",
         name: "citySelector",
         component: () =>
