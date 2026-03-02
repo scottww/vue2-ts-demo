@@ -479,6 +479,17 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: "/expandableMultiSelect",
+        name: "ExpandableMultiSelect",
+        component: () =>
+          import(
+            /* webpackChunkName: "ExpandableMultiSelect" */ "../views/expandableMultiSelect/index.vue"
+          ),
+        meta: {
+          title: "ExpandableMultiSelect"
+        }
+      },
+      {
         path: "/road",
         name: "road",
         component: () =>

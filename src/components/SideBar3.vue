@@ -69,6 +69,7 @@ export default {
             { id: 27, text: "DynamicForm 动态表单", path: "/dynamicForm" },
             { id: 20, text: "HeaderSection 头部", path: "/headerSection" },
             { id: 21, text: "CustomTabs 自定义标签", path: "/customTabs" },
+            { id: 40, text: "ExpandableMultiSelect 可展开多选", path: "/expandableMultiSelect" },
             { id: 32, text: "SvgIcon 图标", path: "/svgIcon" },
             { id: 33, text: "Cityselector 城市选择卡", path: "/cityselector" },
 
@@ -171,6 +172,7 @@ export default {
         // { id: 37, text: "aTag 自定义", path: "/aTag" },
         // { id: 38, text: "aSpin 自定义", path: "/customSpin"
         // { id: 39, text: "bigScreenLayout 大屏适配", path: "/bigScreenLayout"
+        // { id: 40, text: "ExpandableMultiSelect 可展开多选", path: "/expandableMultiSelect" },
       ]
     };
   },
