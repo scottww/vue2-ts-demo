@@ -114,11 +114,11 @@ export default {
             },
             { id: 13, text: "Radio 单选框", path: "/radio" },
             { id: 26, text: "Table 样式", path: "/tableStyle" },
-            {
-              id: 39,
-              text: "bigScreenLayout 大屏适配",
-              path: "/bigScreenLayout"
-            }
+            // {
+            //   id: 39,
+            //   text: "bigScreenLayout 大屏适配",
+            //   path: "/bigScreenLayout"
+            // }
           ]
         },
         {
