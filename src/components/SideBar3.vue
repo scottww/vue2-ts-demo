@@ -36,18 +36,6 @@ export default {
             { id: 6, text: "Table 表格", path: "/table" },
             { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
             { id: 9, text: "Indicators 指示器", path: "/indicators" },
-            // { id: 24, text: "2D map 二维地图", path: "/map" },
-            { id: 18, text: "3D map 三维可视化", path: "/cesium" }
-          ]
-        },
-        {
-          name: "GIS 地图",
-          children: [
-            { id: 24, text: "2D map 二维地图", path: "/map" },
-            { id: 19, text: "Toolbar 地图工具栏", path: "/mapToolbar" },
-            { id: 34, text: "Map2 测试2", path: "/Map2" },
-            { id: 35, text: "Map3 测试3", path: "/Map3" },
-            { id: 18, text: "3D map 三维地图", path: "/cesium" }
           ]
         },
         {
@@ -57,7 +45,6 @@ export default {
             { id: 11, text: "Categorys 分类菜单", path: "/categorys" },
             { id: 4, text: "VirtualList 虚拟列表", path: "/virtualList" },
             { id: 5, text: "Decorator 装饰器", path: "/decorator" },
-
             {
               id: 14,
               text: "FlexAnimationCycle 动画循环",
@@ -96,6 +83,16 @@ export default {
               text: "MultiSelectDropdown 多选下拉框",
               path: "/multiSelectDropdown"
             }
+          ]
+        },
+        {
+          name: "GIS 地图",
+          children: [
+            { id: 24, text: "2D map 二维地图", path: "/map" },
+            { id: 19, text: "Toolbar 地图工具栏", path: "/mapToolbar" },
+            { id: 34, text: "Map2 测试2", path: "/Map2" },
+            { id: 35, text: "Map3 测试3", path: "/Map3" },
+            { id: 18, text: "3D map 三维地图", path: "/cesium" }
           ]
         },
         {
