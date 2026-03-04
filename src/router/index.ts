@@ -486,7 +486,7 @@ const routes: Array<RouteConfig> = [
             /* webpackChunkName: "ExpandableMultiSelect" */ "../views/expandableMultiSelect/index.vue"
           ),
         meta: {
-          title: "ExpandableMultiSelect"
+          title: "ExpandableMultiSelect 可展开选择器"
         }
       },
       {
@@ -1037,6 +1037,17 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "Billiards"
+        }
+      },
+      {
+        path: "/switchTabs",
+        name: "switchTabs",
+        component: () =>
+          import(
+            /* webpackChunkName: "SwitchTabs" */ "../views/SwitchTabsDemo/index.vue"
+          ),
+        meta: {
+          title: "SwitchTabs 切换标签"
         }
       },
     ]

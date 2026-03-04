@@ -20,11 +20,13 @@ export default {
     return {
       items: [
         // { id: 0, text: "快速向导", path: "/guide" },
+        { id: 4, text: "切换标签", path: "/switchTabs" },
         { id: 1, text: "骨架屏", path: "/skeleton" },
         { id: 2, text: "虚拟列表", path: "/virtualList" },
-        { id: 3, text: "三维可视化", path: "/cesium" },
-        { id: 4, text: "分类菜单", path: "/categorys" },
-        { id: 5, text: "组件", path: "/components" }
+        // { id: 3, text: "三维可视化", path: "/cesium" },
+        { id: 3, text: "Tabs组件", path: "/components" },
+        { id: 5, text: "可展开选择器", path: "/expandableMultiSelect" },
+        { id: 6, text: "分类菜单", path: "/categorys" },
       ],
       // colors: ["#6bc3e6", "#019fde", "#ff8345", "#ff5675", "#f8bd0b"]
       // selectedColor: "",

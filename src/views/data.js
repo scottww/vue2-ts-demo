@@ -9,18 +9,7 @@ export const menus = [
       { id: 1, text: "Chart 图表", path: "/chart" },
       { id: 6, text: "Table 表格", path: "/table" },
       { id: 22, text: "Skeleton 骨架屏", path: "/skeleton" },
-      { id: 9, text: "Indicators 指示器", path: "/indicators" },
-      { id: 18, text: "3D map 三维可视化", path: "/cesium" }
-    ]
-  },
-  {
-    name: "GIS 地图",
-    children: [
-      { id: 24, text: "2D map 二维地图", path: "/map" },
-      { id: 19, text: "Toolbar 地图工具栏", path: "/mapToolbar" },
-      { id: 34, text: "Map2 测试2", path: "/Map2" },
-      { id: 35, text: "Map3 测试3", path: "/Map3" },
-      { id: 18, text: "3D map 三维地图", path: "/cesium" }
+      { id: 9, text: "Indicators 指示器", path: "/indicators" }
     ]
   },
   {
@@ -41,6 +30,12 @@ export const menus = [
       { id: 27, text: "DynamicForm 动态表单", path: "/dynamicForm" },
       { id: 20, text: "HeaderSection 头部", path: "/headerSection" },
       { id: 21, text: "CustomTabs 自定义标签", path: "/customTabs" },
+      { id: 41, text: "SwitchTabs 切换标签", path: "/switchTabs" },
+      {
+        id: 40,
+        text: "ExpandableMultiSelect 可展开选择器",
+        path: "/expandableMultiSelect"
+      },
       { id: 32, text: "SvgIcon 图标", path: "/svgIcon" },
       { id: 33, text: "Cityselector 城市选择卡", path: "/cityselector" },
       { id: 7, text: "LoadReadFile 读取文件", path: "/loadReadFile" },
@@ -61,6 +56,16 @@ export const menus = [
     ]
   },
   {
+    name: "GIS 地图",
+    children: [
+      { id: 24, text: "2D map 二维地图", path: "/map" },
+      { id: 19, text: "Toolbar 地图工具栏", path: "/mapToolbar" },
+      { id: 34, text: "Map2 测试2", path: "/Map2" },
+      { id: 35, text: "Map3 测试3", path: "/Map3" },
+      { id: 18, text: "3D map 三维地图", path: "/cesium" }
+    ]
+  },
+  {
     name: "Ant Design 自定义",
     children: [
       { id: 37, text: "aTag 自定义", path: "/aTag" },
@@ -74,8 +79,8 @@ export const menus = [
       { id: 25, text: "CarouselCard 轮播卡", path: "/carouselCard" },
       { id: 12, text: "BackgroundClip 裁剪背景", path: "/backgroundClip" },
       { id: 13, text: "Radio 单选框", path: "/radio" },
-      { id: 26, text: "Table 样式", path: "/tableStyle" },
-      { id: 39, text: "bigScreenLayout 大屏适配", path: "/bigScreenLayout" }
+      { id: 26, text: "Table 样式", path: "/tableStyle" }
+      // { id: 39, text: "bigScreenLayout 大屏适配", path: "/bigScreenLayout" }
     ]
   },
   {
