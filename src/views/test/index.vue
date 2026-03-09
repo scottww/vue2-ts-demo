@@ -88,11 +88,12 @@ import WaveBackgroundDemo from "./WaveBackgroundDemo.vue";
 import LevelFlowChart from "./LevelFlowChart.vue";
 import CustomDialogDemo from "./CustomDialog/CustomDialogDemo.vue";
 import TimePlayerDemo from "./TimePlayer/TimePlayerDemo.vue";
-import YearPickerDemo from './YearPickerDemo/YearPickerDemo.vue';
-import NavButtonDemo from './NavButton/NavButtonDemo.vue';
-import IconButtonGroupNewDemo from './IconButtonGroup/IconButtonGroupDemo.vue';
-import Multi3DBarChartDemo from './multi3DBarChartDemo/Multi3DBarChartDemo.vue';
-import BasicInfoPanelDemo from './BasicInfoPanel/BaseInfoPanelDemo.vue';
+import YearPickerDemo from "./YearPickerDemo/YearPickerDemo.vue";
+import NavButtonDemo from "./NavButton/NavButtonDemo.vue";
+import IconButtonGroupNewDemo from "./IconButtonGroup/IconButtonGroupDemo.vue";
+import Multi3DBarChartDemo from "./multi3DBarChartDemo/Multi3DBarChartDemo.vue";
+import BasicInfoPanelDemo from "./BasicInfoPanel/BaseInfoPanelDemo.vue";
+import ControlButtonPanelDemo from "./ControlButtonPanelDemo/ControlButtonPanelDemo.vue";
 
 import PanelDemo from "./PanelDemo.vue";
 
@@ -151,7 +152,8 @@ export default {
     YearPickerDemo,
     IconButtonGroupNewDemo,
     Multi3DBarChartDemo,
-    BasicInfoPanelDemo
+    BasicInfoPanelDemo,
+    ControlButtonPanelDemo
   },
   data() {
     return {
@@ -164,7 +166,7 @@ export default {
         { label: "GateRealTime2", name: "panel2" },
         {
           label: "PanelDemo",
-          name: "通用panel",
+          name: "通用panel"
         },
         { label: "EquipmentDetail", name: "设备详情" },
         { label: "Pie3D", name: "3D饼图" },
@@ -219,37 +221,40 @@ export default {
         },
         {
           label: "LevelFlowChart",
-          name: "LevelFlowChart",
+          name: "LevelFlowChart"
         },
         {
           label: "CustomDialogDemo",
-          name: "CustomDialogDemo",
+          name: "CustomDialogDemo"
         },
         {
           label: "TimePlayerDemo",
-          name: "TimePlayerDemo",
+          name: "TimePlayerDemo"
         },
         {
           label: "YearPickerDemo",
-          name: "YearPickerDemo",
+          name: "YearPickerDemo"
         },
         {
           label: "NavButtonDemo",
-          name: "NavButtonDemo",
+          name: "NavButtonDemo"
         },
         {
           label: "IconButtonGroupNewDemo",
-          name: "IconButtonGroupNewDemo",
+          name: "IconButtonGroupNewDemo"
         },
         {
           label: "Multi3DBarChartDemo",
-          name: "Multi3DBarChartDemo",
+          name: "Multi3DBarChartDemo"
         },
         {
           label: "BasicInfoPanelDemo",
-          name: "BasicInfoPanelDemo",
+          name: "BasicInfoPanelDemo"
         },
-        
+        {
+          label: "ControlButtonPanelDemo",
+          name: "ControlButtonPanelDemo"
+        }
       ],
       forecastTime: "12h",
       timeOptions: [
@@ -283,7 +288,6 @@ export default {
   /* height: 940px; */
   background-color: #0a1e3c;
   background-image: radial-gradient(circle at center, #143a7c, #0a1e3c);
-  
 }
 
 .tab-group {
@@ -459,10 +463,10 @@ export default {
 }
 
 .main-content.YearPickerDemo {
-  width: auto
+  width: auto;
 }
 
 .main-content.BasicInfoPanelDemo {
-  width: auto
+  width: auto;
 }
 </style>
