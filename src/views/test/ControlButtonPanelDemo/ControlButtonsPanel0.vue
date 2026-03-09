@@ -46,12 +46,12 @@ export default {
           label: "停止灌溉",
           tag: "stopIrrigation",
           type: "action",
-          disabled: false
+          disabled: true
         },
         { label: "开启闸门", tag: "openGate", type: "action" },
         { label: "关闭闸门", tag: "closeGate", type: "action" },
         { label: "调节流量", tag: "adjustFlow", type: "action" },
-        { label: "监控水位", tag: "monitorLevel", type: "action" },
+        { label: "监控水位", tag: "monitorLevel", type: "action", disabled: true },
         { label: "监控温度", tag: "monitorTemp", type: "action" },
         { label: "系统复位", tag: "systemReset", type: "action" }
       ]
