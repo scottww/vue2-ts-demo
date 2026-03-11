@@ -1050,6 +1050,17 @@ const routes: Array<RouteConfig> = [
           title: "SwitchTabs 切换标签"
         }
       },
+      {
+        path: "/verticalNavSelect",
+        name: "verticalNavSelect",
+        component: () =>
+          import(
+            /* webpackChunkName: "VerticalNavSelect" */ "../views/VerticalNavSelectDemo/index.vue"
+          ),
+        meta: {
+          title: "VerticalNavSelect 竖向导航选择"
+        }
+      },
     ]
   },
   {

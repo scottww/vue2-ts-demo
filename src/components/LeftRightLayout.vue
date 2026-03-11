@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$width: 240px;
+$width: 280px;
 .app-wrapper {
   display: flex;
   flex-direction: row;
