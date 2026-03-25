@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .panel {
   background: rgba(0, 76, 153, 0.2);
   border: 1px solid rgba(0, 153, 255, 0.3);
@@ -133,5 +133,37 @@ export default {
 }
 .main {
   height: calc(100% - 64px);
+}
+
+// 定制化样式：针对 header-extra 内的 CustomSelect 进行定制
+.header-extra :deep(.selected__value) {
+  padding: 0;
+}
+
+.header-extra :deep(.diamond) {
+  min-height: VH(34px);
+  padding: 0 VW(14px);
+  background: linear-gradient(180deg, #2f99ff 0%, #1b6fd9 100%);
+  border: 1px solid rgba(89, 200, 255, 0.7);
+  box-shadow:
+    inset 0 0 0 1px rgba(120, 228, 255, 0.18),
+    0 0 VH(10px) rgba(35, 145, 255, 0.2);
+  transform: skewX(-12deg);
+}
+
+.header-extra :deep(.diamond__label),
+.header-extra :deep(.diamond__arrow),
+.header-extra :deep(.diamond__clear-btn) {
+  transform: skewX(12deg);
+}
+
+.header-extra :deep(.diamond__label) {
+  font-family: PangMenZhengDao, PMZD, sans-serif;
+  font-size: rem(16px);
+  color: #ffffff;
+}
+
+.header-extra :deep(.diamond__arrow) {
+  color: rgba(255, 255, 255, 0.9);
 }
 </style>
